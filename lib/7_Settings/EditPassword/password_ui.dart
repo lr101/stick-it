@@ -50,7 +50,7 @@ class PasswordUI extends StatelessUI<Password> {
                               obscureText: true,
                               enableSuggestions: false,
                               autocorrect: false,
-                              validator: LoginScreen.validator,
+                              validator: LoginScreen.passwordValidator,
                             ),
                           ]
                       )
@@ -78,7 +78,7 @@ class PasswordUI extends StatelessUI<Password> {
                               obscureText: true,
                               enableSuggestions: false,
                               autocorrect: false,
-                              validator: LoginScreen.validator,
+                              validator: LoginScreen.passwordValidator,
                             ),
                           ]
                       )

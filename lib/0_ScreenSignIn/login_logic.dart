@@ -76,18 +76,32 @@ class LoginScreen extends StatelessWidget {
 
   /// Validator Method for validating password
   /// returns null on success or an error message for an incorrect input
-  static String? validator(String? s) {
-    final alphanumeric = RegExp(r'^[a-zA-Z][a-zA-Z0-9!?#$%&+]+$');
+  static String? passwordValidator(String? s) {
+    final alphanumeric = RegExp(r'^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>~`/\\[\]\-_=+]*$');
     if (s == null ) {
       return "input is not valid";
     } else if (s.length < 2 ) {
       return "at least 2 characters";
     } else if (s.length > 29) {
       return "shorter than 30 characters";
-    } else  if (!alphanumeric.hasMatch(s.characters.first)) {
-      return "must start with a letter";
     } else  if (!alphanumeric.hasMatch(s)) {
-      return "start with a letter - allowed: 0-9!?#\$%&+";
+      return "includes not allowed characters";
+    }
+    return null;
+  }
+
+  /// Validator Method for validating password
+  /// returns null on success or an error message for an incorrect input
+  static String? userValidator(String? s) {
+    final alphanumeric = RegExp(r'^[a-zA-Z0-9!@#$%^&*]*$');
+    if (s == null ) {
+      return "input is not valid";
+    } else if (s.length < 2 ) {
+      return "at least 2 characters";
+    } else if (s.length > 29) {
+      return "shorter than 30 characters";
+    } else  if (!alphanumeric.hasMatch(s)) {
+      return "includes not allowed characters";
     }
     return null;
   }
