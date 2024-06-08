@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mutex/mutex.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../2_ScreenMaps/ClickOnPin/image_widget_logic.dart';
 import '../Files/DTOClasses/group.dart';

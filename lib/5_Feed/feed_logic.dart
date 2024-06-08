@@ -76,7 +76,6 @@ class FeedPageState extends State<FeedPage>  with AutomaticKeepAliveClientMixin<
         }
       }
       List<Widget> widgets = [];
-      await FetchPins.fetchImagesOfPins(pins.where((element) => element.image.isEmpty).toList());
       for (Pin pin in pins) {
         Widget widget =  FeedCard(pin: pin, update: () async => pagingController.refresh(),);
         if (pin.group.active) {

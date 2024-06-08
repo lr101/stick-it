@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../9_Profile/ClickOnProfileImage/show_profile_image_logic.dart';
 import '../Routes/routing.dart';

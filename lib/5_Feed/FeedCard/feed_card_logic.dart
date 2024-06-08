@@ -31,6 +31,8 @@ class FeedCardState extends State<FeedCard> {
 
   late final LatLng center;
 
+  bool loading = true;
+
   /// controller of the flutter_map
   MapController controller = MapController();
 
@@ -109,6 +111,12 @@ class FeedCardState extends State<FeedCard> {
   /// Open a more detailed view of current pin image.
   void handleTabOnImage() {
     Routing.to(context, ShowImageWidget(pin: widget.pin));
+  }
+
+  void finishLoading() {
+    setState(() {
+      loading = true;
+    });
   }
 
 }
