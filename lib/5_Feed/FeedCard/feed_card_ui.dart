@@ -13,7 +13,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../Files/Widgets/custom_layer.dart';
 import '../../Files/Widgets/custom_popup_menu_button.dart';
@@ -129,14 +128,7 @@ class FeedCardUI extends StatefulUI<FeedCard, FeedCardState>{
                                        )
                                     );
                                   } else {
-                                    return Skeletonizer(
-                                      enabled: true,
-                                      child: Container(
-                                        height: MediaQuery.of(context).size.width - 10,
-                                        width: MediaQuery.of(context).size.width - 10,
-                                        color: Colors.grey[200], // background color of the skeleton loader
-                                      ),
-                                    );
+                                    return const SizedBox.shrink();
                                   }
                                 },
                                 )

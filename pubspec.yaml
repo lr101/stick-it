@@ -155,8 +155,6 @@ dependencies:
 
   snapping_page_scroll:
 
-  skeletonizer:
-
   intl: any
   async: any
 dev_dependencies:
