@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import '../Files/Other/global.dart' as global;
 import '../7_Settings/WebView/show_web_widget.dart';
+import '../Files/Routes/routing.dart';
+import '../Files/Themes/custom_theme.dart';
 
 class LoginUI extends StatelessUI<LoginScreen> {
   const LoginUI({super.key, required widget}) : super(widget: widget);
@@ -12,7 +14,12 @@ class LoginUI extends StatelessUI<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
-      title: 'Tag the World',
+      title: 'Stick-It',
+      theme: LoginTheme(
+        pageColorDark: CustomTheme.c1,
+        pageColorLight: CustomTheme.c1,
+        primaryColor: CustomTheme.c1,
+      ),
       termsOfService: [
         TermOfService(id: "0", text: "Terms of Service", mandatory: true, linkUrl: "https://${global.host}/public/agb"),
         TermOfService(id: "1", text: "Privacy Policy", mandatory: true, linkUrl: "https://${global.host}/public/privacy-policy")
@@ -59,10 +66,7 @@ class LoginUI extends StatelessUI<LoginScreen> {
               ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ShowWebWidget(route: "public/agb",title: "Terms of Service",)),
-                      );
+                      Routing.to(context, ShowWebWidget(route: "https://${global.host}/public/agb",title: "Terms of Service",));
                     }
               ),
               TextSpan(
@@ -77,10 +81,7 @@ class LoginUI extends StatelessUI<LoginScreen> {
                     ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const ShowWebWidget(route: "public/privacy-policy",title: "Privacy Policy",)),
-                            );
+                            Routing.to(context, ShowWebWidget(route: "https://${global.host}/public/privacy-policy",title: "Privacy Policy",));
                           }
                     )
                   ]
