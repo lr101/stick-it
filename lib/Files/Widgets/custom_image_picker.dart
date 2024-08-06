@@ -36,9 +36,6 @@ class CustomImagePicker {
       if (res != null && context.mounted) {
         CroppedFile? croppedFile = await ImageCropper().cropImage(
           sourcePath: res.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-          ],
           aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
           uiSettings: [
             AndroidUiSettings(
