@@ -53,16 +53,16 @@ class MembersSubPageState extends State<MembersSubPage> with AutomaticKeepAliveC
   Widget buildCard(int index) {
     Ranking member = ranking![index];
     return CustomListTile.fromUser(
-        Provider.of<UserNotifier>(context, listen: false).getUser(member.username),
+        Provider.of<UserNotifier>(context, listen: false).getUser(member.userId),
         member.points,
-        member.username == widget.group.groupAdmin.syncValue,
+        member.userId == widget.group.groupAdmin.syncValue,
         handleOpenUserProfile
     );
   }
 
-  void handleOpenUserProfile(String username) {
-    if (username == global.localData.username) return;
-    Routing.to(context,  ProfilePage(username: username,));
+  void handleOpenUserProfile(String userId) {
+    if (userId == global.localData.userId) return;
+    Routing.to(context,  ProfilePage(userId: userId,));
   }
 
   @override

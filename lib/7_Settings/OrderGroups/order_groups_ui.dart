@@ -44,7 +44,7 @@ class OrderGroupUI extends StatefulUI<OrderGroups, OrderGroupsState>{
   /// opens a page to show more information of group on single press
   Widget getCardOfGroup(Group group, BuildContext context) {
     return Card(
-      key: Key(group.groupId.toString()),
+      key: Key(group.groupId),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),

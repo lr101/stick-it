@@ -49,7 +49,7 @@ class FeedCardState extends State<FeedCard> {
 
   /// Hides the current pin und reloads the view.
   Future<void> handleHidePost(BuildContext context) async {
-    if (global.localData.username != widget.pin.username) {
+    if (global.localData.userId != widget.pin.creatorId) {
       await global.localData.hiddenPosts.put(DateTime.now(), key: widget.pin.id);
       if (!mounted) return;
       await Provider.of<ClusterNotifier>(context, listen: false).hidePin(widget.pin);
@@ -59,8 +59,8 @@ class FeedCardState extends State<FeedCard> {
 
   /// Hides the user of the current pin.
   Future<void> handleHideUsers(BuildContext context) async {
-    if (global.localData.username != widget.pin.username) {
-      await global.localData.hiddenUsers.put(DateTime.now(), key: widget.pin.username);
+    if (global.localData.userId != widget.pin.creatorId) {
+      await global.localData.hiddenUsers.put(DateTime.now(), key: widget.pin.creatorId);
       if (!mounted) return;
       await Provider.of<ClusterNotifier>(context, listen: false).updateFilter();
       widget.update!();
@@ -69,17 +69,17 @@ class FeedCardState extends State<FeedCard> {
 
   /// Report user of current pin.
   Future<void> handleReportUser(BuildContext context) async {
-    String username = widget.pin.username;
-    if (username != global.localData.username) {
-      Routing.to(context, ReportUser(content: username, title: "Report User", hintText: "Why do you want to report $username?", userText:  'Report user: $username'));
+    String userId = widget.pin.creatorId;
+    if (userId != global.localData.userId) {
+      Routing.to(context, ReportUser(content: userId, title: "Report User", hintText: "Why do you want to report this user?", userText:  'Report user: $userId'));
     }
   }
 
   /// Report current pin.
   Future<void> handleReportPost(BuildContext context) async {
-    String username = widget.pin.username;
-    if (username != global.localData.username) {
-      Routing.to(context, ReportUser(content: widget.pin.id.toString(), title: "Report Content", hintText: "Why do you want to report this content?",userText: "Report content of user: $username",));
+    String userId = widget.pin.creatorId;
+    if (userId != global.localData.userId) {
+      Routing.to(context, ReportUser(content: widget.pin.id, title: "Report Content", hintText: "Why do you want to report this content?",userText: "Report content of user: $userId",));
     }
   }
 
@@ -102,8 +102,8 @@ class FeedCardState extends State<FeedCard> {
 
   /// Open profile of the user of the current pin.
   void handleOpenUserProfile() {
-    if (widget.pin.username == global.localData.username) return;
-    Routing.to(context, ProfilePage(username: widget.pin.username,));
+    if (widget.pin.creatorId == global.localData.userId) return;
+    Routing.to(context, ProfilePage(userId: widget.pin.id));
   }
 
   /// Open a more detailed view of current pin image.

@@ -3,6 +3,7 @@ import 'package:buff_lisa/Files/AbstractClasses/abstract_widget_ui.dart';
 import 'package:buff_lisa/Files/DTOClasses/pin.dart';
 import 'package:buff_lisa/Files/Widgets/custom_title.dart';
 import 'package:buff_lisa/Providers/hidden_pin_page.dart';
+import 'package:buff_lisa/Providers/user_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,14 +22,20 @@ class HiddenPinUI extends StatefulUI<HiddenPin, HiddenPinState> {
     return Scaffold(appBar: null,
         body: CustomTitle(
           title: CustomEasyTitle(
-            title: Text("Hidden Users", style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium),
+            title: Text("Hidden Pins", style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium),
             back: true,
           ),
           sliverList: CustomSliverList(
               itemCount: pins.length,
               itemBuilder: (index) => CustomListTile(
                 leading: Text("${index + 1}."),
-                title: Text("Post by: ${pins.elementAt(index).username}", style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium),
+                title: FutureBuilder(
+                    future: Provider.of<UserNotifier>(context).getUser(pins.elementAt(index).creatorId).username.asyncValue(),
+                    builder: (context, snapshot) =>
+                        Text("Post by: ${snapshot.hasData ? snapshot.requireData: "..."}",
+                            style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium
+                        )
+                ),
                 trailing: SizedBox(
                     width: 200,
                     child: Row(

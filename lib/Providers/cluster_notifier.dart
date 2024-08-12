@@ -49,9 +49,9 @@ class ClusterNotifier extends ChangeNotifier {
   /// NOTIFIES CHANGES
   void addGroups(List<Group> groups) {
     _userGroups.clear();
-    List<int> activeGroups = global.localData.getActiveGroups();
-    List<int> updatedList = List.from(global.localData.groupOrder);
-    for (int groupId  in global.localData.groupOrder) {
+    List<String> activeGroups = global.localData.getActiveGroups();
+    List<String> updatedList = List.from(global.localData.groupOrder);
+    for (String groupId  in global.localData.groupOrder) {
       int where = groups.indexWhere((element) => element.groupId == groupId);
       if (where != -1) {
         if (kDebugMode) print("add $groupId at ${_userGroups.length}");
@@ -73,7 +73,7 @@ class ClusterNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _add(Group group, List<int> activeGroups) {
+  void _add(Group group, List<String> activeGroups) {
     _userGroups.add(group);
     group.pinImage.asyncValue(); //new thread - load pin image on startup
     if (activeGroups.any((element) => element == group.groupId)) activateGroup(group); // new thread - load pins of image
@@ -97,7 +97,7 @@ class ClusterNotifier extends ChangeNotifier {
     _userGroups.remove(group);
     global.localData.deleteOfflineGroup(group.groupId);
     notifyListeners();
-    _userNotifier.clearPinsNotUser(global.localData.username);
+    _userNotifier.clearPinsNotUser(global.localData.userId);
   }
 
   void updateGroup(Group group, Group changes) async {
@@ -117,12 +117,12 @@ class ClusterNotifier extends ChangeNotifier {
   void addGroup(Group group) {
     if(!_userGroups.any((element) => element.groupId == group.groupId)) {
       _userGroups.add(group);
-      List<int> order = global.localData.groupOrder;
+      List<String> order = global.localData.groupOrder;
       order.add(group.groupId);
       global.localData.updateGroupOrder(order);
     }
     notifyListeners(); // new thread
-    _userNotifier.clearPinsNotUser(global.localData.username);
+    _userNotifier.clearPinsNotUser(global.localData.userId);
   }
 
   /// clears all values from lists, attributes and maps
@@ -133,7 +133,7 @@ class ClusterNotifier extends ChangeNotifier {
   }
 
   /// returns a [Group] by [groupId] if it is an item in [_userGroups]
-  Group getGroupByGroupId(int groupId) {
+  Group getGroupByGroupId(String groupId) {
     return _userGroups.firstWhere((element) => element.groupId == groupId, orElse: () => otherGroups.firstWhere((e) => e.groupId == groupId));
   }
 
@@ -146,7 +146,7 @@ class ClusterNotifier extends ChangeNotifier {
     Group group = pin.group;
     bool success = await group.setPin(pin);
     if (success) {
-      _userNotifier.addPin(global.localData.username, pin);
+      _userNotifier.addPin(global.localData.userId, pin);
       if (group.active) {
         _markerNotifier.addMarker(pin);
         _markerNotifier.update();
@@ -157,15 +157,15 @@ class ClusterNotifier extends ChangeNotifier {
   }
 
   addPointToMembers(Group group, Pin pin) {
-    if (!group.members.isEmpty && pin.username == global.localData.username) {
-      group.members.syncValue!.firstWhere((element) => element.username == global.localData.username).addOnePoint();
+    if (!group.members.isEmpty && pin.creatorId == global.localData.userId) {
+      group.members.syncValue!.firstWhere((element) => element.userId == global.localData.userId).addOnePoint();
       group.members.syncValue!.sort((a,b) =>  a.points.compareTo(b.points) * -1);
     }
   }
 
   removePointFromMembers(Group group, Pin pin) {
-    if (!group.members.isEmpty && pin.username == global.localData.username) {
-      group.members.syncValue!.firstWhere((element) => element.username == global.localData.username).subOnePoint();
+    if (!group.members.isEmpty && pin.creatorId == global.localData.userId) {
+      group.members.syncValue!.firstWhere((element) => element.userId == global.localData.userId).subOnePoint();
       group.members.syncValue!.sort((a,b) =>  a.points.compareTo(b.points) * -1);
     }
   }
@@ -243,10 +243,10 @@ class ClusterNotifier extends ChangeNotifier {
   /// NOTIFIES CHANGES
   Future<bool> _removePin(Pin pin) async {
     try {
-      await FetchPins.deleteMonaFromPinId(pin.id);
-      await _userNotifier.removePin(pin.username, pin.id);
+      await FetchPins.deletePin(pin.id);
+      await _userNotifier.removePin(pin.creatorId, pin.id);
       pin.group.removePin(pin);
-      _userNotifier.removePin(global.localData.username, pin.id);
+      _userNotifier.removePin(global.localData.userId, pin.id);
       _markerNotifier.removeMarker(pin);
       _markerNotifier.update();
       removePointFromMembers(pin.group, pin);
@@ -264,7 +264,7 @@ class ClusterNotifier extends ChangeNotifier {
 
   Future<void> hidePin(Pin pin) async {
     pin.group.removePin(pin);
-    _userNotifier.clearPinsNotUser(global.localData.username);
+    _userNotifier.clearPinsNotUser(global.localData.userId);
     _markerNotifier.removeMarker(pin);
     _markerNotifier.update();
   }
@@ -276,7 +276,7 @@ class ClusterNotifier extends ChangeNotifier {
       }
     }
     _markerNotifier.update();
-    _userNotifier.clearPinsNotUser(global.localData.username);
+    _userNotifier.clearPinsNotUser(global.localData.userId);
   }
 
   /// removes [oldPin] from [_offlinePins]
@@ -296,7 +296,7 @@ class ClusterNotifier extends ChangeNotifier {
     _markerNotifier.removeMarker(pin);
     _markerNotifier.update();
     pin.group.removePin(pin);
-    await _userNotifier.removePin(pin.username, pin.id);
+    await _userNotifier.removePin(pin.creatorId, pin.id);
     (await PinRepo.fromInit(LocalData.pinFileNameKey)).deletePin(pin.id);
     removePointFromMembers(pin.group, pin);
     notifyListeners();

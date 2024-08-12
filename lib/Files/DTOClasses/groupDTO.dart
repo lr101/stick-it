@@ -11,7 +11,7 @@ class GroupDTO extends HiveObject {
 
   /// Group Id of the group - identifies it uniquely
   @HiveField(0)
-  final int groupId;
+  final String groupId;
 
   /// name of the group shown to users to identify the group uniquely
   @HiveField(1)

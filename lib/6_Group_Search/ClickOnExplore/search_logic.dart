@@ -32,7 +32,7 @@ class SearchGroupPageState extends State<SearchGroupPage> {
 
 
   /// List of all group ids that could be shown in page list
-  late List<int> groups = [];
+  List<Group> groups = [];
 
   /// Boolean to track if groups in list are currently filtered in list view
   /// Used to know if reset is needed when deactivating search
@@ -40,7 +40,11 @@ class SearchGroupPageState extends State<SearchGroupPage> {
   /// false: groups in list are not filtered currently
   bool filtered = false;
 
+  int page = 0;
+
   bool searching = false;
+
+  String? searchValue;
 
   @override
   late BuildContext context;
@@ -76,10 +80,14 @@ class SearchGroupPageState extends State<SearchGroupPage> {
       pagingController.appendLastPage([const Center(child: Padding(padding: EdgeInsets.all(10), child: CircularProgressIndicator()),)]);
       return;
     }
-      if (pageKey + 15 < groups.length) {
+    searching = true;
+    groups.addAll(await FetchGroups.fetchAllGroupsWithoutUserGroupsIds(searchValue, page, _numPages));
+    searching = false;
+    page++;
+      if (groups.length == _numPages) {
         List<Widget> widgets = [];
         int i = pageKey;
-        for (; pageKey < i + 15; pageKey++) {
+        for (; pageKey < i + _numPages; pageKey++) {
           widgets.add(await getCardOfOtherGroups(pageKey));
         }
         pagingController.appendPage(widgets, pageKey);
@@ -95,12 +103,10 @@ class SearchGroupPageState extends State<SearchGroupPage> {
   /// gets all Group ids that could be shown in page list
   /// [value] is the search term passed to the server to get the corresponding results
   Future<void> pullRefresh(String? value) async {
-    searching = true;
     pagingController.refresh();
     value = (value == null || value.isEmpty ? null : value);
-    groups = await FetchGroups.fetchAllGroupsWithoutUserGroupsIds(value);
+    searchValue = value;
     filtered = value != null;
-    searching = false;
     pagingController.refresh();
   }
 
@@ -113,28 +119,7 @@ class SearchGroupPageState extends State<SearchGroupPage> {
 /// Get Card of a Group
 /// Shows the name, group image, visibility
 Future<Widget> getCardOfOtherGroups(int index) async {
-    return FutureBuilder<Group>(
-        future:  getGroup(index),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return CustomListTile.fromGroup(snapshot.requireData, () => handleJoinGroupPress(snapshot.requireData));
-          } else {
-            return CustomListTile.fromGroup(global.basicGroup, () {CustomErrorMessage.message(context: context, message: "loading...");});
-          }
-        },
-    );
-}
-
-Future<Group> getGroup(int index) async {
-  Group group;
-  try {
-    group = Provider.of<ClusterNotifier>(context, listen: false).otherGroups.firstWhere((element) => element.groupId == groups[index]);
-  } catch(_) {
-    group = await FetchGroups.getGroup(groups[index], false);
-    if (!mounted) return global.basicGroup;
-    Provider.of<ClusterNotifier>(context,listen: false).addOtherGroup(group);
-  }
-  return group;
+    return CustomListTile.fromGroup(groups[index], () => handleJoinGroupPress(groups[index]));
 }
 
   /// opens the ShowGroupPage Widget when a group card is pressed and wait for the result

@@ -22,18 +22,27 @@ class CustomListTile extends StatefulWidget {
 
   const CustomListTile({super.key, required this.title, this.subtitle, this.leading, this.trailing, this.onTab, this.backgroundColor});
 
-  static CustomListTile fromUser(User user, int points, bool admin, void Function(String username) onTab) {
-    TextStyle style = TextStyle(color: (global.localData.username == user.username) ? CustomTheme.c2 : null);
+  static CustomListTile fromUser(User user, int points, bool admin, void Function(String userId) onTab) {
+    TextStyle style = TextStyle(color: (global.localData.userId == user.userId) ? CustomTheme.c2 : null);
     return CustomListTile(
       leading: CustomRoundImage(
         size: 20,
         imageCallback: user.profileImage.asyncValue,
         clickable: false,
       ),
-      title: Text(user.username, style: style),
+        title: FutureBuilder<String?>(
+          future: user.username.asyncValue(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError || (snapshot.hasData && snapshot.requireData == null)) {
+              return const Align(alignment: Alignment.centerLeft,child: Icon(Icons.lock, size: 12,));
+            } else {
+              return Text(snapshot.hasData ? snapshot.requireData! : "...", overflow: TextOverflow.clip, maxLines: 1, style: style);
+            }
+          },
+      ),
       subtitle: Text("$points points", style: style),
       trailing: admin ? Text("admin", style: style) : null,
-      onTab: () => onTab(user.username),
+      onTab: () => onTab(user.userId),
     );
   }
 

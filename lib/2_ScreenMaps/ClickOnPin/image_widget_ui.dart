@@ -31,7 +31,7 @@ class ImageWidgetUI extends StatefulUI<ShowImageWidget, ShowImageWidgetState> {
         appBar: null,
         body: CustomTitle(
             title: CustomEasyTitle(
-              title: Text("Image ${widget.pin.id < 0 ? "(offline)" : ""}"),
+              title: Text("Image ${widget.pin.isOffline ? "(offline)" : ""}"),
               back: true,
               right: getActionBar(),
             ),
@@ -66,7 +66,7 @@ class ImageWidgetUI extends StatefulUI<ShowImageWidget, ShowImageWidgetState> {
                                             Provider.of<UserNotifier>(context,
                                                     listen: false)
                                                 .getUser(
-                                                    state.widget.pin.username)
+                                                    state.widget.pin.creatorId)
                                                 .profileImageSmall
                                                 .asyncValue,
                                       ),
@@ -83,8 +83,10 @@ class ImageWidgetUI extends StatefulUI<ShowImageWidget, ShowImageWidgetState> {
                                             onTap: state.handleOpenUserProfile,
                                             child: FittedBox(
                                                 fit: BoxFit.fitHeight,
-                                                child:
-                                                    Text(widget.pin.username)),
+                                                child: FutureBuilder(future: Provider.of<UserNotifier>(context,
+                                                    listen: false)
+                                                    .getUser(
+                                                    state.widget.pin.creatorId).username.asyncValue(), builder: (context, snapshot) => snapshot.hasData ? Text(snapshot.requireData) : const Text("...")))
                                           ),
                                         ),
                                         SizedBox(
@@ -185,7 +187,7 @@ class ImageWidgetUI extends StatefulUI<ShowImageWidget, ShowImageWidgetState> {
 
   /// delete button only shown when current user is owner of pin
   CustomEasyAction getActionBar() {
-    if (widget.pin.username == global.localData.username) {
+    if (widget.pin.creatorId == global.localData.userId) {
       return CustomEasyAction(
           child: const Icon(Icons.delete),
           action: () => state.handleButtonPress());

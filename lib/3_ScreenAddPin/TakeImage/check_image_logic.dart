@@ -15,6 +15,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:provider/provider.dart';
 import 'package:select_dialog/select_dialog.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../Files/Other/navbar_context.dart';
 import '../../Files/Widgets/custom_list_tile.dart';
@@ -114,8 +115,8 @@ class StateCheckImageWidget extends State<CheckImageWidget>{
     Pin pin = Pin(
         latitude: lat,
         longitude: long,
-        id: group.getNewOfflinePinId(),
-        username: global.localData.username,
+        id: const Uuid().v4(),
+        creatorId: global.localData.userId,
         creationDate: DateTime.now().toUtc(),
         group: selectedGroup,
         image: image

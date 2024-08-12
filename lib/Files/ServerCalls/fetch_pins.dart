@@ -4,189 +4,126 @@ import 'dart:typed_data';
 import 'package:buff_lisa/Files/DTOClasses/group.dart';
 import 'package:buff_lisa/Files/DTOClasses/pin.dart';
 import 'package:buff_lisa/Files/Other/global.dart' as global;
-import 'package:buff_lisa/Files/ServerCalls/restAPI.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
+import 'package:openapi/api.dart';
+
 class FetchPins {
+  static final PinsApi _pinsApi = global.openApiServices.pinApi;
 
-  /// returns a set of all pins contained in a [group]
-  /// throws an Exception if an error occurs
-  /// GET Request to Server
   static Future<Set<Pin>> fetchGroupPins(Group group) async {
-    Response response = await RestAPI.createHttpsRequest("/api/groups/${group.groupId}/pins", {}, 0,timeout: 20);
-    if (response.statusCode == 200) {
-      return toPinSet(response, group);
+    final response = await _pinsApi.getPinImagesByIds(groupId: group.groupId, withImage: false);
+    if (response != null) {
+      return response.map((dto) => Pin.fromDtoWithImage(dto, group)).toSet();
     } else {
-      throw Exception("Pins could not be loaded: ${response.statusCode} error code");
+      throw Exception("Pins could not be loaded");
     }
   }
 
-  /// returns a set of pins the currently logged in user has access to (in the same group) from the requested user
-  /// throws an Exception if an error occurs
-  /// GET Request to Server
-  static Future<List<Pin>> fetchUserPins(String username, List<Group> groups, Future<Group> Function(int id, List<Group>) getGroup) async {
-    Response response = await RestAPI.createHttpsRequest("/api/users/$username/pins", {}, 0);
-    if (response.statusCode == 200) {
-      return toPinList(response, groups, getGroup);
+  static Future<List<Pin>> fetchUserPins(String userId, List<Group> groups, Future<Group> Function(String id, List<Group>) getGroup) async {
+    final response = await _pinsApi.getPinImagesByIds(userId: userId, withImage: true);
+    if (response != null) {
+      return await Future.wait(response.map((dto) async {
+        final group = await getGroup(dto.groupId, groups);
+        return Pin.fromDtoWithImage(dto, group);
+      }));
     } else {
-      throw Exception("Pins could not be loaded: ${response.statusCode} error code");
+      throw Exception("Pins could not be loaded");
     }
   }
 
-  /// returns a set of all pins of the currently logged-in user
-  /// throws an Exception if an error occurs
-  /// GET Request to Server
-  static Future<Pin> fetchUserPin(int pinId, List<Group> userGroups) async {
-    Response response = await RestAPI.createHttpsRequest("/api/pins/$pinId", {}, 0);
-    if (response.statusCode == 200) {
-      Map<String,dynamic> map = json.decode(response.body);
-      Group group = userGroups.firstWhere((element) => element.groupId == map["group"]["groupId"], orElse: () => Group.fromJson( map["group"]));
-      return Pin.fromJson(map["pin"], group);
+  static Future<Pin> fetchUserPin(String pinId, List<Group> userGroups) async {
+    final response = await _pinsApi.getPin(pinId.toString());
+    if (response != null) {
+      final group = userGroups.firstWhere((element) => element.groupId == response.groupId, orElse: () => throw Exception("Group not found"));
+      return Pin.fromDto(response, group);
     } else {
-      throw Exception("Pins could not be loaded: ${response.statusCode} error code");
+      throw Exception("Pins could not be loaded");
     }
   }
 
-
-  static Future<Set<Pin>> fetchUserPinsOfGroup(String username, Group group) async {
-    Response response = await RestAPI.createHttpsRequest("/api/users/$username/pins/${group.groupId}", {}, 0);
-    if (response.statusCode == 200) {
-      return toPinSet(response, group);
+  static Future<Set<Pin>> fetchUserPinsOfGroup(String userId, Group group) async {
+    final response = await _pinsApi.getPinImagesByIds(userId: userId, groupId: group.groupId, withImage: false);
+    if (response != null) {
+      return response.map((dto) => Pin.fromDtoWithImage(dto, group)).toSet();
     } else {
-      throw Exception("Pins could not be loaded: ${response.statusCode} error code");
+      throw Exception("Pins could not be loaded");
     }
   }
-  /// returns the image of a pin as a byte list that is identified by [pin]
-  /// throws an Exception if an error occurs
-  /// GET Request to Server
+
   static Future<Uint8List> fetchImageOfPin(Pin pin, [String? compression, String? height]) async {
-    Map<String, String> queryParams = {};
-    if (compression != null) queryParams["compression"] = compression;
-    if (height != null) queryParams["height"] = height;
-    Response response = await RestAPI.createHttpsRequest("/api/pins/${pin.id}/image", queryParams, 0,);
+    final response = await _pinsApi.getPinImageWithHttpInfo(pin.id);
     if (response.statusCode == 200) {
       return response.bodyBytes;
     } else {
-      throw Exception("failed to load mona");
+      throw Exception("Failed to load pin image");
     }
   }
 
   static Future<void> fetchPreviewsOfPins(List<Pin> pins, [int? height, int? compression]) async {
-    String ids = "";
-    List<Pin> filtered = pins.where((element) => element.preview.isEmpty).toList();
-    for (Pin pin in filtered) {
-      ids += pin.id.toString();
-      ids+="-";
-    }
-    if (ids == "") return;
-    ids = ids.substring(0, ids.length - 1);
-    Map<String, String> queryParams = {"ids" : ids};
-    if (height != null) queryParams["height"] = height.toString();
-    if (compression != null) queryParams["compression"] = compression.toString();
-    Response response = await RestAPI.createHttpsRequest("/api/images", queryParams, 0,timeout: 60);
-    if (response.statusCode == 200) {
-      List<dynamic> list = json.decode(response.body);
-      for(int i = 0; i < filtered.length; i++) {
+    final ids = pins.where((pin) => pin.preview.isEmpty).map((pin) => pin.id).toList();
+    if (ids.isEmpty) return;
+
+    final response = await _pinsApi.getPinImagesByIds(ids: ids, height: height, compression: compression);
+    if (response != null) {
+      for (int i = 0; i < response.length; i++) {
         try {
-          filtered[i].preview.setValue(base64Decode(list[i]));
-        } catch(_) {}
+          pins[i].preview.setValue(base64Decode(response[i].image!));
+        } catch (_) {}
       }
     } else {
-      throw Exception("failed to load monas");
+      throw Exception("Failed to load pin previews");
     }
   }
+
   static Future<void> fetchImagesOfPins(List<Pin> pins, [int? compression]) async {
-    String ids = "";
-    List<Pin> filtered = pins.where((element) => element.image.isEmpty).toList();
-    for (Pin pin in filtered) {
-      ids += pin.id.toString();
-      ids+="-";
-    }
-    if (ids == "") return;
-    ids = ids.substring(0, ids.length - 1);
-    Map<String, String> queryParams = {"ids" : ids};
-    if (compression != null) queryParams["compression"] = compression.toString();
-    Response response = await RestAPI.createHttpsRequest("/api/images", queryParams, 0,timeout: 60);
-    if (response.statusCode == 200) {
-      List<dynamic> list = json.decode(response.body);
-      for(int i = 0; i < filtered.length; i++) {
+    final ids = pins.where((pin) => pin.image.isEmpty).map((pin) => pin.id).toList();
+    if (ids.isEmpty) return;
+
+    final response = await _pinsApi.getPinImagesByIds(ids: ids, compression: compression);
+    if (response != null) {
+      for (int i = 0; i < response.length; i++) {
         try {
-          filtered[i].image.setValue(base64Decode(list[i]));
-        } catch(_) {}
+          pins[i].image.setValue(base64Decode(response[i].image!));
+        } catch (_) {}
       }
     } else {
-      throw Exception("failed to load monas");
+      throw Exception("Failed to load pin images");
     }
   }
 
-
-  /// returns the image of a pin as byte list saved as blob in browser
-  /// throws an Exception if an error occurs
-  /// GET Request to local cash
-  static Future<Uint8List> fetchImageFromBrowserCash(String url) async {
-    Response response = await http.get(Uri.parse(url));
+  static Future<Uint8List> fetchImageFromBrowserCache(String url) async {
+    final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       return response.bodyBytes;
     } else {
-      throw Exception("failed to load mona");
+      throw Exception("Failed to load image from browser cache");
     }
   }
 
-
-  /// this method creates a pin by posting the existing information of a pin, contained in [pin], to the server
-  /// returns the pin that is returned by the server
-  /// throws an Exception if an error occurs
-  /// POST Request to Server
-  static Future<Pin> postPin(Pin mona) async {
-    final String json = jsonEncode(<String, dynamic> {
-      "latitude" : mona.latitude,
-      "longitude" : mona.longitude,
-      "groupId" : mona.group.groupId,
-      "image": mona.image.syncValue,
-      "username": global.localData.username,
-      "creationDate": mona.creationDate.toIso8601String()
-    });
-    final response =  await RestAPI.createHttpsRequest("/api/pins", {}, 1, encode:  json);
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      final body = response.body;
-      Map<String, dynamic> json = jsonDecode(body) as Map<String, dynamic>;
-      return Pin.fromJson(json, mona.group);
+  static Future<Pin> postPin(Pin pin) async {
+    final requestDto = PinRequestDto(
+      latitude: pin.latitude,
+      longitude: pin.longitude,
+      groupId: pin.group.groupId,
+      image: base64Encode(pin.image.syncValue!.toList()),
+      creationDate: pin.creationDate,
+      userId: global.localData.userId,
+    );
+    final response = await _pinsApi.createPin(requestDto);
+    if (response != null) {
+      return Pin.fromDto(response, pin.group);
+    } else {
+      throw Exception("Pin could not be created");
     }
-    throw Exception("Pin could not be created");
   }
 
-  /// deletes a pin on the server identified by [id]
-  /// throws an Exception if an error occurs
-  /// GET Request to Server
-  static Future<bool> deleteMonaFromPinId(int id) async {
-    Response response = await RestAPI.createHttpsRequest("/api/pins/$id", {}, 3);
-    if (response.statusCode == 200 || response.statusCode == 201) {
+  static Future<bool> deletePin(String id) async {
+    try {
+      await _pinsApi.deletePin(id.toString());
       return true;
+    } catch (e) {
+      return false;
     }
-    throw Exception("failed to delete pin");
   }
 
-  //---------------------------------------
-
-  /// converts a client response to a pin set
-  static Future<Set<Pin>> toPinSet(Response response, Group group) async {
-    List<dynamic> values = json.decode(response.body);
-
-    Set<Pin> pins = {};
-    for (var element in values) {
-      pins.add(Pin.fromJson(element, group));
-
-    }
-    return pins;
-  }
-
-  /// converts a client response to a pin list
-  static Future<List<Pin>> toPinList(Response response, List<Group> groups, Future<Group> Function(int id, List<Group>) getGroup) async {
-    List<dynamic> values = json.decode(response.body);
-    List<Pin> pins = [];
-    for (var element in values) {
-      pins.add(Pin.fromJson(element, await getGroup(element["groupId"] as int, groups)));
-    }
-    return pins;
-  }
 }

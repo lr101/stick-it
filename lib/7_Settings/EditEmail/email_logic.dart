@@ -14,7 +14,7 @@ class Email extends StatelessWidget {
   /// on success the page is closed
   void changeMail(TextEditingController controller1, TextEditingController controller2, BuildContext context) {
     if (controller1.text == controller2.text &&  LoginScreen.emailValidator(controller1.text)) {
-      FetchUsers.changeEmail(global.localData.username, controller1.text).then((value) => (value ? Navigator.pop(context) : null));
+      FetchUsers.changeEmail(global.localData.userId, controller1.text).then((value) => (value ? Navigator.pop(context) : null));
     }
   }
 }

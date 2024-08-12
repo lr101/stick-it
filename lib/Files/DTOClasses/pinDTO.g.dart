@@ -19,10 +19,10 @@ class PinDTOAdapter extends TypeAdapter<PinDTO> {
     return PinDTO(
       latitude: fields[0] as double,
       longitude: fields[1] as double,
-      id: fields[2] as int,
+      id: fields[2] as String,
       creationDate: fields[3] as DateTime,
       username: fields[4] as String,
-      groupId: fields[5] as int,
+      groupId: fields[5] as String,
       image: fields[6] as Uint8List?,
     );
   }

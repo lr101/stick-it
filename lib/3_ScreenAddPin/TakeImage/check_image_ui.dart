@@ -45,12 +45,12 @@ class CheckImageIU extends StatefulUI<CheckImageWidget, StateCheckImageWidget> {
                                       size: 16,
                                       imageCallback:
                                           Provider.of<UserNotifier>(context)
-                                              .getUser(global.localData.username)
+                                              .getUser(global.localData.userId)
                                               .profileImageSmall
                                               .asyncValue,
                                       imageCallbackClickable:
                                           Provider.of<UserNotifier>(context)
-                                              .getUser(global.localData.username)
+                                              .getUser(global.localData.userId)
                                               .profileImage
                                               .asyncValue,
                                     ),

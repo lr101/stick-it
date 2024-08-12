@@ -107,7 +107,7 @@ class ShowGroupPageState extends State<ShowGroupPage> with SingleTickerProviderS
   /// leaves the group and closes the current context
   /// Method can only be called if the current user is a member of this group
   Future<void> leaveGroup() async {
-    if (widget.group.groupAdmin.syncValue == global.localData.username && (await widget.group.members.asyncValue()).length > 1) {
+    if (widget.group.groupAdmin.syncValue == global.localData.userId && (await widget.group.members.asyncValue()).length > 1) {
       if (!mounted) return;
       CustomErrorMessage.message(context: context, message: "You can't leave a group as admin");
     } else {
@@ -128,7 +128,7 @@ class ShowGroupPageState extends State<ShowGroupPage> with SingleTickerProviderS
 
   /// opens the edit page for admin if the current user is the groups admin
   Future<void> editAsAdmin() async {
-    if (widget.group.groupAdmin.syncValue != null && global.localData.username == widget.group.groupAdmin.syncValue) {
+    if (widget.group.groupAdmin.syncValue != null && global.localData.userId == widget.group.groupAdmin.syncValue) {
       await Routing.to(context, EditGroupPage(group: widget.group));
       //trigger rebuild
       setState(() {});

@@ -1,5 +1,5 @@
 import 'package:buff_lisa/0_ScreenSignIn/login_ui.dart';
-import 'package:buff_lisa/0_ScreenSignIn/secure.dart';
+import 'package:buff_lisa/Files/Other/secure.dart';
 import 'package:buff_lisa/1_BottomNavigationBar/splash_loading.dart';
 import 'package:buff_lisa/Files/Other/global.dart' as global;
 import 'package:buff_lisa/Files/ServerCalls/fetch_users.dart';
@@ -28,11 +28,10 @@ class LoginScreen extends StatelessWidget {
   Future<String?> authUser(LoginData data) {
     global.localData.username = data.name;
     try {
-      return Secure.loginAuthentication(data.name, data.password, ).then((value) {
+      return FetchUsers.auth(data.name, data.password, ).then((value) {
         return value ? null : 'username or password are wrong';
       });
-    } on Exception catch (_) {
-      print(_);
+    } catch (_) {
       return Future<String>.value("cannot connect to server");
     }
 
@@ -48,7 +47,7 @@ class LoginScreen extends StatelessWidget {
         } else if (!emailValidator(data.additionalSignupData!["email"])) {
           return Future<String>.value("email does not have the correct format");
         } else {
-          return Secure.signupAuthentication(data.name!, data.password!, data.additionalSignupData!["email"]!)
+          return await FetchUsers.signupNewUser(data.name!, data.password!, data.additionalSignupData!["email"]!)
               .then((value) {
                 return value
                     ? null

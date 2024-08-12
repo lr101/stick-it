@@ -20,11 +20,11 @@ class PinRepo {
 
   void setPin(Pin pin) {
     PinDTO pinDTO = PinDTO.fromPin(pin);
-    box.put(pin.id.toString(),pinDTO);
+    box.put(pin.id,pinDTO);
   }
 
-  Pin? getPin(int id, Group group) {
-    PinDTO? pinDTO = box.get(id.toString());
+  Pin? getPin(String id, Group group) {
+    PinDTO? pinDTO = box.get(id);
     if (pinDTO != null) {
       return pinDTO.toPin(group);
     }
@@ -45,7 +45,7 @@ class PinRepo {
     return pins;
   }
 
-  void deletePin (int id) => box.delete(id.toString());
+  void deletePin (String id) => box.delete(id);
 
   Future<void> clear() async => await box.clear();
 }

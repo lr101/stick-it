@@ -9,13 +9,14 @@ import 'package:buff_lisa/Files/ServerCalls/fetch_users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:openapi/api.dart' as api;
 
 import 'pin.dart';
 
 class Group {
 
   /// Group Id of the group - identifies it uniquely
-  final int groupId;
+  final String groupId;
 
   /// name of the group shown to users to identify the group uniquely
   String name;
@@ -34,7 +35,7 @@ class Group {
 
   /// String: group admin of a group
   /// null: group admin not yet loaded from server or user is not a member of the private group
-  late final AsyncType<String> groupAdmin;
+  late final AsyncType<String?> groupAdmin;
 
   /// String: description of a group
   /// null: description is not yet loaded from server or user is not a member of the private group
@@ -74,13 +75,13 @@ class Group {
     groupAdmin,
     description,
     pins,
-    profileImage,
-    pinImage,
-    link,
+    Uint8List? profileImage,
+    Uint8List? pinImage,
+    String? link,
     saveOffline = true,
     this.lastUpdated
   }) {
-    this.groupAdmin = AsyncType(value: groupAdmin, callback: () => FetchGroups.getGroupAdmin(groupId), callbackDefault: () async => "---", builder: (_) => Text(_));
+    this.groupAdmin = AsyncType(value: groupAdmin, callback: () => FetchGroups.getGroupAdmin(groupId), callbackDefault: () async => "---", builder: (adminId) => adminId != null ? FutureBuilder(future: FetchUsers.getUsernameFromId(adminId), builder: (context, snapshot) => snapshot.data != null ? Text(snapshot.data!) : const Text("...")) : const Icon(Icons.lock), save: (saveOffline) ? saveGroupsOffline : null);
     this.members = AsyncType(value: members, callback: _getMembers, callbackDefault: () async => []);
     this.description = AsyncType(value: description, callback: () => FetchGroups.getGroupDescription(groupId), builder: (v) => v != null ? Text(v) : const Icon(Icons.lock));
     this.link = AsyncType(value: link, callback: () => FetchGroups.getGroupLink(groupId), builder: (v) => v != null ? Text(v) : const Icon(Icons.lock));
@@ -109,6 +110,28 @@ class Group {
     return group;
   }
 
+  static Group fromDto(api.GroupDto dto, [bool saveOffline = true]) {
+    Group group =  Group(
+      groupId: dto.id,
+      name:  dto.name,
+      visibility: dto.visibility.value,
+      inviteUrl: dto.inviteUrl,
+      saveOffline: saveOffline,
+      description: dto.description,
+      groupAdmin:  dto.groupAdmin,
+      link: dto.link,
+      profileImage: dto.profileImage != null ? base64Decode(dto.profileImage!) : null,
+      pinImage: dto.pinImage != null ? base64Decode(dto.pinImage!) : null,
+      lastUpdated: dto.lastUpdated
+    );
+
+    group.description.setValue(dto.description);
+    group.groupAdmin.setValue(dto.groupAdmin);
+    group.link.setValue(dto.link);
+    if (saveOffline) group.saveGroupsOffline();
+    return group;
+  }
+
   /// Formats group data to json
   Future<Map<String, dynamic>> toJson() async {
     return {
@@ -125,16 +148,12 @@ class Group {
   }
 
   /// returns the members from json
-  static List<Ranking>? _getMemberList(json) {
-    if (json != null) {
+  static List<Ranking>? _getMemberList(List<api.RankingResponseDto> ranking) {
       List<Ranking> rankings = [];
-      for (Map<String, dynamic> entry in json) {
-        rankings.add(Ranking.fromJson(entry));
+      for (api.RankingResponseDto entry in ranking) {
+        rankings.add(Ranking.fromDto(entry));
       }
       return rankings;
-    } else {
-      return null;
-    }
   }
 
   /// returns the image binary from base64 encoded data
@@ -155,8 +174,6 @@ class Group {
   /// last index of member list when loading from server is the admin user
   Future<List<Ranking>> _getMembers() async {
       List<Ranking> ranking = await FetchUsers.fetchGroupMembers(this);
-      groupAdmin.setValue(ranking.last.username);
-      ranking.removeAt(ranking.length - 1);
       return ranking;
   }
 
@@ -178,16 +195,6 @@ class Group {
       return pins;
   }
 
-  int getNewOfflinePinId() {
-    Set<Pin>? list = pins.syncValue != null && pins.syncValue!.isNotEmpty ? pins.syncValue : null;
-    if (list != null) {
-      return (pins.syncValue ?? {})
-          .reduce((curr, next) => curr.id < next.id ? curr : next)
-          .id - 1;
-    } else {
-      return -1;
-    }
-  }
 
   /// adds a pin to the set of pins of a group
   /// if the pins are not loaded from the server, the pin will already be online and does not to be added
@@ -223,10 +230,10 @@ class Group {
   Future<Set<Pin>> _filter(Set<Pin> pins) async{
     Set<Pin> removesPins = {};
     List<String> usernames = global.localData.hiddenUsers.keys();
-    List<int> posts = global.localData.hiddenPosts.keys();
+    List<String> posts = global.localData.hiddenPosts.keys();
     List<Pin> iterator = List.from(pins);
     for (Pin pin in iterator) {
-      if (posts.any((element) => element == pin.id) || usernames.any((element) => element == pin.username)) {
+      if (posts.any((element) => element == pin.id) || usernames.any((element) => element == pin.creatorId)) {
         pins.remove(pin);
         removesPins.add(pin);
       }
@@ -243,6 +250,8 @@ class Group {
     }
     return filtered;
   }
+
+
 
 
 

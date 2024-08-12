@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:async/async.dart';
 import 'package:buff_lisa/9_Profile/profile_ui.dart';
 import 'package:buff_lisa/Files/AbstractClasses/async_type.dart';
+import 'package:buff_lisa/Files/DTOClasses/user.dart';
 import 'package:buff_lisa/Files/ServerCalls/fetch_groups.dart';
 import 'package:buff_lisa/Files/ServerCalls/fetch_pins.dart';
 import 'package:buff_lisa/Providers/cluster_notifier.dart';
@@ -23,10 +24,10 @@ import 'ClickOnProfileImage/show_profile_image_logic.dart';
 
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key, required this.username});
+  const ProfilePage({super.key, required this.userId});
 
   /// Shows profile page of this user identified by this username
-  final String username;
+  final String userId;
 
   @override
   ProfilePageState createState() => ProfilePageState();
@@ -85,7 +86,7 @@ class ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientM
         List<Pin>? pins = await initPins(offline ? await Provider.of<ClusterNotifier>(context, listen: false).getAllOfflinePins() : await pinList.refresh());
         if (!mounted) return false;
         Provider.of<UserNotifier>(context, listen: false)
-            .updatePins(widget.username, pins);
+            .updatePins(widget.userId, pins);
       }
       return true;
     } catch(_) {
@@ -120,7 +121,7 @@ class ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientM
   /// Callback function used in _getPins.
   /// Returns a group by a given id.
   /// Group is fetched from server if not currently in groups list.
-  Future<Group> getGroup(int id, List<Group> groups) async {
+  Future<Group> getGroup(String id, List<Group> groups) async {
     if (groups.any((element) => element.groupId == id)) {
       return groups.firstWhere((element) => element.groupId == id);
     } else {
@@ -136,13 +137,13 @@ class ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientM
   }
 
   /// returns the list of pins that a user created and is visible to current user
-  Future<List<Pin>> _getPins(List<Group> groups) => FetchPins.fetchUserPins(widget.username,groups, getGroup);
+  Future<List<Pin>> _getPins(List<Group> groups) => FetchPins.fetchUserPins(widget.userId,groups, getGroup);
 
   /// Callback function for paging controller, when fetching a new page.
   /// Creates rows based of the current user pin list.
   void _fetchPage(int pageKey, ) async {
     int width = MediaQuery.of(context).size.width ~/ _gridWidth;
-    List<Pin> pins = await Provider.of<UserNotifier>(context, listen: false).getUser(widget.username).getPins ?? [];
+    List<Pin> pins = await Provider.of<UserNotifier>(context, listen: false).getUser(widget.userId).getPins ?? [];
     int currentIndex = (_pageSize * _gridWidth) * pageKey;
     int end = (_pageSize * _gridWidth) * (pageKey + 1) < pins.length ? (_pageSize * _gridWidth) * (pageKey + 1) : pins.length - 1;
     end = end < 0 ? 0 : end;
@@ -219,10 +220,10 @@ class ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientM
 
   /// Used in profile page ui as a callback function to display the profile image of a user.
   Future<Uint8List?> provideProfileImage(Uint8List image, BuildContext context) async {
-    await FetchUsers.changeProfilePicture(global.localData.username, image);
+    await FetchUsers.changeProfilePicture(global.localData.userId, image);
     if (!mounted) return null;
-    Provider.of<UserNotifier>(context, listen: false).removeUser(global.localData.username);
-    return await Provider.of<UserNotifier>(context, listen: false).getUser(global.localData.username).profileImage.asyncValue();
+    Provider.of<UserNotifier>(context, listen: false).removeUser(global.localData.userId);
+    return await Provider.of<UserNotifier>(context, listen: false).getUser(global.localData.userId).profileImage.asyncValue();
   }
 
   /// Opens a widget as a new page.
@@ -232,7 +233,7 @@ class ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientM
 
  /// Opens the profile image in a new page.
   void handleOpenImage() {
-    handlePushPage(ShowProfileImage(provide: () => Provider.of<UserNotifier>(context, listen: false).getUser(widget.username).profileImage.asyncValue(), defaultImage: const Image(image: AssetImage("images/profile.jpg"),)));
+    handlePushPage(ShowProfileImage(provide: () => Provider.of<UserNotifier>(context, listen: false).getUser(widget.userId).profileImage.asyncValue(), defaultImage: const Image(image: AssetImage("images/profile.jpg"),)));
   }
 
   /// Opens a pin image in a new page.

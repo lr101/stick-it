@@ -1,5 +1,5 @@
 import 'package:buff_lisa/0_ScreenSignIn/login_logic.dart';
-import 'package:buff_lisa/0_ScreenSignIn/secure.dart';
+import 'package:buff_lisa/Files/Other/secure.dart';
 import 'package:buff_lisa/7_Settings/EditPassword/password_ui.dart';
 import 'package:buff_lisa/Files/Other/global.dart' as global;
 import 'package:buff_lisa/Files/ServerCalls/fetch_users.dart';
@@ -15,7 +15,7 @@ class Password extends StatelessWidget {
   /// on success the page is closed
   void handleSubmitPress(controller1, controller2, BuildContext context) {
     if (controller1.text == controller2.text && LoginScreen.passwordValidator(controller1.text) == null) {
-      FetchUsers.changePassword(global.localData.username, Secure.encryptPassword(controller1.text)).then((value) {
+      FetchUsers.changePassword(global.localData.userId, controller1.text).then((value) {
         if (value) {
           Navigator.pop(context);
         }

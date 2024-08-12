@@ -37,7 +37,7 @@ MarkerNotifier with ChangeNotifier {
   void addMarker(Pin pin) {
     _allMarkers[pin] = (
         Marker(
-            key: Key((pin.isOffline ? "${pin.group.groupId}${pin.id.toString()}" : pin.id.toString())),
+            key: Key((pin.isOffline ? "${pin.group.groupId}${pin.id}" : pin.id)),
             point: LatLng(pin.latitude, pin.longitude),
             child: GestureDetector(
               child: pin.group.pinImage.getWidget(),
@@ -106,9 +106,9 @@ MarkerNotifier with ChangeNotifier {
   Map<Pin, Marker> _filterUsers(Map<Pin, Marker> mark) {
     if (__filterUsernames.isEmpty) return mark;
     if (__filterUsernames.length == 1)  {
-      mark.removeWhere((key, value) => key.username != __filterUsernames.first);
+      mark.removeWhere((key, value) => key.creatorId != __filterUsernames.first);
     } else {
-      mark.removeWhere((key, value) => !__filterUsernames.any((element) => element == key.username));
+      mark.removeWhere((key, value) => !__filterUsernames.any((element) => element == key.creatorId));
     }
     return mark;
 

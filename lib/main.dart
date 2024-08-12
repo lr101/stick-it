@@ -21,6 +21,7 @@ import 'Files/DTOClasses/groupDTO.dart';
 import 'Files/DTOClasses/pinDTO.dart';
 import 'Files/Other/global.dart' as global;
 import 'Files/Other/local_data.dart';
+import 'Files/ServerCalls/openapi_service.dart';
 
 /// global key for enabling different routes on startup
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -38,8 +39,8 @@ Future<void> main() async {
   Hive.registerAdapter(GroupDTOAdapter());
   Hive.registerAdapter(PinDTOAdapter());
   global.localData = await LocalData.fromInit();
-  await global.basicGroup.profileImage.setValue((await rootBundle.load('images/profile.jpg')).buffer.asUint8List());
-  runApp(MyApp(isLoggedIn: global.localData.username != ""));
+  global.openApiServices = OpenApiServices();
+  runApp(MyApp(isLoggedIn: global.localData.userId != ""));
 }
 
 class MyApp extends StatelessWidget {
