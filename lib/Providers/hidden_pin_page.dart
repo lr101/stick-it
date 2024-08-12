@@ -12,8 +12,8 @@ class HiddenPinPageNotifier with ChangeNotifier {
   Set<Pin> get pins => _pins;
 
   Future<void> loadOffline(List<Group> groups) async{
-    HiveHandler<int, DateTime> hiddenPosts = global.localData.hiddenPosts;
-    for (int id in hiddenPosts.keys()) {
+    HiveHandler<String, DateTime> hiddenPosts = global.localData.hiddenPosts;
+    for (String id in hiddenPosts.keys()) {
       _pins.add(await FetchPins.fetchUserPin(id, groups));
     }
     notifyListeners();

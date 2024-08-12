@@ -30,6 +30,7 @@ class CreateGroupNotifier with ChangeNotifier {
   late double initPublic;
 
   List<DropdownMenuItem<String>> menuItems = [];
+  List<Ranking> members = [];
 
   String? currentItem = global.localData.username;
   late String initAdmin = global.localData.username;
@@ -49,7 +50,7 @@ class CreateGroupNotifier with ChangeNotifier {
   }
 
   Future<List<DropdownMenuItem<String>>> getMembers(Group group) async {
-    List<Ranking> members = await group.members.asyncValue();
+    members = await group.members.asyncValue();
     List<DropdownMenuItem<String>> items = [];
     for (Ranking ranking in members) {
       items.add(DropdownMenuItem(value: ranking.username,

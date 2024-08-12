@@ -15,7 +15,7 @@ class HiddenUserPageNotifier with ChangeNotifier {
 
   Future<void> unHideUser(User user) async{
     _users.remove(user);
-    await global.localData.hiddenUsers.deleteByKey(user.username);
+    await global.localData.hiddenUsers.deleteByKey(user.userId);
     notifyListeners();
   }
 

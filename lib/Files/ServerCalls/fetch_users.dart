@@ -1,213 +1,185 @@
 import 'dart:convert';
-
+import 'dart:typed_data';
 import 'package:buff_lisa/Files/DTOClasses/group.dart';
 import 'package:buff_lisa/Files/DTOClasses/ranking.dart';
 import 'package:buff_lisa/Files/Other/global.dart' as global;
-import 'package:buff_lisa/Files/ServerCalls/restAPI.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart';
-class FetchUsers {
+import 'package:openapi/api.dart';
 
-  /// returns a list of members and the amount of points they have of a specific [group]
-  /// throws an Exception if an error occurs
-  /// GET Request to Server
+class FetchUsers {
+  static final UsersApi _usersApi = global.openApiServices.userApi;
+  static final AuthApi _authApi = global.openApiServices.authApi;
+  static final MembersApi _membersApi = global.openApiServices.memberApi;
+  static final ReportApi _reportApi = global.openApiServices.reportApi;
+
   static Future<List<Ranking>> fetchGroupMembers(Group group) async {
-    Response response = await RestAPI.createHttpsRequest("/api/groups/${group.groupId}/members" , {}, 0);
-    if (response.statusCode == 200) {
-      List<Ranking> members = [];
-      List<dynamic> values = json.decode(response.body);
-      for (dynamic d in values) {
-        members.add(Ranking.fromJson(d));
-      }
-      return members;
+    final response = await _membersApi.getGroupRanking(group.groupId);
+    if (response != null) {
+      return response.map((dto) => Ranking.fromDto(dto)).toList();
     } else {
-      throw Exception("Groups could not be loaded: ${response.statusCode} error code");
+      throw Exception("Groups could not be loaded");
     }
   }
 
-  /// returns the hashed password of an user identified by [name] of the server
-  /// returns null if user does not exist
-  /// GET Request to Server
+  static Future<String> getUsernameFromId(String userId) async {
+    final response = await _usersApi.getUser(userId);
+    if (response != null) {
+      return response.username;
+    } else {
+      throw Exception("User could not be loaded");
+    }
+  }
+
   static Future<String?> checkUser(String? name) async {
     name ??= global.localData.username;
-    Response response = await RestAPI.createHttpsRequest("/login/$name/", {}, 0, timeout: 3);
-    if (response.statusCode == 200) {
-      return response.body;
-    }
-    return null;
-  }
-
-  /// returns the token of an user identified by [name]
-  /// returns null if the user does not exist
-  /// GET Request to Server
-  /// TODO delete if all users changed to new token auth
-  static Future<String?> checkUserToken(String? name, String password) async {
-    final String json = jsonEncode(<String, dynamic>{
-      "password" : password,
-    });
-    Response response = await RestAPI.createHttpsRequest("/token/$name/", {}, 2,encode:  json, timeout: 3);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return response.body;
-    }
-    return null;
-  }
-
-  /// returns the token of an user identified by [name]
-  /// returns null if the user does not exist
-  /// GET Request to Server
-  static Future<String?> auth(String? name, String password) async {
-    final String json = jsonEncode(<String, dynamic>{
-      "password" : password,
-      "username" : name,
-    });
     try {
-      Response response = await RestAPI.createHttpsRequest("/login/", {}, 1, encode: json, timeout: 3);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return response.body;
+      final response = await _authApi.userLoginWithHttpInfo(UserLoginRequest(username: name, password: ""));
+      if (response.statusCode == 404) {
+        return "User not found";
+      } else {
+        return null;
       }
+    } catch (e) {
       return null;
-    } catch(_) {
-      if (kDebugMode) print(_);
     }
-    return null;
   }
 
-  /// returns the profile picture as a byte list of a username that is identified by [username]
-  /// throws an Exception if an error occurs
-  /// GET Request to Server
-  static Future<Uint8List> fetchProfilePicture(String username) async {
-    Response response = await RestAPI.createHttpsRequest("/api/users/$username/profile_picture", {}, 0);
-    if (response.statusCode == 200) {
-      if (response.body.isNotEmpty) {
+  static Future<bool> auth(String? name, String password) async {
+    final request = UserLoginRequest(
+      username: name,
+      password: password,
+    );
+    try {
+      final response = await _authApi.userLogin(request);
+      if (response != null) {
+        global.localData.login(name!, response.userId, response.refreshToken);
+        return true;
+      } else {
+        return false;
+      }
+
+
+    } catch (e) {
+      if (kDebugMode) print(e);
+      throw Exception("Login failed");
+    }
+    return false;
+  }
+
+  static Future<Uint8List> fetchProfilePicture(String userId) async {
+    try {
+      final response = await _usersApi.getUserProfileImageWithHttpInfo(userId);
+      if (response.statusCode == 200 && response.bodyBytes.isNotEmpty) {
         return response.bodyBytes;
       } else {
         return (await rootBundle.load("images/profile.jpg")).buffer.asUint8List();
       }
-    } else {
-      throw Exception("failed to load mona");
+    } catch (e) {
+      throw Exception("Failed to load profile picture");
     }
   }
 
-  /// returns the profile picture as a byte list of a username that is identified by [username]
-  /// throws an Exception if an error occurs
-  /// GET Request to Server
   static Future<Uint8List> fetchProfilePictureSmall(String username) async {
-    Response response = await RestAPI.createHttpsRequest("/api/users/$username/profile_picture_small", {}, 0,);
-    if (response.statusCode == 200) {
-      if (response.body.isNotEmpty) {
+    try {
+      final response = await _usersApi.getUserProfileImageSmallWithHttpInfo(username);
+      if (response.statusCode == 200 || response.bodyBytes.isNotEmpty) {
         return response.bodyBytes;
       } else {
-        throw Exception("failed to load mona");
+        return (await rootBundle.load("images/profile.jpg")).buffer.asUint8List();
       }
-    } else {
-      throw Exception("failed to load mona");
+    } catch (e) {
+      throw Exception("Failed to load profile picture");
     }
   }
 
-  /// This methods send a password recover request to the server
-  /// returns true if email is successfully send
-  /// returns false if a problem occurred at the server
-  /// GET Request to Server
   static Future<bool> recover(String? name) async {
-    Response response = await RestAPI.createHttpsRequest("/recover", {"username" : name}, 0, timeout: 3);
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    try {
+      await _authApi.requestPasswordRecovery(name!);
       return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> signupNewUser(String username, String hash, String email) async {
+    final request = UserRequestDto(
+      name: username,
+      password: hash,
+      email: email,
+    );
+    try {
+      final response = await _authApi.createUser(request);
+      return true;
+    } catch (e) {
+      return false;
     }
     return false;
   }
 
-  /// creates a new user account on the server
-  /// returns the token of the new account
-  /// returns null if the account creation was unsuccessful
-  /// POST Request to Server
-  static Future<String?> signupNewUser(String username, String hash, String email) async {
-    final String json = jsonEncode(<String, dynamic>{
-      "username" : username,
-      "password" : hash,
-      "email" : email
-    });
-    Response response = await RestAPI.createHttpsRequest("/signup/", {}, 1, encode: json, timeout: 3);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return response.body;
-    }
-    return null;
-  }
-
-  /// changes the [password] of the user identified by [username]
-  /// returns true if change was successful
-  /// returns false if change was unsuccessful
-  /// PUT Request to Server
   static Future<bool> changePassword(String username, String password) async {
-    final String json = jsonEncode(<String, dynamic> {
-      "password" : password
-    });
-    Response response = await RestAPI.createHttpsRequest("/api/users/$username/", {}, 2, encode: json);
-    if (response.statusCode == 200) {
+    final request = UserUpdateDto(
+      password: password,
+    );
+    try {
+      await _usersApi.updateUser(username, request);
       return true;
+    } catch (e) {
+      return false;
     }
-    return false;
   }
 
-  /// changes the [email] of the user identified by [username]
-  /// returns true if change was successful
-  /// returns false if change was unsuccessful
-  /// PUT Request to Server
   static Future<bool> changeEmail(String username, String email) async {
-    final String json = jsonEncode(<String, dynamic> {
-      "email" : email
-    });
-    Response response = await RestAPI.createHttpsRequest("/api/users/$username/", {}, 2, encode: json);
-    if (response.statusCode == 200) {
+    final request = UserUpdateDto(
+      email: email,
+    );
+    try {
+      await _usersApi.updateUser(username, request);
       return true;
+    } catch (e) {
+      return false;
     }
-    return false;
   }
 
-  /// changes the [profilePicture] of the user identified by [username]
-  /// returns true if change was successful
-  /// returns false if change was unsuccessful
-  /// PUT Request to Server
   static Future<Uint8List?> changeProfilePicture(String username, Uint8List profilePicture) async {
-    final String json = jsonEncode(<String, dynamic> {
-      "image" : profilePicture
-    });
-    Response response = await RestAPI.createHttpsRequest("/api/users/$username/profile_picture", {}, 2,encode:  json);
-    if (response.statusCode == 200) {
-      return response.bodyBytes;
+    final imageBase64 = base64Encode(profilePicture);
+    try {
+      final response = await _usersApi.updateUserProfileImage(username, imageBase64);
+      return response != null ? base64Decode(response.profilePicture) : null;
+    } catch (e) {
+      return null;
     }
-    return null;
   }
 
   static Future<bool> postReportUser(String reportedUsername, String reportMessage) async {
-    final String json = jsonEncode(<String, dynamic>{
-      "report" : reportedUsername,
-      "username" : global.localData.username,
-      "message" : reportMessage
-    });
-    final response = await RestAPI.createHttpsRequest("/api/report", {}, 1, encode: json);
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    final request = ReportDto(
+      report: reportedUsername,
+      userId: global.localData.userId,
+      message: reportMessage,
+    );
+    try {
+      await _reportApi.createReport(request);
       return true;
+    } catch (e) {
+      return false;
     }
-    return false;
   }
 
   static Future<bool> getDeleteCode() async {
-    final response = await RestAPI.createHttpsRequest("/api/delete-code/${global.localData.username}", {}, 0);
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    try {
+      await _authApi.generateDeleteCode(global.localData.userId);
       return true;
+    } catch (e) {
+      return false;
     }
-    return false;
   }
 
   static Future<bool> deleteAccount(String code) async {
-    final String json = jsonEncode(<String, dynamic>{
-      "code" : code
-    });
-    final response = await RestAPI.createHttpsRequest("/api/users/${global.localData.username}", {}, 3, encode: json);
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    try {
+      await _usersApi.deleteUser(global.localData.userId, body: int.parse(code));
       return true;
+    } catch (e) {
+      return false;
     }
-    return false;
   }
 }

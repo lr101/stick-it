@@ -23,7 +23,7 @@ class CustomPopupMenuButton extends StatefulWidget {
 class CustomPopupMenuButtonState extends State<CustomPopupMenuButton> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
+    return FutureBuilder<String?>(
       future: widget.pin.group.groupAdmin.asyncValue(),
       builder: (context, snapshot) => PopupMenuButton(
           itemBuilder: (context){
@@ -45,7 +45,7 @@ class CustomPopupMenuButtonState extends State<CustomPopupMenuButton> {
                 child: Text("Report this post"),
               ),
             ];
-            if (widget.pin.username == global.localData.username || (snapshot.hasData && snapshot.requireData == global.localData.username)) {
+            if (widget.pin.creatorId == global.localData.userId || (snapshot.hasData && snapshot.requireData == global.localData.userId)) {
               list.add(const PopupMenuItem<int>(
                   value: 4,
                   child: Text("Delete this post as admin")
@@ -68,7 +68,7 @@ class CustomPopupMenuButtonState extends State<CustomPopupMenuButton> {
   }
 
   Future<void> handleHidePost(BuildContext context) async {
-    if (global.localData.username != widget.pin.username) {
+    if (global.localData.userId != widget.pin.creatorId) {
       await global.localData.hiddenPosts.put(DateTime.now(), key: widget.pin.id);
       if (!mounted) return;
       await Provider.of<ClusterNotifier>(context, listen: false).hidePin(widget.pin);
@@ -89,7 +89,7 @@ class CustomPopupMenuButtonState extends State<CustomPopupMenuButton> {
             onPressed: () async {
               bool deleted = false;
               try {
-                if (widget.pin.id < 0) {
+                if (widget.pin.isOffline) {
                   await Provider.of<ClusterNotifier>(c, listen: false)
                       .deleteOfflinePin(widget.pin);
                   deleted = true;
@@ -117,8 +117,8 @@ class CustomPopupMenuButtonState extends State<CustomPopupMenuButton> {
   }
 
   Future<void> handleHideUsers(BuildContext context) async {
-    if (global.localData.username != widget.pin.username) {
-      await global.localData.hiddenUsers.put(DateTime.now(), key: widget.pin.username);
+    if (global.localData.userId != widget.pin.creatorId) {
+      await global.localData.hiddenUsers.put(DateTime.now(), key: widget.pin.creatorId);
       if (!mounted) return;
       await Provider.of<ClusterNotifier>(context, listen: false).updateFilter();
       widget.update!();
@@ -126,16 +126,16 @@ class CustomPopupMenuButtonState extends State<CustomPopupMenuButton> {
   }
 
   Future<void> handleReportUser(BuildContext context) async {
-    String username = widget.pin.username;
-    if (username != global.localData.username) {
+    String username = widget.pin.creatorId;
+    if (username != global.localData.userId) {
       Routing.to(context, ReportUser(content: username, title: "Report User", hintText: "Why do you want to report $username?", userText:  'Report user: $username'));
     }
   }
 
   Future<void> handleReportPost(BuildContext context) async {
-    String username = widget.pin.username;
-    if (username != global.localData.username) {
-      Routing.to(context, ReportUser(content: widget.pin.id.toString(), title: "Report Content", hintText: "Why do you want to report this content?",userText: "Report content of user: $username",));
+    String username = widget.pin.creatorId;
+    if (username != global.localData.userId) {
+      Routing.to(context, ReportUser(content: widget.pin.id, title: "Report Content", hintText: "Why do you want to report this content?",userText: "Report content of user: $username",));
     }
   }
 

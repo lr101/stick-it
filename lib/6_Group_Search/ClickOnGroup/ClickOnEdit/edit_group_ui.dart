@@ -147,7 +147,7 @@ class EditGroupUI extends StatefulUI<EditGroupPage, EditGroupPageState>{
           )
         ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => state.editGroup(context),
+        onPressed: () async => state.editGroup(context, ),
         child: const Icon(Icons.check),)
     );
   }

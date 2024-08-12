@@ -52,8 +52,8 @@ class FeedCardUI extends StatefulUI<FeedCard, FeedCardState>{
                                   padding: const EdgeInsets.all(2),
                                   child:CustomRoundImage(
                                     size: 16,
-                                    imageCallback: Provider.of<UserNotifier>(context).getUser(state.widget.pin.username).profileImageSmall.asyncValue,
-                                    imageCallbackClickable: Provider.of<UserNotifier>(context).getUser(state.widget.pin.username).profileImage.asyncValue,
+                                    imageCallback: Provider.of<UserNotifier>(context).getUser(state.widget.pin.creatorId).profileImageSmall.asyncValue,
+                                    imageCallbackClickable: Provider.of<UserNotifier>(context).getUser(state.widget.pin.creatorId).profileImage.asyncValue,
                                   ),
                                 ),
                                 Column(
@@ -64,7 +64,13 @@ class FeedCardUI extends StatefulUI<FeedCard, FeedCardState>{
                                       onTap: state.handleOpenUserProfile,
                                       child: SizedBox(
                                         height: 22,
-                                        child: FittedBox(fit: BoxFit.fitHeight, child: Text(widget.pin.username))
+                                        child: FittedBox(
+                                            fit: BoxFit.fitHeight,
+                                            child: FutureBuilder(
+                                                future: Provider.of<UserNotifier>(context).getUser(state.widget.pin.creatorId).username.asyncValue(),
+                                                builder: (context, snapshot) => Text(snapshot.hasData ? snapshot.requireData : "---")
+                                            )
+                                        )
                                       )
                                     ),
                                     GestureDetector(
@@ -241,7 +247,7 @@ class FeedCardUI extends StatefulUI<FeedCard, FeedCardState>{
   }
 
   Widget menuButton({required Widget menu}) {
-    if (global.localData.username != state.widget.pin.username) {
+    if (global.localData.userId != state.widget.pin.creatorId) {
       return menu;
     } else {
       return const SizedBox(width: 48,);

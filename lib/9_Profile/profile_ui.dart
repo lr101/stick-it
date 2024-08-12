@@ -24,28 +24,28 @@ class ProfilePageUI extends StatefulUI<ProfilePage, ProfilePageState> {
     return CustomTitle.withSliverList(
       title: _title(context),
       sliverList: CustomSliverList(
-        initPagedList: () async => state.init(await Provider.of<UserNotifier>(context).getUser(widget.username).getPins),
+        initPagedList: () async => state.init(await Provider.of<UserNotifier>(context).getUser(widget.userId).getPins),
         pagingController: state.pagingController,
       ),
     );
   }
 
   Widget getImage() {
-    if (widget.username == global.localData.username) {
+    if (widget.userId == global.localData.userId) {
       return CustomShowAndPick(
-          provide: Provider.of<UserNotifier>(state.context).getUser(widget.username).profileImage.asyncValue,
+          provide: Provider.of<UserNotifier>(state.context).getUser(widget.userId).profileImage.asyncValue,
           updateCallback: state.provideProfileImage,
       );
     } else {
       return CustomRoundImage(
-          imageCallback: Provider.of<UserNotifier>(state.context, listen: false).getUser(widget.username).profileImage.asyncValue,
+          imageCallback: Provider.of<UserNotifier>(state.context, listen: false).getUser(widget.userId).profileImage.asyncValue,
           size: 50
       );
     }
   }
 
   CustomEasyTitle _title(BuildContext context) {
-    if (widget.username == global.localData.username) {
+    if (widget.userId == global.localData.userId) {
       return CustomEasyTitle(
         customBackground: CustomProfileLayout(
           image: getImage(),
@@ -53,13 +53,22 @@ class ProfilePageUI extends StatefulUI<ProfilePage, ProfilePageState> {
             builder: (context, value, child) => FutureBuilder<List<Pin>?>(
               future: () {
                 if (!context.mounted) return null;
-                return value.getUser(widget.username).getPins;
+                return value.getUser(widget.userId).getPins;
               }(),
               builder: (context, snapshot) => Text(snapshot.data != null ? snapshot.requireData!.length.toString() : "---"),
             ),
           )
         ),
-        title: Text(widget.username, style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium),
+        title: Consumer<UserNotifier>(
+          builder: (context, value, child) =>
+            FutureBuilder(
+                future: value.getUser(widget.userId).username.asyncValue(),
+                builder: (context, snapshot) =>
+                    Text(snapshot.hasData ? snapshot.requireData : "---",
+                        style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium
+                    )
+            )
+        ),
         back: false,
         right: CustomEasyAction(
           child: const Icon(Icons.settings),
@@ -74,13 +83,22 @@ class ProfilePageUI extends StatefulUI<ProfilePage, ProfilePageState> {
             builder: (context, value, child) => FutureBuilder<List<Pin>?>(
               future: () {
                 if (!context.mounted) return null;
-                return value.getUser(widget.username).getPins;
+                return value.getUser(widget.userId).getPins;
               }(),
               builder: (context, snapshot) => Text(snapshot.data != null ? snapshot.requireData!.length.toString() : "---"),
             ),
           )
         ),
-        title: Text(widget.username, style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium),
+        title: Consumer<UserNotifier>(
+            builder: (context, value, child) =>
+                FutureBuilder(
+                    future: value.getUser(widget.userId).username.asyncValue(),
+                    builder: (context, snapshot) =>
+                        Text(snapshot.hasData ? snapshot.requireData : "---",
+                            style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium
+                        )
+                )
+        ),
       );
     }
   }

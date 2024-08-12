@@ -8,44 +8,44 @@ class UserNotifier with ChangeNotifier {
 
   final List<User> _users = [];
 
-  User getUser(String username) => _users.firstWhere((element) => element.username == username, orElse: () => _createUser(username));
+  User getUser(String userId) => _users.firstWhere((element) => element.userId == userId, orElse: () => _createUser(userId));
 
-  Future<void> updatePins(String username, List<Pin> pins) async {
-    await getUser(username).updatePins(pins);
+  Future<void> updatePins(String userId, List<Pin> pins) async {
+    await getUser(userId).updatePins(pins);
     notifyListeners();
   }
 
-  Future<void> updateProfileImage(String username) async {
-    await getUser(username).profileImage.refresh();
-    await getUser(username).profileImageSmall.refresh();
+  Future<void> updateProfileImage(String userId) async {
+    await getUser(userId).profileImage.refresh();
+    await getUser(userId).profileImageSmall.refresh();
     notifyListeners();
   }
 
-  User _createUser(String username) {
-    User user = User(username: username);
+  User _createUser(String userId) {
+    User user = User(userId: userId);
     _users.add(user);
     return user;
   }
 
-  Future<void> removePin(String username, int id) async {
-    await getUser(username).removePin(id);
+  Future<void> removePin(String userId, String id) async {
+    await getUser(userId).removePin(id);
     notifyListeners();
   }
 
-  Future<void> addPin(String username,Pin pin) async {
-    if (pin.username == global.localData.username) {
-     await getUser(username).addPin(pin);
+  Future<void> addPin(String userId, Pin pin) async {
+    if (pin.creatorId == global.localData.userId) {
+     await getUser(userId).addPin(pin);
      notifyListeners();
     }
   }
 
-  void clearPinsNotUser(String username) {
-    _users.where((element) => element.username != username).forEach((element) {element.pins = null;});
+  void clearPinsNotUser(String userId) {
+    _users.where((element) => element.userId != userId).forEach((element) {element.pins = null;});
     notifyListeners();
   }
 
-  void removeUser(String username) {
-    _users.removeWhere((element) => element.username == username);
+  void removeUser(String userId) {
+    _users.removeWhere((element) => element.userId == userId);
     notifyListeners();
   }
 }

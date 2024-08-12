@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:buff_lisa/Files/AbstractClasses/async_type.dart';
 import 'package:buff_lisa/Files/ServerCalls/fetch_pins.dart';
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
 
 import 'group.dart';
 
@@ -15,13 +17,13 @@ class Pin {
   final double longitude;
 
   /// unique id of the pin
-  final int id;
+  final String id;
 
   /// date of creation of the pin
   final DateTime creationDate;
 
   /// user that created the pin
-  final String username;
+  final String creatorId;
 
   /// group the pin belongs to
   Group group;
@@ -40,7 +42,7 @@ class Pin {
     required this.longitude,
     required this.id,
     required this.creationDate,
-    required this.username,
+    required this.creatorId,
     required this.group,
     this.isOffline = false,
     Uint8List? image,
@@ -56,13 +58,37 @@ class Pin {
         latitude : json['latitude'],
         longitude : json['longitude'],
         id : json['id'],
-        username : json.containsKey('username') ? json['username'] : json.containsKey('creationUser') ? json['creationUser'] : "",
-        creationDate : DateTime.parse((json['creationDate']).toString()),
+        creatorId : json.containsKey('username') ? json['username'] : json.containsKey('creationUser') ? json['creationUser'] : "",
+        creationDate : DateTime.parse((json['creationDate'])),
         group: group,
         isOffline : false
     );
   }
 
+  static Pin fromDto(PinWithoutImageDto pinDto, group) {
+    return Pin(
+        latitude : pinDto.latitude.toDouble(),
+        longitude : pinDto.longitude.toDouble(),
+        id : pinDto.id,
+        creatorId : pinDto.creationUser,
+        creationDate : pinDto.creationDate,
+        group: group,
+        isOffline : false
+    );
+  }
+
+  static Pin fromDtoWithImage(PinWithOptionalImageDto pinDto, Group group) {
+    return Pin(
+        latitude : pinDto.latitude.toDouble(),
+        longitude : pinDto.longitude.toDouble(),
+        id : pinDto.id,
+        creatorId : pinDto.creationUser,
+        creationDate : pinDto.creationDate!,
+        image: pinDto.image != null ? base64Decode(pinDto.image!) : null,
+        group: group,
+        isOffline : false
+    );
+  }
 
   /// returns json format for posting pin to server
   Future<Map<String, dynamic>> toJson() async {
@@ -71,7 +97,7 @@ class Pin {
       "latitude": latitude,
       "id": id,
       "creationDate": formatDateTim(creationDate),
-      "username" : username
+      "username" : creatorId
     };
   }
 

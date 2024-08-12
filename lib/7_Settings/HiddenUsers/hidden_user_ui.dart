@@ -28,7 +28,13 @@ class HiddenUsersUI extends StatefulUI<HiddenUsers, HiddenUsersState> {
             itemCount: users.length,
             itemBuilder: (index) => CustomListTile(
                 leading: Text("${index + 1}."),
-                title: Text("Post by: ${users.elementAt(index).username}", style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium),
+                title: FutureBuilder(
+                    future: users.elementAt(index).username.asyncValue(),
+                    builder: (context, snapshot) =>
+                        Text("Post by: ${snapshot.hasData ? snapshot.requireData : "..."}",
+                            style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium
+                        ),
+                ),
                 trailing: SizedBox(
                     width: 200,
                     child: Row(

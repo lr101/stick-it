@@ -148,11 +148,7 @@ class CameraControllerWidget extends State<CameraWidget> {
         final image = await controller.takePicture();
         try {
           Uint8List bytes;
-          if (kIsWeb) {
-            bytes = await FetchPins.fetchImageFromBrowserCash(image.path);
-          } else {
-            bytes = await image.readAsBytes();
-          }
+          bytes = await image.readAsBytes();
           await routeToCheckImage(bytes);
         } catch (e) {
           CustomErrorMessage.message(context: context,

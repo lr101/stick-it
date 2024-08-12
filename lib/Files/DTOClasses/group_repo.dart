@@ -23,7 +23,7 @@ class GroupRepo {
     box.put(groupDTO.groupId, groupDTO);
   }
 
-  Group? getGroup(int id) {
+  Group? getGroup(String id) {
     GroupDTO? groupDTO = box.get(id);
     if (groupDTO != null) {
       return groupDTO.toGroup();
@@ -40,7 +40,7 @@ class GroupRepo {
     return list.map((e) => e.toGroup()).toList();
   }
 
-  void deleteGroup(int id) {
+  void deleteGroup(String id) {
     box.delete(id);
     global.localData.setCamera(CameraOfflineValues.groupScroll, 0);
   }

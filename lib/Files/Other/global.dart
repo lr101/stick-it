@@ -1,8 +1,7 @@
+import 'package:buff_lisa/Files/ServerCalls/openapi_service.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:latlong2/latlong.dart';
-
-import '../DTOClasses/group.dart';
 import 'local_data.dart';
 
 /// zoom when the maps controller sets the current location to the user location
@@ -13,7 +12,7 @@ double feedZoom = 13;
 
 /// position of flutter map on start
 /// Is set to the center of Karlsruhe, Germany
-LatLng initCamera =  const LatLng(49.006889, 8.403653);
+LatLng initCamera =  LatLng(49.006889, 8.403653);
 
 /// server ip address loaded from .env file
 /// useful ip addresses:
@@ -28,4 +27,4 @@ late List<CameraDescription> cameras;
 /// is initialized on startup of app
 late LocalData localData;
 
-Group basicGroup = Group(groupId: -1, name: "", visibility: 0, inviteUrl: "", description: "", saveOffline: false);
+late OpenApiServices openApiServices;

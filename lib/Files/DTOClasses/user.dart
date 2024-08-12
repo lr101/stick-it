@@ -9,7 +9,8 @@ import '../Other/global.dart' as global;
 
 class User {
 
-  final String username;
+  late final AsyncType<String> username;
+  final String userId;
 
   late final AsyncType<Uint8List> profileImageSmall;
   late final AsyncType<Uint8List> profileImage;
@@ -18,9 +19,10 @@ class User {
 
   ReadWriteMutex m = ReadWriteMutex();
 
-  User({required this.username, Uint8List? profileImage}) {
-    this.profileImage = AsyncType<Uint8List>(value: profileImage, callback: () => FetchUsers.fetchProfilePicture(username), builder: (_) => Image.memory(_), callbackDefault: _defaultProfileImage, retry: false);
-    profileImageSmall = AsyncType<Uint8List>(value: profileImage, callback: () => FetchUsers.fetchProfilePictureSmall(username), builder: (_) => Image.memory(_), callbackDefault: _defaultProfileImage, retry: false);
+  User({required this.userId, String? username, Uint8List? profileImage}) {
+    this.profileImage = AsyncType<Uint8List>(value: profileImage, callback: () => FetchUsers.fetchProfilePicture(userId), builder: (_) => Image.memory(_), callbackDefault: _defaultProfileImage, retry: false);
+    this.username = AsyncType<String>(value: username, callback: () => FetchUsers.getUsernameFromId(userId), retry: true);
+    profileImageSmall = AsyncType<Uint8List>(value: profileImage, callback: () => FetchUsers.fetchProfilePictureSmall(userId), builder: (_) => Image.memory(_), callbackDefault: _defaultProfileImage, retry: false);
   }
 
   Future<Uint8List> _defaultProfileImage () async => (await rootBundle.load('images/profile.jpg')).buffer.asUint8List();
@@ -37,10 +39,10 @@ class User {
   void _filter(List<Pin> pins) {
     Set<Pin> removesPins = {};
     List<String> usernames = global.localData.hiddenUsers.keys();
-    List<int> posts = global.localData.hiddenPosts.keys();
+    List<String> posts = global.localData.hiddenPosts.keys();
     List<Pin> iterator = List.from(pins);
     for (Pin pin in iterator) {
-      if (posts.any((element) => element == pin.id) || usernames.any((element) => element == pin.username)) {
+      if (posts.any((element) => element == pin.id) || usernames.any((element) => element == pin.creatorId)) {
         pins.remove(pin);
         removesPins.add(pin);
       }
@@ -55,7 +57,7 @@ class User {
     return list;
   }
 
-  Future<void> removePin(int id) async {
+  Future<void> removePin(String id) async {
     await m.protectRead(() async {
       if (pins != null) pins!.removeWhere((element) => element.id == id);
     });

@@ -24,7 +24,7 @@ class AsyncType<T>  {
     bool get isLoaded => _isLoaded;
 
     Future<void> setValue(T value) async {
-        if (kDebugMode) print("ACQUIRE LOCK of a ${T.toString()}");
+        if (kDebugMode) print("ACQUIRE LOCK of a ${T}");
         await _m.acquire();
         try {
             _value = value;
@@ -36,7 +36,7 @@ class AsyncType<T>  {
     }
 
     Future<void> setValueButNotLoaded(T value) async {
-        if (kDebugMode) print("ACQUIRE LOCK of a ${T.toString()}");
+        if (kDebugMode) print("ACQUIRE LOCK of a ${T}");
         await _m.acquire();
         try {
             _value = value;
@@ -48,7 +48,7 @@ class AsyncType<T>  {
     Future<T> asyncValue () async {
 
         if (!_isLoaded) {
-            if (kDebugMode) print("ACQUIRE LOCK of a ${T.toString()}");
+            if (kDebugMode) print("ACQUIRE LOCK of a ${T}");
             await _m.acquire();
             try {
                 if (!_isLoaded) {

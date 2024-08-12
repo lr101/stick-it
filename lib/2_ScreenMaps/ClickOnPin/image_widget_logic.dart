@@ -41,7 +41,7 @@ class ShowImageWidgetState extends State<ShowImageWidget> {
   /// user has to select delete in dialog
   /// Works only if [activeDelete] is true
   Future<void> handleButtonPress() async{
-      if (widget.pin.username == global.localData.username) {
+      if (widget.pin.creatorId == global.localData.userId) {
         BuildContext c = context;
         await showDialog<bool>(context: context, builder: (_) =>
             CustomAlertDialog(
@@ -51,7 +51,7 @@ class ShowImageWidgetState extends State<ShowImageWidget> {
               onPressed: () async {
                 bool deleted = false;
                 try {
-                  if (widget.pin.id < 0) {
+                  if (widget.pin.isOffline) {
                     await Provider.of<ClusterNotifier>(c, listen: false)
                         .deleteOfflinePin(widget.pin);
                     deleted = true;
@@ -81,8 +81,8 @@ class ShowImageWidgetState extends State<ShowImageWidget> {
   }
 
   void handleOpenUserProfile() {
-    if (widget.pin.username == global.localData.username) return;
-    Routing.to(context, ProfilePage(username: widget.pin.username,));
+    if (widget.pin.creatorId == global.localData.userId) return;
+    Routing.to(context, ProfilePage(userId: widget.pin.id,));
   }
 
   void handleOpenGroup() {

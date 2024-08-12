@@ -20,7 +20,7 @@ class PinDTO {
 
   /// unique id of the pin
   @HiveField(2)
-  final int id;
+  final String id;
 
   /// date of creation of the pin
   @HiveField(3)
@@ -32,7 +32,7 @@ class PinDTO {
 
   /// group the pin belongs to
   @HiveField(5)
-  final int groupId;
+  final String groupId;
 
   /// Uint8List:  image as byte list of the pin
   /// null: not loaded from server yet
@@ -54,13 +54,13 @@ class PinDTO {
         longitude = pin.longitude,
         id = pin.id,
         creationDate = pin.creationDate,
-        username = pin.username,
+        username = pin.creatorId,
         groupId = pin.group.groupId,
         image = pin.image.syncValue;
 
   Pin? toPin(Group group) {
     if (group.groupId == groupId) {
-      return Pin(id: id, creationDate: creationDate, group: group, latitude: latitude, longitude: longitude, username: username,image: image);
+      return Pin(id: id, creationDate: creationDate, group: group, latitude: latitude, longitude: longitude, creatorId: username,image: image);
     }
     return null;
   }

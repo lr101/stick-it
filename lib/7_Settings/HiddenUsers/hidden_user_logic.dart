@@ -54,7 +54,7 @@ class HiddenUsersState extends State<HiddenUsers>{
     await Provider.of<HiddenUserPageNotifier>(context, listen: false).unHideUser(user);
     if (!mounted) return;
     for (Group group in groups) {
-      Set<Pin> pins = await FetchPins.fetchUserPinsOfGroup(user.username, group);
+      Set<Pin> pins = await FetchPins.fetchUserPinsOfGroup(user.userId, group);
       if (!mounted) return;
       Provider.of<ClusterNotifier>(context, listen: false).addPins(pins);
     }
@@ -63,9 +63,9 @@ class HiddenUsersState extends State<HiddenUsers>{
   Future<void> loadOffline() async{
     Set<User> users = {};
     HiveHandler<String, DateTime> hiddenUsers = global.localData.hiddenUsers;
-    for (String username in hiddenUsers.keys()) {
+    for (String userId in hiddenUsers.keys()) {
       if (!mounted) return;
-      users.add(Provider.of<UserNotifier>(context, listen: false).getUser(username));
+      users.add(Provider.of<UserNotifier>(context, listen: false).getUser(userId));
     }
     if (!mounted) return;
     Provider.of<HiddenUserPageNotifier>(context, listen: false).setUsers(users);

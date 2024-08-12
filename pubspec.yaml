@@ -30,6 +30,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  openapi:
+    path: ../buff_lisa_openapi_client
+
   async_builder:
 
   string_validator:
@@ -39,6 +42,8 @@ dependencies:
   super_tooltip:
 
   measured_size:
+
+  uuid:
 
   # BSD-3 Clause License
   flutter_map_marker_cluster:

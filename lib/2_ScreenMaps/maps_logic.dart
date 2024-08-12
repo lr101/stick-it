@@ -132,7 +132,7 @@ class MapsWidgetState extends State<MapsWidget> with AutomaticKeepAliveClientMix
       filterUser = !filterUser;
     });
     if (filterUser) {
-      Provider.of<MarkerNotifier>(context, listen:false).setFilterUsername([global.localData.username]);
+      Provider.of<MarkerNotifier>(context, listen:false).setFilterUsername([global.localData.userId]);
     } else {
       Provider.of<MarkerNotifier>(context, listen:false).setFilterUsername([]);
     }

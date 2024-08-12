@@ -40,7 +40,7 @@ class ShowGroupUI extends StatefulUI<ShowGroupPage, ShowGroupPageState>{
             ),
             bottomHeight : 42,
             title: Text(widget.group.name, style: Provider.of<ThemeNotifier>(context).getTheme.textTheme.titleMedium),
-            right: state.widget.group.groupAdmin.syncValue == global.localData.username ? CustomEasyAction(child: const Icon(Icons.edit), action: () => state.editAsAdmin()) : null),
+            right: state.widget.group.groupAdmin.syncValue == global.localData.userId ? CustomEasyAction(child: const Icon(Icons.edit), action: () => state.editAsAdmin()) : null),
         sliverList: TabBarView(
             children: [
               state.pages[0].widget,

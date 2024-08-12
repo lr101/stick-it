@@ -4,7 +4,7 @@ import 'package:buff_lisa/Providers/cluster_notifier.dart';
 import 'package:buff_lisa/Providers/create_group_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:openapi/api.dart' as api;
 import 'create_group_ui.dart';
 
 //TODO Gruppen werden dobbelt ge-POST-tet
@@ -61,7 +61,7 @@ class CreateGroupPageState extends State<CreateGroupPage> {
         if (controller1.text.isNotEmpty && controller2.text.isNotEmpty &&
             image != null) {
           FetchGroups.postGroup(
-              controller1.text, controller2.text, image, sliderValue.toInt(), controller3.text == "" ? null : controller3.text)
+              controller1.text, controller2.text, image, sliderValue.toInt() == 0 ? api.Visibility.number0 : api.Visibility.number1, controller3.text == "" ? null : controller3.text)
               .then((group) {
             if (group != null) {
               Provider.of<ClusterNotifier>(context, listen: false).addGroup(
@@ -70,7 +70,7 @@ class CreateGroupPageState extends State<CreateGroupPage> {
             } else {
               CustomErrorMessage.message(context: context, message: "Group name already exists");
             }
-          }, onError: (e) => CustomErrorMessage.message(context: context, message: e.toString()));
+          }, onError: (e) => CustomErrorMessage.message(context: context, message: e));
         } else if (controller1.text.isEmpty) {
           CustomErrorMessage.message(context: context, message: "Group name to short");
         } else if (controller2.text.isEmpty) {

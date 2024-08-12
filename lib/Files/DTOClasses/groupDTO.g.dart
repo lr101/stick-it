@@ -17,7 +17,7 @@ class GroupDTOAdapter extends TypeAdapter<GroupDTO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return GroupDTO(
-      groupId: fields[0] as int,
+      groupId: fields[0] as String,
       name: fields[1] as String,
       visibility: fields[2] as int,
       inviteUrl: fields[3] as String?,

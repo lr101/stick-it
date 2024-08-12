@@ -1,13 +1,14 @@
 import 'package:buff_lisa/Files/DTOClasses/pin_repo.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../0_ScreenSignIn/secure.dart';
+import 'secure.dart';
 import '../DTOClasses/group_repo.dart';
 import '../DTOClasses/hive_handler.dart';
 
 class LocalData {
 
   static const String usernameKey = "username";
+  static const String userIdKey = "userId";
   static const String tokenKey = "auth";
   static const String pinFileNameKey = 'pin_new';
   static const String groupFileNameKey = 'groups';
@@ -32,21 +33,25 @@ class LocalData {
   /// set on login/signup or loaded from secure storage
   late String username;
 
+  /// user id of the current user
+  /// set on login/signup or loaded from secure storage
+  late String userId;
+
   /// user token to authenticate user on the server
   /// set on login/signup or loaded from secure storage
-  late String token;
+  late String? token;
 
   /// dark or light mode
   late Brightness theme;
 
   /// Order of groups displayed. Contains group ids as int.
-  late List<int> groupOrder;
+  late List<String> groupOrder;
 
   /// Storage to save usernames of hidden users.
   late HiveHandler<String, DateTime> hiddenUsers;
 
   /// Storage to save ids of hidden posts.
-  late HiveHandler<int, DateTime> hiddenPosts;
+  late HiveHandler<String, DateTime> hiddenPosts;
 
   late GroupRepo groupRepo;
 
@@ -71,9 +76,10 @@ class LocalData {
     // init secure boxes
     username = await secure.readSecure(usernameKey) ?? "";
     token = await secure.readSecure(tokenKey) ?? "";
+    userId = await secure.readSecure(userIdKey) ?? "";
     // init hive boxes
     hiddenUsers = await HiveHandler.fromInit<String, DateTime>(hiddenUsersKey);
-    hiddenPosts = await HiveHandler.fromInit<int, DateTime>(hiddenPostsKey);
+    hiddenPosts = await HiveHandler.fromInit<String, DateTime>(hiddenPostsKey);
     offlineDataStorage = await HiveHandler.fromInit<String, dynamic>(offlineKeyValue);
     groupRepo = (await GroupRepo.fromInit(LocalData.groupFileNameKey));
     // theme
@@ -86,7 +92,7 @@ class LocalData {
       theme = Brightness.dark;
     }
     // group Order
-    groupOrder = (await offlineDataStorage.get(orderKey)) as List<int>? ?? [];
+    groupOrder = (await offlineDataStorage.get(orderKey)) as List<String>? ?? [];
 
   }
 
@@ -95,6 +101,9 @@ class LocalData {
     // remove username
     secure.removeSecure(username);
     username == "";
+    // remove userId
+    secure.removeSecure(userIdKey);
+    userId = "";
     // remove token
     secure.removeSecure(tokenKey);
     token = "";
@@ -107,11 +116,13 @@ class LocalData {
   }
 
   /// save username and login token in secure storage.
-  void login(String username, String token) async {
+  void login(String username, String userId, String token) async {
     secure.saveSecure(usernameKey, username);
     this.username = username;
     secure.saveSecure(tokenKey, token);
     this.token = token;
+    secure.saveSecure(userIdKey, userId);
+    this.userId = userId;
   }
 
   /// update theme and save offline.
@@ -120,13 +131,13 @@ class LocalData {
   }
 
   /// update group order and save offline
-  Future<void> updateGroupOrder(List<int> order) async {
+  Future<void> updateGroupOrder(List<String> order) async {
     await offlineDataStorage.put(key: orderKey, order);
     groupOrder = order;
   }
 
   /// delete an offline pin by id
-  void deleteOfflineGroup(int groupId) async {
+  void deleteOfflineGroup(String groupId) async {
     deactivateGroup(groupId);
     groupRepo.deleteGroup(groupId);
   }
@@ -143,8 +154,8 @@ class LocalData {
   }
 
   /// activate a group and save offline
-  void activateGroup(int groupId) {
-    List<int> activeGroups = getActiveGroups();
+  void activateGroup(String groupId) {
+    List<String> activeGroups = getActiveGroups();
     if (!activeGroups.any((element) => element == groupId)) {
       activeGroups.add(groupId);
       offlineDataStorage.put(activeGroups, key: activeGroupKey);
@@ -152,14 +163,14 @@ class LocalData {
   }
 
   /// deactivate a group and save offline
-  void deactivateGroup(int groupId) {
-    List<int> activeGroups = getActiveGroups();
+  void deactivateGroup(String groupId) {
+    List<String> activeGroups = getActiveGroups();
     activeGroups.removeWhere((element) => element == groupId);
     offlineDataStorage.put(getActiveGroups(), key: activeGroupKey);
   }
 
   /// returns the list of active groups.
-  List<int> getActiveGroups() {
+  List<String> getActiveGroups() {
     return offlineDataStorage.get(activeGroupKey) ?? [];
   }
 

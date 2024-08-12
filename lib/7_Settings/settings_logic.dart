@@ -78,8 +78,8 @@ class Settings extends StatelessWidget {
 
   /// Open report page to contact developer.
   Future<void> handleReportPost(BuildContext context) async {
-    String username = global.localData.username;
-    Routing.to(context, ReportUser(content: "Contacted by: $username", title: "Contact Developer", hintText: "Describe the problem...",userText: "Reported by: $username",));
+    String userId = global.localData.userId;
+    Routing.to(context, ReportUser(content: "Contacted by: $userId / ${global.localData.username}", title: "Contact Developer", hintText: "Describe the problem...",userText: "Reported by: $userId",));
   }
 
 }
