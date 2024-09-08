@@ -1,3 +1,4 @@
+import 'package:buff_lisa/features/camera/presentation/camera.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_home.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class _NavigationState extends ConsumerState<Navigation> {
 
   final List<Widget> widgetOptions = <Widget>[
     const MapHome(),
+    const Camera()
   ];
 
   final GroupSelector _groupSelector = GroupSelector();
