@@ -16,7 +16,8 @@ class _GroupSelectorState extends ConsumerState<GroupSelector> {
   @override
   Widget build(BuildContext context) {
     double baseHeight = MediaQuery.of(context).size.height * 0.09;
-    final groups = ref.watch(userGroupServiceProvider).value ?? [];
+    final groups = ref.watch(userGroupServiceProvider);
+
     return Container(
         color: Colors.transparent,
         child: SafeArea(
@@ -47,11 +48,18 @@ class _GroupSelectorState extends ConsumerState<GroupSelector> {
                               Radius.circular(baseHeight / 2)),
                           color: Colors.transparent
                       ),
-                      child: ListView.builder(
-                        itemCount:  groups.length,
-                        itemBuilder: (context, index) => groupCard(context, index, groups[index]),
-                        scrollDirection: Axis.horizontal,
-                      )))
+                      child: groups.when(
+                          data: (d) {
+                            print(d);
+                            return ListView(
+                            children: d.map((e) => groupCard(context, e)).toList(),
+                            scrollDirection: Axis.horizontal,
+                          );},
+                          error: (_,__) => Text("Upps something went wrong. Try again later."),
+                          loading: () => const CircularProgressIndicator()
+                      )
+                  )
+              )
           )
           //editColumn()
           ],
@@ -60,7 +68,7 @@ class _GroupSelectorState extends ConsumerState<GroupSelector> {
   }
 
 
-  Widget groupCard(BuildContext context,int index, LocalGroupDto group) {
+  Widget groupCard(BuildContext context, LocalGroupDto group) {
     double baseHeight =( MediaQuery.of(context).size.height * 0.09) - 15;
     Color color = Colors.grey.withOpacity(0.8);
     Widget num = const SizedBox.shrink();
@@ -72,12 +80,12 @@ class _GroupSelectorState extends ConsumerState<GroupSelector> {
         padding: const EdgeInsets.all(5),
         child: GestureDetector(
             onTap: () => {
-              ref.read(userGroupServiceProvider.notifier).updateGroup(group.copyWith(isActivated: !group.isActivated))
+              ref.read(userGroupServiceProvider.notifier).setIsActive(group.groupId, !group.isActivated),
             },
             child: RoundImage(
               size: baseHeight / 2,
               clickable: false,
-              imageCallback: ref.watch(groupImageByIdProvider(group.groupId)),
+              imageCallback: AsyncData(group.profileImage),
               child: Stack(
                 children: [
                   CircleAvatar(

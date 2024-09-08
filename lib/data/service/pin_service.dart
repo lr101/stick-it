@@ -163,7 +163,8 @@ List<LocalPinDto> activatedPins(ActivatedPinsRef ref) {
   final List<LocalGroupDto> groups = ref.watch(activeGroupsProvider).value ?? [];
   final pins = <LocalPinDto>[];
   for (var group in groups) {
-    pins.addAll(ref.watch(pinServiceProvider(group.groupId)).whenOrNull() ?? []);
+    final p = ref.watch(pinServiceProvider(group.groupId)).value ?? [];
+    pins.addAll(p);
   }
   return pins;
 }

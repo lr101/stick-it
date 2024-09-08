@@ -6,7 +6,7 @@ part of 'user_group_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupByIdHash() => r'89fec5bb92d89f3ce7d7bdb6c22822c2bc787f05';
+String _$groupByIdHash() => r'8c23af5a2f47a81164c849f2c917538006c2bd60';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -154,7 +154,7 @@ class _GroupByIdProviderElement extends FutureProviderElement<LocalGroupDto?>
   String get groupId => (origin as GroupByIdProvider).groupId;
 }
 
-String _$groupImageByIdHash() => r'4a667893b0981c01f86feaacbd191ade125fdf21';
+String _$groupImageByIdHash() => r'1649aa1417ef277bb3b97d13ee6cff7f50d4fa38';
 
 /// See also [groupImageById].
 @ProviderFor(groupImageById)
@@ -282,7 +282,7 @@ class _GroupImageByIdProviderElement extends FutureProviderElement<Uint8List>
   String get groupId => (origin as GroupImageByIdProvider).groupId;
 }
 
-String _$groupPinImageByIdHash() => r'10d6f44027d54dda4590638e50ebd5fc2b27a7b8';
+String _$groupPinImageByIdHash() => r'16d5c026744f42bf30638f020b7fb1e9b42478f6';
 
 /// See also [groupPinImageById].
 @ProviderFor(groupPinImageById)
@@ -410,7 +410,7 @@ class _GroupPinImageByIdProviderElement extends FutureProviderElement<Uint8List>
   String get groupId => (origin as GroupPinImageByIdProvider).groupId;
 }
 
-String _$activeGroupsHash() => r'b38551f10a5136220ab622993ebf1595b12afe70';
+String _$activeGroupsHash() => r'ea3e8fe0122dfeb75eece23ecb77743918277bce';
 
 /// See also [activeGroups].
 @ProviderFor(activeGroups)
@@ -424,7 +424,7 @@ final activeGroupsProvider = FutureProvider<List<LocalGroupDto>>.internal(
 );
 
 typedef ActiveGroupsRef = FutureProviderRef<List<LocalGroupDto>>;
-String _$userGroupServiceHash() => r'5a162947fa400a0b49641d6553f0fea80e4fc143';
+String _$userGroupServiceHash() => r'56b7dc9249236779e0d7f80552577fa93615b615';
 
 /// See also [UserGroupService].
 @ProviderFor(UserGroupService)

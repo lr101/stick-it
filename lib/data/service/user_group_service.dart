@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -36,7 +37,7 @@ class UserGroupService extends _$UserGroupService {
 
       // If no groups are found locally, fetch from remote and cache locally
       final remoteGroups = await _groupsApi.getGroupsByIds(
-          userId: _data.userId, withUser: true);
+          userId: _data.userId, withUser: true, withImages: true);
       List<LocalGroupDto> groups = [];
       if (remoteGroups == null) return groups;
       for (var group in remoteGroups) {
@@ -51,22 +52,35 @@ class UserGroupService extends _$UserGroupService {
     }
   }
 
-  void updateSingleGroup(LocalGroupDto updateGroup) {
+  void _updateSingleGroup(LocalGroupDto updateGroup) {
     final currentState = state.value ?? [];
-    final index = currentState.indexWhere((group) => group.groupId == updateGroup.groupId);
+    final group = currentState.firstWhere((group) => group.groupId == updateGroup.groupId, orElse: () => updateGroup);
+    group.isActivated = updateGroup.isActivated;
+    group.pinImage = updateGroup.pinImage;
+    group.lastUpdated = DateTime.now();
+    group.profileImage = updateGroup.profileImage;
+    group.name = updateGroup.name;
+    group.description = updateGroup.description;
+    group.groupAdmin = updateGroup.groupAdmin;
+    group.link = updateGroup.link;
+    group.inviteUrl = updateGroup.inviteUrl;
+    group.visibility = updateGroup.visibility;
+    state = AsyncValue.data(currentState);
+  }
 
-    if (index != -1) {
-      final updatedState = [...currentState];
-      updatedState[index] = updateGroup;
-      state = AsyncValue.data(updatedState);
-    }
+  void setIsActive(String groupId, bool isActive) {
+    final currentState = state.value ?? [];
+    final group = currentState.firstWhere((group) => group.groupId == groupId);
+    group.isActivated = isActive;
+    state = AsyncValue.data(currentState);
+    _groupRepository.createGroup(group);
   }
 
   Future<void> createGroup(LocalGroupDto group) async {
     try {
       // Optimistically update locally
       await _groupRepository.createGroup(group);
-      updateSingleGroup(group);
+      _updateSingleGroup(group);
       // Sync with the server
       final result = await _groupsApi.addGroup(group.toCreateGroupDto());
 
@@ -82,7 +96,7 @@ class UserGroupService extends _$UserGroupService {
     try {
       // Update locally first
       await _groupRepository.createGroup(group);
-      updateSingleGroup(group);
+      _updateSingleGroup(group);
 
       // Sync with the server
       final result = await _groupsApi.updateGroup(group.groupId, group.toUpdateGroupDto());
@@ -116,7 +130,7 @@ class UserGroupService extends _$UserGroupService {
       final result = await _groupsApi.getGroup(group.groupId);
       if (result != null) {
         await _groupRepository.createGroup(LocalGroupDto.fromDto(result));
-        updateSingleGroup(group);
+        _updateSingleGroup(group);
       }
     } catch (e) {
       return null;
@@ -158,25 +172,20 @@ class UserGroupService extends _$UserGroupService {
 
 @Riverpod(keepAlive: true)
 Future<LocalGroupDto?> groupById(GroupByIdRef ref, String groupId) async {
-  final list = ref.watch(userGroupServiceProvider).value ?? [];
-  return  list.firstWhere((t) => t.groupId == groupId);;
+  return ref.watch(userGroupServiceProvider.selectAsync((groups) => groups.firstWhere((t) => t.groupId == groupId)));
 }
 
 @Riverpod(keepAlive: true)
 Future<Uint8List> groupImageById(GroupImageByIdRef ref, String groupId) async {
-  final list = ref.watch(userGroupServiceProvider).value ?? [];
-  return  list.firstWhere((t) => t.groupId == groupId).profileImage;;
+  return ref.watch(groupByIdProvider(groupId).select((group) => group.value!.profileImage));
 }
 
 @Riverpod(keepAlive: true)
 Future<Uint8List> groupPinImageById(GroupPinImageByIdRef ref, String groupId) async {
-  final list = ref.watch(userGroupServiceProvider).value ?? [];
-  return  list.firstWhere((t) => t.groupId == groupId).pinImage;;
+  return ref.watch(groupByIdProvider(groupId).select((group) => group.value!.pinImage));
 }
 
 @Riverpod(keepAlive: true)
 Future<List<LocalGroupDto>> activeGroups(ActiveGroupsRef ref) async {
-  final list = ref.watch(userGroupServiceProvider).value ?? [];
-  list.removeWhere((t) => t.isActivated == false);
-  return list;
+  return ref.watch(userGroupServiceProvider.selectAsync((groups) => groups.where((t) => t.isActivated == true).toList()));
 }

@@ -6,7 +6,7 @@ part of 'pin_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$activatedPinsHash() => r'e5d6247e78b59dc2cfb84b9c61ec43f998ae78af';
+String _$activatedPinsHash() => r'1c7f1af55afb69834d90202728507ee859fcf803';
 
 /// See also [activatedPins].
 @ProviderFor(activatedPins)

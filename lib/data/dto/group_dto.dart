@@ -7,17 +7,17 @@ import 'package:openapi/api.dart';
 
 class LocalGroupDto {
 
-  final String groupId;
-  final String name;
-  final int visibility;
-  final String? link;
-  final String? inviteUrl;
-  final String? groupAdmin;
-  final String? description;
-  final Uint8List profileImage;
-  final Uint8List pinImage;
-  final DateTime? lastUpdated;
-  final bool isActivated;
+  String groupId;
+  String name;
+  int visibility;
+  String? link;
+  String? inviteUrl;
+  String? groupAdmin;
+  String? description;
+  Uint8List profileImage;
+  Uint8List pinImage;
+  DateTime? lastUpdated;
+  bool isActivated;
 
   LocalGroupDto({
     required this.groupId,
