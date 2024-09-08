@@ -937,6 +937,12 @@ class $PinEntityTable extends PinEntity
   late final GeneratedColumn<Uint8List> image = GeneratedColumn<Uint8List>(
       'image', aliasedName, true,
       type: DriftSqlType.blob, requiredDuringInsert: false);
+  static const VerificationMeta _lastSyncedMeta =
+      const VerificationMeta('lastSynced');
+  @override
+  late final GeneratedColumn<DateTime> lastSynced = GeneratedColumn<DateTime>(
+      'last_synced', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         pinId,
@@ -946,7 +952,8 @@ class $PinEntityTable extends PinEntity
         creator,
         group,
         isHidden,
-        image
+        image,
+        lastSynced
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1004,6 +1011,12 @@ class $PinEntityTable extends PinEntity
       context.handle(
           _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
     }
+    if (data.containsKey('last_synced')) {
+      context.handle(
+          _lastSyncedMeta,
+          lastSynced.isAcceptableOrUnknown(
+              data['last_synced']!, _lastSyncedMeta));
+    }
     return context;
   }
 
@@ -1029,6 +1042,8 @@ class $PinEntityTable extends PinEntity
           .read(DriftSqlType.bool, data['${effectivePrefix}is_hidden'])!,
       image: attachedDatabase.typeMapping
           .read(DriftSqlType.blob, data['${effectivePrefix}image']),
+      lastSynced: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}last_synced']),
     );
   }
 
@@ -1047,6 +1062,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
   final String group;
   final bool isHidden;
   final Uint8List? image;
+  final DateTime? lastSynced;
   const PinEntityData(
       {required this.pinId,
       required this.latitude,
@@ -1055,7 +1071,8 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       required this.creator,
       required this.group,
       required this.isHidden,
-      this.image});
+      this.image,
+      this.lastSynced});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1068,6 +1085,9 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
     map['is_hidden'] = Variable<bool>(isHidden);
     if (!nullToAbsent || image != null) {
       map['image'] = Variable<Uint8List>(image);
+    }
+    if (!nullToAbsent || lastSynced != null) {
+      map['last_synced'] = Variable<DateTime>(lastSynced);
     }
     return map;
   }
@@ -1083,6 +1103,9 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       isHidden: Value(isHidden),
       image:
           image == null && nullToAbsent ? const Value.absent() : Value(image),
+      lastSynced: lastSynced == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSynced),
     );
   }
 
@@ -1098,6 +1121,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       group: serializer.fromJson<String>(json['group']),
       isHidden: serializer.fromJson<bool>(json['isHidden']),
       image: serializer.fromJson<Uint8List?>(json['image']),
+      lastSynced: serializer.fromJson<DateTime?>(json['lastSynced']),
     );
   }
   @override
@@ -1112,6 +1136,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       'group': serializer.toJson<String>(group),
       'isHidden': serializer.toJson<bool>(isHidden),
       'image': serializer.toJson<Uint8List?>(image),
+      'lastSynced': serializer.toJson<DateTime?>(lastSynced),
     };
   }
 
@@ -1123,7 +1148,8 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
           String? creator,
           String? group,
           bool? isHidden,
-          Value<Uint8List?> image = const Value.absent()}) =>
+          Value<Uint8List?> image = const Value.absent(),
+          Value<DateTime?> lastSynced = const Value.absent()}) =>
       PinEntityData(
         pinId: pinId ?? this.pinId,
         latitude: latitude ?? this.latitude,
@@ -1133,6 +1159,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
         group: group ?? this.group,
         isHidden: isHidden ?? this.isHidden,
         image: image.present ? image.value : this.image,
+        lastSynced: lastSynced.present ? lastSynced.value : this.lastSynced,
       );
   PinEntityData copyWithCompanion(PinEntityCompanion data) {
     return PinEntityData(
@@ -1146,6 +1173,8 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       group: data.group.present ? data.group.value : this.group,
       isHidden: data.isHidden.present ? data.isHidden.value : this.isHidden,
       image: data.image.present ? data.image.value : this.image,
+      lastSynced:
+          data.lastSynced.present ? data.lastSynced.value : this.lastSynced,
     );
   }
 
@@ -1159,14 +1188,15 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
           ..write('creator: $creator, ')
           ..write('group: $group, ')
           ..write('isHidden: $isHidden, ')
-          ..write('image: $image')
+          ..write('image: $image, ')
+          ..write('lastSynced: $lastSynced')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(pinId, latitude, longitude, creationDate,
-      creator, group, isHidden, $driftBlobEquality.hash(image));
+      creator, group, isHidden, $driftBlobEquality.hash(image), lastSynced);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1178,7 +1208,8 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
           other.creator == this.creator &&
           other.group == this.group &&
           other.isHidden == this.isHidden &&
-          $driftBlobEquality.equals(other.image, this.image));
+          $driftBlobEquality.equals(other.image, this.image) &&
+          other.lastSynced == this.lastSynced);
 }
 
 class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
@@ -1190,6 +1221,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
   final Value<String> group;
   final Value<bool> isHidden;
   final Value<Uint8List?> image;
+  final Value<DateTime?> lastSynced;
   final Value<int> rowid;
   const PinEntityCompanion({
     this.pinId = const Value.absent(),
@@ -1200,6 +1232,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     this.group = const Value.absent(),
     this.isHidden = const Value.absent(),
     this.image = const Value.absent(),
+    this.lastSynced = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   PinEntityCompanion.insert({
@@ -1211,6 +1244,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     required String group,
     this.isHidden = const Value.absent(),
     this.image = const Value.absent(),
+    this.lastSynced = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : pinId = Value(pinId),
         latitude = Value(latitude),
@@ -1227,6 +1261,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     Expression<String>? group,
     Expression<bool>? isHidden,
     Expression<Uint8List>? image,
+    Expression<DateTime>? lastSynced,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1238,6 +1273,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
       if (group != null) 'group': group,
       if (isHidden != null) 'is_hidden': isHidden,
       if (image != null) 'image': image,
+      if (lastSynced != null) 'last_synced': lastSynced,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1251,6 +1287,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
       Value<String>? group,
       Value<bool>? isHidden,
       Value<Uint8List?>? image,
+      Value<DateTime?>? lastSynced,
       Value<int>? rowid}) {
     return PinEntityCompanion(
       pinId: pinId ?? this.pinId,
@@ -1261,6 +1298,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
       group: group ?? this.group,
       isHidden: isHidden ?? this.isHidden,
       image: image ?? this.image,
+      lastSynced: lastSynced ?? this.lastSynced,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1292,6 +1330,9 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     if (image.present) {
       map['image'] = Variable<Uint8List>(image.value);
     }
+    if (lastSynced.present) {
+      map['last_synced'] = Variable<DateTime>(lastSynced.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1309,6 +1350,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
           ..write('group: $group, ')
           ..write('isHidden: $isHidden, ')
           ..write('image: $image, ')
+          ..write('lastSynced: $lastSynced, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -2117,6 +2159,7 @@ typedef $$PinEntityTableCreateCompanionBuilder = PinEntityCompanion Function({
   required String group,
   Value<bool> isHidden,
   Value<Uint8List?> image,
+  Value<DateTime?> lastSynced,
   Value<int> rowid,
 });
 typedef $$PinEntityTableUpdateCompanionBuilder = PinEntityCompanion Function({
@@ -2128,6 +2171,7 @@ typedef $$PinEntityTableUpdateCompanionBuilder = PinEntityCompanion Function({
   Value<String> group,
   Value<bool> isHidden,
   Value<Uint8List?> image,
+  Value<DateTime?> lastSynced,
   Value<int> rowid,
 });
 
@@ -2197,6 +2241,11 @@ class $$PinEntityTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
+  ColumnFilters<DateTime> get lastSynced => $state.composableBuilder(
+      column: $state.table.lastSynced,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
   $$UserEntityTableFilterComposer get creator {
     final $$UserEntityTableFilterComposer composer = $state.composerBuilder(
         composer: this,
@@ -2255,6 +2304,11 @@ class $$PinEntityTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
+  ColumnOrderings<DateTime> get lastSynced => $state.composableBuilder(
+      column: $state.table.lastSynced,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
   $$UserEntityTableOrderingComposer get creator {
     final $$UserEntityTableOrderingComposer composer = $state.composerBuilder(
         composer: this,
@@ -2308,6 +2362,7 @@ class $$PinEntityTableTableManager extends RootTableManager<
             Value<String> group = const Value.absent(),
             Value<bool> isHidden = const Value.absent(),
             Value<Uint8List?> image = const Value.absent(),
+            Value<DateTime?> lastSynced = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               PinEntityCompanion(
@@ -2319,6 +2374,7 @@ class $$PinEntityTableTableManager extends RootTableManager<
             group: group,
             isHidden: isHidden,
             image: image,
+            lastSynced: lastSynced,
             rowid: rowid,
           ),
           createCompanionCallback: ({
@@ -2330,6 +2386,7 @@ class $$PinEntityTableTableManager extends RootTableManager<
             required String group,
             Value<bool> isHidden = const Value.absent(),
             Value<Uint8List?> image = const Value.absent(),
+            Value<DateTime?> lastSynced = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               PinEntityCompanion.insert(
@@ -2341,6 +2398,7 @@ class $$PinEntityTableTableManager extends RootTableManager<
             group: group,
             isHidden: isHidden,
             image: image,
+            lastSynced: lastSynced,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

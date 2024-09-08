@@ -17,21 +17,19 @@ class GlobalDataService  extends _$GlobalDataService {
   Future<void> setMapStyle(int value) async {
     await ref.watch(globalDataRepositoryProvider).setMapStyle(value);
     state.mapStyle = value;
-  }
-
-  Future<void> setCameraMode(int value) async {
-    await ref.watch(globalDataRepositoryProvider).setCameraMode(value);
-    state.cameraMode = value;
+    ref.notifyListeners();
   }
 
   Future<void> setLastSeen() async {
     await ref.watch(globalDataRepositoryProvider).setLastSeenNow();
     state.lastSeen = DateTime.now();
+    ref.notifyListeners();
   }
 
   Future<void> setGroupOrder(List<String> order) async {
     await ref.watch(globalDataRepositoryProvider).setGroupOrder(order);
     state.groupOrder = order;
+    ref.notifyListeners();
   }
 
   Future<void> login(String username, String userId, String token) async {
@@ -51,4 +49,19 @@ class GlobalDataService  extends _$GlobalDataService {
 
 
 
+}
+
+@riverpod
+class CameraTorch extends _$CameraTorch {
+
+  @override
+  bool build() {
+    return ref.watch(sharedPreferencesProvider).getBool(GlobalDataRepository.cameraTorch) ?? false;
+  }
+
+
+  void setTorch(bool value) {
+    state = value;
+    ref.watch(sharedPreferencesProvider).setBool(GlobalDataRepository.cameraTorch, value);
+  }
 }

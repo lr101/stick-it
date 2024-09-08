@@ -5,7 +5,6 @@ class GlobalDataDto {
 
   DateTime lastSeen;
   int mapStyle;
-  int cameraMode;
   String? userId;
   String? username;
   String? refreshToken;
@@ -19,7 +18,6 @@ class GlobalDataDto {
     required this.refreshToken,
     required this.lastSeen,
     required this.mapStyle,
-    required this.cameraMode,
     required this.groupOrder,
     required this. cameras
   });

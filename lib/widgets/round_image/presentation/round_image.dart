@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RoundImage extends ConsumerWidget {
 
-  final AsyncValue<Uint8List> imageCallback;
+  final AsyncValue<Uint8List?> imageCallback;
   final bool clickable;
   final double size;
   final Widget child;
@@ -24,7 +24,7 @@ class RoundImage extends ConsumerWidget {
           context: context,
           child: imageCallback.when<Widget>(
               data: (data) => CircleAvatar(
-                backgroundImage: MemoryImage(data),
+                backgroundImage: data != null ? MemoryImage(data) : MemoryImage(ref.watch(defaultErrorImageProvider)),
                 radius: size,
                 backgroundColor: Colors.transparent,
                 child: child,

@@ -3,10 +3,11 @@ import 'dart:typed_data';
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/user_dto.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
+import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter/services.dart';
-
+import 'package:collection/collection.dart';
 import '../dto/global_data_dto.dart';
 import 'global_data_service.dart';
 
@@ -27,7 +28,18 @@ class UserService extends _$UserService {
     _usersApi = ref.watch(userApiProvider);
     _authApi = ref.watch(authApiProvider);
     _reportApi = ref.watch(reportApiProvider);
-    return [];
+
+    final localUser = await _userRepository.getUserById(_data.userId!);
+    if (localUser != null) return [localUser];
+    if (_data.userId == null) return [];
+    final profileImage = await _usersApi.getUserProfileImage(_data.userId!);
+    final profileImageSmall = await _usersApi.getUserProfileImageSmall(_data.userId!);
+    return [LocalUserDto(
+        userId: _data.userId!,
+        username: _data.username!,
+        profileImageSmall: profileImageSmall != null ? base64Decode(profileImageSmall) : null,
+        profileImage: profileImage != null ? base64Decode(profileImage) : null
+    )];
   }
 
   // Optimized state update function for a single user
@@ -42,41 +54,21 @@ class UserService extends _$UserService {
     }
   }
 
-  Future<void> createUser(LocalUserDto user) async {
-    try {
-      await _userRepository.createUser(user);
-      // Optimistically update state with the new user
-      updateSingleUser(user);
-    } catch (e) {
-      print('Error creating user: $e');
-    }
-  }
-
-  Future<LocalUserDto?> getUserById(String userId) async {
-    try {
-      final localUser = await _userRepository.getUserById(userId);
-      if (localUser != null) return localUser;
-
-      final remoteUser = await _usersApi.getUser(userId);
-      if (remoteUser != null) {
-        final userDto = LocalUserDto.fromInfoDto(remoteUser);
-        await _userRepository.createUser(userDto);
-        updateSingleUser(userDto);  // Update state with the fetched user
-        return userDto;
-      }
-      return null;
-    } catch (e) {
-      print('Error fetching user by ID: $e');
-      return null;
-    }
+  Future<LocalUserDto> fetchUserById(String userId) async {
+    final user = await _usersApi.getUser(userId);
+    final profileImage = await _usersApi.getUserProfileImage(_data.userId!);
+    final profileImageSmall = await _usersApi.getUserProfileImageSmall(_data.userId!);
+    final userDto = LocalUserDto(userId: user!.userId, username: user.username, profileImage: profileImage != null ? base64Decode(profileImage) : null, profileImageSmall: profileImageSmall != null ? base64Decode(profileImageSmall) : null);
+    await _userRepository.createUser(userDto);
+    return userDto;
   }
 
   Future<bool> auth(String name, String password) async {
     final response = await _authApi.userLogin(UserLoginRequest(username: name, password: password));
     if (response != null) {
       final userDto = LocalUserDto(userId: response.userId, username: name);
-      await createUser(userDto);
       ref.read(globalDataServiceProvider.notifier).login(name, response.userId, response.refreshToken);
+      await fetchUserById(userDto.userId);
       return true;
     }
     return false;
@@ -117,8 +109,8 @@ class UserService extends _$UserService {
       final response = await _authApi.createUser(request);
       if (response != null) {
         final userDto = LocalUserDto(userId: response.userId, username: username);
-        await createUser(userDto);
         ref.read(globalDataServiceProvider.notifier).login(username, response.userId, response.refreshToken);
+        await _userRepository.createUser(userDto);
         return true;
       }
       return false;
@@ -128,8 +120,6 @@ class UserService extends _$UserService {
   Future<bool> changeUser(String userId, {String? password, String? email}) async {
     try {
       await _usersApi.updateUser(userId, UserUpdateDto(password: password, email: email));
-      final user = await getUserById(userId);  // Update user state with the new info
-      if (user != null) updateSingleUser(user);
       return true;
     } catch (e) {
       print('Error changing user: $e');
@@ -186,4 +176,19 @@ class UserService extends _$UserService {
       return false;
     }
   }
+}
+
+@Riverpod(keepAlive: true)
+Future<LocalUserDto> userById(UserByIdRef ref, String userId) async {
+  final user = await ref.watch(userServiceProvider.selectAsync((u) => u.firstWhereOrNull((t) => t.userId == userId,)));
+  if (user != null) {
+    return user;
+  } else {
+    return await ref.watch(userServiceProvider.notifier).fetchUserById(userId);
+  }
+}
+
+@Riverpod(keepAlive: true)
+Future<Uint8List?> profilePictureById(ProfilePictureByIdRef ref, String userId) async {
+  return await ref.watch(userByIdProvider(userId).selectAsync((u) => u.profileImage));
 }

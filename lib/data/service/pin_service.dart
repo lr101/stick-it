@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/database.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -85,10 +86,14 @@ class PinService extends _$PinService {
   Future<void> addPinToGroup(LocalPinDto pin) async {
     try {
       await _pinRepository.createOrUpdate(pin);
-      await _pinsApi.createPin(pin.toPinRequestDto());
-
-      // Update state for the added pin without updating the whole list
       updateSinglePin(pin);
+      final result = await _pinsApi.createPin(pin.toPinRequestDto());
+      if (result != null) {
+        await _pinRepository.deletePinFromGroup(pin.id);
+        state.value!.removeWhere((t) => t.id == pin.id);
+        updateSinglePin(LocalPinDto.fromDto(result));
+        await _pinRepository.createOrUpdate(LocalPinDto.fromDto(result));
+      }
     } catch (e) {
       print('Error adding pin: $e');
     }

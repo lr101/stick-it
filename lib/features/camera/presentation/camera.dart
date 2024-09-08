@@ -3,10 +3,13 @@ import 'dart:typed_data';
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
+import 'package:buff_lisa/features/camera/presentation/imageUpload.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:mutex/mutex.dart';
 import 'package:snapping_page_scroll/snapping_page_scroll.dart';
 import 'package:super_tooltip/super_tooltip.dart';
@@ -32,22 +35,20 @@ class _CameraState extends ConsumerState<Camera> {
   void initState() {
     super.initState();
     controller = CameraController(ref.read(globalDataServiceProvider).cameras[0], ResolutionPreset.medium, enableAudio: false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // update torch mode
-      ref.listen(globalDataServiceProvider.select((t) => t.cameraMode), (_, next) => controller.setFlashMode(next == 0 ? FlashMode.off : FlashMode.auto));
-      // update selected camera and trigger reinitialization
-      ref.listen(cameraIndexProvider, (_, next) async {
-        await ref.read(cameraValuesProvider(controller).notifier).updateCamera(next);
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    // update torch mode
+    ref.listen(cameraTorchProvider, (_, next) => controller.setFlashMode(next ? FlashMode.off : FlashMode.auto));
+    // update selected camera and trigger reinitialization
+    ref.listen(cameraIndexProvider, (_, next) async {
+      await ref.read(cameraValuesProvider(controller).notifier).updateCamera(next);
+    });
     final state = ref.watch(cameraValuesProvider(controller));
     final cameraIndex = ref.watch(cameraIndexProvider);
     final cameras = ref.watch(globalDataServiceProvider.select((t) => t.cameras));
-    final cameraFlashMode = ref.read(globalDataServiceProvider.select((t) => t.cameraMode));
+    final cameraFlashMode = ref.watch(cameraTorchProvider);
     final groups = ref.watch(userGroupServiceProvider).value ?? [];
     return Scaffold(appBar: null,
       body: Column(
@@ -88,8 +89,8 @@ class _CameraState extends ConsumerState<Camera> {
                                         radius: 20,
                                         backgroundColor: Colors.grey.withOpacity(0.5),
                                         child: Center(child: IconButton(
-                                            onPressed: () => handleFlashChange(cameraFlashMode == 0 ? 1 : 0),
-                                            icon: cameraFlashMode == 0 ? const Icon(Icons.flash_off) : const Icon(Icons.flash_auto)
+                                            onPressed: () => handleFlashChange(!cameraFlashMode),
+                                            icon: cameraFlashMode ? const Icon(Icons.flash_off) : const Icon(Icons.flash_auto)
                                         ),)
                                     )),
                               ListView.builder(
@@ -139,7 +140,7 @@ class _CameraState extends ConsumerState<Camera> {
                   child: SnappingPageScroll(
                     controller: pageController,
                     onPageChanged: onPageChange,
-                    children: groups.map(groupCard).toList(),
+                    children: List.generate(groups.length, (index) => groupCard(groups[index], index)),
                     ),
                   ),
                 IgnorePointer(
@@ -174,19 +175,19 @@ class _CameraState extends ConsumerState<Camera> {
     ref.read(cameraIndexProvider.notifier).increment();
   }
 
-  void handleFlashChange(int value) {
-    ref.read(globalDataServiceProvider.notifier).setCameraMode(value);
+  void handleFlashChange(bool value) {
+    ref.read(cameraTorchProvider.notifier).setTorch(value);
   }
 
   void onPageChange(index) {
     ref.read(cameraGroupIndexProvider.notifier).updateIndex(index);
   }
 
-  Widget groupCard(LocalGroupDto group) {
+  Widget groupCard(LocalGroupDto group, int index) {
     return Padding(
         padding: const EdgeInsets.all(5),
         child: GestureDetector(
-            onTap: () => takePicture(group),
+            onTap: () => takePicture(group, index),
             child:  RoundImage(
               size: (MediaQuery.of(context).size.height) * 0.065,
               imageCallback: AsyncData(group.profileImage),
@@ -197,13 +198,18 @@ class _CameraState extends ConsumerState<Camera> {
     );
   }
 
-  Future<void> takePicture(LocalGroupDto group) async {
-    if(group != ref.read(cameraGroupIndexProvider)) return;
+  Future<void> takePicture(LocalGroupDto group, int index) async {
+    if(group.groupId != ref.read(cameraSelectedGroupProvider).groupId) {
+      pageController.animateToPage(index, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+      return;
+    }
+    if (_m.isLocked) return;
     _m.protect(() async {
         try {
           final image = await controller.takePicture();
           Uint8List bytes = await image.readAsBytes();
-          //await routeToCheckImage(bytes);
+          Position position = await Geolocator.getCurrentPosition();
+          await Routing.to(context, ImageUpload(image: bytes, position: position));
         } catch (e) {
           print(e);
         }

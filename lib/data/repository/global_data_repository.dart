@@ -51,7 +51,6 @@ class GlobalDataRepository {
         userId: await storage.read(key: userIdKey),
         username: await storage.read(key: usernameKey),
         refreshToken: await storage.read(key: tokenKey),
-        cameraMode: sharedPreferences.getInt(cameraTorch) ?? 0,
         mapStyle: sharedPreferences.getInt(mapStyle) ?? 0,
         lastSeen: DateTime.fromMicrosecondsSinceEpoch(sharedPreferences.getInt(lastSeenKey) ?? 0),
         groupOrder: sharedPreferences.getStringList(orderKey) ?? [],
@@ -77,10 +76,6 @@ class GlobalDataRepository {
 
   Future<void> setMapStyle(int style) async {
     sharedPreferences.setInt(mapStyle, style);
-  }
-
-  Future<void> setCameraMode(int value) async {
-    await sharedPreferences.setInt(cameraTorch, value);
   }
 
   Future<void> logout() async {

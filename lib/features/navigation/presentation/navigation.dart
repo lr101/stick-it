@@ -43,7 +43,7 @@ class _NavigationState extends ConsumerState<Navigation> {
               physics: const NeverScrollableScrollPhysics(),
               children: widgetOptions,
             ),
-            _groupSelector
+            state == 0 ? _groupSelector : const SizedBox.shrink(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

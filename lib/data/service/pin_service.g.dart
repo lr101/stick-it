@@ -21,7 +21,7 @@ final activatedPinsProvider = AutoDisposeProvider<List<LocalPinDto>>.internal(
 );
 
 typedef ActivatedPinsRef = AutoDisposeProviderRef<List<LocalPinDto>>;
-String _$pinServiceHash() => r'2ad1c5cf9c5192b92ad4362bc663298d0ccec3fc';
+String _$pinServiceHash() => r'52184a35f4017344faa5529bf42dc3b49fd89de8';
 
 /// Copied from Dart SDK
 class _SystemHash {

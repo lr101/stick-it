@@ -6,6 +6,22 @@ part of 'camera_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$cameraSelectedGroupHash() =>
+    r'57b61a985cd8df544000f575d13c055a1d1b3568';
+
+/// See also [cameraSelectedGroup].
+@ProviderFor(cameraSelectedGroup)
+final cameraSelectedGroupProvider = Provider<LocalGroupDto>.internal(
+  cameraSelectedGroup,
+  name: r'cameraSelectedGroupProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$cameraSelectedGroupHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef CameraSelectedGroupRef = ProviderRef<LocalGroupDto>;
 String _$cameraIndexHash() => r'2acc52147deba74fc547bc9a8c2de36017647cf9';
 
 /// See also [CameraIndex].
@@ -187,12 +203,12 @@ class _CameraValuesProviderElement
       (origin as CameraValuesProvider).controller;
 }
 
-String _$cameraGroupIndexHash() => r'466aec1ce6a65c63432641ae586843c8d346e531';
+String _$cameraGroupIndexHash() => r'c4af013786fcd5c4ccd6b06e8abc6500005a9107';
 
 /// See also [CameraGroupIndex].
 @ProviderFor(CameraGroupIndex)
 final cameraGroupIndexProvider =
-    AutoDisposeNotifierProvider<CameraGroupIndex, int>.internal(
+    NotifierProvider<CameraGroupIndex, int>.internal(
   CameraGroupIndex.new,
   name: r'cameraGroupIndexProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -202,6 +218,6 @@ final cameraGroupIndexProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$CameraGroupIndex = AutoDisposeNotifier<int>;
+typedef _$CameraGroupIndex = Notifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -27,6 +27,8 @@ class PinEntity extends Table {
   // Image of the pin as byte data (nullable)
   BlobColumn get image => blob().nullable()();
 
+  DateTimeColumn get lastSynced => dateTime().nullable()();
+
   // Specify the primary key
   @override
   Set<Column> get primaryKey => {pinId};

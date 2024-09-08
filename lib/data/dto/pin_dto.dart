@@ -12,6 +12,7 @@ class LocalPinDto {
   final String groupId;
   final Uint8List? image;
   final bool isHidden;
+  final DateTime? lastSynced;
 
   LocalPinDto({
     required this.id,
@@ -22,6 +23,7 @@ class LocalPinDto {
     required this.groupId,
     required this.isHidden,
     this.image,
+    this.lastSynced
   });
 
   factory LocalPinDto.fromEntityData(PinEntityData entityData) {
@@ -33,6 +35,7 @@ class LocalPinDto {
       creatorId: entityData.creator,
       groupId: entityData.group,
       image: entityData.image,
+      lastSynced: entityData.lastSynced,
       isHidden: entityData.isHidden,
     );
   }
@@ -47,6 +50,7 @@ class LocalPinDto {
       group: Value(groupId),
       image: Value(image),
       isHidden: Value(isHidden),
+      lastSynced: Value(lastSynced)
     );
   }
 
@@ -58,7 +62,8 @@ class LocalPinDto {
       creatorId : pinDto.creationUser,
       creationDate : pinDto.creationDate,
       groupId: pinDto.groupId,
-      isHidden: false
+      isHidden: false,
+      lastSynced: pinDto.creationDate // TODO update to last updated
     );
   }
 
@@ -71,7 +76,8 @@ class LocalPinDto {
       creationDate : pinDto.creationDate!,
       image: pinDto.image != null ? base64Decode(pinDto.image!) : null,
       groupId: pinDto.groupId,
-      isHidden: false
+      isHidden: false,
+      lastSynced: pinDto.creationDate // TODO update to last updated
     );
   }
 
