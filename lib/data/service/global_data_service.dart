@@ -14,12 +14,6 @@ class GlobalDataService  extends _$GlobalDataService {
   @override
   GlobalDataDto build() => ref.watch(globalDataOnceProvider);
 
-  Future<void> setMapStyle(int value) async {
-    await ref.watch(globalDataRepositoryProvider).setMapStyle(value);
-    state.mapStyle = value;
-    ref.notifyListeners();
-  }
-
   Future<void> setLastSeen() async {
     await ref.watch(globalDataRepositoryProvider).setLastSeenNow();
     state.lastSeen = DateTime.now();
@@ -37,6 +31,7 @@ class GlobalDataService  extends _$GlobalDataService {
     state.refreshToken = token;
     state.username = username;
     state.userId = userId;
+    ref.notifyListeners();
   }
 
   Future<void> logout() async {

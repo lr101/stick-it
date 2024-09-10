@@ -16,6 +16,7 @@ import 'package:select_dialog/select_dialog.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../data/dto/group_dto.dart';
+import '../../../widgets/tiles/presentation/group_tile.dart';
 
 class ImageUpload extends ConsumerStatefulWidget {
   const ImageUpload({super.key, required this.image, required this.position});
@@ -144,10 +145,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
       showSearchBox: false,
       label: "Change Group",
       selectedValue: groups[ref.watch(cameraGroupIndexProvider)],
-      itemBuilder: (context, group, b) => ListTile(
-        title: Text(group.name),
-        leading: RoundImage(imageCallback: AsyncData(group.profileImage), size: 15.0, child: Container()),
-      ),
+      itemBuilder: (context, group, b) => GroupTile(groupDto: group),
       items: groups,
       onChange: (group) {
         ref.read(cameraGroupIndexProvider.notifier).updateIndex(groups.indexOf(group));

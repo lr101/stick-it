@@ -6,7 +6,7 @@ part of 'user_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userByIdHash() => r'70e2b496b5125ae0d7a7eaae1a46344d0ae902ec';
+String _$userByIdHash() => r'd9747ec8addd2e96f2d8f1cf38cd463f1f4922c1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -72,7 +72,7 @@ class UserByIdFamily extends Family<AsyncValue<LocalUserDto>> {
 }
 
 /// See also [userById].
-class UserByIdProvider extends FutureProvider<LocalUserDto> {
+class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto> {
   /// See also [userById].
   UserByIdProvider(
     String userId,
@@ -123,7 +123,7 @@ class UserByIdProvider extends FutureProvider<LocalUserDto> {
   }
 
   @override
-  FutureProviderElement<LocalUserDto> createElement() {
+  AutoDisposeFutureProviderElement<LocalUserDto> createElement() {
     return _UserByIdProviderElement(this);
   }
 
@@ -141,13 +141,13 @@ class UserByIdProvider extends FutureProvider<LocalUserDto> {
   }
 }
 
-mixin UserByIdRef on FutureProviderRef<LocalUserDto> {
+mixin UserByIdRef on AutoDisposeFutureProviderRef<LocalUserDto> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
-class _UserByIdProviderElement extends FutureProviderElement<LocalUserDto>
-    with UserByIdRef {
+class _UserByIdProviderElement
+    extends AutoDisposeFutureProviderElement<LocalUserDto> with UserByIdRef {
   _UserByIdProviderElement(super.provider);
 
   @override
@@ -155,7 +155,7 @@ class _UserByIdProviderElement extends FutureProviderElement<LocalUserDto>
 }
 
 String _$profilePictureByIdHash() =>
-    r'9df110d99e72332ba39b0e70cdb6f0d4d5581fdb';
+    r'1a90dd8edcc690b0d71dd80beb7ca47912f4cfec';
 
 /// See also [profilePictureById].
 @ProviderFor(profilePictureById)
@@ -200,7 +200,7 @@ class ProfilePictureByIdFamily extends Family<AsyncValue<Uint8List?>> {
 }
 
 /// See also [profilePictureById].
-class ProfilePictureByIdProvider extends FutureProvider<Uint8List?> {
+class ProfilePictureByIdProvider extends AutoDisposeFutureProvider<Uint8List?> {
   /// See also [profilePictureById].
   ProfilePictureByIdProvider(
     String userId,
@@ -252,7 +252,7 @@ class ProfilePictureByIdProvider extends FutureProvider<Uint8List?> {
   }
 
   @override
-  FutureProviderElement<Uint8List?> createElement() {
+  AutoDisposeFutureProviderElement<Uint8List?> createElement() {
     return _ProfilePictureByIdProviderElement(this);
   }
 
@@ -270,20 +270,21 @@ class ProfilePictureByIdProvider extends FutureProvider<Uint8List?> {
   }
 }
 
-mixin ProfilePictureByIdRef on FutureProviderRef<Uint8List?> {
+mixin ProfilePictureByIdRef on AutoDisposeFutureProviderRef<Uint8List?> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
 class _ProfilePictureByIdProviderElement
-    extends FutureProviderElement<Uint8List?> with ProfilePictureByIdRef {
+    extends AutoDisposeFutureProviderElement<Uint8List?>
+    with ProfilePictureByIdRef {
   _ProfilePictureByIdProviderElement(super.provider);
 
   @override
   String get userId => (origin as ProfilePictureByIdProvider).userId;
 }
 
-String _$userServiceHash() => r'e9b9c38548f185102d0e83b3ec855f9290350280';
+String _$userServiceHash() => r'4ee0dc7b2b055e44c555aebe6f513d7bce89b1b9';
 
 /// See also [UserService].
 @ProviderFor(UserService)

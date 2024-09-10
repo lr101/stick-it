@@ -43,9 +43,9 @@ class _MapHomeState extends ConsumerState<MapHome> {
               options: MapOptions(
                 minZoom: 2,
                 maxZoom: 18,
-                initialZoom: 5,
+                zoom: 5,
                 keepAlive: true,
-                interactionOptions: InteractionOptions(flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag) ,
+                interactiveFlags:  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
               ),
               children: [
                 TileLayer(

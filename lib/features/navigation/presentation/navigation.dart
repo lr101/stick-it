@@ -1,10 +1,12 @@
 import 'package:buff_lisa/features/camera/presentation/camera.dart';
+import 'package:buff_lisa/features/feed/presentation/feed.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_home.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../widgets/group_selector/presentation/group_selector.dart';
+import '../../group_user_list/presentation/user_groups.dart';
 
 class Navigation extends ConsumerStatefulWidget {
   const Navigation({super.key});
@@ -18,8 +20,10 @@ class _NavigationState extends ConsumerState<Navigation> {
   late PageController _pageController;
 
   final List<Widget> widgetOptions = <Widget>[
+    const UserGroups(),
+    const Camera(),
     const MapHome(),
-    const Camera()
+    const Feed()
   ];
 
   final GroupSelector _groupSelector = GroupSelector();
@@ -43,7 +47,7 @@ class _NavigationState extends ConsumerState<Navigation> {
               physics: const NeverScrollableScrollPhysics(),
               children: widgetOptions,
             ),
-            state == 0 ? _groupSelector : const SizedBox.shrink(),
+            state == 2 || state == 3 ? _groupSelector : const SizedBox.shrink(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

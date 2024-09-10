@@ -31,7 +31,7 @@ dependencies:
     sdk: flutter
 
   openapi:
-    path: ../buff_lisa_openapi_client
+    path: ./api
 
   async_builder:
 
@@ -164,6 +164,7 @@ dependencies:
   async: any
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
+  flutter_cache_manager: ^3.4.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

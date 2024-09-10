@@ -9,7 +9,7 @@ class NavigationState extends _$NavigationState {
 
   @override
   int build() {
-    return 0;
+    return 2;
   }
 
   void setIndex(int index) {

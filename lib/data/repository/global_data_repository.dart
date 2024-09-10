@@ -51,7 +51,6 @@ class GlobalDataRepository {
         userId: await storage.read(key: userIdKey),
         username: await storage.read(key: usernameKey),
         refreshToken: await storage.read(key: tokenKey),
-        mapStyle: sharedPreferences.getInt(mapStyle) ?? 0,
         lastSeen: DateTime.fromMicrosecondsSinceEpoch(sharedPreferences.getInt(lastSeenKey) ?? 0),
         groupOrder: sharedPreferences.getStringList(orderKey) ?? [],
         cameras: await availableCameras(),

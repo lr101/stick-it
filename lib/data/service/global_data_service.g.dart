@@ -6,7 +6,7 @@ part of 'global_data_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$globalDataServiceHash() => r'88134865a370b9f077204e969df1e5084d32440e';
+String _$globalDataServiceHash() => r'33f0119552f99353820747fd8cad62de52eb890d';
 
 /// See also [GlobalDataService].
 @ProviderFor(GlobalDataService)

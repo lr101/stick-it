@@ -21,7 +21,24 @@ final activatedPinsProvider = AutoDisposeProvider<List<LocalPinDto>>.internal(
 );
 
 typedef ActivatedPinsRef = AutoDisposeProviderRef<List<LocalPinDto>>;
-String _$pinServiceHash() => r'52184a35f4017344faa5529bf42dc3b49fd89de8';
+String _$sortedActivatedPinsHash() =>
+    r'0a7e87d2a08282f78a07bfb1b72ae6aae4e8a57c';
+
+/// See also [sortedActivatedPins].
+@ProviderFor(sortedActivatedPins)
+final sortedActivatedPinsProvider =
+    AutoDisposeProvider<List<LocalPinDto>>.internal(
+  sortedActivatedPins,
+  name: r'sortedActivatedPinsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$sortedActivatedPinsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef SortedActivatedPinsRef = AutoDisposeProviderRef<List<LocalPinDto>>;
+String _$pinServiceHash() => r'c29d677ec9b44563cc5999acfb8b8fb34999a723';
 
 /// Copied from Dart SDK
 class _SystemHash {

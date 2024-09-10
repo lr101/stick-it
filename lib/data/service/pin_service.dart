@@ -18,6 +18,7 @@ class PinService extends _$PinService {
   late PinRepository _pinRepository;
   late PinsApi _pinsApi;
   late String _groupId;
+  int _pagesLoaded = -1;
 
   @override
   Future<List<LocalPinDto>> build(String groupId) async {
@@ -55,6 +56,18 @@ class PinService extends _$PinService {
       updatedState[index] = updatedPin;
       state = AsyncValue.data(updatedState);
     }
+  }
+
+  void updateMultiplePins(List<LocalPinDto> updatedPin) {
+    final currentState = state.value ?? [];
+    final updatedState = [...currentState];
+    for (var pin in updatedPin) {
+      final index = currentState.indexWhere((p) => p.id == pin.id);
+      if (index != -1) {
+        updatedState[index] = pin;
+      }
+    }
+    state = AsyncValue.data(updatedState);
   }
 
   Future<List<LocalPinDto>> getPinsOfActiveGroup() async {
@@ -172,4 +185,11 @@ List<LocalPinDto> activatedPins(ActivatedPinsRef ref) {
     pins.addAll(p);
   }
   return pins;
+}
+
+@riverpod
+List<LocalPinDto> sortedActivatedPins(SortedActivatedPinsRef ref) {
+  final value = ref.watch(activatedPinsProvider);
+  value.sort((a,b) => a.creationDate.compareTo(b.creationDate));
+  return value;
 }

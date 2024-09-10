@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,22 +10,18 @@ class RoundImage extends ConsumerWidget {
   final AsyncValue<Uint8List?> imageCallback;
   final bool clickable;
   final double size;
-  final Widget child;
+  final Widget? child;
   final VoidCallback? handleOpenImage;
 
-  RoundImage({super.key, required this.imageCallback, this.clickable = false, required this.size, required this.child, this.handleOpenImage}) : assert (clickable && handleOpenImage != null || !clickable);
+  RoundImage({super.key, required this.imageCallback, this.clickable = false, required this.size, this.child, this.handleOpenImage}) : assert (clickable && handleOpenImage != null || !clickable);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _clickable(
+    return _clickable(
           context: context,
           child: imageCallback.when<Widget>(
               data: (data) => CircleAvatar(
-                backgroundImage: data != null ? MemoryImage(data) : MemoryImage(ref.watch(defaultErrorImageProvider)),
+                backgroundImage: getImage(data, ref.watch(defaultErrorImageProvider)),
                 radius: size,
                 backgroundColor: Colors.transparent,
                 child: child,
@@ -37,9 +34,18 @@ class RoundImage extends ConsumerWidget {
               ),
               loading: () => CircleAvatar(radius: size, backgroundColor: Colors.grey ,child: child)
           )
-        ),
-      ],
-    );
+        );
+  }
+
+  ImageProvider<Object> getImage(Uint8List? data, Uint8List defaultImage) {
+    if (data != null) {
+      try {
+        return MemoryImage(data);
+      } catch (err) {
+        if (kDebugMode) print(err);
+      }
+    }
+    return MemoryImage(defaultImage);
   }
 
   Widget _clickable({required Widget child, required BuildContext context}) {

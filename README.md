@@ -24,96 +24,7 @@ Therefore, the App can be easily compiled to Android, iOS and Web. In addition t
 
 How the different pages interact with each can be found [here]().
 
-### Server
-
-Information is mostly fetched from the server when needed. The server uses the REST structure to make information available to clients. All used routes can be accessed via static methods from the files in the [ServerCalls file](/lib/Files/ServerCalls).
-
-### Data
-
-#### Where is the data stored? 
-
-Global data can be accessed via Providers or the [global file](/lib/Files/Other/global.dart). The global file contains static data and a LocalData class instance. This class is initialized on startup and contains data saved offline to rebuild the app the same way it was before closing it. The data from the global class can be directly access from everywhere.
-
-Additionally, there are three main globally accessible providers:
-
-1. **ClusterNotifier**: Holds the information of the groups and provides methods to make operations possible
-2. **ThemeNotifier**: Holds the dark and light theme information and which one is currently active
-3. **UserNotifier**: Holds information of different users
-4. **DateNotifier**: Holds information on last date the feed was refreshed
-
-These classes extend the ChangeNotifier class and are created and attached in the main method. The ChangeNotifier class makes it possible to access the class via providers and listen to changes in the data. Changes trigger a rebuild of a part of a widget (different from setState, which rebuilds the whole class). 
-
-#### [Groups](/lib/Files/DTOClasses/group.dart)
-
-A group instance has multiple attributes and can be identified through the unique groupId. To initialize a group there must be at least a groupId, name, visibility and an invite url if the visibility is not zero. The groups also contains all pins that can be loaded from the server. Groups are saved offline when created or edited, so an offline use is possible, when the server is not available.
-
-#### [Pins](/lib/Files/DTOClasses/pin.dart)
-
-A pin instance has multiple attributes and can be identified through the unique id. To initialize a pin the id, latitude, longitude, creation date, username and group must be given. The Image can be loaded from the server. Pins can also be saved offline. This is only used during offline use to save it, until an upload is possible.
-
-## Install
-
-### Installation for Android and iOS
-
-1. Follow the flutter installation [here](https://docs.flutter.dev/get-started/install)
-2. Clone this project: ```git clone git@github.com:lr101/buff_lisa.git```
-3. Go into file: ```cd buff_lisa```
-4. Add an .env file here: 
-```
-HOST=stick-it.hopto.org
-MAPS_API_KEY=[api key from stadia maps]
-```
-5. Run ```flutter pub get```
-6. Now running on a simulator should be possible
-
-### Setup for Google Play Store:
-
-Look [here](https://docs.flutter.dev/deployment/android) for more information
-
-### Setup for iOS Store:
-
-Look [here](https://docs.flutter.dev/deployment/ios) for more information
-
- - Set Developer Profile under Runner -> Signing & Automatic signing
-## Other
-
-### Packages used
-
-1. flutter_map_marker_cluster
-2. flutter_map_location_marker:
-3. flutter_map:
-4. latlong2:
-5. geolocator:
-6. http:
-7. crypt:
-8. crypto:
-9. flutter_secure_storage:
-10. camera:
-11. image_picker:
-12. image_cropper:
-13. path_provider:
-14. path:
-15. shimmer:
-16. flutter_login:
-17. shared_preferences:
-18. webview_flutter:
-19. image:
-20. flutter_dotenv:
-21. provider:
-22. url_launcher:
-23. infinite_scroll_pagination:
-24. internet_connection_checker:
-25. mutex:
-26. hive:
-27. flutter_launcher_icons:
-28. hive_flutter:
-29. google_mobile_ads:
-30. fluttertoast:
-31. configurable_expansion_tile_null_safety:
-32. geocoding:
-33. permission_handler:
-34. settings_ui:
-35. flutter_native_splash:
+## Helpful commands
 
 ### Set new icon
 1. change asset path in pubspec.yaml
@@ -131,3 +42,13 @@ Look [here](https://docs.flutter.dev/deployment/ios) for more information
 - run ```flutter build ipa```
 - run ```xcrun altool --upload-app --type ios -f build/ios/ipa/*.ipa --apiKey B4589LDTP6 --apiIssuer 085ec48f-332a-4138-b4dd-c64be661fa63``` 
 - or ```xcrun altool --upload-app --type ios -f build/ios/ipa/*.ipa --apiKey 5QT3Y74Q5L --apiIssuer 085ec48f-332a-4138-b4dd-c64be661fa63```
+
+### Openapi
+1. Activate openapi-generator:
+  ```shell
+  flutter pub global activate openapi_generator_cli
+  ```
+2. Run generator:
+  ```shell
+  openapi-generator generate -i ../MonaServer/openapi/openapi.yaml -g dart -o ./api
+  ```

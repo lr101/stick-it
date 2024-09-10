@@ -67,7 +67,7 @@ class UserService extends _$UserService {
     final response = await _authApi.userLogin(UserLoginRequest(username: name, password: password));
     if (response != null) {
       final userDto = LocalUserDto(userId: response.userId, username: name);
-      ref.read(globalDataServiceProvider.notifier).login(name, response.userId, response.refreshToken);
+      await ref.read(globalDataServiceProvider.notifier).login(name, response.userId, response.refreshToken);
       await fetchUserById(userDto.userId);
       return true;
     }
@@ -178,8 +178,9 @@ class UserService extends _$UserService {
   }
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 Future<LocalUserDto> userById(UserByIdRef ref, String userId) async {
+  print(userId + "test");
   final user = await ref.watch(userServiceProvider.selectAsync((u) => u.firstWhereOrNull((t) => t.userId == userId,)));
   if (user != null) {
     return user;
@@ -188,7 +189,7 @@ Future<LocalUserDto> userById(UserByIdRef ref, String userId) async {
   }
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 Future<Uint8List?> profilePictureById(ProfilePictureByIdRef ref, String userId) async {
   return await ref.watch(userByIdProvider(userId).selectAsync((u) => u.profileImage));
 }
