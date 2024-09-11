@@ -24,7 +24,7 @@ class PinImageService extends _$PinImageService {
   Future<void> addImages(List<String> pinIds) async {
     final missingImages = <String>[];
     for (var pinId in pinIds) {
-      if (!state.value!.containsKey(pinId)) {
+      if (state.value == null || !state.value!.containsKey(pinId)) {
         missingImages.add(pinId);
       }
     }
@@ -43,6 +43,5 @@ class PinImageService extends _$PinImageService {
 
 @riverpod
 Future<Uint8List?> getPinImage(GetPinImageRef ref, String pinId) async {
-  print(pinId);
   return await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pinId]));
 }

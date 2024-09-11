@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pin_image_service.dart';
+part of 'image_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getPinImageHash() => r'5cf31181f132328dfb990a9f26c5d1509dbdd080';
+String _$getPinImageInfoHash() => r'b3d164097decc26356ba147c3540dca97f6d02e7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,27 +29,27 @@ class _SystemHash {
   }
 }
 
-/// See also [getPinImage].
-@ProviderFor(getPinImage)
-const getPinImageProvider = GetPinImageFamily();
+/// See also [getPinImageInfo].
+@ProviderFor(getPinImageInfo)
+const getPinImageInfoProvider = GetPinImageInfoFamily();
 
-/// See also [getPinImage].
-class GetPinImageFamily extends Family<AsyncValue<Uint8List?>> {
-  /// See also [getPinImage].
-  const GetPinImageFamily();
+/// See also [getPinImageInfo].
+class GetPinImageInfoFamily extends Family<AsyncValue<PinImageInfo?>> {
+  /// See also [getPinImageInfo].
+  const GetPinImageInfoFamily();
 
-  /// See also [getPinImage].
-  GetPinImageProvider call(
+  /// See also [getPinImageInfo].
+  GetPinImageInfoProvider call(
     String pinId,
   ) {
-    return GetPinImageProvider(
+    return GetPinImageInfoProvider(
       pinId,
     );
   }
 
   @override
-  GetPinImageProvider getProviderOverride(
-    covariant GetPinImageProvider provider,
+  GetPinImageInfoProvider getProviderOverride(
+    covariant GetPinImageInfoProvider provider,
   ) {
     return call(
       provider.pinId,
@@ -68,32 +68,32 @@ class GetPinImageFamily extends Family<AsyncValue<Uint8List?>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getPinImageProvider';
+  String? get name => r'getPinImageInfoProvider';
 }
 
-/// See also [getPinImage].
-class GetPinImageProvider extends AutoDisposeFutureProvider<Uint8List?> {
-  /// See also [getPinImage].
-  GetPinImageProvider(
+/// See also [getPinImageInfo].
+class GetPinImageInfoProvider extends AutoDisposeFutureProvider<PinImageInfo?> {
+  /// See also [getPinImageInfo].
+  GetPinImageInfoProvider(
     String pinId,
   ) : this._internal(
-          (ref) => getPinImage(
-            ref as GetPinImageRef,
+          (ref) => getPinImageInfo(
+            ref as GetPinImageInfoRef,
             pinId,
           ),
-          from: getPinImageProvider,
-          name: r'getPinImageProvider',
+          from: getPinImageInfoProvider,
+          name: r'getPinImageInfoProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getPinImageHash,
-          dependencies: GetPinImageFamily._dependencies,
+                  : _$getPinImageInfoHash,
+          dependencies: GetPinImageInfoFamily._dependencies,
           allTransitiveDependencies:
-              GetPinImageFamily._allTransitiveDependencies,
+              GetPinImageInfoFamily._allTransitiveDependencies,
           pinId: pinId,
         );
 
-  GetPinImageProvider._internal(
+  GetPinImageInfoProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -107,12 +107,12 @@ class GetPinImageProvider extends AutoDisposeFutureProvider<Uint8List?> {
 
   @override
   Override overrideWith(
-    FutureOr<Uint8List?> Function(GetPinImageRef provider) create,
+    FutureOr<PinImageInfo?> Function(GetPinImageInfoRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetPinImageProvider._internal(
-        (ref) => create(ref as GetPinImageRef),
+      override: GetPinImageInfoProvider._internal(
+        (ref) => create(ref as GetPinImageInfoRef),
         from: from,
         name: null,
         dependencies: null,
@@ -124,13 +124,13 @@ class GetPinImageProvider extends AutoDisposeFutureProvider<Uint8List?> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<Uint8List?> createElement() {
-    return _GetPinImageProviderElement(this);
+  AutoDisposeFutureProviderElement<PinImageInfo?> createElement() {
+    return _GetPinImageInfoProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetPinImageProvider && other.pinId == pinId;
+    return other is GetPinImageInfoProvider && other.pinId == pinId;
   }
 
   @override
@@ -142,34 +142,18 @@ class GetPinImageProvider extends AutoDisposeFutureProvider<Uint8List?> {
   }
 }
 
-mixin GetPinImageRef on AutoDisposeFutureProviderRef<Uint8List?> {
+mixin GetPinImageInfoRef on AutoDisposeFutureProviderRef<PinImageInfo?> {
   /// The parameter `pinId` of this provider.
   String get pinId;
 }
 
-class _GetPinImageProviderElement
-    extends AutoDisposeFutureProviderElement<Uint8List?> with GetPinImageRef {
-  _GetPinImageProviderElement(super.provider);
+class _GetPinImageInfoProviderElement
+    extends AutoDisposeFutureProviderElement<PinImageInfo?>
+    with GetPinImageInfoRef {
+  _GetPinImageInfoProviderElement(super.provider);
 
   @override
-  String get pinId => (origin as GetPinImageProvider).pinId;
+  String get pinId => (origin as GetPinImageInfoProvider).pinId;
 }
-
-String _$pinImageServiceHash() => r'79939b85630c3b44e15b64c0bd78f45c701f67a3';
-
-/// See also [PinImageService].
-@ProviderFor(PinImageService)
-final pinImageServiceProvider =
-    AsyncNotifierProvider<PinImageService, Map<String, Uint8List>>.internal(
-  PinImageService.new,
-  name: r'pinImageServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$pinImageServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$PinImageService = AsyncNotifier<Map<String, Uint8List>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

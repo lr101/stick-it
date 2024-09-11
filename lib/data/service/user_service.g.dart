@@ -6,7 +6,7 @@ part of 'user_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userByIdHash() => r'd9747ec8addd2e96f2d8f1cf38cd463f1f4922c1';
+String _$userByIdHash() => r'a7c963274de482364e00e864c03479a63a7bdde7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const userByIdProvider = UserByIdFamily();
 
 /// See also [userById].
-class UserByIdFamily extends Family<AsyncValue<LocalUserDto>> {
+class UserByIdFamily extends Family<AsyncValue<LocalUserDto?>> {
   /// See also [userById].
   const UserByIdFamily();
 
@@ -72,7 +72,7 @@ class UserByIdFamily extends Family<AsyncValue<LocalUserDto>> {
 }
 
 /// See also [userById].
-class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto> {
+class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto?> {
   /// See also [userById].
   UserByIdProvider(
     String userId,
@@ -106,7 +106,7 @@ class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto> {
 
   @override
   Override overrideWith(
-    FutureOr<LocalUserDto> Function(UserByIdRef provider) create,
+    FutureOr<LocalUserDto?> Function(UserByIdRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -123,7 +123,7 @@ class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<LocalUserDto> createElement() {
+  AutoDisposeFutureProviderElement<LocalUserDto?> createElement() {
     return _UserByIdProviderElement(this);
   }
 
@@ -141,13 +141,13 @@ class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto> {
   }
 }
 
-mixin UserByIdRef on AutoDisposeFutureProviderRef<LocalUserDto> {
+mixin UserByIdRef on AutoDisposeFutureProviderRef<LocalUserDto?> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
 class _UserByIdProviderElement
-    extends AutoDisposeFutureProviderElement<LocalUserDto> with UserByIdRef {
+    extends AutoDisposeFutureProviderElement<LocalUserDto?> with UserByIdRef {
   _UserByIdProviderElement(super.provider);
 
   @override
@@ -155,7 +155,7 @@ class _UserByIdProviderElement
 }
 
 String _$profilePictureByIdHash() =>
-    r'1a90dd8edcc690b0d71dd80beb7ca47912f4cfec';
+    r'7f394700a64bec722960ea1b3dd1248aedeb7ad6';
 
 /// See also [profilePictureById].
 @ProviderFor(profilePictureById)
@@ -284,12 +284,143 @@ class _ProfilePictureByIdProviderElement
   String get userId => (origin as ProfilePictureByIdProvider).userId;
 }
 
-String _$userServiceHash() => r'4ee0dc7b2b055e44c555aebe6f513d7bce89b1b9';
+String _$profilePictureSmallByIdHash() =>
+    r'de95ecd6dbe4ce4046ccca333aa42d6104f8ff9e';
+
+/// See also [profilePictureSmallById].
+@ProviderFor(profilePictureSmallById)
+const profilePictureSmallByIdProvider = ProfilePictureSmallByIdFamily();
+
+/// See also [profilePictureSmallById].
+class ProfilePictureSmallByIdFamily extends Family<AsyncValue<Uint8List?>> {
+  /// See also [profilePictureSmallById].
+  const ProfilePictureSmallByIdFamily();
+
+  /// See also [profilePictureSmallById].
+  ProfilePictureSmallByIdProvider call(
+    String userId,
+  ) {
+    return ProfilePictureSmallByIdProvider(
+      userId,
+    );
+  }
+
+  @override
+  ProfilePictureSmallByIdProvider getProviderOverride(
+    covariant ProfilePictureSmallByIdProvider provider,
+  ) {
+    return call(
+      provider.userId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'profilePictureSmallByIdProvider';
+}
+
+/// See also [profilePictureSmallById].
+class ProfilePictureSmallByIdProvider
+    extends AutoDisposeFutureProvider<Uint8List?> {
+  /// See also [profilePictureSmallById].
+  ProfilePictureSmallByIdProvider(
+    String userId,
+  ) : this._internal(
+          (ref) => profilePictureSmallById(
+            ref as ProfilePictureSmallByIdRef,
+            userId,
+          ),
+          from: profilePictureSmallByIdProvider,
+          name: r'profilePictureSmallByIdProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$profilePictureSmallByIdHash,
+          dependencies: ProfilePictureSmallByIdFamily._dependencies,
+          allTransitiveDependencies:
+              ProfilePictureSmallByIdFamily._allTransitiveDependencies,
+          userId: userId,
+        );
+
+  ProfilePictureSmallByIdProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+  }) : super.internal();
+
+  final String userId;
+
+  @override
+  Override overrideWith(
+    FutureOr<Uint8List?> Function(ProfilePictureSmallByIdRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ProfilePictureSmallByIdProvider._internal(
+        (ref) => create(ref as ProfilePictureSmallByIdRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Uint8List?> createElement() {
+    return _ProfilePictureSmallByIdProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ProfilePictureSmallByIdProvider && other.userId == userId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ProfilePictureSmallByIdRef on AutoDisposeFutureProviderRef<Uint8List?> {
+  /// The parameter `userId` of this provider.
+  String get userId;
+}
+
+class _ProfilePictureSmallByIdProviderElement
+    extends AutoDisposeFutureProviderElement<Uint8List?>
+    with ProfilePictureSmallByIdRef {
+  _ProfilePictureSmallByIdProviderElement(super.provider);
+
+  @override
+  String get userId => (origin as ProfilePictureSmallByIdProvider).userId;
+}
+
+String _$userServiceHash() => r'481c0d472c41d9f277cb13c3a8fe1df400812574';
 
 /// See also [UserService].
 @ProviderFor(UserService)
 final userServiceProvider =
-    AsyncNotifierProvider<UserService, List<LocalUserDto>>.internal(
+    AsyncNotifierProvider<UserService, Map<String, LocalUserDto>>.internal(
   UserService.new,
   name: r'userServiceProvider',
   debugGetCreateSourceHash:
@@ -298,6 +429,6 @@ final userServiceProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$UserService = AsyncNotifier<List<LocalUserDto>>;
+typedef _$UserService = AsyncNotifier<Map<String, LocalUserDto>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

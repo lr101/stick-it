@@ -1,6 +1,7 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
+import 'package:buff_lisa/features/feed/presentation/feed_card.dart';
 import 'package:buff_lisa/widgets/pin_header/presentation/pin_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,9 +16,9 @@ class Feed extends ConsumerStatefulWidget {
 
 class _FeedState extends ConsumerState<Feed> {
 
-  final _pagingController = PagingController<int, LocalPinDto>(firstPageKey: 0);
+  final _pagingController = PagingController<int, LocalPinDto>(firstPageKey: 0, invisibleItemsThreshold: 1);
 
-  final int _pageSize = 18;
+  final int _pageSize = 3;
 
   List<LocalPinDto> _images = [];
 
@@ -35,6 +36,7 @@ class _FeedState extends ConsumerState<Feed> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(pinImageServiceProvider);
     ref.listen(sortedActivatedPinsProvider, (_, next) {
       _images = next;
       _pagingController.refresh();
@@ -42,14 +44,11 @@ class _FeedState extends ConsumerState<Feed> {
     return Scaffold(
       body: PagedListView<int, LocalPinDto> (
             pagingController: _pagingController,
+            addAutomaticKeepAlives: false,
             builderDelegate: PagedChildBuilderDelegate<LocalPinDto>(
-              itemBuilder: (context, item, index) => Column(
-                children: [
-                  PinHeader(pinDto: item),
-                  ref.watch(GetPinImageProvider(item.id)).when(data: (data) => data == null ? Icon(Icons.error) : Image.memory(data, fit: BoxFit.cover), error: (_, __,) => Icon(Icons.error), loading: () => CircularProgressIndicator()),
-                ],
-              ),
-            )
+              animateTransitions: true,
+              itemBuilder: (context, item, index) => FeedCard(item: item),
+            ),
         )
     );
   }

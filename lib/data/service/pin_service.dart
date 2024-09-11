@@ -190,6 +190,6 @@ List<LocalPinDto> activatedPins(ActivatedPinsRef ref) {
 @riverpod
 List<LocalPinDto> sortedActivatedPins(SortedActivatedPinsRef ref) {
   final value = ref.watch(activatedPinsProvider);
-  value.sort((a,b) => a.creationDate.compareTo(b.creationDate));
+  value.sort((a,b) => b.creationDate.compareTo(a.creationDate));
   return value;
 }

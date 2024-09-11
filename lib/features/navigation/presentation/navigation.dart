@@ -16,7 +16,6 @@ class Navigation extends ConsumerStatefulWidget {
 }
 
 class _NavigationState extends ConsumerState<Navigation> {
-
   late PageController _pageController;
 
   final List<Widget> widgetOptions = <Widget>[
@@ -26,7 +25,6 @@ class _NavigationState extends ConsumerState<Navigation> {
     const Feed()
   ];
 
-  final GroupSelector _groupSelector = GroupSelector();
 
   @override
   void initState() {
@@ -36,18 +34,27 @@ class _NavigationState extends ConsumerState<Navigation> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height * 0.09;
+    final groupSelector = GroupSelector(height: height);
     final state = ref.watch(navigationStateProvider);
-
-    return Scaffold(appBar: null,
-        backgroundColor: Colors.transparent,
+    return Scaffold(
+        appBar: null,
+        backgroundColor: state == 2?Colors.transparent: null,
         body: Stack(
           children: [
-            PageView(
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: widgetOptions,
+            Column(
+              children: [
+                if (state == 3) SizedBox(height: height),
+                Expanded(
+                  child: PageView(
+                    controller: _pageController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: widgetOptions,
+                  ),
+                )
+              ],
             ),
-            state == 2 || state == 3 ? _groupSelector : const SizedBox.shrink(),
+            state == 2 || state == 3 ? groupSelector : const SizedBox.shrink(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -76,13 +83,11 @@ class _NavigationState extends ConsumerState<Navigation> {
           ],
           currentIndex: state,
           onTap: onItemTapped,
-        )
-    );
+        ));
   }
 
   void onItemTapped(int index) {
-     _pageController.jumpToPage(index);
-     ref.read(navigationStateProvider.notifier).setIndex(index);
+    _pageController.jumpToPage(index);
+    ref.read(navigationStateProvider.notifier).setIndex(index);
   }
-
 }

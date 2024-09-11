@@ -5,17 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GroupSelector extends ConsumerStatefulWidget {
-  const GroupSelector({super.key});
+  const GroupSelector({super.key, required this.height});
+
+  final double height;
 
   @override
   ConsumerState<GroupSelector> createState() => _GroupSelectorState();
 }
 
-class _GroupSelectorState extends ConsumerState<GroupSelector> {
+class _GroupSelectorState extends ConsumerState<GroupSelector>  with AutomaticKeepAliveClientMixin<GroupSelector> {
 
   @override
   Widget build(BuildContext context) {
-    double baseHeight = MediaQuery.of(context).size.height * 0.09;
     final groups = ref.watch(userGroupServiceProvider);
 
     return Container(
@@ -30,14 +31,14 @@ class _GroupSelectorState extends ConsumerState<GroupSelector> {
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.transparent),
                   borderRadius: BorderRadius.all(
-                      Radius.circular(baseHeight / 2)),
+                      Radius.circular(widget.height / 2)),
                   color: Colors.grey.withOpacity(0.4)
               ),
               width: MediaQuery
                   .of(context)
                   .size
                   .width - 10,
-              height: baseHeight,
+              height: widget.height,
               child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 2),
                   child: Container(
@@ -45,7 +46,7 @@ class _GroupSelectorState extends ConsumerState<GroupSelector> {
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.transparent),
                           borderRadius: BorderRadius.all(
-                              Radius.circular(baseHeight / 2)),
+                              Radius.circular(widget.height / 2)),
                           color: Colors.transparent
                       ),
                       child: groups.when(
@@ -101,6 +102,11 @@ class _GroupSelectorState extends ConsumerState<GroupSelector> {
             )
         )
     );
+
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive =>  true;
 
 }

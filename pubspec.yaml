@@ -90,7 +90,7 @@ dependencies:
   path:
 
   # BSD-3 Clause License
-  shimmer:
+  shimmer: ^3.0.0
 
   # MIT License
   flutter_login: ^5.0.0
@@ -165,6 +165,7 @@ dependencies:
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   flutter_cache_manager: ^3.4.1
+  transparent_image: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

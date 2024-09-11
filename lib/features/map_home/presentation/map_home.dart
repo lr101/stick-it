@@ -1,5 +1,6 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
+import 'package:buff_lisa/widgets/map_layer/presentation/custom_tile_layer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -43,17 +44,12 @@ class _MapHomeState extends ConsumerState<MapHome> {
               options: MapOptions(
                 minZoom: 2,
                 maxZoom: 18,
-                zoom: 5,
+                initialZoom: 5,
                 keepAlive: true,
-                interactiveFlags:  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+                interactionOptions:  InteractionOptions(flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag),
               ),
               children: [
-                TileLayer(
-                    urlTemplate: "https://map.lr-projects.de/tile/{z}/{x}/{y}.png?api_key={api_key}",
-                    additionalOptions: {
-                      "api_key": ""
-                    }
-                ),
+                CustomTileLayer(),
                 CurrentLocationLayer(),
                 MarkerClusterLayerWidget(
                   options: MarkerClusterLayerOptions(
