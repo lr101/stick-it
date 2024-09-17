@@ -5,7 +5,7 @@ import 'package:buff_lisa/data/entity/database.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 
-class LocalGroupDto {
+class   LocalGroupDto {
 
   String groupId;
   String name;

@@ -18,7 +18,7 @@ class CreateGroupDto {
     required this.profileImage,
     required this.visibility,
     required this.groupAdmin,
-    required this.link,
+    this.link,
   });
 
   String description;
@@ -31,7 +31,13 @@ class CreateGroupDto {
 
   String groupAdmin;
 
-  String link;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? link;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is CreateGroupDto &&
@@ -50,7 +56,7 @@ class CreateGroupDto {
     (profileImage.hashCode) +
     (visibility.hashCode) +
     (groupAdmin.hashCode) +
-    (link.hashCode);
+    (link == null ? 0 : link!.hashCode);
 
   @override
   String toString() => 'CreateGroupDto[description=$description, name=$name, profileImage=$profileImage, visibility=$visibility, groupAdmin=$groupAdmin, link=$link]';
@@ -62,7 +68,11 @@ class CreateGroupDto {
       json[r'profileImage'] = this.profileImage;
       json[r'visibility'] = this.visibility;
       json[r'groupAdmin'] = this.groupAdmin;
+    if (this.link != null) {
       json[r'link'] = this.link;
+    } else {
+      json[r'link'] = null;
+    }
     return json;
   }
 
@@ -90,7 +100,7 @@ class CreateGroupDto {
         profileImage: mapValueOfType<String>(json, r'profileImage')!,
         visibility: Visibility.fromJson(json[r'visibility'])!,
         groupAdmin: mapValueOfType<String>(json, r'groupAdmin')!,
-        link: mapValueOfType<String>(json, r'link')!,
+        link: mapValueOfType<String>(json, r'link'),
       );
     }
     return null;
@@ -143,7 +153,6 @@ class CreateGroupDto {
     'profileImage',
     'visibility',
     'groupAdmin',
-    'link',
   };
 }
 

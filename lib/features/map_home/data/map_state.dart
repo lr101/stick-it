@@ -26,7 +26,7 @@ class MapStates extends _$MapStates {
   @override
   MapState build() {
     return MapState(
-      markers: ref.watch(activatedPinsProvider).map((e) => CustomMarker(pinDto: e, ref: ref)).toList(),
+      markers: ref.watch(activatedPinsProvider).whenOrNull(data: (data) => data.map((e) => CustomMarkerProvider(pinDto: e, ref: ref)).toList()) ?? [],
     );
   }
 }

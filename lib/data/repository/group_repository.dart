@@ -69,7 +69,7 @@ class GroupRepository {
   }
 
   Future<void> leaveGroup(String groupId) async {
-    await (_db.delete(_db.memberEntity)..where((tbl) => tbl.groupId.equals(groupId))).go();
+    await (_db.delete(_db.groupEntity)..where((tbl) => tbl.groupId.equals(groupId))).go();
   }
 
 }

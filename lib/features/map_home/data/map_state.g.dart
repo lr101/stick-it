@@ -6,7 +6,7 @@ part of 'map_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mapStatesHash() => r'79259d7a48ccc50623bf28c368e1140ff029eeb9';
+String _$mapStatesHash() => r'60c384f81938a8af51417cbbb958efa7a0189b1b';
 
 /// See also [MapStates].
 @ProviderFor(MapStates)

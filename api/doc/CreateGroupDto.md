@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **profileImage** | **String** |  | 
 **visibility** | [**Visibility**](Visibility.md) |  | 
 **groupAdmin** | **String** |  | 
-**link** | **String** |  | 
+**link** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

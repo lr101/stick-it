@@ -4,6 +4,7 @@ import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class RoundImage extends ConsumerWidget {
 
@@ -27,10 +28,18 @@ class RoundImage extends ConsumerWidget {
                 child: child,
               ),
               error: (_, __) => CircleAvatar(
-                backgroundImage: MemoryImage(ref.watch(defaultErrorImageProvider)),
                 radius: size,
                 backgroundColor: Colors.transparent,
-                child: child,
+                child: ClipOval(
+                  child: FadeInImage(
+                      placeholder: MemoryImage(kTransparentImage),
+                      image: MemoryImage(ref.watch(defaultErrorImageProvider)),
+                    fadeInDuration: Duration(seconds: 1),
+                    height: size * 2,
+                    width: size * 2,
+                    fit: BoxFit.cover,
+                  )
+                )
               ),
               loading: () => CircleAvatar(radius: size, backgroundColor: Colors.grey ,child: child)
           )

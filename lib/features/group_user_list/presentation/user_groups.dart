@@ -1,5 +1,7 @@
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/features/group_search/presentation/group_search.dart';
+import 'package:buff_lisa/features/group_user_list/presentation/pop_up_menu_create_group.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +9,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../util/routing/routing.dart';
 import '../../../widgets/tiles/presentation/group_tile.dart';
-import '../../group_overview/presentation/group_overview.dart';
+import '../../group_overview/presentation/sub_widgets/group_overview.dart';
+import '../../group_overview/presentation/user_group_overview.dart';
 
 class UserGroups extends ConsumerStatefulWidget {
   const UserGroups({super.key});
@@ -27,6 +30,12 @@ class _UserGroupsState extends ConsumerState<UserGroups> {
       updatePage(ref.watch(userGroupServiceProvider).value ?? []);
     });
   }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
   
   
   @override
@@ -34,6 +43,7 @@ class _UserGroupsState extends ConsumerState<UserGroups> {
     ref.listen(userGroupServiceProvider, (_, next) => updatePage(next.value ?? []));
     return CustomScaffold<LocalGroupDto>(
         title: Text("User groups"),
+        actions: [const PopUpMenuCreateGroup()],
         listBuilder: (context, item, index) => GroupTile(
           groupDto: item,
           onTap: () => openGroupOverview(item),
@@ -43,11 +53,12 @@ class _UserGroupsState extends ConsumerState<UserGroups> {
   }
   
   void updatePage(List<LocalGroupDto> groups) {
+    _pagingController.refresh();
     _pagingController.appendLastPage(groups);
   }
 
   void openGroupOverview(LocalGroupDto group) {
-    Routing.to(context, GroupOverview(group: groupByIdProvider(group.groupId),));
+    Routing.to(context, UserGroupOverview(groupId: group.groupId));
   }
 
 }

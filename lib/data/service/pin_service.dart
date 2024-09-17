@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/entity/database.dart';
+import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -100,6 +101,7 @@ class PinService extends _$PinService {
     try {
       await _pinRepository.createOrUpdate(pin);
       updateSinglePin(pin);
+      ref.read(memberServiceProvider(ref.watch(groupByIdProvider(pin.groupId)).value!).notifier).addPoint();
       final result = await _pinsApi.createPin(pin.toPinRequestDto());
       if (result != null) {
         await _pinRepository.deletePinFromGroup(pin.id);
@@ -177,19 +179,43 @@ class PinService extends _$PinService {
 }
 
 @riverpod
-List<LocalPinDto> activatedPins(ActivatedPinsRef ref) {
-  final List<LocalGroupDto> groups = ref.watch(activeGroupsProvider).value ?? [];
+AsyncValue<List<LocalPinDto>> activatedPins(ActivatedPinsRef ref) {
+  final groups = ref.watch(activeGroupsProvider);
+  if (groups.isLoading) return AsyncLoading();
   final pins = <LocalPinDto>[];
-  for (var group in groups) {
+  for (var group in groups.value ?? []) {
     final p = ref.watch(pinServiceProvider(group.groupId)).value ?? [];
     pins.addAll(p);
   }
+  return AsyncData(pins);
+}
+
+@riverpod
+AsyncValue<List<LocalPinDto>> sortedActivatedPins(SortedActivatedPinsRef ref) {
+  final value = ref.watch(activatedPinsProvider);
+  if (value.isLoading) return AsyncLoading();
+  value.value!.sort((a,b) => b.creationDate.compareTo(a.creationDate));
+  return value;
+}
+
+@riverpod
+AsyncValue<List<LocalPinDto>> sortedGroupPins(SortedGroupPinsRef ref, String groupId) {
+  final pins = ref.watch(pinServiceProvider(groupId));
+  if (pins.isLoading) return AsyncLoading();
+  pins.value!.sort((a, b) => b.creationDate.compareTo(a.creationDate));
   return pins;
 }
 
 @riverpod
-List<LocalPinDto> sortedActivatedPins(SortedActivatedPinsRef ref) {
-  final value = ref.watch(activatedPinsProvider);
-  value.sort((a,b) => b.creationDate.compareTo(a.creationDate));
-  return value;
+AsyncValue<List<LocalPinDto>> sortedUserPins(SortedUserPinsRef ref) {
+  final groups =  ref.watch(userGroupServiceProvider);
+  final userId = ref.watch(globalDataServiceProvider).userId!;
+  if (groups.isLoading) return AsyncLoading();
+  final pins = <LocalPinDto>[];
+  for (var group in groups.value!) {
+    final p = ref.watch(pinServiceProvider(group.groupId));
+    if (p.isLoading) return AsyncLoading();
+    pins.addAll(p.value!.where((e) => e.creatorId == userId));
+  }
+  return AsyncData(pins);
 }

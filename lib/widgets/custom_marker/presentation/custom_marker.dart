@@ -6,19 +6,36 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
-class CustomMarker extends Marker {
+class CustomMarkerWidget extends Marker {
 
   final LocalPinDto pinDto;
-  final Ref ref;
+  final WidgetRef ref;
 
 
-  CustomMarker({required this.pinDto, required this.ref}) : super(
+  CustomMarkerWidget({required this.pinDto, required this.ref}) : super(
     point: LatLng(pinDto.latitude, pinDto.longitude),
     child: ref.watch(groupPinImageByIdProvider(pinDto.groupId)).when(
       data: (data) => Image.memory(data),
       error: (e, s) => Image.memory(ref.read(defaultGroupPinImageProvider)),
       loading: () => Image.memory(ref.read(defaultGroupPinImageProvider)),
     )
+  );
+
+}
+
+class CustomMarkerProvider extends Marker {
+
+  final LocalPinDto pinDto;
+  final Ref ref;
+
+
+  CustomMarkerProvider({required this.pinDto, required this.ref}) : super(
+      point: LatLng(pinDto.latitude, pinDto.longitude),
+      child: ref.watch(groupPinImageByIdProvider(pinDto.groupId)).when(
+        data: (data) => Image.memory(data),
+        error: (e, s) => Image.memory(ref.read(defaultGroupPinImageProvider)),
+        loading: () => Image.memory(ref.read(defaultGroupPinImageProvider)),
+      )
   );
 
 }

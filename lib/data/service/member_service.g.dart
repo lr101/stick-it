@@ -6,7 +6,7 @@ part of 'member_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$memberServiceHash() => r'40b9b4cb8b1fb0a6d5eba2fc92f1f014c26845af';
+String _$memberServiceHash() => r'26f8c94ec81fbccf75e17ce282b3338a8312cdc7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$MemberService extends BuildlessAsyncNotifier<List<MemberDto>> {
-  late final String groupId;
+  late final LocalGroupDto group;
 
   FutureOr<List<MemberDto>> build(
-    String groupId,
+    LocalGroupDto group,
   );
 }
 
@@ -48,10 +48,10 @@ class MemberServiceFamily extends Family<AsyncValue<List<MemberDto>>> {
 
   /// See also [MemberService].
   MemberServiceProvider call(
-    String groupId,
+    LocalGroupDto group,
   ) {
     return MemberServiceProvider(
-      groupId,
+      group,
     );
   }
 
@@ -60,7 +60,7 @@ class MemberServiceFamily extends Family<AsyncValue<List<MemberDto>>> {
     covariant MemberServiceProvider provider,
   ) {
     return call(
-      provider.groupId,
+      provider.group,
     );
   }
 
@@ -84,9 +84,9 @@ class MemberServiceProvider
     extends AsyncNotifierProviderImpl<MemberService, List<MemberDto>> {
   /// See also [MemberService].
   MemberServiceProvider(
-    String groupId,
+    LocalGroupDto group,
   ) : this._internal(
-          () => MemberService()..groupId = groupId,
+          () => MemberService()..group = group,
           from: memberServiceProvider,
           name: r'memberServiceProvider',
           debugGetCreateSourceHash:
@@ -96,7 +96,7 @@ class MemberServiceProvider
           dependencies: MemberServiceFamily._dependencies,
           allTransitiveDependencies:
               MemberServiceFamily._allTransitiveDependencies,
-          groupId: groupId,
+          group: group,
         );
 
   MemberServiceProvider._internal(
@@ -106,17 +106,17 @@ class MemberServiceProvider
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.groupId,
+    required this.group,
   }) : super.internal();
 
-  final String groupId;
+  final LocalGroupDto group;
 
   @override
   FutureOr<List<MemberDto>> runNotifierBuild(
     covariant MemberService notifier,
   ) {
     return notifier.build(
-      groupId,
+      group,
     );
   }
 
@@ -125,13 +125,13 @@ class MemberServiceProvider
     return ProviderOverride(
       origin: this,
       override: MemberServiceProvider._internal(
-        () => create()..groupId = groupId,
+        () => create()..group = group,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        groupId: groupId,
+        group: group,
       ),
     );
   }
@@ -143,21 +143,21 @@ class MemberServiceProvider
 
   @override
   bool operator ==(Object other) {
-    return other is MemberServiceProvider && other.groupId == groupId;
+    return other is MemberServiceProvider && other.group == group;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, groupId.hashCode);
+    hash = _SystemHash.combine(hash, group.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin MemberServiceRef on AsyncNotifierProviderRef<List<MemberDto>> {
-  /// The parameter `groupId` of this provider.
-  String get groupId;
+  /// The parameter `group` of this provider.
+  LocalGroupDto get group;
 }
 
 class _MemberServiceProviderElement
@@ -166,7 +166,7 @@ class _MemberServiceProviderElement
   _MemberServiceProviderElement(super.provider);
 
   @override
-  String get groupId => (origin as MemberServiceProvider).groupId;
+  LocalGroupDto get group => (origin as MemberServiceProvider).group;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

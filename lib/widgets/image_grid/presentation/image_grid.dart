@@ -11,9 +11,10 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:openapi/api.dart';
 
 class ImageGrid extends ConsumerStatefulWidget {
-  const ImageGrid({super.key, required this.groupId});
+  const ImageGrid({super.key, required this.pinProvider, required this.onTab});
 
-  final String groupId;
+  final AutoDisposeProvider<AsyncValue<List<LocalPinDto>>> pinProvider;
+  final Function(int index) onTab;
 
 
   @override
@@ -21,7 +22,7 @@ class ImageGrid extends ConsumerStatefulWidget {
 }
 
 class _ImageGridState extends ConsumerState<ImageGrid> {
-  PagingController<int, String> _pagingController =
+  PagingController<int, LocalPinDto> _pagingController =
       PagingController(firstPageKey: 0, invisibleItemsThreshold: 10);
 
   final int _pageSize = 18;
@@ -38,14 +39,14 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return ref.watch(pinServiceProvider(widget.groupId)).when(
+    return ref.watch(widget.pinProvider).when(
         data: (data) {
           _images = data;
-          return PagedGridView<int, String>(
+          return PagedGridView<int, LocalPinDto>(
             pagingController: _pagingController,
             showNewPageProgressIndicatorAsGridChild: false,
-            builderDelegate: PagedChildBuilderDelegate<String>(
-              itemBuilder: (context, item, index) => SquareImage(pinId: item),
+            builderDelegate: PagedChildBuilderDelegate<LocalPinDto>(
+              itemBuilder: (context, item, index) => SquareImage(pinId: item.id, index: index, groupId: item.groupId, onTap: widget.onTab,),
             ),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
@@ -68,8 +69,8 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
       } else {
         end = pageKey + _pageSize;
       }
-      final idList = _images.getRange(pageKey, end).map((e) => e.id).toList();
-      ref.read(pinImageServiceProvider.notifier).addImages(idList);
+      final idList = _images.getRange(pageKey, end).toList();
+      ref.read(pinImageServiceProvider.notifier).addImages(idList.map((e) => e.id).toList());
       if (end == _images.length) {
         _pagingController.appendLastPage(idList);
       } else {

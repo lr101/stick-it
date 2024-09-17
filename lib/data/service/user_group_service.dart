@@ -54,18 +54,27 @@ class UserGroupService extends _$UserGroupService {
 
   void _updateSingleGroup(LocalGroupDto updateGroup) {
     final currentState = state.value ?? [];
-    final group = currentState.firstWhere((group) => group.groupId == updateGroup.groupId, orElse: () => updateGroup);
-    group.isActivated = updateGroup.isActivated;
-    group.pinImage = updateGroup.pinImage;
-    group.lastUpdated = DateTime.now();
-    group.profileImage = updateGroup.profileImage;
-    group.name = updateGroup.name;
-    group.description = updateGroup.description;
-    group.groupAdmin = updateGroup.groupAdmin;
-    group.link = updateGroup.link;
-    group.inviteUrl = updateGroup.inviteUrl;
-    group.visibility = updateGroup.visibility;
-    state = AsyncValue.data(currentState);
+    state = AsyncLoading();
+    final groupIndex = currentState.indexWhere((group) => group.groupId == updateGroup.groupId);
+    LocalGroupDto group;
+    if (groupIndex == -1) {
+      group = updateGroup;
+      currentState.add(group);
+    } else {
+      group = currentState[groupIndex];
+      group.isActivated = updateGroup.isActivated;
+      group.pinImage = updateGroup.pinImage;
+      group.lastUpdated = DateTime.now();
+      group.profileImage = updateGroup.profileImage;
+      group.name = updateGroup.name;
+      group.description = updateGroup.description;
+      group.groupAdmin = updateGroup.groupAdmin;
+      group.link = updateGroup.link;
+      group.inviteUrl = updateGroup.inviteUrl;
+      group.visibility = updateGroup.visibility;
+    }
+
+    state = AsyncData(currentState);
   }
 
   void setIsActive(String groupId, bool isActive) {
@@ -76,13 +85,10 @@ class UserGroupService extends _$UserGroupService {
     _groupRepository.createGroup(group);
   }
 
-  Future<void> createGroup(LocalGroupDto group) async {
+  Future<void> createGroup(CreateGroupDto group) async {
     try {
-      // Optimistically update locally
-      await _groupRepository.createGroup(group);
-      _updateSingleGroup(group);
       // Sync with the server
-      final result = await _groupsApi.addGroup(group.toCreateGroupDto());
+      final result = await _groupsApi.addGroup(group);
 
       if (result != null) {
         await _groupRepository.createGroup(LocalGroupDto.fromDto(result));
@@ -92,20 +98,19 @@ class UserGroupService extends _$UserGroupService {
     }
   }
 
-  Future<void> updateGroup(LocalGroupDto group) async {
+  Future<String?> updateGroup(UpdateGroupDto group, String groupId) async {
     try {
-      // Update locally first
-      await _groupRepository.createGroup(group);
-      _updateSingleGroup(group);
-
       // Sync with the server
-      final result = await _groupsApi.updateGroup(group.groupId, group.toUpdateGroupDto());
+      final result = await _groupsApi.updateGroup(groupId, group);
       if (result != null) {
         await _groupRepository.createGroup(LocalGroupDto.fromDto(result));
+      } else {
+        return "Failed to update group remotely";
       }
     } catch (e) {
-      // Handle errors, rollback changes if necessary
+      return e.toString();
     }
+    return null;
   }
 
   Future<void> deleteGroup(String groupId) async {
@@ -124,6 +129,22 @@ class UserGroupService extends _$UserGroupService {
     return await _groupRepository.getActiveGroups();
   }
 
+  Future<String?> joinGroup(String groupId, {String? inviteUrl}) async {
+    try {
+      final result = await _membersApi.joinGroup(groupId, _data.userId!, inviteUrl: inviteUrl);
+      if (result != null) {
+        final group = LocalGroupDto.fromDto(result);
+        _updateSingleGroup(group);
+        await _groupRepository.createGroup(group);
+      } else {
+        return "Failed to join group remotely";
+      }
+    } on ApiException catch (e) {
+      return e.message;
+    }
+    return null;
+  }
+
 
   Future<void> reloadGroupFromRemote(LocalGroupDto group) async {
     try {
@@ -137,37 +158,18 @@ class UserGroupService extends _$UserGroupService {
     }
   }
 
-  Future<bool> leaveGroup(String groupId) async {
+  Future<String?> leaveGroup(String groupId) async {
     try {
       await _membersApi.deleteMemberFromGroup(groupId, _data.userId!);
       await _groupRepository.leaveGroup(groupId);
-      //state = await AsyncValue.data(await _groupRepository.getMembers(groupId));
-      return true;
-    } catch (e) {
-      return false;
+      state.value!.removeWhere((e) => e.groupId == groupId);
+      ref.notifyListeners();
+      return null;
+    } on ApiException catch (e) {
+      return e.message;
     }
   }
 
-  Future<List<LocalUserDto>> getMembers(String groupId) async {
-    try {
-      // First try to load members from local database
-      final localMembers = await _groupRepository.getMembers(groupId);
-      if (localMembers.isNotEmpty) return localMembers;
-
-      // If not found locally, fetch from remote API
-      final remoteMembers = await _membersApi.getGroupRanking(groupId);
-      List<LocalUserDto> members = [];
-      if (remoteMembers == null) return members;
-      for (var member in remoteMembers) {
-        final memberDto = LocalUserDto.fromRanking(member);
-        members.add(memberDto);
-        await _userRepository.createUser(memberDto);
-      }
-      return members;
-    } catch (e) {
-      return [];
-    }
-  }
 }
 
 @Riverpod(keepAlive: true)

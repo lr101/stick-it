@@ -2,18 +2,18 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/widgets/custom_marker/presentation/custom_marker.dart';
 import 'package:buff_lisa/widgets/map_layer/presentation/custom_tile_layer.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:buff_lisa/features/feed/data/image_service.dart';
-import 'package:buff_lisa/features/feed/presentation/feed_card_shimmer.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/dto/pin_dto.dart';
 import '../../../data/service/pin_image_service.dart';
 import '../../../widgets/pin_header/presentation/pin_header.dart';
-import '../../../widgets/zoomable_fadein_image/presentation/zoomable_fade_in_image.dart';
+import '../data/image_service.dart';
 
 class FeedCard extends ConsumerStatefulWidget {
   FeedCard({super.key, required this.item});
@@ -53,7 +53,12 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                       child: PageView(
                     controller: _pageController,
                     children: [
-                      ZoomableFadeInImage(image: imageData.image),
+                      FadeInImage(
+                          fadeInDuration: Duration(milliseconds: 100),
+                          fit: BoxFit.fitWidth,
+                          alignment: Alignment.topCenter,
+                          placeholder: MemoryImage(kTransparentImage),
+                          image: MemoryImage(imageData.image)),
                       Stack(
                         children: [
                           FlutterMap(
@@ -70,14 +75,7 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                             children: [
                               CustomTileLayer(),
                               MarkerLayer(markers: [
-                                Marker(
-                                    point: center,
-                                    width: 50,
-                                    height: 50,
-                                    child: Image.memory(ref
-                                        .watch(groupPinImageByIdProvider(
-                                            widget.item.groupId))
-                                        .value!))
+                                CustomMarkerWidget(pinDto: widget.item, ref: ref)
                               ]),
                             ],
                           ),
