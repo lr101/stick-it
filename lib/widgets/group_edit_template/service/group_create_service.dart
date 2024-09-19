@@ -11,18 +11,15 @@ class GroupCreateState {
   GroupCreateState({
     this.visibility = 0,
     this.profileImage,
-    this.groupAdmin,
   });
 
   int visibility;
-  String? groupAdmin;
   Uint8List? profileImage;
 
 
   factory GroupCreateState.fromLocalGroupDto(LocalGroupDto localGroupDto) {
     return GroupCreateState(
       visibility: localGroupDto.visibility,
-      groupAdmin: localGroupDto.groupAdmin,
       profileImage: localGroupDto.profileImage
     );
   }
@@ -48,11 +45,6 @@ class GroupCreateService extends _$GroupCreateService {
 
   void updateVisibility(int visibility) {
     state.visibility = visibility;
-    ref.notifyListeners();
-  }
-
-  void updateGroupAdmin(String groupAdmin) {
-    state.groupAdmin = groupAdmin;
     ref.notifyListeners();
   }
 

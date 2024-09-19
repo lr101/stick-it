@@ -13,7 +13,6 @@ doc/PinRequestDto.md
 doc/PinWithOptionalImageDto.md
 doc/PinWithoutImageDto.md
 doc/PinsApi.md
-doc/ProfileImageResponseDto.md
 doc/PublicApi.md
 doc/RankingResponseDto.md
 doc/ReportApi.md
@@ -24,6 +23,7 @@ doc/UserInfoDto.md
 doc/UserLoginRequest.md
 doc/UserRequestDto.md
 doc/UserUpdateDto.md
+doc/UserUpdateResponseDto.md
 doc/UsersApi.md
 doc/Visibility.md
 git_push.sh
@@ -50,7 +50,6 @@ lib/model/member_response_dto.dart
 lib/model/pin_request_dto.dart
 lib/model/pin_with_optional_image_dto.dart
 lib/model/pin_without_image_dto.dart
-lib/model/profile_image_response_dto.dart
 lib/model/ranking_response_dto.dart
 lib/model/report_dto.dart
 lib/model/token_response_dto.dart
@@ -59,5 +58,7 @@ lib/model/user_info_dto.dart
 lib/model/user_login_request.dart
 lib/model/user_request_dto.dart
 lib/model/user_update_dto.dart
+lib/model/user_update_response_dto.dart
 lib/model/visibility.dart
 pubspec.yaml
+test/user_update_response_dto_test.dart

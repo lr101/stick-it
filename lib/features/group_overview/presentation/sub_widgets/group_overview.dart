@@ -42,7 +42,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
 
   @override
   Widget build(BuildContext context) {
-    final members = ref.watch(memberServiceProvider(widget.group));
+    final members = ref.watch(memberServiceProvider(widget.group.groupId));
     return CustomAvatarScaffold(
         floatingActionButton: widget.floatingActionButton,
         avatar: AsyncData(widget.group.profileImage),

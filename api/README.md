@@ -90,7 +90,6 @@ Class | Method | HTTP request | Description
 *UsersApi* | [**getUserProfileImage**](doc//UsersApi.md#getuserprofileimage) | **GET** /api/v2/users/{userId}/profile_picture | Get the profile picture of a user by userId
 *UsersApi* | [**getUserProfileImageSmall**](doc//UsersApi.md#getuserprofileimagesmall) | **GET** /api/v2/users/{userId}/profile_picture_small | Get the small profile picture of a user by userId
 *UsersApi* | [**updateUser**](doc//UsersApi.md#updateuser) | **PUT** /api/v2/users/{userId} | Update user information by userId
-*UsersApi* | [**updateUserProfileImage**](doc//UsersApi.md#updateuserprofileimage) | **PUT** /api/v2/users/{userId}/profile_picture | Update the profile picture of a user by userId
 
 
 ## Documentation For Models
@@ -102,7 +101,6 @@ Class | Method | HTTP request | Description
  - [PinRequestDto](doc//PinRequestDto.md)
  - [PinWithOptionalImageDto](doc//PinWithOptionalImageDto.md)
  - [PinWithoutImageDto](doc//PinWithoutImageDto.md)
- - [ProfileImageResponseDto](doc//ProfileImageResponseDto.md)
  - [RankingResponseDto](doc//RankingResponseDto.md)
  - [ReportDto](doc//ReportDto.md)
  - [TokenResponseDto](doc//TokenResponseDto.md)
@@ -111,6 +109,7 @@ Class | Method | HTTP request | Description
  - [UserLoginRequest](doc//UserLoginRequest.md)
  - [UserRequestDto](doc//UserRequestDto.md)
  - [UserUpdateDto](doc//UserUpdateDto.md)
+ - [UserUpdateResponseDto](doc//UserUpdateResponseDto.md)
  - [Visibility](doc//Visibility.md)
 
 

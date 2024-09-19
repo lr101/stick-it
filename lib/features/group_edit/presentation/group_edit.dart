@@ -29,7 +29,7 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
     return GroupEditTemplate(
         groupDto: widget.groupDto,
         onSubmit:
-            (name, description, link, profileImage, visibility, adminId) async {
+            (name, description, link, profileImage, visibility) async {
           final result = await ref
               .read(userGroupServiceProvider.notifier)
               .updateGroup(
@@ -68,7 +68,7 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
                             isExpanded: true,
                             items: ref
                                     .watch(
-                                        memberServiceProvider(widget.groupDto))
+                                        memberServiceProvider(widget.groupDto.groupId))
                                     .whenOrNull(
                                         data: (data) => data
                                             .map((e) =>

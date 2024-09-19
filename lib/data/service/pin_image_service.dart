@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'pin_image_service.g.dart';
@@ -21,22 +22,29 @@ class PinImageService extends _$PinImageService {
     }
   }
 
-  Future<void> addImages(List<String> pinIds) async {
+  Future<String?> addImages(List<String> pinIds) async {
     final missingImages = <String>[];
     for (var pinId in pinIds) {
       if (state.value == null || !state.value!.containsKey(pinId)) {
         missingImages.add(pinId);
       }
     }
-    if (missingImages.isEmpty) return;
-    final image = await ref.watch(pinApiProvider).getPinImagesByIds(ids: missingImages, withImage: true);
-    final map = {...state.value ?? {}};
-    if (image != null) {
-      for (var pin in image) {
-        map[pin.id] = base64Decode(pin.image!).buffer.asUint8List();
+    if (missingImages.isEmpty) return null;
+    try {
+      final image = await ref.watch(pinApiProvider).getPinImagesByIds(
+          ids: missingImages, withImage: true);
+      final map = {...state.value ?? {}};
+      if (image != null) {
+        for (var pin in image) {
+          map[pin.id] = base64Decode(pin.image!).buffer.asUint8List();
+        }
       }
+      state = AsyncData(map);
+      return null;
+    } on ApiException catch(e) {
+      return e.message;
     }
-    state = AsyncData(map);
+
   }
 
 }

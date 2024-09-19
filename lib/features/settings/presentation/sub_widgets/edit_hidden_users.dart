@@ -1,0 +1,22 @@
+import 'package:buff_lisa/data/service/filter_service.dart';
+import 'package:buff_lisa/widgets/tiles/presentation/user_tile.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class EditHiddenUsers extends ConsumerWidget {
+
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hiddenUsers = ref.watch(hiddenUserServiceProvider);
+    return Scaffold(
+      appBar: AppBar(title: Text("Edit hidden users")),
+      body: ListView.builder(
+        itemBuilder: (context, index) => UserTile(userId: hiddenUsers[index]),
+        itemCount: hiddenUsers.length,
+      )
+    );
+  }
+
+}

@@ -522,7 +522,10 @@ class GroupsApi {
   ///
   /// * [int] size:
   ///   page size. Defaults to 20
-  Future<Response> getGroupsByIdsWithHttpInfo({ List<String>? ids, String? search, String? userId, bool? withUser, bool? withImages, int? page, int? size, }) async {
+  ///
+  /// * [DateTime] updatedAfter:
+  ///   only include groups that have been updated after this date
+  Future<Response> getGroupsByIdsWithHttpInfo({ List<String>? ids, String? search, String? userId, bool? withUser, bool? withImages, int? page, int? size, DateTime? updatedAfter, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/v2/groups';
 
@@ -553,6 +556,9 @@ class GroupsApi {
     }
     if (size != null) {
       queryParams.addAll(_queryParams('', 'size', size));
+    }
+    if (updatedAfter != null) {
+      queryParams.addAll(_queryParams('', 'updatedAfter', updatedAfter));
     }
 
     const contentTypes = <String>[];
@@ -593,8 +599,11 @@ class GroupsApi {
   ///
   /// * [int] size:
   ///   page size. Defaults to 20
-  Future<List<GroupDto>?> getGroupsByIds({ List<String>? ids, String? search, String? userId, bool? withUser, bool? withImages, int? page, int? size, }) async {
-    final response = await getGroupsByIdsWithHttpInfo( ids: ids, search: search, userId: userId, withUser: withUser, withImages: withImages, page: page, size: size, );
+  ///
+  /// * [DateTime] updatedAfter:
+  ///   only include groups that have been updated after this date
+  Future<List<GroupDto>?> getGroupsByIds({ List<String>? ids, String? search, String? userId, bool? withUser, bool? withImages, int? page, int? size, DateTime? updatedAfter, }) async {
+    final response = await getGroupsByIdsWithHttpInfo( ids: ids, search: search, userId: userId, withUser: withUser, withImages: withImages, page: page, size: size, updatedAfter: updatedAfter, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

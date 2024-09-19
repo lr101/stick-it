@@ -14,7 +14,6 @@ Method | HTTP request | Description
 [**getUserProfileImage**](UsersApi.md#getuserprofileimage) | **GET** /api/v2/users/{userId}/profile_picture | Get the profile picture of a user by userId
 [**getUserProfileImageSmall**](UsersApi.md#getuserprofileimagesmall) | **GET** /api/v2/users/{userId}/profile_picture_small | Get the small profile picture of a user by userId
 [**updateUser**](UsersApi.md#updateuser) | **PUT** /api/v2/users/{userId} | Update user information by userId
-[**updateUserProfileImage**](UsersApi.md#updateuserprofileimage) | **PUT** /api/v2/users/{userId}/profile_picture | Update the profile picture of a user by userId
 
 
 # **deleteUser**
@@ -183,7 +182,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **updateUser**
-> TokenResponseDto updateUser(userId, userUpdateDto)
+> UserUpdateResponseDto updateUser(userId, userUpdateDto)
 
 Update user information by userId
 
@@ -212,7 +211,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TokenResponseDto**](TokenResponseDto.md)
+[**UserUpdateResponseDto**](UserUpdateResponseDto.md)
 
 ### Authorization
 
@@ -221,49 +220,6 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: application/json, text/plain; charset=utf-8
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **updateUserProfileImage**
-> ProfileImageResponseDto updateUserProfileImage(userId, body)
-
-Update the profile picture of a user by userId
-
-### Example
-```dart
-import 'package:openapi/api.dart';
-
-final api_instance = UsersApi();
-final userId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
-final body = String(); // String | 
-
-try {
-    final result = api_instance.updateUserProfileImage(userId, body);
-    print(result);
-} catch (e) {
-    print('Exception when calling UsersApi->updateUserProfileImage: $e\n');
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **userId** | **String**|  | 
- **body** | **String**|  | 
-
-### Return type
-
-[**ProfileImageResponseDto**](ProfileImageResponseDto.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: image/*
  - **Accept**: application/json, text/plain; charset=utf-8
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

@@ -28,7 +28,7 @@ class PopUpMenuCreateGroup extends StatelessWidget {
         onSelected:(value){
           switch (value) {
             case 0: Routing.to(context, const GroupSearch());break;
-            case 1: Routing.to(context, const GroupCreate());break;
+            case 1: Routing.to(context, GroupCreate());break;
           }
         }
     );

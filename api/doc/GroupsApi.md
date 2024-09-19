@@ -391,7 +391,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getGroupsByIds**
-> List<GroupDto> getGroupsByIds(ids, search, userId, withUser, withImages, page, size)
+> List<GroupDto> getGroupsByIds(ids, search, userId, withUser, withImages, page, size, updatedAfter)
 
 Get groups by IDs
 
@@ -407,9 +407,10 @@ final withUser = true; // bool | use false if user groups should be included and
 final withImages = true; // bool | use false if profile picture should not be returned and true if it should. Defaults to false
 final page = 56; // int | page number
 final size = 56; // int | page size. Defaults to 20
+final updatedAfter = 2013-10-20T19:20:30+01:00; // DateTime | only include groups that have been updated after this date
 
 try {
-    final result = api_instance.getGroupsByIds(ids, search, userId, withUser, withImages, page, size);
+    final result = api_instance.getGroupsByIds(ids, search, userId, withUser, withImages, page, size, updatedAfter);
     print(result);
 } catch (e) {
     print('Exception when calling GroupsApi->getGroupsByIds: $e\n');
@@ -427,6 +428,7 @@ Name | Type | Description  | Notes
  **withImages** | **bool**| use false if profile picture should not be returned and true if it should. Defaults to false | [optional] [default to false]
  **page** | **int**| page number | [optional] 
  **size** | **int**| page size. Defaults to 20 | [optional] [default to 20]
+ **updatedAfter** | **DateTime**| only include groups that have been updated after this date | [optional] 
 
 ### Return type
 

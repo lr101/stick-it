@@ -43,7 +43,6 @@ part 'model/member_response_dto.dart';
 part 'model/pin_request_dto.dart';
 part 'model/pin_with_optional_image_dto.dart';
 part 'model/pin_without_image_dto.dart';
-part 'model/profile_image_response_dto.dart';
 part 'model/ranking_response_dto.dart';
 part 'model/report_dto.dart';
 part 'model/token_response_dto.dart';
@@ -52,6 +51,7 @@ part 'model/user_info_dto.dart';
 part 'model/user_login_request.dart';
 part 'model/user_request_dto.dart';
 part 'model/user_update_dto.dart';
+part 'model/user_update_response_dto.dart';
 part 'model/visibility.dart';
 
 

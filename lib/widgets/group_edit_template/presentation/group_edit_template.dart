@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:buff_lisa/widgets/round_image/presentation/round_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,7 +12,7 @@ class GroupEditTemplate extends ConsumerStatefulWidget {
   const GroupEditTemplate({super.key, required this.onSubmit, this.rowItems, this.groupDto});
 
   final Function(String name, String description, String? link,
-      Uint8List profileImage, int visibility, String adminId) onSubmit;
+      Uint8List profileImage, int visibility) onSubmit;
 
   final List<Widget>? rowItems;
   final LocalGroupDto? groupDto;
@@ -60,8 +61,11 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
                         children: [
                           SizedBox(
                               width: 90,
-                              child: RoundImage(
+                              child: RoundImagePicker(
                                 size: 40,
+                                imageUpload: (image) {
+                                  groupNotifier.updateProfileImage(image);
+                                },
                                 imageCallback: AsyncData(
                                     ref.watch(createGroupProfileImageProvider)),
                               )),
@@ -135,7 +139,7 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
                                         fontStyle: FontStyle.italic,
                                         fontWeight: FontWeight.normal)),
                                 TextFormField(
-                                  validator: (value) => value == null ||
+                                  validator: (value) => value == null || value.isEmpty ||
                                           Uri.parse(value).isAbsolute
                                       ? null
                                       : "Invalid link",
@@ -190,15 +194,13 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
             onPressed: () {
               final group = ref.watch(groupCreateServiceProvider);
               if (_formKey.currentState!.validate() &&
-                  group.profileImage != null &&
-                  group.groupAdmin != null) {
+                  group.profileImage != null) {
                 widget.onSubmit(
                     _textEditControllerName.text,
                     _textEditControllerDescription.text,
                     _textEditControllerLink.text.isEmpty ? null : _textEditControllerLink.text,
                     group.profileImage!,
-                    group.visibility,
-                    group.groupAdmin!);
+                    group.visibility);
               }
             }));
   }

@@ -41,7 +41,12 @@ class RoundImage extends ConsumerWidget {
                   )
                 )
               ),
-              loading: () => CircleAvatar(radius: size, backgroundColor: Colors.grey ,child: child)
+              loading: () => CircleAvatar(radius: size, backgroundColor: Colors.grey ,child: Stack(
+                children: [
+                  Center(child: CircularProgressIndicator()),
+                  child != null ? child! : SizedBox.shrink()
+                ]
+              ))
           )
         );
   }

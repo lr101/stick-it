@@ -193,7 +193,7 @@ class _SortedGroupPinsProviderElement
   String get groupId => (origin as SortedGroupPinsProvider).groupId;
 }
 
-String _$sortedUserPinsHash() => r'21dde61547bb15965dec6ffd66fa24dc197fb604';
+String _$sortedUserPinsHash() => r'dfcede8ee92553b4cdbbb1339a39606c8856aa69';
 
 /// See also [sortedUserPins].
 @ProviderFor(sortedUserPins)
@@ -210,7 +210,7 @@ final sortedUserPinsProvider =
 
 typedef SortedUserPinsRef
     = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
-String _$pinServiceHash() => r'852dd3012264ac3cad907d4d827717aef1c0d4c0';
+String _$pinServiceHash() => r'bb73e169de53b84f07497ba329e428a82f3c9065';
 
 abstract class _$PinService extends BuildlessAsyncNotifier<List<LocalPinDto>> {
   late final String groupId;

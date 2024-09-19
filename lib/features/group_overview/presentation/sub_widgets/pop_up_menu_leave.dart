@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/group_create/presentation/group_create.dart';
 import 'package:buff_lisa/features/group_edit/presentation/group_edit.dart';
 import 'package:buff_lisa/features/group_search/presentation/group_search.dart';
+import 'package:buff_lisa/features/settings/presentation/sub_widgets/report.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,7 +40,7 @@ class PopUpMenuLeave extends ConsumerWidget {
         onSelected:(value){
           switch (value) {
             case 0: leaveGroup(ref, context);break;
-            case 1: break; //TODO route to report page
+            case 1: Routing.to(context, ReportIssuePage(issueTypes: ["Report Group"], groupId: groupDto.groupId,)); break; //TODO route to report page
             case 2: Routing.to(context, GroupEdit(groupDto: groupDto));break;
           }
         }

@@ -109,7 +109,7 @@ class LoginService {
     if (s != null && isEmail(s)) {
       return null;
     } else {
-      return "does not match email format";
+      return "Is not an email";
     }
   }
 }

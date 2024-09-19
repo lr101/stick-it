@@ -12,10 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mutex/mutex.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../data/dto/group_dto.dart';
+import '../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import '../../../widgets/tiles/presentation/group_tile.dart';
 
 class ImageUpload extends ConsumerStatefulWidget {
@@ -31,6 +33,8 @@ class ImageUpload extends ConsumerStatefulWidget {
 class _ImageUploadState extends ConsumerState<ImageUpload> {
 
   final TransformationController controller = TransformationController();
+
+  Mutex _m = Mutex();
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +126,8 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   }
 
   Future<void> handleApprove() async {
+    if (_m.isLocked) return;
+    await _m.acquire();
     final pin = LocalPinDto(
         id: const Uuid().v4() ,
         latitude: widget.position.latitude,
@@ -132,9 +138,15 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         groupId: ref.watch(cameraSelectedGroupProvider).groupId,
         isHidden: false
     );
-    ref.read(pinServiceProvider(ref.watch(cameraSelectedGroupProvider).groupId).notifier).addPinToGroup(pin);
-    // TODO navigate
-    Navigator.pop(context);
+    final result = await ref.read(pinServiceProvider(ref.watch(cameraSelectedGroupProvider).groupId).notifier).addPinToGroup(pin);
+    _m.release();
+    if (result != null) {
+      CustomErrorSnackBar.message(context: context, message: result);
+      Navigator.pop(context);
+    } else {
+      Navigator.pop(context);
+    }
+
   }
 
 

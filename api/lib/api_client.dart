@@ -196,8 +196,6 @@ class ApiClient {
           return PinWithOptionalImageDto.fromJson(value);
         case 'PinWithoutImageDto':
           return PinWithoutImageDto.fromJson(value);
-        case 'ProfileImageResponseDto':
-          return ProfileImageResponseDto.fromJson(value);
         case 'RankingResponseDto':
           return RankingResponseDto.fromJson(value);
         case 'ReportDto':
@@ -214,6 +212,8 @@ class ApiClient {
           return UserRequestDto.fromJson(value);
         case 'UserUpdateDto':
           return UserUpdateDto.fromJson(value);
+        case 'UserUpdateResponseDto':
+          return UserUpdateResponseDto.fromJson(value);
         case 'Visibility':
           return VisibilityTypeTransformer().decode(value);
         default:

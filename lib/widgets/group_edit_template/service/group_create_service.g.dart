@@ -24,7 +24,7 @@ final createGroupProfileImageProvider =
 
 typedef CreateGroupProfileImageRef = AutoDisposeProviderRef<Uint8List?>;
 String _$groupCreateServiceHash() =>
-    r'c19a8b23d450d61e3dfc6d7ad0671c36b00c9189';
+    r'314653a6a208bf4ffa0882878abd4e0eddb13c49';
 
 /// See also [GroupCreateService].
 @ProviderFor(GroupCreateService)

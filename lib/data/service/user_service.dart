@@ -33,41 +33,44 @@ class UserService extends _$UserService {
     if (_data.userId == null) return {};
     if (localUser != null) return {_data.userId!: localUser};
 
-    final profileImage = await _usersApi.getUserProfileImageWithHttpInfo(_data.userId!);
-    final profileImageSmall = await _usersApi.getUserProfileImageSmallWithHttpInfo(_data.userId!);
-    return {_data.userId!: LocalUserDto(
-        userId: _data.userId!,
-        username: _data.username!,
-        profileImageSmall: profileImageSmall.statusCode == 200 && profileImageSmall.bodyBytes.isNotEmpty ? profileImageSmall.bodyBytes : null,
-        profileImage: profileImage.statusCode == 200 && profileImage.bodyBytes.isNotEmpty ? profileImage.bodyBytes : null
-    )};
+    final profileImage =
+        await _usersApi.getUserProfileImageWithHttpInfo(_data.userId!);
+    final profileImageSmall =
+        await _usersApi.getUserProfileImageSmallWithHttpInfo(_data.userId!);
+    return {
+      _data.userId!: LocalUserDto(
+          userId: _data.userId!,
+          username: _data.username!,
+          profileImageSmall: profileImageSmall.statusCode == 200 &&
+                  profileImageSmall.bodyBytes.isNotEmpty
+              ? profileImageSmall.bodyBytes
+              : null,
+          profileImage: profileImage.statusCode == 200 &&
+                  profileImage.bodyBytes.isNotEmpty
+              ? profileImage.bodyBytes
+              : null)
+    };
   }
 
   Future<LocalUserDto> fetchUserById(String userId) async {
     final user = await _usersApi.getUser(userId);
     if (user != null) {
-      final profileImage = await _usersApi.getUserProfileImageWithHttpInfo(userId);
-      final profileImageSmall = await _usersApi.getUserProfileImageSmallWithHttpInfo(userId);
       final map = {...state.value ?? {}};
-      final userDto = LocalUserDto(
-          userId: user.userId,
-          username: user.username,
-          profileImageSmall: profileImageSmall.statusCode == 200 && profileImageSmall.bodyBytes.isNotEmpty ? profileImageSmall.bodyBytes : null,
-          profileImage: profileImage.statusCode == 200 && profileImage.bodyBytes.isNotEmpty ? profileImage.bodyBytes : null
-      );
-      map[userId] = userDto;
+      map[userId] = LocalUserDto.fromInfoDto(user);
       state = AsyncData(map);
-      return userDto;
+      return map[userId]!;
     } else {
       throw Exception("User not found");
     }
-
   }
 
   Future<bool> auth(String name, String password) async {
-    final response = await _authApi.userLogin(UserLoginRequest(username: name, password: password));
+    final response = await _authApi
+        .userLogin(UserLoginRequest(username: name, password: password));
     if (response != null) {
-      await ref.read(globalDataServiceProvider.notifier).login(name, response.userId, response.refreshToken);
+      await ref
+          .read(globalDataServiceProvider.notifier)
+          .login(name, response.userId, response.refreshToken);
       return true;
     }
     return false;
@@ -84,52 +87,48 @@ class UserService extends _$UserService {
   }
 
   Future<bool> signupNewUser(String username, String hash, String email) async {
-      final request = UserRequestDto(name: username, password: hash, email: email);
-      final response = await _authApi.createUser(request);
-      if (response != null) {
-        final userDto = LocalUserDto(userId: response.userId, username: username);
-        await _userRepository.createUser(userDto);
-        await ref.read(globalDataServiceProvider.notifier).login(username, response.userId, response.refreshToken);
-        return true;
-      }
-      return false;
-
-  }
-
-  Future<bool> changeUser(String userId, {String? password, String? email}) async {
-    try {
-      await _usersApi.updateUser(userId, UserUpdateDto(password: password, email: email));
+    final request =
+        UserRequestDto(name: username, password: hash, email: email);
+    final response = await _authApi.createUser(request);
+    if (response != null) {
+      final userDto = LocalUserDto(userId: response.userId, username: username);
+      await _userRepository.createUser(userDto);
+      await ref
+          .read(globalDataServiceProvider.notifier)
+          .login(username, response.userId, response.refreshToken);
       return true;
-    } catch (e) {
-      print('Error changing user: $e');
-      return false;
+    }
+    return false;
+  }
+
+  Future<String?> changeUser({String? password, String? email, Uint8List? profilePicture}) async {
+    try {
+      final userId = ref.watch(globalDataServiceProvider).userId!;
+      final result = await _usersApi.updateUser(userId, UserUpdateDto(password: password, email: email, image: profilePicture == null ? null : base64Encode(profilePicture)));
+      if (result != null && result.profileImage != null && state.value!.containsKey(userId)) {
+        state.value![userId]!.profileImage = base64Decode(result.profileImage!);
+        state.value![userId]!.profileImageSmall = base64Decode(result.profileImageSmall!);
+        await _userRepository.createUser(state.value![userId]!);
+        ref.notifyListeners();
+      }
+      return null;
+    } on ApiException catch (e) {
+      return e.message!;
     }
   }
 
-  Future<void> changeProfilePicture(Uint8List profilePicture) async {
-    String userId = _data.userId!;
-    final response = await _usersApi.updateUserProfileImage(userId, base64Encode(profilePicture));
-    if (response != null && state.value!.containsKey(userId)) {
-      state.value![userId]!.profileImage = base64Decode(response.profilePicture);
-      state.value![userId]!.profileImageSmall = base64Decode(response.profilePictureSmall);
-      await _userRepository.createUser(state.value![userId]!);
-      ref.notifyListeners();
-    }
-
-  }
-
-  Future<bool> postReportUser(String reportedUsername, String reportMessage) async {
+  Future<String?> report(
+      String reportedReferences, String reportMessage) async {
     try {
       final request = ReportDto(
-        report: reportedUsername,
+        report: reportedReferences,
         userId: _data.userId!,
         message: reportMessage,
       );
       await _reportApi.createReport(request);
-      return true;
-    } catch (e) {
-      print('Error posting user report: $e');
-      return false;
+      return null;
+    } on ApiException catch (e) {
+      return e.message;
     }
   }
 
@@ -156,8 +155,9 @@ class UserService extends _$UserService {
 }
 
 @riverpod
-Future<LocalUserDto?> userById(UserByIdRef ref, String userId) async {
-  final user = await ref.watch(userServiceProvider.selectAsync((u) => u.containsKey(userId) ? u[userId] : null));
+Future<LocalUserDto> userById(UserByIdRef ref, String userId) async {
+  final user = await ref.watch(userServiceProvider
+      .selectAsync((u) => u.containsKey(userId) ? u[userId] : null));
   if (user != null) {
     return user;
   } else {
@@ -166,11 +166,15 @@ Future<LocalUserDto?> userById(UserByIdRef ref, String userId) async {
 }
 
 @riverpod
-Future<Uint8List?> profilePictureById(ProfilePictureByIdRef ref, String userId) async {
-  return await ref.watch(userByIdProvider(userId).selectAsync((u) => u?.profileImage));
+Future<Uint8List?> profilePictureById(
+    ProfilePictureByIdRef ref, String userId) async {
+  return await ref
+      .watch(userByIdProvider(userId).selectAsync((u) => u.profileImage));
 }
 
 @riverpod
-Future<Uint8List?> profilePictureSmallById(ProfilePictureSmallByIdRef ref, String userId) async {
-  return await ref.watch(userByIdProvider(userId).selectAsync((u) => u?.profileImageSmall));
+Future<Uint8List?> profilePictureSmallById(
+    ProfilePictureSmallByIdRef ref, String userId) async {
+  return await ref
+      .watch(userByIdProvider(userId).selectAsync((u) => u.profileImageSmall));
 }

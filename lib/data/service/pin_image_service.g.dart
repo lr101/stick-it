@@ -155,7 +155,7 @@ class _GetPinImageProviderElement
   String get pinId => (origin as GetPinImageProvider).pinId;
 }
 
-String _$pinImageServiceHash() => r'79939b85630c3b44e15b64c0bd78f45c701f67a3';
+String _$pinImageServiceHash() => r'40f11f1eb9656b3c5418c7511326e10358140483';
 
 /// See also [PinImageService].
 @ProviderFor(PinImageService)

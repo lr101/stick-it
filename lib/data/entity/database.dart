@@ -21,6 +21,14 @@ class Database extends _$Database {
   static QueryExecutor _openConnection() {
     return connect.driftDatabase(name: 'local_pin_data');
   }
+
+  Future<void> deleteEverything() {
+    return transaction(() async {
+      for (final table in allTables) {
+        await delete(table).go();
+      }
+    });
+  }
 }
 
 @Riverpod(keepAlive: true)

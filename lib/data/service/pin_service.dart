@@ -1,14 +1,12 @@
-
 import 'dart:typed_data';
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/dto/pin_dto.dart';
-import 'package:buff_lisa/data/entity/database.dart';
+import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../dto/global_data_dto.dart';
 import '../repository/pin_repository.dart';
 import 'global_data_service.dart';
 
@@ -18,32 +16,28 @@ part 'pin_service.g.dart';
 class PinService extends _$PinService {
   late PinRepository _pinRepository;
   late PinsApi _pinsApi;
-  late String _groupId;
-  int _pagesLoaded = -1;
 
   @override
   Future<List<LocalPinDto>> build(String groupId) async {
-    _groupId = groupId;
     _pinRepository = ref.watch(pinRepositoryProvider);
     _pinsApi = ref.watch(pinApiProvider);
-    try {
-      final localPins = await _pinRepository.getPinsOfGroup(groupId);
-      if (localPins.isNotEmpty) return localPins;
+    final hiddenUsers = ref.watch(hiddenUserServiceProvider);
+    final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
+    final localPins = await _pinRepository.getPinsOfGroup(groupId);
+    localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
+    if (localPins.isNotEmpty) return localPins;
 
-      final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
-      List<LocalPinDto> pins = [];
-      if (remotePins == null) return pins;
+    final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
+    List<LocalPinDto> pins = [];
+    if (remotePins == null) return pins;
 
-      for (var pin in remotePins) {
-        final pinDto = LocalPinDto.fromDtoWithImage(pin);
-        pins.add(pinDto);
-        await _pinRepository.createOrUpdate(pinDto);
-      }
-      return pins;
-    } catch (e) {
-      print('Error fetching pins: $e');
-      return [];
+    for (var pin in remotePins) {
+      final pinDto = LocalPinDto.fromDtoWithImage(pin);
+      if (hiddenUsers.contains(pinDto.creatorId) || hiddenPosts.contains(pinDto.id)) continue;
+      pins.add(pinDto);
+      await _pinRepository.createOrUpdate(pinDto);
     }
+    return pins;
   }
 
   // Optimized state update function
@@ -76,10 +70,12 @@ class PinService extends _$PinService {
       final localPins = await _pinRepository.getPinsOActiveGroup();
       if (localPins.isNotEmpty) return localPins;
 
-      final List<LocalGroupDto> groups  = await ref.watch(userGroupServiceProvider).whenOrNull() ?? [];
+      final List<LocalGroupDto> groups =
+          await ref.watch(userGroupServiceProvider).whenOrNull() ?? [];
       final List<PinWithOptionalImageDto> remotePins = [];
       for (var group in groups) {
-        final p = await _pinsApi.getPinImagesByIds(groupId: group.groupId, withImage: false);
+        final p = await _pinsApi.getPinImagesByIds(
+            groupId: group.groupId, withImage: false);
         if (p == null) continue;
         remotePins.addAll(p);
       }
@@ -88,7 +84,7 @@ class PinService extends _$PinService {
         final pinDto = LocalPinDto.fromDtoWithImage(pin);
         pins.add(pinDto);
         await _pinRepository.createOrUpdate(pinDto);
-        updateSinglePin(pinDto);  // Update state for each pin
+        updateSinglePin(pinDto); // Update state for each pin
       }
       return pins;
     } catch (e) {
@@ -97,20 +93,23 @@ class PinService extends _$PinService {
     }
   }
 
-  Future<void> addPinToGroup(LocalPinDto pin) async {
+  Future<String?> addPinToGroup(LocalPinDto pin) async {
     try {
       await _pinRepository.createOrUpdate(pin);
       updateSinglePin(pin);
-      ref.read(memberServiceProvider(ref.watch(groupByIdProvider(pin.groupId)).value!).notifier).addPoint();
+      ref.read(memberServiceProvider(pin.groupId).notifier).addPoint();
       final result = await _pinsApi.createPin(pin.toPinRequestDto());
       if (result != null) {
         await _pinRepository.deletePinFromGroup(pin.id);
         state.value!.removeWhere((t) => t.id == pin.id);
         updateSinglePin(LocalPinDto.fromDto(result));
         await _pinRepository.createOrUpdate(LocalPinDto.fromDto(result));
+        return null;
+      } else {
+        return 'Failed to add pin to group';
       }
-    } catch (e) {
-      print('Error adding pin: $e');
+    } on ApiException catch (e) {
+      return e.message;
     }
   }
 
@@ -135,21 +134,17 @@ class PinService extends _$PinService {
     }
   }
 
-  Future<void> deletePinFromGroup(String pinId) async {
+  Future<String?> deletePinFromGroup(String pinId) async {
     try {
-      final result = await _pinsApi.deletePinWithHttpInfo(pinId);
-      if (result.statusCode != 200) {
-        throw Exception('Failed to delete pin');
-      }
-
+      await _pinsApi.deletePin(pinId);
       await _pinRepository.deletePinFromGroup(pinId);
-
-      // Update the state by removing the deleted pin
       final currentState = state.value ?? [];
-      final updatedState = currentState.where((pin) => pin.id != pinId).toList();
-      state = AsyncValue.data(updatedState);
-    } catch (e) {
-      print('Error deleting pin: $e');
+      currentState.removeWhere((pin) => pin.id != pinId);
+      state = AsyncValue.data(currentState);
+      ref.read(memberServiceProvider(groupId).notifier).removePoint(ref.watch(globalDataServiceProvider).userId!);
+      return null;
+    } on ApiException catch (e) {
+      return e.message;
     }
   }
 
@@ -160,7 +155,8 @@ class PinService extends _$PinService {
         return pin.image!;
       }
 
-      final pinImage = await _pinsApi.getPinImagesByIds(ids: [pinId], withImage: true);
+      final pinImage =
+          await _pinsApi.getPinImagesByIds(ids: [pinId], withImage: true);
       if (pinImage != null && pinImage.isNotEmpty) {
         final pinDto = LocalPinDto.fromDtoWithImage(pinImage.first);
         _pinRepository.createOrUpdate(pinDto);
@@ -194,12 +190,13 @@ AsyncValue<List<LocalPinDto>> activatedPins(ActivatedPinsRef ref) {
 AsyncValue<List<LocalPinDto>> sortedActivatedPins(SortedActivatedPinsRef ref) {
   final value = ref.watch(activatedPinsProvider);
   if (value.isLoading) return AsyncLoading();
-  value.value!.sort((a,b) => b.creationDate.compareTo(a.creationDate));
+  value.value!.sort((a, b) => b.creationDate.compareTo(a.creationDate));
   return value;
 }
 
 @riverpod
-AsyncValue<List<LocalPinDto>> sortedGroupPins(SortedGroupPinsRef ref, String groupId) {
+AsyncValue<List<LocalPinDto>> sortedGroupPins(
+    SortedGroupPinsRef ref, String groupId) {
   final pins = ref.watch(pinServiceProvider(groupId));
   if (pins.isLoading) return AsyncLoading();
   pins.value!.sort((a, b) => b.creationDate.compareTo(a.creationDate));
@@ -208,14 +205,15 @@ AsyncValue<List<LocalPinDto>> sortedGroupPins(SortedGroupPinsRef ref, String gro
 
 @riverpod
 AsyncValue<List<LocalPinDto>> sortedUserPins(SortedUserPinsRef ref) {
-  final groups =  ref.watch(userGroupServiceProvider);
+  final groups = ref.watch(userGroupServiceProvider);
   final userId = ref.watch(globalDataServiceProvider).userId!;
   if (groups.isLoading) return AsyncLoading();
   final pins = <LocalPinDto>[];
   for (var group in groups.value!) {
-    final p = ref.watch(pinServiceProvider(group.groupId));
-    if (p.isLoading) return AsyncLoading();
-    pins.addAll(p.value!.where((e) => e.creatorId == userId));
+    final p = ref.watch(pinServiceProvider(group.groupId).select((p) => p.whenOrNull(data: (data) => data.where((e) => e.creatorId == userId))));
+    if (p == null) return AsyncLoading();
+    pins.addAll(p);
   }
+  pins.sort((a, b) => b.creationDate.compareTo(a.creationDate));
   return AsyncData(pins);
 }

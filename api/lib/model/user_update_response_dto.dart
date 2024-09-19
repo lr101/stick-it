@@ -10,12 +10,12 @@
 
 part of openapi.api;
 
-class UserUpdateDto {
-  /// Returns a new [UserUpdateDto] instance.
-  UserUpdateDto({
-    this.email,
-    this.password,
-    this.image,
+class UserUpdateResponseDto {
+  /// Returns a new [UserUpdateResponseDto] instance.
+  UserUpdateResponseDto({
+    this.userTokenDto,
+    this.profileImageSmall,
+    this.profileImage,
   });
 
   ///
@@ -24,7 +24,7 @@ class UserUpdateDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  String? email;
+  TokenResponseDto? userTokenDto;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -32,7 +32,7 @@ class UserUpdateDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  String? password;
+  String? profileImageSmall;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -40,48 +40,48 @@ class UserUpdateDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  String? image;
+  String? profileImage;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is UserUpdateDto &&
-    other.email == email &&
-    other.password == password &&
-    other.image == image;
+  bool operator ==(Object other) => identical(this, other) || other is UserUpdateResponseDto &&
+    other.userTokenDto == userTokenDto &&
+    other.profileImageSmall == profileImageSmall &&
+    other.profileImage == profileImage;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (email == null ? 0 : email!.hashCode) +
-    (password == null ? 0 : password!.hashCode) +
-    (image == null ? 0 : image!.hashCode);
+    (userTokenDto == null ? 0 : userTokenDto!.hashCode) +
+    (profileImageSmall == null ? 0 : profileImageSmall!.hashCode) +
+    (profileImage == null ? 0 : profileImage!.hashCode);
 
   @override
-  String toString() => 'UserUpdateDto[email=$email, password=$password, image=$image]';
+  String toString() => 'UserUpdateResponseDto[userTokenDto=$userTokenDto, profileImageSmall=$profileImageSmall, profileImage=$profileImage]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.email != null) {
-      json[r'email'] = this.email;
+    if (this.userTokenDto != null) {
+      json[r'userTokenDto'] = this.userTokenDto;
     } else {
-      json[r'email'] = null;
+      json[r'userTokenDto'] = null;
     }
-    if (this.password != null) {
-      json[r'password'] = this.password;
+    if (this.profileImageSmall != null) {
+      json[r'profileImageSmall'] = this.profileImageSmall;
     } else {
-      json[r'password'] = null;
+      json[r'profileImageSmall'] = null;
     }
-    if (this.image != null) {
-      json[r'image'] = this.image;
+    if (this.profileImage != null) {
+      json[r'profileImage'] = this.profileImage;
     } else {
-      json[r'image'] = null;
+      json[r'profileImage'] = null;
     }
     return json;
   }
 
-  /// Returns a new [UserUpdateDto] instance and imports its values from
+  /// Returns a new [UserUpdateResponseDto] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static UserUpdateDto? fromJson(dynamic value) {
+  static UserUpdateResponseDto? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -90,26 +90,26 @@ class UserUpdateDto {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "UserUpdateDto[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "UserUpdateDto[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "UserUpdateResponseDto[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "UserUpdateResponseDto[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return UserUpdateDto(
-        email: mapValueOfType<String>(json, r'email'),
-        password: mapValueOfType<String>(json, r'password'),
-        image: mapValueOfType<String>(json, r'image'),
+      return UserUpdateResponseDto(
+        userTokenDto: TokenResponseDto.fromJson(json[r'userTokenDto']),
+        profileImageSmall: mapValueOfType<String>(json, r'profileImageSmall'),
+        profileImage: mapValueOfType<String>(json, r'profileImage'),
       );
     }
     return null;
   }
 
-  static List<UserUpdateDto> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <UserUpdateDto>[];
+  static List<UserUpdateResponseDto> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <UserUpdateResponseDto>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = UserUpdateDto.fromJson(row);
+        final value = UserUpdateResponseDto.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -118,12 +118,12 @@ class UserUpdateDto {
     return result.toList(growable: growable);
   }
 
-  static Map<String, UserUpdateDto> mapFromJson(dynamic json) {
-    final map = <String, UserUpdateDto>{};
+  static Map<String, UserUpdateResponseDto> mapFromJson(dynamic json) {
+    final map = <String, UserUpdateResponseDto>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = UserUpdateDto.fromJson(entry.value);
+        final value = UserUpdateResponseDto.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -132,14 +132,14 @@ class UserUpdateDto {
     return map;
   }
 
-  // maps a json object with a list of UserUpdateDto-objects as value to a dart map
-  static Map<String, List<UserUpdateDto>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<UserUpdateDto>>{};
+  // maps a json object with a list of UserUpdateResponseDto-objects as value to a dart map
+  static Map<String, List<UserUpdateResponseDto>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<UserUpdateResponseDto>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = UserUpdateDto.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = UserUpdateResponseDto.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

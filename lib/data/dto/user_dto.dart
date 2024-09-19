@@ -48,7 +48,8 @@ class LocalUserDto {
   factory LocalUserDto.fromInfoDto(UserInfoDto info) {
     return LocalUserDto(
       userId: info.userId,
-      username: info.username
+      username: info.username,
+      profileImageSmall: info.profileImageSmall != null ? base64Decode(info.profileImageSmall!) : null,
     );
   }
 

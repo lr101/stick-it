@@ -175,6 +175,7 @@ dev_dependencies:
   riverpod_lint: ^2.2.13
   easy_localization: ^3.0.7
   drift_dev: ^2.20.1
+  settings_ui: ^2.0.2
   freezed: ^2.5.7
   json_serializable: ^6.8.0
 

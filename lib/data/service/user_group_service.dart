@@ -85,16 +85,19 @@ class UserGroupService extends _$UserGroupService {
     _groupRepository.createGroup(group);
   }
 
-  Future<void> createGroup(CreateGroupDto group) async {
+  Future<String?> createGroup(CreateGroupDto group) async {
     try {
-      // Sync with the server
       final result = await _groupsApi.addGroup(group);
-
       if (result != null) {
-        await _groupRepository.createGroup(LocalGroupDto.fromDto(result));
+        final group = LocalGroupDto.fromDto(result);
+        _updateSingleGroup(group);
+        await _groupRepository.createGroup(group);
+        return null;
+      } else {
+        return "Failed to create group remotely unexpectedly";
       }
-    } catch (e) {
-      // Handle errors, possibly rollback changes locally if needed
+    } on ApiException catch (e) {
+      return e.message;
     }
   }
 

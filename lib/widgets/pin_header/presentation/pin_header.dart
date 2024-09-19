@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/pop_up_menu_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
@@ -72,7 +73,8 @@ class PinHeader extends ConsumerWidget {
                 Text(
                   formatTime(),
                   style: const TextStyle(fontSize: 10),
-                )
+                ),
+                PopUpMenuFeed(pinDto: pinDto)
               ],
             )
           ]),

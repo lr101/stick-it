@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/service/global_data_service.dart';
+import '../../settings/presentation/settings.dart';
 
 class Profile extends ConsumerWidget {
   const Profile({super.key});
@@ -16,30 +17,29 @@ class Profile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(globalDataServiceProvider).userId!;
     final userPins = ref.watch(sortedUserPinsProvider);
-    return ref.watch(userByIdProvider(userId)).whenOrNull(data: (data) {
-          if (data == null) return null;
-          return CustomAvatarScaffold(
-            avatar: AsyncData(data.profileImage),
-            title: data.username,
-            actions: [
-              IconButton(onPressed: () => (), icon: Icon(Icons.settings))
-            ],
-            boxes: [
-              SliverToBoxAdapter(
-                  child: ListTile(
-                title: Text("Sticks"),
-                subtitle: Text(userPins.whenOrNull(
-                        data: (data) => data.length.toString()) ??
-                    "---"),
-              )),
-            ],
-            body: ImageGrid(
-              pinProvider: sortedUserPinsProvider,
-              onTab: (index) => Routing.to(
-                  context, UserImageFeed(index: index, userId: userId)),
-            ),
-          );
-        }) ??
-        const CircularProgressIndicator();
+    final userData = ref.watch(userByIdProvider(userId));
+    return CustomAvatarScaffold(
+      avatar: AsyncData(userData.whenOrNull(data: (data) => data.profileImage)),
+      title: userData.whenOrNull(data: (data) => data.username) ?? "...",
+      actions: [
+        IconButton(
+            onPressed: () => Routing.to(context, Settings()),
+            icon: Icon(Icons.settings))
+      ],
+      boxes: [
+        SliverToBoxAdapter(
+            child: ListTile(
+          title: Text("Sticks"),
+          subtitle: Text(
+              userPins.whenOrNull(data: (data) => data.length.toString()) ??
+                  "---"),
+        )),
+      ],
+      body: ImageGrid(
+        pinProvider: sortedUserPinsProvider,
+        onTab: (index) =>
+            Routing.to(context, UserImageFeed(index: index, userId: userId)),
+      ),
+    );
   }
 }

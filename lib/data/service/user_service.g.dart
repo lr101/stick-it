@@ -6,7 +6,7 @@ part of 'user_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userByIdHash() => r'a7c963274de482364e00e864c03479a63a7bdde7';
+String _$userByIdHash() => r'44adcff70281591fdb74ce96180dc4184de4de1e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const userByIdProvider = UserByIdFamily();
 
 /// See also [userById].
-class UserByIdFamily extends Family<AsyncValue<LocalUserDto?>> {
+class UserByIdFamily extends Family<AsyncValue<LocalUserDto>> {
   /// See also [userById].
   const UserByIdFamily();
 
@@ -72,7 +72,7 @@ class UserByIdFamily extends Family<AsyncValue<LocalUserDto?>> {
 }
 
 /// See also [userById].
-class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto?> {
+class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto> {
   /// See also [userById].
   UserByIdProvider(
     String userId,
@@ -106,7 +106,7 @@ class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto?> {
 
   @override
   Override overrideWith(
-    FutureOr<LocalUserDto?> Function(UserByIdRef provider) create,
+    FutureOr<LocalUserDto> Function(UserByIdRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -123,7 +123,7 @@ class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto?> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<LocalUserDto?> createElement() {
+  AutoDisposeFutureProviderElement<LocalUserDto> createElement() {
     return _UserByIdProviderElement(this);
   }
 
@@ -141,13 +141,13 @@ class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto?> {
   }
 }
 
-mixin UserByIdRef on AutoDisposeFutureProviderRef<LocalUserDto?> {
+mixin UserByIdRef on AutoDisposeFutureProviderRef<LocalUserDto> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
 class _UserByIdProviderElement
-    extends AutoDisposeFutureProviderElement<LocalUserDto?> with UserByIdRef {
+    extends AutoDisposeFutureProviderElement<LocalUserDto> with UserByIdRef {
   _UserByIdProviderElement(super.provider);
 
   @override
@@ -155,7 +155,7 @@ class _UserByIdProviderElement
 }
 
 String _$profilePictureByIdHash() =>
-    r'7f394700a64bec722960ea1b3dd1248aedeb7ad6';
+    r'1a90dd8edcc690b0d71dd80beb7ca47912f4cfec';
 
 /// See also [profilePictureById].
 @ProviderFor(profilePictureById)
@@ -285,7 +285,7 @@ class _ProfilePictureByIdProviderElement
 }
 
 String _$profilePictureSmallByIdHash() =>
-    r'de95ecd6dbe4ce4046ccca333aa42d6104f8ff9e';
+    r'51d65ea3b030d68abb8632ab22ef1d4c1afd64bb';
 
 /// See also [profilePictureSmallById].
 @ProviderFor(profilePictureSmallById)
@@ -415,7 +415,7 @@ class _ProfilePictureSmallByIdProviderElement
   String get userId => (origin as ProfilePictureSmallByIdProvider).userId;
 }
 
-String _$userServiceHash() => r'31ebc074389f1a6872155ed54bd870229a9e18d8';
+String _$userServiceHash() => r'08bdea3b456f8b778d771f6c5e6826579727fe90';
 
 /// See also [UserService].
 @ProviderFor(UserService)
