@@ -6,11 +6,11 @@ part of 'map_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentLocationHash() => r'61177e5893435c2583a0a32c5da4be83e5893e68';
+String _$currentLocationHash() => r'6987ba333b47b18b75dc0891fe356be34060597a';
 
 /// See also [currentLocation].
 @ProviderFor(currentLocation)
-final currentLocationProvider = AutoDisposeStreamProvider<Position>.internal(
+final currentLocationProvider = StreamProvider<Position>.internal(
   currentLocation,
   name: r'currentLocationProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,7 +20,7 @@ final currentLocationProvider = AutoDisposeStreamProvider<Position>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef CurrentLocationRef = AutoDisposeStreamProviderRef<Position>;
+typedef CurrentLocationRef = StreamProviderRef<Position>;
 String _$mapStatesHash() => r'9fb8df0a1131c0aeb031c627ed60a76fe90df9e6';
 
 /// See also [MapStates].

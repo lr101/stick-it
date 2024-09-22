@@ -227,7 +227,7 @@ final sortedUserPinsProvider =
 
 typedef SortedUserPinsRef = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
 String _$pinsSortedByDistanceHash() =>
-    r'c4d437b50b5e3d83f78b0a926abe9782f7ec080f';
+    r'b9ebc315f3a794865db786198768e7459e856326';
 
 /// See also [pinsSortedByDistance].
 @ProviderFor(pinsSortedByDistance)

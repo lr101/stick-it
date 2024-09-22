@@ -33,7 +33,7 @@ class MapStates extends _$MapStates {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Stream<Position> currentLocation(CurrentLocationRef ref) {
   return Geolocator.getPositionStream(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 10));
 }

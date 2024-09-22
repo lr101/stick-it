@@ -232,10 +232,16 @@ AsyncValue<List<MapEntry<LocalPinDto, double>>> pinsSortedByDistance(PinsSortedB
   Distance d = Distance();
   final value = ref.watch(activatedPinsProvider);
   if (value.isLoading) return AsyncLoading();
-  final position = ref.watch(currentLocationProvider);
-  final latlong = LatLng(position.value!.latitude, position.value!.longitude);
-  final pins = value.value ?? [];
-  final pinsWithDistance = pins.map((e) => MapEntry(e, d.distance(latlong, LatLng(e.latitude, e.longitude)))).toList();
-  pinsWithDistance.sort((a, b) => a.value.compareTo(b.value));
-  return AsyncData(pinsWithDistance);
+  if (value.value == null) return AsyncData([]);
+  return ref.watch(currentLocationProvider).when(
+    data: (data) {
+      final latlong = LatLng(data.latitude, data.longitude);
+      final pins = value.value ?? [];
+      final pinsWithDistance = pins.map((e) => MapEntry(e, d.distance(latlong, LatLng(e.latitude, e.longitude)))).toList();
+      pinsWithDistance.sort((a, b) => a.value.compareTo(b.value));
+      return AsyncData(pinsWithDistance);
+    },
+    error: (error, stackTrace) => AsyncValue.error(error, stackTrace),
+    loading: () => AsyncLoading(),
+  );
 }

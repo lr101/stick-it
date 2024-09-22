@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/widgets/custom_marker/presentation/custom_marker.dart';
-import 'package:buff_lisa/widgets/map_layer/presentation/custom_tile_layer.dart';
+import 'package:buff_lisa/widgets/custom_map_setup//presentation/custom_tile_layer.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -46,7 +46,7 @@ class _FeedCardState extends ConsumerState<FeedCard> {
               return Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Column(children: [
-                  PinHeader(pinDto: widget.item, onLocationTab: animateToPage),
+                  PinHeader(pinDto: widget.item, onLocationTab: animateToPage, distance: widget.distance,),
                   SizedBox(
                     height: 3,
                   ),

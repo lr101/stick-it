@@ -1,8 +1,12 @@
 import 'package:buff_lisa/data/entity/database.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
+import 'package:buff_lisa/data/service/no_user_group_service.dart';
+import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/data/service/user_image_service.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_password.dart';
@@ -15,6 +19,7 @@ import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.da
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -174,7 +179,15 @@ class Settings extends ConsumerWidget {
             "Deleting the cache can fix wrong states of the app caused by outdated data. This does not log you out and an automatic refresh of all deleted data is performed. IMPORTANT: Posts that are not synced to the server will be lost forever.",
             maxLines: 10), onPressed: () async {
       await ref.watch(databaseProvider).deleteEverything();
+      final mgmt = FMTCStore('tileStore').manage;
+      await mgmt.reset();
       ref.invalidate(userGroupServiceProvider);
+      ref.invalidate(pinServiceProvider);
+      ref.invalidate(userImageServiceProvider);
+      ref.invalidate(userServiceProvider);
+      ref.invalidate(pinImageServiceProvider);
+      ref.invalidate(memberServiceProvider);
+      ref.invalidate(noUserGroupServiceProvider);
     });
   }
 }

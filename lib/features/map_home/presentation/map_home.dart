@@ -1,8 +1,9 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
+import 'package:buff_lisa/features/map_home/presentation/closest_pin_card.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
-import 'package:buff_lisa/widgets/map_layer/presentation/custom_tile_layer.dart';
+import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -27,15 +28,17 @@ class MapHome extends ConsumerStatefulWidget {
 class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin {
 
   MapController _controller = MapController();
-  PagingController _pagingController = PagingController(firstPageKey: 0);
+  PanelController _panelController = PanelController();
+  PagingController<int, MapEntry<LocalPinDto,double>> _pagingController = PagingController(firstPageKey: 0);
 
   List<MapEntry<LocalPinDto, double>> _pins = [];
+  ValueNotifier<double> panelPosition = ValueNotifier<double>(0);
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setLocation();
+      moveToCurrentPosition();
       ref.watch(pinsSortedByDistanceProvider).whenData((data) {
         _pins = data;
         _pagingController.refresh();
@@ -48,7 +51,7 @@ class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    final global = ref.watch(globalDataServiceProvider);
+    final height = MediaQuery.of(context).size.height;
     ref.listen(pinsSortedByDistanceProvider,(previous, next) {
       _pins = next.value ?? [];
       _pagingController.refresh();
@@ -56,20 +59,20 @@ class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin
     final mapState = ref.watch(mapStatesProvider);
     return Scaffold(appBar: null,
         body: SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: height,
           width: MediaQuery.of(context).size.width,
           child: SlidingUpPanel(
             color: Theme.of(context).scaffoldBackgroundColor,
             backdropEnabled: false,
+            panelSnapping: false,
             boxShadow: const [],
             minHeight: 20,
-            maxHeight: 222,
+            maxHeight:  height * 0.6,
             border: Border.all(color: Colors.grey),
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10.0),
                 topRight: Radius.circular(10.0)),
-            onPanelSlide: (position) => (),
-            onPanelOpened: () => (),
+            onPanelSlide: (position) => panelPosition.value = position,
             body: FlutterMap(
               mapController: _controller,
               options: MapOptions(
@@ -123,14 +126,13 @@ class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin
                       )
                   ),
                 ),
-                SizedBox(
-                    height: 200,
-                    child: PagedListView(
-                        pagingController: _pagingController,
-                        builderDelegate: PagedChildBuilderDelegate<LocalPinDto>(
-                          itemBuilder: (context, item, index) => FeedCard(item: item),
-                        )
-                    )
+                Expanded(child: PagedListView<int, MapEntry<LocalPinDto,double>>(
+                      pagingController: _pagingController,
+                      scrollDirection: Axis.horizontal,
+                      builderDelegate: PagedChildBuilderDelegate(
+                        itemBuilder: (context, item, index) => ClosestPinCard(item: item, moveToLatLng: setLocation,),
+                      )
+                  ),
                 )
               ],
             ),
@@ -142,25 +144,33 @@ class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
-              onPressed: () => setLocation(),
+              onPressed: moveToCurrentPosition,
               child: const Icon(Icons.my_location),
             ),
-            SizedBox(height: 10,)
+            ValueListenableBuilder(
+              valueListenable: panelPosition,
+              builder: (context, double value, child) {
+                return SizedBox(height: value * height * 0.6 + 10,);
+              },
+            ),
           ],
         )
       ),
     );
   }
 
-  Future<void> setLocation() async  {
+  Future<void> moveToCurrentPosition() async {
     if (!(await Permission.accessMediaLocation.isGranted)) {
       await Permission.accessMediaLocation.request();
     }
     final destLocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    setLocation(LatLng(destLocation.latitude, destLocation.longitude), 15);
+  }
 
-    final latTween = Tween<double>(begin: _controller.camera.center.latitude, end: destLocation.latitude);
-    final lngTween = Tween<double>(begin: _controller.camera.center.longitude, end: destLocation.longitude);
-    final zoomTween = Tween<double>(begin: _controller.camera.zoom, end: 14);
+  Future<void> setLocation(LatLng location, double zoom) async  {
+    final latTween = Tween<double>(begin: _controller.camera.center.latitude, end: location.latitude);
+    final lngTween = Tween<double>(begin: _controller.camera.center.longitude, end: location.longitude);
+    final zoomTween = Tween<double>(begin: _controller.camera.zoom, end: zoom);
 
     final animateController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
 
