@@ -3,19 +3,20 @@ import 'dart:math';
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_group.dart';
+import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_user.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/pop_up_menu_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
-
-import '../../../features/camera/data/camera_state.dart';
 import '../../round_image/presentation/round_image.dart';
 
 class PinHeader extends ConsumerWidget {
   final LocalPinDto pinDto;
   final VoidCallback onLocationTab;
+  final double? distance;
 
-  PinHeader({super.key, required this.pinDto, required this.onLocationTab});
+  PinHeader({super.key, required this.pinDto, required this.onLocationTab, this.distance});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,8 +35,8 @@ class PinHeader extends ConsumerWidget {
                   padding: const EdgeInsets.all(2),
                   child: RoundImage(
                     size: 16,
-                    imageCallback: AsyncData(
-                        data.whenOrNull(data: (d) => d?.profileImage)),
+                    imageCallback:
+                        AsyncData(data.whenOrNull(data: (d) => d.profileImageSmall)),
                   ),
                 ),
                 Column(
@@ -45,24 +46,29 @@ class PinHeader extends ConsumerWidget {
                     SizedBox(
                       height: 22,
                       child: FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Text(
-                            data.whenOrNull(data: (d) => d?.username) ??
-                                "Loading...",
-                          )),
+                        fit: BoxFit.fitHeight,
+                        child: data.whenOrNull(
+                                data: (d) => ClickableUser(
+                                    userId: d.userId, username: d.username)) ??
+                            Text("Loading..."),
+                      ),
                     ),
                     SizedBox(
                         height: 18,
                         child: FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child: Text(
-                              ref
-                                      .watch(groupByIdProvider(pinDto.groupId))
-                                      .whenOrNull(data: (d) => d?.name) ??
-                                  "Loading...",
-                              style:
-                                  const TextStyle(fontStyle: FontStyle.italic),
-                            )))
+                          fit: BoxFit.fitHeight,
+                          child: ref
+                                  .watch(groupByIdProvider(pinDto.groupId))
+                                  .whenOrNull(
+                                      data: (d) => ClickableGroup(
+                                            groupDto: d!,
+                                            textStyle: const TextStyle(
+                                                fontStyle: FontStyle.italic),
+                                          )) ??
+                              Text("Loading...",
+                                  style: const TextStyle(
+                                      fontStyle: FontStyle.italic)),
+                        ))
                   ],
                 ),
               ],
@@ -70,9 +76,15 @@ class PinHeader extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  formatTime(),
-                  style: const TextStyle(fontSize: 10),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      formatTime(),
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                    if (distance != null) Text("~${distance! >= 1000 ? "${(distance! ~/1000).toInt()}km" : "${distance!.toInt()}m"}", style: const TextStyle(fontSize: 10),)
+                  ],
                 ),
                 PopUpMenuFeed(pinDto: pinDto)
               ],

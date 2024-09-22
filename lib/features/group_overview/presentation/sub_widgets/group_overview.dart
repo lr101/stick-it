@@ -98,7 +98,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
           members.when(
               data: (data) => ListView.builder(
                     itemBuilder: (context, index) =>
-                        MemberTile(memberDto: data[index]),
+                        MemberTile(memberDto: data[index], adminId: widget.group.groupAdmin ?? "", ),
                     itemCount: data.length,
                   ),
               error: (err, __) => Center(child: Text("Ups something went wrong")),

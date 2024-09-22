@@ -1,6 +1,6 @@
 import 'package:buff_lisa/features/camera/presentation/camera.dart';
 import 'package:buff_lisa/features/feed/presentation/active_group_feed.dart';
-import 'package:buff_lisa/features/profile/presentation/profile.dart';
+import 'package:buff_lisa/features/profile/presentation/user_profile.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/custom_feed.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_home.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
@@ -25,7 +25,7 @@ class _NavigationState extends ConsumerState<Navigation> {
     const Camera(),
     const MapHome(),
     const ActiveGroupFeed(),
-    const Profile()
+    const UserProfile()
   ];
 
 
@@ -86,6 +86,9 @@ class _NavigationState extends ConsumerState<Navigation> {
           ],
           currentIndex: state,
           onTap: onItemTapped,
+          selectedItemColor: Theme.of(context).textTheme.titleLarge?.color,
+          unselectedItemColor: Theme.of(context).disabledColor,
+
         ));
   }
 

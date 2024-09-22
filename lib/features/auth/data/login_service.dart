@@ -23,8 +23,7 @@ class LoginService {
   /// return returns null when login was successful and an error message on errors
   Future<String?> authUser(LoginData data) async {
     try {
-      final value = await ref.read(userServiceProvider.notifier).auth(data.name, data.password);
-      return value ? null : 'Wrong username or password';
+      return await ref.read(userServiceProvider.notifier).auth(data.name, data.password);
     } catch (e) {
       return "cannot connect to server";
     }
@@ -39,11 +38,10 @@ class LoginService {
       } else if (!emailValidator(data.additionalSignupData!["email"])) {
         return Future<String>.value("email does not have the correct format");
       } else {
-        final value = await ref
+        return await ref
             .read(userServiceProvider.notifier)
             .signupNewUser(data.name!, data.password!,
                 data.additionalSignupData!["email"]!);
-        return value ? null : 'Username already exists or check your internet';
       }
     } catch (e) {
       return "cannot connect to server";

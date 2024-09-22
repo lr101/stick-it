@@ -9,13 +9,11 @@ import '../entity/database.dart';
 class LocalUserDto {
   final String userId;
   final String username;
-  Uint8List? profileImage;
   Uint8List? profileImageSmall;
 
   LocalUserDto({
     required this.userId,
     required this.username,
-    this.profileImage,
     this.profileImageSmall,
   });
 
@@ -23,7 +21,6 @@ class LocalUserDto {
     return LocalUserDto(
       userId: entityData.userId,
       username: entityData.username,
-      profileImage: entityData.profileImage,
       profileImageSmall: entityData.profileImageSmall,
     );
   }
@@ -32,7 +29,6 @@ class LocalUserDto {
     return UserEntityCompanion(
       userId: Value(userId),
       username: Value(username),
-      profileImage: Value(profileImage),
       profileImageSmall: Value(profileImageSmall),
     );
   }

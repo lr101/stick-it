@@ -3,12 +3,15 @@ import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_password.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_profile_picture.dart';
+import 'package:buff_lisa/features/settings/presentation/sub_widgets/delete_account.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_posts.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_users.dart';
-import 'package:buff_lisa/features/settings/presentation/sub_widgets/report.dart';
+import 'package:buff_lisa/util/theme/service/theme_state.dart';
+import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -36,13 +39,12 @@ class Settings extends ConsumerWidget {
                   title: const Text('Language'),
                   value: const Text('English'),
                 ),
-                // SettingsTile.switchTile(
-                //   activeSwitchColor:  CustomTheme.c1,
-                //   onToggle: (value) => Provider.of<ThemeNotifier>(context, listen: false).toggleThemeMode(),
-                //   initialValue: Provider.of<ThemeNotifier>(context).getTheme.brightness == Brightness.dark,
-                //   leading: const Icon(Icons.dark_mode),
-                //   title: const Text('Toggle theme'),
-                // ),
+                SettingsTile.switchTile(
+                   onToggle: ref.read(themeStateProvider.notifier).setTheme,
+                   initialValue: ref.watch(themeStateProvider) == ThemeMode.light,
+                   leading: const Icon(Icons.dark_mode),
+                   title: const Text('Toggle theme'),
+                 ),
                 SettingsTile(
                     title: const Text("Delete cache"),
                     leading: const Icon(Icons.cached),
@@ -139,7 +141,7 @@ class Settings extends ConsumerWidget {
                   'Delete Account',
                   style: TextStyle(color: Colors.red),
                 ),
-                //onPressed: (context) => widget.handleDeleteAccount(context)
+                onPressed: (context) => Routing.to(context, DeleteAccount()),
               ),
               SettingsTile.navigation(
                   leading: const Icon(Icons.logout, color: Colors.red),
@@ -153,7 +155,10 @@ class Settings extends ConsumerWidget {
                             title: "Confirm Logout",
                             text2: "Logout",
                             text1: "Cancel",
-                            onPressed: () => (),
+                            onPressed: () async {
+                              await ref.read(globalDataServiceProvider.notifier).logout();
+                              Routing.toAndDelete(context, Auth(), "/login");
+                            },
                           ))),
             ])
           ],

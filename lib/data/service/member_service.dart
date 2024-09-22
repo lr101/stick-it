@@ -15,10 +15,8 @@ class MemberService extends _$MemberService {
   Future<List<MemberDto>> build(String groupId) async {
     final memberApi = ref.watch(memberApiProvider);
     final members = await memberApi.getGroupRanking(groupId);
-    final group = await ref.watch(groupByIdProvider(groupId)).value;
-    if (group == null) return [];
     if (members != null) {
-      return members.map((e) => MemberDto.fromRanking(e, group)).toList();
+      return members.map((e) => MemberDto.fromRanking(e, groupId)).toList();
     }
     return [];
   }
@@ -34,7 +32,6 @@ class MemberService extends _$MemberService {
       profileImageSmall: dto.profileImageSmall,
       username: dto.username,
       groupId: dto.groupId,
-      admin: dto.admin,
       points: dto.points + 1
     );
     currentState.sort((e1, e2) => e2.points.compareTo(e1.points));
@@ -42,7 +39,8 @@ class MemberService extends _$MemberService {
   }
 
   void removePoint(String userId) async {
-    final currentState = state.value ?? [];
+    final currentState = state.value;
+    if (currentState == null) return;
     final index = currentState.indexWhere((e) => e.userId == userId);
     final dto = currentState[index];
     currentState[index] = MemberDto(
@@ -50,7 +48,6 @@ class MemberService extends _$MemberService {
       profileImageSmall: dto.profileImageSmall,
       username: dto.username,
       groupId: dto.groupId,
-      admin: dto.admin,
       points: dto.points - 1
     );
     currentState.sort((e1, e2) => e2.points.compareTo(e1.points));

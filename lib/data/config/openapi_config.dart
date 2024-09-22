@@ -13,7 +13,7 @@ class OpenApiConfig extends _$OpenApiConfig {
 
   final HttpBearerAuth _authentication = HttpBearerAuth();
 
-  String accessToken = "NOT AN ACCESS TOKEN";
+  String accessToken = "NOTANACCESSTOKEN";
 
   @override
   ApiClient build() {

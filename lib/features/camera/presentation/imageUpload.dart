@@ -39,7 +39,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   @override
   Widget build(BuildContext context) {
     final global = ref.watch(globalDataServiceProvider);
-    final userImage = ref.watch(profilePictureByIdProvider(global.userId!));
+    final userImage = ref.watch(profilePictureSmallByIdProvider(global.userId!));
     return Scaffold(
       appBar: AppBar(
         title: Text("Approve"),

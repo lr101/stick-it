@@ -4,7 +4,7 @@ import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
-import 'package:buff_lisa/features/settings/presentation/sub_widgets/report.dart';
+import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,28 +19,29 @@ class PopUpMenuFeed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userId = ref.watch(globalDataServiceProvider).userId;
+    final userId = ref.watch(globalDataServiceProvider).userId!;
     final adminId = ref.watch(groupByIdProvider(pinDto.groupId)).value?.groupAdmin;
+    bool isNotCreator =  userId != pinDto.creatorId;
     return PopupMenuButton(
         itemBuilder: (context) {
           return [
-            const PopupMenuItem<int>(
+            if(isNotCreator) const PopupMenuItem<int>(
                 value: 0,
                 child: Text("Hide post")
             ),
-            const PopupMenuItem<int>(
+            if(isNotCreator) const PopupMenuItem<int>(
                 value: 1,
                 child: Text("Report stick")
             ),
-            const PopupMenuItem<int>(
+            if(isNotCreator) const PopupMenuItem<int>(
                 value: 2,
                 child: Text("Hide user")
             ),
-            const PopupMenuItem<int>(
+            if(isNotCreator) const PopupMenuItem<int>(
                 value: 3,
                 child: Text("Report user")
             ),
-            if (userId == adminId || userId == pinDto.creatorId) const PopupMenuItem<int>(
+            if (userId == adminId || !isNotCreator) const PopupMenuItem<int>(
               value: 4,
               child: Text("Delete stick"),
             )
@@ -51,7 +52,7 @@ class PopUpMenuFeed extends ConsumerWidget {
             case 0: ref.read(hiddenPostsServiceProvider.notifier).addHiddenPost(pinDto.id);break;
             case 1: Routing.to(context, ReportIssuePage(issueTypes: ["Report stick"], pinId: pinDto.id,)); break;
             case 2: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(pinDto.creatorId);break;
-            case 3: Routing.to(context, ReportIssuePage(issueTypes: ["Report user"], pinId: pinDto.creatorId,)); break;
+            case 3: Routing.to(context, ReportIssuePage(issueTypes: ["Report user"], userId: pinDto.creatorId,)); break;
             case 4: leaveGroup(ref, context); break;
           }
         }

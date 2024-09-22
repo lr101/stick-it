@@ -10,17 +10,15 @@ class MemberDto {
   final String groupId;
   final String username;
   final int points;
-  final bool admin;
   final Uint8List? profileImageSmall;
 
-  MemberDto({required this.userId, required this.groupId, required this.username, required this.profileImageSmall, required this.admin, required this.points});
+  MemberDto({required this.userId, required this.groupId, required this.username, required this.profileImageSmall, required this.points});
 
-  factory MemberDto.fromRanking(RankingResponseDto ranking, LocalGroupDto group) {
+  factory MemberDto.fromRanking(RankingResponseDto ranking, String groupId) {
     return MemberDto(
       userId: ranking.userId,
       username: ranking.username,
-      groupId: group.groupId,
-      admin: group.groupAdmin == ranking.userId,
+      groupId: groupId,
       points: ranking.ranking,
       profileImageSmall: ranking.profileImageSmall != null ? base64Decode(ranking.profileImageSmall!) : null,
     );

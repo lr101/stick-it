@@ -21,6 +21,7 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _messageController = TextEditingController();
   late String? _selectedIssueType;
+  bool sending = false;
 
   @override
   void initState() {
@@ -40,13 +41,19 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
 
   // Function to handle the report submission
   Future<void> _submitReport() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && !sending) {
+      setState(() {
+        sending = true;
+      });
       final result = await ref.read(userServiceProvider.notifier).report("userId: ${widget.userId}, groupId: ${widget.groupId}, pinId: ${widget.pinId}, issueType: ${_selectedIssueType}", _messageController.text);
       if (result != null) {
         CustomErrorSnackBar.message(context: context, message: result);
       } else {
         Navigator.of(context).pop();
       }
+      setState(() {
+        sending = false;
+      });
     }
   }
 
@@ -104,7 +111,7 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _submitReport,
-                    child: Text('Send Message'),
+                    child: sending ? CircularProgressIndicator() : Text('Send Message'),
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                       textStyle: TextStyle(fontSize: 18.0),

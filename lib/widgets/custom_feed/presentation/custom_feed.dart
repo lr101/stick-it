@@ -10,8 +10,8 @@ import 'feed_card.dart';
 class CustomFeed extends ConsumerStatefulWidget {
   CustomFeed({super.key, required this.pinProvider, this.index, required this.pagingController});
 
-  final AutoDisposeProvider<AsyncValue<List<LocalPinDto>>> pinProvider;
-  PagingController<int, LocalPinDto> pagingController;
+    final AutoDisposeFutureProvider<List<LocalPinDto>> pinProvider;
+  final PagingController<int, LocalPinDto> pagingController;
   final int? index;
 
   @override

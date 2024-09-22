@@ -1,5 +1,6 @@
 
 
+import 'package:buff_lisa/data/entity/database.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -35,7 +36,9 @@ class GlobalDataService  extends _$GlobalDataService {
   }
 
   Future<void> logout() async {
-    await ref.watch(globalDataRepositoryProvider).logout();
+    await ref.watch(sharedPreferencesProvider).clear();
+    await ref.watch(flutterSecureStorageProvider).deleteAll();
+    await ref.watch(databaseProvider).deleteEverything();
     state = await GlobalDataRepository.get(
       ref.watch(sharedPreferencesProvider),
       ref.watch(flutterSecureStorageProvider)

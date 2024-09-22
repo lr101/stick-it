@@ -5,6 +5,9 @@ import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/auth/presentation/loading.dart';
+import 'package:buff_lisa/util/theme/data/dark_theme.dart';
+import 'package:buff_lisa/util/theme/data/light_theme.dart';
+import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +68,9 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Mona App',
+      themeMode: ref.watch(themeStateProvider),
+      darkTheme: darkTheme,
+      theme: lightTheme,
       initialRoute: ref.watch(globalDataServiceProvider).userId != null ? '/home' : '/login',
       routes: {
         '/login': (context) => Auth(),

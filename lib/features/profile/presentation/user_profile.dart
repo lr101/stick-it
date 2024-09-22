@@ -1,4 +1,5 @@
 import 'package:buff_lisa/data/service/pin_service.dart';
+import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
@@ -10,8 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/service/global_data_service.dart';
 import '../../settings/presentation/settings.dart';
 
-class Profile extends ConsumerWidget {
-  const Profile({super.key});
+class UserProfile extends ConsumerWidget {
+  const UserProfile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +20,7 @@ class Profile extends ConsumerWidget {
     final userPins = ref.watch(sortedUserPinsProvider);
     final userData = ref.watch(userByIdProvider(userId));
     return CustomAvatarScaffold(
-      avatar: AsyncData(userData.whenOrNull(data: (data) => data.profileImage)),
+      avatar: AsyncData(ref.watch(profilePictureByIdProvider(userId)).value),
       title: userData.whenOrNull(data: (data) => data.username) ?? "...",
       actions: [
         IconButton(
@@ -38,7 +39,7 @@ class Profile extends ConsumerWidget {
       body: ImageGrid(
         pinProvider: sortedUserPinsProvider,
         onTab: (index) =>
-            Routing.to(context, UserImageFeed(index: index, userId: userId)),
+            Routing.to(context, UserImageFeed(index: index, userId: userId, userPinNotifier: sortedUserPinsProvider,)),
       ),
     );
   }

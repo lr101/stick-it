@@ -23,13 +23,31 @@ final activatedPinsProvider =
 
 typedef ActivatedPinsRef
     = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
+String _$activatedPinsWithoutLoadingHash() =>
+    r'd21f324acfb22d4cac0578ac017ae62cb4eb7117';
+
+/// See also [activatedPinsWithoutLoading].
+@ProviderFor(activatedPinsWithoutLoading)
+final activatedPinsWithoutLoadingProvider =
+    AutoDisposeProvider<AsyncValue<List<LocalPinDto>>>.internal(
+  activatedPinsWithoutLoading,
+  name: r'activatedPinsWithoutLoadingProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$activatedPinsWithoutLoadingHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ActivatedPinsWithoutLoadingRef
+    = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
 String _$sortedActivatedPinsHash() =>
-    r'7b9ef2ea1306649fb3be28ac1f08df945c14b502';
+    r'30f1791af810e64bac60225248a4cd2afc1522e5';
 
 /// See also [sortedActivatedPins].
 @ProviderFor(sortedActivatedPins)
 final sortedActivatedPinsProvider =
-    AutoDisposeProvider<AsyncValue<List<LocalPinDto>>>.internal(
+    AutoDisposeFutureProvider<List<LocalPinDto>>.internal(
   sortedActivatedPins,
   name: r'sortedActivatedPinsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -40,8 +58,8 @@ final sortedActivatedPinsProvider =
 );
 
 typedef SortedActivatedPinsRef
-    = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
-String _$sortedGroupPinsHash() => r'3984969e54f4f7eb5328594c3ed74cde7695360d';
+    = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
+String _$sortedGroupPinsHash() => r'3cce5480e31b82639bb97162d197a333f9d0b75a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -108,7 +126,7 @@ class SortedGroupPinsFamily extends Family<AsyncValue<List<LocalPinDto>>> {
 
 /// See also [sortedGroupPins].
 class SortedGroupPinsProvider
-    extends AutoDisposeProvider<AsyncValue<List<LocalPinDto>>> {
+    extends AutoDisposeFutureProvider<List<LocalPinDto>> {
   /// See also [sortedGroupPins].
   SortedGroupPinsProvider(
     String groupId,
@@ -143,7 +161,7 @@ class SortedGroupPinsProvider
 
   @override
   Override overrideWith(
-    AsyncValue<List<LocalPinDto>> Function(SortedGroupPinsRef provider) create,
+    FutureOr<List<LocalPinDto>> Function(SortedGroupPinsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -160,7 +178,7 @@ class SortedGroupPinsProvider
   }
 
   @override
-  AutoDisposeProviderElement<AsyncValue<List<LocalPinDto>>> createElement() {
+  AutoDisposeFutureProviderElement<List<LocalPinDto>> createElement() {
     return _SortedGroupPinsProviderElement(this);
   }
 
@@ -178,14 +196,13 @@ class SortedGroupPinsProvider
   }
 }
 
-mixin SortedGroupPinsRef
-    on AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>> {
+mixin SortedGroupPinsRef on AutoDisposeFutureProviderRef<List<LocalPinDto>> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
 class _SortedGroupPinsProviderElement
-    extends AutoDisposeProviderElement<AsyncValue<List<LocalPinDto>>>
+    extends AutoDisposeFutureProviderElement<List<LocalPinDto>>
     with SortedGroupPinsRef {
   _SortedGroupPinsProviderElement(super.provider);
 
@@ -193,12 +210,12 @@ class _SortedGroupPinsProviderElement
   String get groupId => (origin as SortedGroupPinsProvider).groupId;
 }
 
-String _$sortedUserPinsHash() => r'dfcede8ee92553b4cdbbb1339a39606c8856aa69';
+String _$sortedUserPinsHash() => r'f749a7772a8913752c4df0c49c2090534251bc49';
 
 /// See also [sortedUserPins].
 @ProviderFor(sortedUserPins)
 final sortedUserPinsProvider =
-    AutoDisposeProvider<AsyncValue<List<LocalPinDto>>>.internal(
+    AutoDisposeFutureProvider<List<LocalPinDto>>.internal(
   sortedUserPins,
   name: r'sortedUserPinsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -208,9 +225,26 @@ final sortedUserPinsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef SortedUserPinsRef
-    = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
-String _$pinServiceHash() => r'bb73e169de53b84f07497ba329e428a82f3c9065';
+typedef SortedUserPinsRef = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
+String _$pinsSortedByDistanceHash() =>
+    r'c4d437b50b5e3d83f78b0a926abe9782f7ec080f';
+
+/// See also [pinsSortedByDistance].
+@ProviderFor(pinsSortedByDistance)
+final pinsSortedByDistanceProvider = AutoDisposeProvider<
+    AsyncValue<List<MapEntry<LocalPinDto, double>>>>.internal(
+  pinsSortedByDistance,
+  name: r'pinsSortedByDistanceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$pinsSortedByDistanceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef PinsSortedByDistanceRef
+    = AutoDisposeProviderRef<AsyncValue<List<MapEntry<LocalPinDto, double>>>>;
+String _$pinServiceHash() => r'9fda6be8568e2bd5db9171afba65b8d3b346490f';
 
 abstract class _$PinService extends BuildlessAsyncNotifier<List<LocalPinDto>> {
   late final String groupId;

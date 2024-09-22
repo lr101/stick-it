@@ -8,6 +8,8 @@ import 'package:buff_lisa/widgets/round_image/presentation/round_image_picker.da
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../data/service/user_image_service.dart';
+
 class ChangeProfilePicture extends ConsumerWidget {
   const ChangeProfilePicture({super.key});
 

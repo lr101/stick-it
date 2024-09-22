@@ -154,136 +154,6 @@ class _UserByIdProviderElement
   String get userId => (origin as UserByIdProvider).userId;
 }
 
-String _$profilePictureByIdHash() =>
-    r'1a90dd8edcc690b0d71dd80beb7ca47912f4cfec';
-
-/// See also [profilePictureById].
-@ProviderFor(profilePictureById)
-const profilePictureByIdProvider = ProfilePictureByIdFamily();
-
-/// See also [profilePictureById].
-class ProfilePictureByIdFamily extends Family<AsyncValue<Uint8List?>> {
-  /// See also [profilePictureById].
-  const ProfilePictureByIdFamily();
-
-  /// See also [profilePictureById].
-  ProfilePictureByIdProvider call(
-    String userId,
-  ) {
-    return ProfilePictureByIdProvider(
-      userId,
-    );
-  }
-
-  @override
-  ProfilePictureByIdProvider getProviderOverride(
-    covariant ProfilePictureByIdProvider provider,
-  ) {
-    return call(
-      provider.userId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'profilePictureByIdProvider';
-}
-
-/// See also [profilePictureById].
-class ProfilePictureByIdProvider extends AutoDisposeFutureProvider<Uint8List?> {
-  /// See also [profilePictureById].
-  ProfilePictureByIdProvider(
-    String userId,
-  ) : this._internal(
-          (ref) => profilePictureById(
-            ref as ProfilePictureByIdRef,
-            userId,
-          ),
-          from: profilePictureByIdProvider,
-          name: r'profilePictureByIdProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$profilePictureByIdHash,
-          dependencies: ProfilePictureByIdFamily._dependencies,
-          allTransitiveDependencies:
-              ProfilePictureByIdFamily._allTransitiveDependencies,
-          userId: userId,
-        );
-
-  ProfilePictureByIdProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.userId,
-  }) : super.internal();
-
-  final String userId;
-
-  @override
-  Override overrideWith(
-    FutureOr<Uint8List?> Function(ProfilePictureByIdRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ProfilePictureByIdProvider._internal(
-        (ref) => create(ref as ProfilePictureByIdRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        userId: userId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<Uint8List?> createElement() {
-    return _ProfilePictureByIdProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is ProfilePictureByIdProvider && other.userId == userId;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, userId.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-mixin ProfilePictureByIdRef on AutoDisposeFutureProviderRef<Uint8List?> {
-  /// The parameter `userId` of this provider.
-  String get userId;
-}
-
-class _ProfilePictureByIdProviderElement
-    extends AutoDisposeFutureProviderElement<Uint8List?>
-    with ProfilePictureByIdRef {
-  _ProfilePictureByIdProviderElement(super.provider);
-
-  @override
-  String get userId => (origin as ProfilePictureByIdProvider).userId;
-}
-
 String _$profilePictureSmallByIdHash() =>
     r'51d65ea3b030d68abb8632ab22ef1d4c1afd64bb';
 
@@ -415,7 +285,7 @@ class _ProfilePictureSmallByIdProviderElement
   String get userId => (origin as ProfilePictureSmallByIdProvider).userId;
 }
 
-String _$userServiceHash() => r'08bdea3b456f8b778d771f6c5e6826579727fe90';
+String _$userServiceHash() => r'82b913a3a7e1adc14f6f5295ce86365c0987dad8';
 
 /// See also [UserService].
 @ProviderFor(UserService)

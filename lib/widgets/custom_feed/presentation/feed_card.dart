@@ -16,9 +16,10 @@ import '../../../widgets/pin_header/presentation/pin_header.dart';
 import '../data/image_service.dart';
 
 class FeedCard extends ConsumerStatefulWidget {
-  FeedCard({super.key, required this.item});
+  FeedCard({super.key, required this.item, this.distance});
 
   final LocalPinDto item;
+  final double? distance;
 
   @override
   ConsumerState<FeedCard> createState() => _FeedCardState();

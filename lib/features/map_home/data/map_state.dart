@@ -7,6 +7,8 @@ import 'package:buff_lisa/widgets/custom_marker/presentation/custom_marker.dart'
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -26,7 +28,12 @@ class MapStates extends _$MapStates {
   @override
   MapState build() {
     return MapState(
-      markers: ref.watch(activatedPinsProvider).whenOrNull(data: (data) => data.map((e) => CustomMarkerProvider(pinDto: e, ref: ref)).toList()) ?? [],
+      markers: ref.watch(activatedPinsWithoutLoadingProvider).whenOrNull(data: (data) => data.map((e) => CustomMarkerProvider(pinDto: e, ref: ref)).toList()) ?? [],
     );
   }
+}
+
+@riverpod
+Stream<Position> currentLocation(CurrentLocationRef ref) {
+  return Geolocator.getPositionStream(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 10));
 }

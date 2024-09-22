@@ -90,7 +90,7 @@ final reportApiProvider = Provider<ReportApi>.internal(
 );
 
 typedef ReportApiRef = ProviderRef<ReportApi>;
-String _$openApiConfigHash() => r'aac3a3728d0a486c3605a04aebb23814b9f375f3';
+String _$openApiConfigHash() => r'5b820e6fade1598e23c18c59f0bc4b896de6f29d';
 
 /// See also [OpenApiConfig].
 @ProviderFor(OpenApiConfig)
