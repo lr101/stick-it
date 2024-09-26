@@ -18,7 +18,7 @@ class CustomImagePicker {
       }
       return await ImagePicker().pickMedia(imageQuality: 25, requestFullMetadata: true);
     } catch (e) {
-      CustomErrorSnackBar.message(context: context, message: e.toString());
+      CustomErrorSnackBar.message(message: e.toString());
     }
     return null;
   }
@@ -62,7 +62,7 @@ class CustomImagePicker {
         return image;
       }
     } catch (e) {
-      CustomErrorSnackBar.message(context: context, message: e.toString());
+      CustomErrorSnackBar.message(message: e.toString());
     }
     return null;
   }

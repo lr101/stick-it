@@ -51,9 +51,9 @@ class ChangeProfilePicture extends ConsumerWidget {
     if (image != null) {
       final result = await ref.read(userServiceProvider.notifier).changeUser(profilePicture: image);
       if (result == null) {
-        CustomErrorSnackBar.message(context: context, message: "Successfully changed profile picture");
+        CustomErrorSnackBar.message(message: "Successfully changed profile picture");
       } else {
-        CustomErrorSnackBar.message(context: context, message: result);
+        CustomErrorSnackBar.message(message: result);
       }
     }
   }

@@ -23,9 +23,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'data/service/shared_preferences_service.dart';
-
-/// global key for enabling different routes on startup
-final navigatorKey = GlobalKey<NavigatorState>();
+import 'features/navigation/data/navigation_provider.dart';
 
 /// THIS IS THE START OF THE PROGRAMM
 /// binding Widgets before initialization is required by multiple packages
@@ -84,6 +82,7 @@ class MyApp extends ConsumerWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     /// create [ClusterNotifier] used to save all important information
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
       title: 'Mona App',
       themeMode: ref.watch(themeStateProvider),
@@ -96,7 +95,7 @@ class MyApp extends ConsumerWidget {
           return const Loading();
         }
       },
-      navigatorKey: navigatorKey, // Setting a global key for navigator
+      navigatorKey: NavigationService.navigatorKey,
     );
   }
 }

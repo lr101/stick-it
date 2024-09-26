@@ -17,6 +17,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../../data/dto/pin_dto.dart';
 import '../../../data/service/pin_image_service.dart';
+import '../../../data/service/user_group_service.dart';
 
 class MapHome extends ConsumerStatefulWidget {
   const MapHome({super.key});
@@ -25,7 +26,7 @@ class MapHome extends ConsumerStatefulWidget {
   ConsumerState<MapHome> createState() => _MapHomeState();
 }
 
-class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin {
+class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin  {
 
   MapController _controller = MapController();
   PanelController _panelController = PanelController();
@@ -33,10 +34,13 @@ class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin
 
   List<MapEntry<LocalPinDto, double>> _pins = [];
   ValueNotifier<double> panelPosition = ValueNotifier<double>(0);
+  late final animateController;
+
 
   @override
   void initState() {
     super.initState();
+    animateController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       moveToCurrentPosition();
       ref.watch(pinsSortedByDistanceProvider).whenData((data) {
@@ -172,8 +176,6 @@ class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin
     final lngTween = Tween<double>(begin: _controller.camera.center.longitude, end: location.longitude);
     final zoomTween = Tween<double>(begin: _controller.camera.zoom, end: zoom);
 
-    final animateController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
-
     final Animation<double> animation = CurvedAnimation(parent: animateController, curve: Curves.fastOutSlowIn);
 
     animateController.addListener(() {
@@ -182,15 +184,7 @@ class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin
           zoomTween.evaluate(animation));
     });
 
-    animation.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        animateController.forward();
-      } else if (status == AnimationStatus.dismissed) {
-        animateController.dispose();
-      }
-    });
-
-    animateController.forward();
+    animateController.forward(from: 0.0);
   }
 
   Future<void> _fetchPage(pageKey, {pageSize = 5}) async {
@@ -212,5 +206,10 @@ class _MapHomeState extends ConsumerState<MapHome> with TickerProviderStateMixin
       _pagingController.error = error;
     }
   }
+
+
+  @override
+  bool get wantKeepAlive => true;
+
 
 }

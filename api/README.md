@@ -96,11 +96,12 @@ Class | Method | HTTP request | Description
 
  - [CreateGroupDto](doc//CreateGroupDto.md)
  - [GroupDto](doc//GroupDto.md)
+ - [GroupsSyncDto](doc//GroupsSyncDto.md)
  - [InfoDto](doc//InfoDto.md)
  - [MemberResponseDto](doc//MemberResponseDto.md)
  - [PinRequestDto](doc//PinRequestDto.md)
  - [PinWithOptionalImageDto](doc//PinWithOptionalImageDto.md)
- - [PinWithoutImageDto](doc//PinWithoutImageDto.md)
+ - [PinsSyncDto](doc//PinsSyncDto.md)
  - [RankingResponseDto](doc//RankingResponseDto.md)
  - [ReportDto](doc//ReportDto.md)
  - [TokenResponseDto](doc//TokenResponseDto.md)

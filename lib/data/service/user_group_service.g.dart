@@ -424,7 +424,7 @@ final activeGroupsProvider = FutureProvider<List<LocalGroupDto>>.internal(
 );
 
 typedef ActiveGroupsRef = FutureProviderRef<List<LocalGroupDto>>;
-String _$userGroupServiceHash() => r'1fd2db6e2996454b84a08de399d1cdf1a7a00682';
+String _$userGroupServiceHash() => r'bc74cb590f1e7dc9e57efaf1c3a8daba26fe8812';
 
 /// See also [UserGroupService].
 @ProviderFor(UserGroupService)

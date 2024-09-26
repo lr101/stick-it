@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 
 # **createPin**
-> PinWithoutImageDto createPin(pinRequestDto)
+> PinWithOptionalImageDto createPin(pinRequestDto)
 
 Create a new pin
 
@@ -44,7 +44,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PinWithoutImageDto**](PinWithoutImageDto.md)
+[**PinWithOptionalImageDto**](PinWithOptionalImageDto.md)
 
 ### Authorization
 
@@ -98,7 +98,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getPin**
-> PinWithoutImageDto getPin(pinId)
+> PinWithOptionalImageDto getPin(pinId, withImage)
 
 Get pin information by ID
 
@@ -108,9 +108,10 @@ import 'package:openapi/api.dart';
 
 final api_instance = PinsApi();
 final pinId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
+final withImage = true; // bool | Describes if the image of the pin should be returned too
 
 try {
-    final result = api_instance.getPin(pinId);
+    final result = api_instance.getPin(pinId, withImage);
     print(result);
 } catch (e) {
     print('Exception when calling PinsApi->getPin: $e\n');
@@ -122,10 +123,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **pinId** | **String**|  | 
+ **withImage** | **bool**| Describes if the image of the pin should be returned too | [optional] [default to false]
 
 ### Return type
 
-[**PinWithoutImageDto**](PinWithoutImageDto.md)
+[**PinWithOptionalImageDto**](PinWithOptionalImageDto.md)
 
 ### Authorization
 
@@ -180,7 +182,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getPinImagesByIds**
-> List<PinWithOptionalImageDto> getPinImagesByIds(ids, groupId, userId, withImage, compression, height, page, size)
+> PinsSyncDto getPinImagesByIds(ids, groupId, userId, withImage, compression, height, page, size, updatedAfter)
 
 Get images by IDs
 
@@ -197,9 +199,10 @@ final compression = 56; // int | Compression level for images (optional)
 final height = 56; // int | Height for images (optional)
 final page = 56; // int | page number (can only be used when ids is not set). Sorted by creation date descending
 final size = 56; // int | page size. Defaults to 20
+final updatedAfter = 2013-10-20T19:20:30+01:00; // DateTime | only include pins that have been updated after this date.If set all deleted pins after this time are returned.
 
 try {
-    final result = api_instance.getPinImagesByIds(ids, groupId, userId, withImage, compression, height, page, size);
+    final result = api_instance.getPinImagesByIds(ids, groupId, userId, withImage, compression, height, page, size, updatedAfter);
     print(result);
 } catch (e) {
     print('Exception when calling PinsApi->getPinImagesByIds: $e\n');
@@ -218,10 +221,11 @@ Name | Type | Description  | Notes
  **height** | **int**| Height for images (optional) | [optional] 
  **page** | **int**| page number (can only be used when ids is not set). Sorted by creation date descending | [optional] 
  **size** | **int**| page size. Defaults to 20 | [optional] [default to 20]
+ **updatedAfter** | **DateTime**| only include pins that have been updated after this date.If set all deleted pins after this time are returned. | [optional] 
 
 ### Return type
 
-[**List<PinWithOptionalImageDto>**](PinWithOptionalImageDto.md)
+[**PinsSyncDto**](PinsSyncDto.md)
 
 ### Authorization
 

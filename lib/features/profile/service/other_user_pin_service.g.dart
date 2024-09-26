@@ -158,7 +158,7 @@ class _OtherUserPinProviderElement
 }
 
 String _$otherUserPinServiceHash() =>
-    r'67c5b118133e087cf715ea750e70990d818a6865';
+    r'8c85c35e3d2cb3cb9f1df98385e1ebfa8b6c4a98';
 
 abstract class _$OtherUserPinService
     extends BuildlessAsyncNotifier<List<LocalPinDto>> {

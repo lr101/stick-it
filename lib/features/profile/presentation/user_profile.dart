@@ -20,7 +20,7 @@ class UserProfile extends ConsumerWidget {
     final userPins = ref.watch(sortedUserPinsProvider);
     final userData = ref.watch(userByIdProvider(userId));
     return CustomAvatarScaffold(
-      avatar: AsyncData(ref.watch(profilePictureByIdProvider(userId)).value),
+      avatar: AsyncData(ref.watch(profilePictureByIdProvider(userId)).whenOrNull(data: (data) => data)),
       title: userData.whenOrNull(data: (data) => data.username) ?? "...",
       actions: [
         IconButton(

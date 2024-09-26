@@ -1,5 +1,7 @@
 import 'package:buff_lisa/data/entity/database.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
+import 'package:buff_lisa/data/repository/pin_repository.dart';
+import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
@@ -23,13 +25,21 @@ import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
+import '../../../data/repository/global_data_repository.dart';
 import '../../../data/service/global_data_service.dart';
 import '../../../util/routing/routing.dart';
 import '../../web/presentation/show_web.dart';
 
-class Settings extends ConsumerWidget {
+class Settings extends ConsumerStatefulWidget {
+  const Settings({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Settings> createState() => _SettingsState();
+}
+
+class _SettingsState extends ConsumerState<Settings> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text("Settings"),
@@ -161,6 +171,7 @@ class Settings extends ConsumerWidget {
                             text2: "Logout",
                             text1: "Cancel",
                             onPressed: () async {
+                              await invalidateCache();
                               await ref.read(globalDataServiceProvider.notifier).logout();
                               Routing.toAndDelete(context, Auth(), "/login");
                             },
@@ -177,17 +188,24 @@ class Settings extends ConsumerWidget {
         cancelText: "Cancel",
         child: Text(
             "Deleting the cache can fix wrong states of the app caused by outdated data. This does not log you out and an automatic refresh of all deleted data is performed. IMPORTANT: Posts that are not synced to the server will be lost forever.",
-            maxLines: 10), onPressed: () async {
-      await ref.watch(databaseProvider).deleteEverything();
-      final mgmt = FMTCStore('tileStore').manage;
-      await mgmt.reset();
-      ref.invalidate(userGroupServiceProvider);
-      ref.invalidate(pinServiceProvider);
-      ref.invalidate(userImageServiceProvider);
-      ref.invalidate(userServiceProvider);
-      ref.invalidate(pinImageServiceProvider);
-      ref.invalidate(memberServiceProvider);
-      ref.invalidate(noUserGroupServiceProvider);
-    });
+            maxLines: 10), onPressed: () => invalidateCache()
+    );
+  }
+
+  Future<void> invalidateCache() async {
+    await ref.watch(databaseProvider).deleteEverything();
+    final mgmt = FMTCStore('tileStore').manage;
+    await mgmt.reset();
+    final groups = ref.watch(userGroupServiceProvider).value ?? [];
+    ref.read(lastSeenProvider(GlobalDataRepository.lastSeenKey).notifier).clear();
+    for (var userGroup in groups) {
+      ref.read(lastSeenProvider(GlobalDataRepository.lastSeenPinKey + userGroup.groupId).notifier).clear();
+    }
+    await ref.read(userGroupServiceProvider.notifier).sync();
+    ref.invalidate(pinServiceProvider);
+    ref.invalidate(userImageServiceProvider);
+    ref.invalidate(pinImageServiceProvider);
+    ref.invalidate(memberServiceProvider);
+    ref.invalidate(noUserGroupServiceProvider);
   }
 }

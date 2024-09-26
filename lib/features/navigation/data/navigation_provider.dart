@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'navigation_provider.g.dart';
@@ -16,3 +17,8 @@ class NavigationState extends _$NavigationState {
     state = index;
   }
 }
+
+class NavigationService {
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+}
+

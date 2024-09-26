@@ -6,7 +6,7 @@ part of 'member_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$memberServiceHash() => r'60a5e381709ebfaaaf2218b75ed0963df75f8c54';
+String _$memberServiceHash() => r'1140093f069fc10350bf483950e11c88e4c1a76c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,7 +29,8 @@ class _SystemHash {
   }
 }
 
-abstract class _$MemberService extends BuildlessAsyncNotifier<List<MemberDto>> {
+abstract class _$MemberService
+    extends BuildlessAutoDisposeAsyncNotifier<List<MemberDto>> {
   late final String groupId;
 
   FutureOr<List<MemberDto>> build(
@@ -80,8 +81,8 @@ class MemberServiceFamily extends Family<AsyncValue<List<MemberDto>>> {
 }
 
 /// See also [MemberService].
-class MemberServiceProvider
-    extends AsyncNotifierProviderImpl<MemberService, List<MemberDto>> {
+class MemberServiceProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    MemberService, List<MemberDto>> {
   /// See also [MemberService].
   MemberServiceProvider(
     String groupId,
@@ -137,7 +138,8 @@ class MemberServiceProvider
   }
 
   @override
-  AsyncNotifierProviderElement<MemberService, List<MemberDto>> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<MemberService, List<MemberDto>>
+      createElement() {
     return _MemberServiceProviderElement(this);
   }
 
@@ -155,14 +157,14 @@ class MemberServiceProvider
   }
 }
 
-mixin MemberServiceRef on AsyncNotifierProviderRef<List<MemberDto>> {
+mixin MemberServiceRef on AutoDisposeAsyncNotifierProviderRef<List<MemberDto>> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
 class _MemberServiceProviderElement
-    extends AsyncNotifierProviderElement<MemberService, List<MemberDto>>
-    with MemberServiceRef {
+    extends AutoDisposeAsyncNotifierProviderElement<MemberService,
+        List<MemberDto>> with MemberServiceRef {
   _MemberServiceProviderElement(super.provider);
 
   @override

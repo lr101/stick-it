@@ -6,13 +6,14 @@ doc/AuthApi.md
 doc/CreateGroupDto.md
 doc/GroupDto.md
 doc/GroupsApi.md
+doc/GroupsSyncDto.md
 doc/InfoDto.md
 doc/MemberResponseDto.md
 doc/MembersApi.md
 doc/PinRequestDto.md
 doc/PinWithOptionalImageDto.md
-doc/PinWithoutImageDto.md
 doc/PinsApi.md
+doc/PinsSyncDto.md
 doc/PublicApi.md
 doc/RankingResponseDto.md
 doc/ReportApi.md
@@ -45,11 +46,12 @@ lib/auth/http_bearer_auth.dart
 lib/auth/oauth.dart
 lib/model/create_group_dto.dart
 lib/model/group_dto.dart
+lib/model/groups_sync_dto.dart
 lib/model/info_dto.dart
 lib/model/member_response_dto.dart
 lib/model/pin_request_dto.dart
 lib/model/pin_with_optional_image_dto.dart
-lib/model/pin_without_image_dto.dart
+lib/model/pins_sync_dto.dart
 lib/model/ranking_response_dto.dart
 lib/model/report_dto.dart
 lib/model/token_response_dto.dart
@@ -61,4 +63,3 @@ lib/model/user_update_dto.dart
 lib/model/user_update_response_dto.dart
 lib/model/visibility.dart
 pubspec.yaml
-test/user_update_response_dto_test.dart

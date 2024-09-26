@@ -53,7 +53,7 @@ class PinsApi {
   /// Parameters:
   ///
   /// * [PinRequestDto] pinRequestDto (required):
-  Future<PinWithoutImageDto?> createPin(PinRequestDto pinRequestDto,) async {
+  Future<PinWithOptionalImageDto?> createPin(PinRequestDto pinRequestDto,) async {
     final response = await createPinWithHttpInfo(pinRequestDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -62,7 +62,7 @@ class PinsApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PinWithoutImageDto',) as PinWithoutImageDto;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PinWithOptionalImageDto',) as PinWithOptionalImageDto;
     
     }
     return null;
@@ -120,7 +120,10 @@ class PinsApi {
   /// Parameters:
   ///
   /// * [String] pinId (required):
-  Future<Response> getPinWithHttpInfo(String pinId,) async {
+  ///
+  /// * [bool] withImage:
+  ///   Describes if the image of the pin should be returned too
+  Future<Response> getPinWithHttpInfo(String pinId, { bool? withImage, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/v2/pins/{pinId}'
       .replaceAll('{pinId}', pinId);
@@ -131,6 +134,10 @@ class PinsApi {
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
+
+    if (withImage != null) {
+      queryParams.addAll(_queryParams('', 'withImage', withImage));
+    }
 
     const contentTypes = <String>[];
 
@@ -151,8 +158,11 @@ class PinsApi {
   /// Parameters:
   ///
   /// * [String] pinId (required):
-  Future<PinWithoutImageDto?> getPin(String pinId,) async {
-    final response = await getPinWithHttpInfo(pinId,);
+  ///
+  /// * [bool] withImage:
+  ///   Describes if the image of the pin should be returned too
+  Future<PinWithOptionalImageDto?> getPin(String pinId, { bool? withImage, }) async {
+    final response = await getPinWithHttpInfo(pinId,  withImage: withImage, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -160,7 +170,7 @@ class PinsApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PinWithoutImageDto',) as PinWithoutImageDto;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PinWithOptionalImageDto',) as PinWithOptionalImageDto;
     
     }
     return null;
@@ -248,7 +258,10 @@ class PinsApi {
   ///
   /// * [int] size:
   ///   page size. Defaults to 20
-  Future<Response> getPinImagesByIdsWithHttpInfo({ List<String>? ids, String? groupId, String? userId, bool? withImage, int? compression, int? height, int? page, int? size, }) async {
+  ///
+  /// * [DateTime] updatedAfter:
+  ///   only include pins that have been updated after this date.If set all deleted pins after this time are returned.
+  Future<Response> getPinImagesByIdsWithHttpInfo({ List<String>? ids, String? groupId, String? userId, bool? withImage, int? compression, int? height, int? page, int? size, DateTime? updatedAfter, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/v2/pins';
 
@@ -282,6 +295,9 @@ class PinsApi {
     }
     if (size != null) {
       queryParams.addAll(_queryParams('', 'size', size));
+    }
+    if (updatedAfter != null) {
+      queryParams.addAll(_queryParams('', 'updatedAfter', updatedAfter));
     }
 
     const contentTypes = <String>[];
@@ -325,8 +341,11 @@ class PinsApi {
   ///
   /// * [int] size:
   ///   page size. Defaults to 20
-  Future<List<PinWithOptionalImageDto>?> getPinImagesByIds({ List<String>? ids, String? groupId, String? userId, bool? withImage, int? compression, int? height, int? page, int? size, }) async {
-    final response = await getPinImagesByIdsWithHttpInfo( ids: ids, groupId: groupId, userId: userId, withImage: withImage, compression: compression, height: height, page: page, size: size, );
+  ///
+  /// * [DateTime] updatedAfter:
+  ///   only include pins that have been updated after this date.If set all deleted pins after this time are returned.
+  Future<PinsSyncDto?> getPinImagesByIds({ List<String>? ids, String? groupId, String? userId, bool? withImage, int? compression, int? height, int? page, int? size, DateTime? updatedAfter, }) async {
+    final response = await getPinImagesByIdsWithHttpInfo( ids: ids, groupId: groupId, userId: userId, withImage: withImage, compression: compression, height: height, page: page, size: size, updatedAfter: updatedAfter, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -334,11 +353,8 @@ class PinsApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      final responseBody = await _decodeBodyBytes(response);
-      return (await apiClient.deserializeAsync(responseBody, 'List<PinWithOptionalImageDto>') as List)
-        .cast<PinWithOptionalImageDto>()
-        .toList(growable: false);
-
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PinsSyncDto',) as PinsSyncDto;
+    
     }
     return null;
   }

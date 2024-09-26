@@ -21,7 +21,7 @@ class GroupJoinActionButton extends ConsumerWidget {
               .read(userGroupServiceProvider.notifier)
               .joinGroup(groupDto.groupId);
           if (result != null) {
-            CustomErrorSnackBar.message(context: context, message: result);
+            CustomErrorSnackBar.message(message: result);
           } else {
             Navigator.of(context).pop();
           }
@@ -37,7 +37,7 @@ class GroupJoinActionButton extends ConsumerWidget {
                 .read(userGroupServiceProvider.notifier)
                 .joinGroup(groupDto.groupId, inviteUrl: _textController.text);
             if (result != null) {
-              CustomErrorSnackBar.message(context: context, message: result);
+              CustomErrorSnackBar.message(message: result);
             } else {
               Navigator.of(context).pop();
             }

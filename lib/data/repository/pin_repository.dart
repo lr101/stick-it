@@ -1,4 +1,5 @@
 
+import 'package:buff_lisa/data/repository/pin_image_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -25,19 +26,6 @@ class PinRepository {
   Future<List<LocalPinDto>> getAllPins() async {
     final pinRows = await (_db.select(_db.pinEntity)).get();
     return pinRows.map((e) => LocalPinDto.fromEntityData(e)).toList();
-  }
-
-  Future<List<LocalPinDto>> getPinsOfUser(String userId) async {
-    final pinRows = await (
-        _db.select(_db.pinEntity)
-            .join([
-              innerJoin(
-                  _db.userEntity,
-                  _db.userEntity.userId.equalsExp(_db.pinEntity.creator)
-              )
-            ])
-            ..where(_db.pinEntity.creator.equals(userId))).get();
-    return pinRows.map((e) => LocalPinDto.fromEntityData(e.readTable(_db.pinEntity))).toList();
   }
 
   Future<List<LocalPinDto>> getPinsOfGroup(String groupId) async {
@@ -73,12 +61,32 @@ class PinRepository {
   }
 
   Future<void> deletePinFromGroup(String pinId) async {
-    await (_db.delete(_db.pinEntity)..where((tbl) => tbl.pinId.equals(pinId))).go();
+    await _db.transaction(() async {
+      await (_db.delete(_db.pinEntity)
+        ..where((tbl) => tbl.pinId.equals(pinId))).go();
+      await (_db.delete(_db.pinImageEntity)..where((tbl) => tbl.pinId.equals(pinId))).go();
+    });
   }
 
-  Future<void> deleteAllPinsOfGroup(String groupId) async {
-    await (_db.delete(_db.pinEntity)..where((tbl) => tbl.group.equals(groupId))).go();
+  Future<void> updateToSynced(LocalPinDto pin, String oldPinId, Uint8List image) async {
+    await _db.transaction(() async {
+      await (_db.delete(_db.pinEntity)..where((tbl) => tbl.pinId.equals(oldPinId))).go();
+      await (_db.delete(_db.pinImageEntity)..where((tbl) => tbl.pinId.equals(oldPinId))).go();
+      await (_db.into(_db.pinEntity)).insert(pin.toEntityCompanion());
+      await (_db.into(_db.pinImageEntity)).insert(PinImageEntityCompanion(
+        pinId: Value(pin.id),
+        keepAlive: Value(false),
+        image: Value(image),
+        lastAccessed: Value(DateTime.now()),
+      ));
+    });
   }
+
+  Future<List<LocalPinDto>> getAllNotSyncedPins() async {
+    final pinRows = await (_db.select(_db.pinEntity)..where((tbl) => tbl.lastSynced.isNull())).get();
+    return pinRows.map((e) => LocalPinDto.fromEntityData(e)).toList();
+  }
+
 }
 
 @Riverpod(keepAlive: true)

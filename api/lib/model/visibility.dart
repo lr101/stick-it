@@ -16,20 +16,20 @@ class Visibility {
   const Visibility._(this.value);
 
   /// The underlying value of this enum member.
-  final int value;
+  final String value;
 
   @override
-  String toString() => value.toString();
+  String toString() => value;
 
-  int toJson() => value;
+  String toJson() => value;
 
-  static const number0 = Visibility._(0);
-  static const number1 = Visibility._(1);
+  static const PUBLIC = Visibility._(r'PUBLIC');
+  static const PRIVATE = Visibility._(r'PRIVATE');
 
   /// List of all possible values in this [enum][Visibility].
   static const values = <Visibility>[
-    number0,
-    number1,
+    PUBLIC,
+    PRIVATE,
   ];
 
   static Visibility? fromJson(dynamic value) => VisibilityTypeTransformer().decode(value);
@@ -48,14 +48,14 @@ class Visibility {
   }
 }
 
-/// Transformation class that can [encode] an instance of [Visibility] to int,
+/// Transformation class that can [encode] an instance of [Visibility] to String,
 /// and [decode] dynamic data back to [Visibility].
 class VisibilityTypeTransformer {
   factory VisibilityTypeTransformer() => _instance ??= const VisibilityTypeTransformer._();
 
   const VisibilityTypeTransformer._();
 
-  int encode(Visibility data) => data.value;
+  String encode(Visibility data) => data.value;
 
   /// Decodes a [dynamic value][data] to a Visibility.
   ///
@@ -68,8 +68,8 @@ class VisibilityTypeTransformer {
   Visibility? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case 0: return Visibility.number0;
-        case 1: return Visibility.number1;
+        case r'PUBLIC': return Visibility.PUBLIC;
+        case r'PRIVATE': return Visibility.PRIVATE;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

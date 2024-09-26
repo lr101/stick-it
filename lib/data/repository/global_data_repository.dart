@@ -4,7 +4,6 @@ import 'dart:ui';
 
 import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -37,6 +36,7 @@ class GlobalDataRepository {
   static const String langKey = "langKey";
   static const String expandKey = "expandKey";
   static const String lastSeenKey = "lastSeenKey";
+  static const String lastSeenPinKey = "lastSeenPin";
   static const String mapApiKey = "mapApiKey";
   static const String mapStyle = "mapStyle";
   static const String notice0 = "notice0";
@@ -51,30 +51,8 @@ class GlobalDataRepository {
         userId: await storage.read(key: userIdKey),
         username: await storage.read(key: usernameKey),
         refreshToken: await storage.read(key: tokenKey),
-        lastSeen: DateTime.fromMicrosecondsSinceEpoch(sharedPreferences.getInt(lastSeenKey) ?? 0),
-        groupOrder: sharedPreferences.getStringList(orderKey) ?? [],
         cameras: await availableCameras(),
     );
-  }
-
-  void setTheme(Brightness theme) {
-    sharedPreferences.setInt(themeKey, theme == Brightness.dark ? 1 : 0);
-  }
-
-  /// update group order and save offline
-  Future<void> setGroupOrder(List<String> order) async {
-    await sharedPreferences.setStringList(orderKey, order);
-  }
-
-  /// updates last seen to the current time
-  Future<void> setLastSeenNow() async {
-    sharedPreferences.setInt(lastSeenKey, DateTime
-        .now()
-        .microsecondsSinceEpoch);
-  }
-
-  Future<void> setMapStyle(int style) async {
-    sharedPreferences.setInt(mapStyle, style);
   }
 
   Future<void> logout() async {

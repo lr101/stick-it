@@ -1,4 +1,3 @@
-
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
@@ -21,13 +20,12 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      CustomErrorSnackBar.message(context: context, message: "Sending code to your email");
-      final result = await ref.watch(userServiceProvider.notifier).getDeleteCode();
+      CustomErrorSnackBar.message(message: "Sending code to your email");
+      final result =
+          await ref.watch(userServiceProvider.notifier).getDeleteCode();
       if (result != null) {
         CustomErrorSnackBar.message(
-            context: context,
-            message:
-            "Error while sending code: ${result}");
+            message: "Error while sending code: ${result}");
       }
     });
   }
@@ -57,10 +55,9 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
                   keyboardType: TextInputType.number,
                   style: const TextStyle(fontSize: 20),
                   decoration:
-                  const InputDecoration.collapsed(hintText: "6 digit code"),
+                      const InputDecoration.collapsed(hintText: "6 digit code"),
                   maxLines: 1,
-                  validator: (v) =>
-                  v != null && v.length == 6
+                  validator: (v) => v != null && v.length == 6
                       ? "Code must have 6 digits"
                       : null,
                 ),
@@ -74,20 +71,19 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                       textStyle: TextStyle(fontSize: 18.0),
                     ),
-                  )
-              )
+                  ))
             ],
           ),
         ));
   }
 
-
   Future<void> _submitDelete() async {
     if (_formKey.currentState!.validate()) {
-      final result = await ref.watch(userServiceProvider.notifier)
+      final result = await ref
+          .watch(userServiceProvider.notifier)
           .deleteAccount(int.parse(_controller.text));
       if (result != null) {
-        CustomErrorSnackBar.message(context: context, message: result);
+        CustomErrorSnackBar.message(message: result);
       } else {
         Routing.toAndDelete(context, Auth(), "/login");
       }

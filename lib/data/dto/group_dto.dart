@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:buff_lisa/data/config/visibility_extender.dart';
 import 'package:buff_lisa/data/entity/database.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
@@ -69,7 +70,7 @@ class   LocalGroupDto {
     return LocalGroupDto(
         groupId: dto.id,
         name:  dto.name,
-        visibility: dto.visibility.value,
+        visibility: dto.visibility.ordinal(),
         inviteUrl: dto.inviteUrl,
         description: dto.description,
         groupAdmin:  dto.groupAdmin,
@@ -87,7 +88,7 @@ class   LocalGroupDto {
       groupAdmin: groupAdmin!,
       description: description!,
       profileImage: base64Encode(profileImage),
-      visibility: visibility == 0 ? Visibility.number0 : Visibility.number1,
+      visibility: fromOrdinal(visibility),
       link: link!
     );
   }
@@ -97,7 +98,7 @@ class   LocalGroupDto {
       name: name,
       description: description,
       profileImage: base64Encode(profileImage),
-      visibility: visibility == 0 ? Visibility.number0 : Visibility.number1,
+      visibility: fromOrdinal(visibility),
       groupAdmin: groupAdmin,
       link: link
     );

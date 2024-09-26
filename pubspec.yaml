@@ -37,6 +37,8 @@ dependencies:
 
   string_validator:
 
+  floating_snackbar:
+
   native_exif:
 
   super_tooltip:

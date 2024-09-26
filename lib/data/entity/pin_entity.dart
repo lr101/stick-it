@@ -24,9 +24,6 @@ class PinEntity extends Table {
 
   BoolColumn get isHidden => boolean().withDefault(const Constant(false))();
 
-  // Image of the pin as byte data (nullable)
-  BlobColumn get image => blob().nullable()();
-
   DateTimeColumn get lastSynced => dateTime().nullable()();
 
   // Specify the primary key

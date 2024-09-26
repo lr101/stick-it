@@ -524,7 +524,7 @@ class GroupsApi {
   ///   page size. Defaults to 20
   ///
   /// * [DateTime] updatedAfter:
-  ///   only include groups that have been updated after this date
+  ///   only include groups that have been updated after this date. If set all deleted groups after this time are returned.
   Future<Response> getGroupsByIdsWithHttpInfo({ List<String>? ids, String? search, String? userId, bool? withUser, bool? withImages, int? page, int? size, DateTime? updatedAfter, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/v2/groups';
@@ -601,8 +601,8 @@ class GroupsApi {
   ///   page size. Defaults to 20
   ///
   /// * [DateTime] updatedAfter:
-  ///   only include groups that have been updated after this date
-  Future<List<GroupDto>?> getGroupsByIds({ List<String>? ids, String? search, String? userId, bool? withUser, bool? withImages, int? page, int? size, DateTime? updatedAfter, }) async {
+  ///   only include groups that have been updated after this date. If set all deleted groups after this time are returned.
+  Future<GroupsSyncDto?> getGroupsByIds({ List<String>? ids, String? search, String? userId, bool? withUser, bool? withImages, int? page, int? size, DateTime? updatedAfter, }) async {
     final response = await getGroupsByIdsWithHttpInfo( ids: ids, search: search, userId: userId, withUser: withUser, withImages: withImages, page: page, size: size, updatedAfter: updatedAfter, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -611,11 +611,8 @@ class GroupsApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      final responseBody = await _decodeBodyBytes(response);
-      return (await apiClient.deserializeAsync(responseBody, 'List<GroupDto>') as List)
-        .cast<GroupDto>()
-        .toList(growable: false);
-
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GroupsSyncDto',) as GroupsSyncDto;
+    
     }
     return null;
   }

@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/dto/pin_dto.dart';
@@ -15,7 +14,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:uuid/uuid.dart';
-
 import '../../../data/dto/group_dto.dart';
 import '../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import '../../../widgets/tiles/presentation/group_tile.dart';
@@ -31,7 +29,6 @@ class ImageUpload extends ConsumerStatefulWidget {
 }
 
 class _ImageUploadState extends ConsumerState<ImageUpload> {
-
   final TransformationController controller = TransformationController();
 
   Mutex _m = Mutex();
@@ -39,12 +36,12 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   @override
   Widget build(BuildContext context) {
     final global = ref.watch(globalDataServiceProvider);
-    final userImage = ref.watch(profilePictureSmallByIdProvider(global.userId!));
+    final userImage =
+        ref.watch(profilePictureSmallByIdProvider(global.userId!));
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Approve"),
-
-      ),
+        appBar: AppBar(
+          title: Text("Approve"),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -57,37 +54,37 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: RoundImage(
+                          size: 16,
+                          imageCallback: userImage,
+                          child: Container(),
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: RoundImage(
-                              size: 16,
-                              imageCallback: userImage,
-                              child: Container(),
-                            ),
+                          SizedBox(
+                            height: 22,
+                            child: FittedBox(
+                                fit: BoxFit.fitHeight,
+                                child: Text(global.username!)),
                           ),
-                          Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 22,
-                                child: FittedBox(fit: BoxFit.fitHeight, child: Text(global.username!)),
-                              ),
-                              SizedBox(
-                                  height: 18,
-                                  child: FittedBox(fit: BoxFit.fitHeight, child:  Text(
+                          SizedBox(
+                              height: 18,
+                              child: FittedBox(
+                                  fit: BoxFit.fitHeight,
+                                  child: Text(
                                     ref.watch(cameraSelectedGroupProvider).name,
                                     style: const TextStyle(
                                         fontStyle: FontStyle.italic),
                                   )))
-                            ],
-                          )
-                        ]),
+                        ],
+                      )
+                    ]),
                   ],
                 ),
               ),
@@ -101,9 +98,10 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
                       },
                       minScale: 1,
                       maxScale: 4,
-                      child: Image.memory(widget.image)
-                  )),
-              const SizedBox(height: 5,),
+                      child: Image.memory(widget.image))),
+              const SizedBox(
+                height: 5,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -121,34 +119,31 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
               )
             ],
           ),
-        )
-    );
+        ));
   }
 
   Future<void> handleApprove() async {
     if (_m.isLocked) return;
     await _m.acquire();
     final pin = LocalPinDto(
-        id: const Uuid().v4() ,
+        id: const Uuid().v4(),
         latitude: widget.position.latitude,
         longitude: widget.position.longitude,
         creationDate: DateTime.now(),
-        image: widget.image,
         creatorId: ref.watch(globalDataServiceProvider).userId!,
         groupId: ref.watch(cameraSelectedGroupProvider).groupId,
-        isHidden: false
-    );
-    final result = await ref.read(pinServiceProvider(ref.watch(cameraSelectedGroupProvider).groupId).notifier).addPinToGroup(pin);
+        isHidden: false);
     _m.release();
-    if (result != null) {
-      CustomErrorSnackBar.message(context: context, message: result);
-      Navigator.pop(context);
-    } else {
-      Navigator.pop(context);
-    }
-
+    Future(() => ref.read(pinServiceProvider(ref.watch(cameraSelectedGroupProvider).groupId).notifier).addPinToGroup(pin, widget.image).then((result) {
+          if (result != null) {
+            CustomErrorSnackBar.message(message: result);
+          } else {
+            CustomErrorSnackBar.message(
+                message: "Successfully synced to server");
+          }
+        }));
+    Navigator.pop(context);
   }
-
 
   Future<void> handleEdit() async {
     final groups = ref.watch(userGroupServiceProvider).value ?? [];
@@ -164,5 +159,4 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
       },
     );
   }
-
 }

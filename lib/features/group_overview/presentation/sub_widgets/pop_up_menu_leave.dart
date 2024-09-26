@@ -49,7 +49,7 @@ class PopUpMenuLeave extends ConsumerWidget {
   Future<void> leaveGroup(WidgetRef ref, BuildContext context) async {
     final result = await ref.read(userGroupServiceProvider.notifier).leaveGroup(groupDto.groupId);
     if (result != null) {
-      CustomErrorSnackBar.message(context: context, message: result);
+      CustomErrorSnackBar.message(message: result);
     } else {
       Navigator.of(context).pop();
     }

@@ -1,15 +1,23 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
+import 'package:buff_lisa/data/service/pin_image_service.dart';
+import 'package:buff_lisa/data/service/reachability_service.dart';
+import 'package:buff_lisa/data/service/syncing_service_schedular.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../repository/global_data_repository.dart';
 import '../repository/pin_repository.dart';
 import 'global_data_service.dart';
 
@@ -19,6 +27,7 @@ part 'pin_service.g.dart';
 class PinService extends _$PinService {
   late PinRepository _pinRepository;
   late PinsApi _pinsApi;
+  Mutex _mutex = Mutex();
 
   @override
   Future<List<LocalPinDto>> build(String groupId) async {
@@ -28,31 +37,73 @@ class PinService extends _$PinService {
     final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
     final localPins = await _pinRepository.getPinsOfGroup(groupId);
     localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
-    if (localPins.isNotEmpty) return localPins;
+    this.state = AsyncData(localPins);
+    await sync();
+    return localPins;
+  }
 
-    final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
-    List<LocalPinDto> pins = [];
-    if (remotePins == null) return pins;
-
-    for (var pin in remotePins) {
-      final pinDto = LocalPinDto.fromDtoWithImage(pin);
-      if (hiddenUsers.contains(pinDto.creatorId) || hiddenPosts.contains(pinDto.id)) continue;
-      pins.add(pinDto);
-      await _pinRepository.createOrUpdate(pinDto);
+  Future<void> sync() async {
+    if (_mutex.isLocked) return;
+    await _mutex.acquire();
+    try {
+      ref.read(syncingServiceSchedularProvider.notifier).setState(SyncingServiceSchedularState.loading);
+      final key = GlobalDataRepository.lastSeenPinKey + groupId;
+      final lastSeen = ref.read(lastSeenProvider(key));
+      // sync updated and deleted pins from server
+      final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false, updatedAfter: lastSeen);
+      final localPins = this.state.value ?? [];
+      state = AsyncData(await _mergeGroups(localPins, remotePins!));
+      ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
+      // sync local pins to server
+      final unsynced = [...state.value!];
+      int numSynced = 0;
+      for (int i = 0 ; i < unsynced.length; i++) {
+        final pin = unsynced[i];
+        if (pin.lastSynced == null) {
+          final newPin = await _pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
+          state.value![i] = LocalPinDto.fromDtoWithImage(newPin!);
+          _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin), pin.id, base64Decode(newPin.image!));
+          ref.read(pinImageServiceProvider.notifier).addUint8ListImage(newPin.id, base64Decode(newPin.image!));
+          numSynced++;
+        }
+      }
+      if (numSynced > 0) {
+        CustomErrorSnackBar.message(message: "${numSynced} sticks in ${await ref.watch(groupByIdProvider(groupId).selectAsync((e) => e?.name))} have been uploaded");
+      }
+      ref.read(syncingServiceSchedularProvider.notifier).setState(SyncingServiceSchedularState.done);
+    } catch (e) {
+      if (kDebugMode) print(e);
+    } finally {
+      _mutex.release();
     }
-    return pins;
+  }
+
+  Future<List<LocalPinDto>> _mergeGroups(List<LocalPinDto> localPins, PinsSyncDto remotePins) async  {
+    Map<String, LocalPinDto> localPinMap = {for (var pin in localPins) pin.id: pin};
+    localPinMap.removeWhere((k,v) => remotePins.deleted.contains(k));
+    final hiddenUsers = ref.watch(hiddenUserServiceProvider);
+    final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
+    for (var pin in remotePins.items) {
+      final p = LocalPinDto.fromDtoWithImage(pin);
+      _pinRepository.createOrUpdate(p);
+      if (hiddenUsers.contains(p.creatorId) || hiddenPosts.contains(p.id)) continue;
+      localPinMap[pin.id] = p;
+    }
+    remotePins.deleted.forEach((a) async => await _pinRepository.deletePinFromGroup(a));
+    return localPinMap.values.toList();
   }
 
   // Optimized state update function
-  void updateSinglePin(LocalPinDto updatedPin) {
+  void updateSinglePin(LocalPinDto updatedPin, {String? oldPinId}) {
+    final id = oldPinId ?? updatedPin.id;
     final currentState = state.value ?? [];
-    final index = currentState.indexWhere((pin) => pin.id == updatedPin.id);
-
+    final index = currentState.indexWhere((pin) => pin.id == id);
     if (index != -1) {
-      // Replace the old pin with the updated one in the state
       final updatedState = [...currentState];
       updatedState[index] = updatedPin;
       state = AsyncValue.data(updatedState);
+    } else {
+      state = AsyncValue.data([...currentState, updatedPin]);
     }
   }
 
@@ -73,14 +124,12 @@ class PinService extends _$PinService {
       final localPins = await _pinRepository.getPinsOActiveGroup();
       if (localPins.isNotEmpty) return localPins;
 
-      final List<LocalGroupDto> groups =
-          await ref.watch(userGroupServiceProvider).whenOrNull() ?? [];
+      final List<LocalPinDto> groups = await ref.watch(userGroupServiceProvider).whenOrNull() ?? [];
       final List<PinWithOptionalImageDto> remotePins = [];
       for (var group in groups) {
-        final p = await _pinsApi.getPinImagesByIds(
-            groupId: group.groupId, withImage: false);
+        final p = await _pinsApi.getPinImagesByIds(groupId: group.groupId, withImage: false);
         if (p == null) continue;
-        remotePins.addAll(p);
+        remotePins.addAll(p.items);
       }
       List<LocalPinDto> pins = [];
       for (var pin in remotePins) {
@@ -96,17 +145,18 @@ class PinService extends _$PinService {
     }
   }
 
-  Future<String?> addPinToGroup(LocalPinDto pin) async {
+  Future<String?> addPinToGroup(LocalPinDto pin, Uint8List image) async {
     try {
       await _pinRepository.createOrUpdate(pin);
+      await ref.watch(pinImageServiceProvider.notifier).addOfflineImage(pin.id, image);
       updateSinglePin(pin);
-      //ref.read(memberServiceProvider(pin.groupId).notifier).addPoint();
-      final result = await _pinsApi.createPin(pin.toPinRequestDto());
+      ref.watch(groupRepositoryProvider).addPoint(pin.creatorId, pin.groupId);
+      final result = await _pinsApi.createPin(pin.toPinRequestDto(base64Encode(image)));
       if (result != null) {
-        await _pinRepository.deletePinFromGroup(pin.id);
-        state.value!.removeWhere((t) => t.id == pin.id);
-        updateSinglePin(LocalPinDto.fromDto(result));
-        await _pinRepository.createOrUpdate(LocalPinDto.fromDto(result));
+        final newPin = LocalPinDto.fromDto(result);
+        updateSinglePin(newPin, oldPinId: pin.id);
+        _pinRepository.updateToSynced(newPin, pin.id, base64Decode(result.image!));
+        await ref.watch(pinImageServiceProvider.notifier).addImage(newPin.id, removeKeepAlive: true);
         return null;
       } else {
         return 'Failed to add pin to group';
@@ -123,7 +173,7 @@ class PinService extends _$PinService {
 
       final remotePin = await _pinsApi.getPin(pinId);
       if (remotePin != null) {
-        final pinDto = LocalPinDto.fromDto(remotePin);
+        final pinDto = LocalPinDto.fromDtoWithImage(remotePin);
         await _pinRepository.createOrUpdate(pinDto);
 
         // Update state for the fetched pin
@@ -144,37 +194,13 @@ class PinService extends _$PinService {
       currentState.removeWhere((pin) => pin.id == pinId);
       state = AsyncValue.data(currentState);
       await _pinRepository.deletePinFromGroup(pinId);
-      //ref.read(memberServiceProvider(groupId).notifier).removePoint(ref.watch(globalDataServiceProvider).userId!);
+      ref.watch(groupRepositoryProvider).removePoint(ref.watch(globalDataServiceProvider).userId!, groupId);
       return null;
     } on ApiException catch (e) {
       return e.message;
     }
   }
 
-  Future<Uint8List> fetchImageOfPin(String pinId) async {
-    try {
-      final pin = await _pinRepository.getPinById(pinId);
-      if (pin != null && pin.image != null) {
-        return pin.image!;
-      }
-
-      final pinImage =
-          await _pinsApi.getPinImagesByIds(ids: [pinId], withImage: true);
-      if (pinImage != null && pinImage.isNotEmpty) {
-        final pinDto = LocalPinDto.fromDtoWithImage(pinImage.first);
-        _pinRepository.createOrUpdate(pinDto);
-
-        // Update state for the pin with the image
-        updateSinglePin(pinDto);
-        return pinDto.image!;
-      } else {
-        throw Exception("Image not available");
-      }
-    } catch (e) {
-      print('Error fetching pin image: $e');
-      throw Exception("Failed to load pin image");
-    }
-  }
 }
 
 @riverpod

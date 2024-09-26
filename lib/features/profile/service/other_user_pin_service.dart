@@ -16,7 +16,7 @@ class OtherUserPinService extends _$OtherUserPinService {
     final pinApi = ref.watch(pinApiProvider);
     final pins = await pinApi.getPinImagesByIds(userId: userId, withImage: false);
     if (pins == null) throw Exception('Failed to get pins');
-    final localPins = pins!.map((e) => LocalPinDto.fromDtoWithImage(e)).toList();
+    final localPins = pins.items.map((e) => LocalPinDto.fromDtoWithImage(e)).toList();
     localPins.sort((a, b) => b.creationDate.compareTo(a.creationDate));
     return localPins;
   }

@@ -3,6 +3,7 @@
 
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/custom_marker/presentation/custom_marker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -34,6 +35,20 @@ class MapStates extends _$MapStates {
 }
 
 @Riverpod(keepAlive: true)
-Stream<Position> currentLocation(CurrentLocationRef ref) {
-  return Geolocator.getPositionStream(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 10));
+Stream<Position> currentLocation(CurrentLocationRef ref) async* {
+  final permission  = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    await Geolocator.requestPermission();
+  }
+  if (permission != LocationPermission.denied &&
+      permission != LocationPermission.deniedForever) {
+    yield* Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10, // Emit position updates when moved by 10 meters
+      ),
+    );
+  } else {
+    CustomErrorSnackBar.message(message: "Some functions do not work without location permission", type: CustomErrorSnackBarType.error);
+  }
 }

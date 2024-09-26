@@ -135,7 +135,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
       if (result == null) {
         Navigator.pop(context);
       } else {
-        CustomErrorSnackBar.message(context: context, message: result);
+        CustomErrorSnackBar.message(message: result);
       }
     }
   }

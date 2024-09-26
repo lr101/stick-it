@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:buff_lisa/data/config/visibility_extender.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
@@ -38,15 +39,13 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
                       name: name,
                       profileImage: base64Encode(profileImage),
                       link: link,
-                      visibility: visibility == 0
-                          ? api.Visibility.number0
-                          : api.Visibility.number1,
+                      visibility: fromOrdinal(visibility),
                       groupAdmin: adminId),
                   widget.groupDto.groupId);
           if (result == null) {
             Navigator.of(context).pop();
           } else {
-            CustomErrorSnackBar.message(context: context, message: result);
+            CustomErrorSnackBar.message(message: result);
           }
         },
         rowItems: [

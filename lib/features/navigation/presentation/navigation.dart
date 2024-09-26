@@ -1,3 +1,6 @@
+import 'package:buff_lisa/data/service/reachability_service.dart';
+import 'package:buff_lisa/data/service/syncing_service_schedular.dart';
+import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/presentation/camera.dart';
 import 'package:buff_lisa/features/feed/presentation/active_group_feed.dart';
 import 'package:buff_lisa/features/profile/presentation/user_profile.dart';
@@ -7,6 +10,7 @@ import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/service/pin_service.dart';
 import '../../../widgets/group_selector/presentation/group_selector.dart';
 import '../../group_user_list/presentation/user_groups.dart';
 
@@ -28,7 +32,6 @@ class _NavigationState extends ConsumerState<Navigation> {
     const UserProfile()
   ];
 
-
   @override
   void initState() {
     super.initState();
@@ -42,7 +45,7 @@ class _NavigationState extends ConsumerState<Navigation> {
     final state = ref.watch(navigationStateProvider);
     return Scaffold(
         appBar: null,
-        backgroundColor: state == 2?Colors.transparent: null,
+        backgroundColor: state == 2 ? Colors.transparent : null,
         body: Stack(
           children: [
             Column(
@@ -58,6 +61,15 @@ class _NavigationState extends ConsumerState<Navigation> {
               ],
             ),
             state == 2 || state == 3 ? groupSelector : const SizedBox.shrink(),
+            state == 2 || state == 3
+                ? Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: CircleAvatar(
+                      backgroundColor:
+                          ref.watch(syncingServiceSchedularProvider).color,
+                      radius: 5,
+                    ))
+                : const SizedBox.shrink(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -88,7 +100,6 @@ class _NavigationState extends ConsumerState<Navigation> {
           onTap: onItemTapped,
           selectedItemColor: Theme.of(context).textTheme.titleLarge?.color,
           unselectedItemColor: Theme.of(context).disabledColor,
-
         ));
   }
 

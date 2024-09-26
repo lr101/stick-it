@@ -285,7 +285,7 @@ class _ProfilePictureSmallByIdProviderElement
   String get userId => (origin as ProfilePictureSmallByIdProvider).userId;
 }
 
-String _$userServiceHash() => r'82b913a3a7e1adc14f6f5295ce86365c0987dad8';
+String _$userServiceHash() => r'27f6c0726dadf7a5ef3b24c8ca316f9e612051db';
 
 /// See also [UserService].
 @ProviderFor(UserService)

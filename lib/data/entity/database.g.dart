@@ -932,11 +932,6 @@ class $PinEntityTable extends PinEntity
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("is_hidden" IN (0, 1))'),
       defaultValue: const Constant(false));
-  static const VerificationMeta _imageMeta = const VerificationMeta('image');
-  @override
-  late final GeneratedColumn<Uint8List> image = GeneratedColumn<Uint8List>(
-      'image', aliasedName, true,
-      type: DriftSqlType.blob, requiredDuringInsert: false);
   static const VerificationMeta _lastSyncedMeta =
       const VerificationMeta('lastSynced');
   @override
@@ -952,7 +947,6 @@ class $PinEntityTable extends PinEntity
         creator,
         group,
         isHidden,
-        image,
         lastSynced
       ];
   @override
@@ -1007,10 +1001,6 @@ class $PinEntityTable extends PinEntity
       context.handle(_isHiddenMeta,
           isHidden.isAcceptableOrUnknown(data['is_hidden']!, _isHiddenMeta));
     }
-    if (data.containsKey('image')) {
-      context.handle(
-          _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
-    }
     if (data.containsKey('last_synced')) {
       context.handle(
           _lastSyncedMeta,
@@ -1040,8 +1030,6 @@ class $PinEntityTable extends PinEntity
           .read(DriftSqlType.string, data['${effectivePrefix}group'])!,
       isHidden: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_hidden'])!,
-      image: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}image']),
       lastSynced: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}last_synced']),
     );
@@ -1061,7 +1049,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
   final String creator;
   final String group;
   final bool isHidden;
-  final Uint8List? image;
   final DateTime? lastSynced;
   const PinEntityData(
       {required this.pinId,
@@ -1071,7 +1058,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       required this.creator,
       required this.group,
       required this.isHidden,
-      this.image,
       this.lastSynced});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1083,9 +1069,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
     map['creator'] = Variable<String>(creator);
     map['group'] = Variable<String>(group);
     map['is_hidden'] = Variable<bool>(isHidden);
-    if (!nullToAbsent || image != null) {
-      map['image'] = Variable<Uint8List>(image);
-    }
     if (!nullToAbsent || lastSynced != null) {
       map['last_synced'] = Variable<DateTime>(lastSynced);
     }
@@ -1101,8 +1084,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       creator: Value(creator),
       group: Value(group),
       isHidden: Value(isHidden),
-      image:
-          image == null && nullToAbsent ? const Value.absent() : Value(image),
       lastSynced: lastSynced == null && nullToAbsent
           ? const Value.absent()
           : Value(lastSynced),
@@ -1120,7 +1101,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       creator: serializer.fromJson<String>(json['creator']),
       group: serializer.fromJson<String>(json['group']),
       isHidden: serializer.fromJson<bool>(json['isHidden']),
-      image: serializer.fromJson<Uint8List?>(json['image']),
       lastSynced: serializer.fromJson<DateTime?>(json['lastSynced']),
     );
   }
@@ -1135,7 +1115,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       'creator': serializer.toJson<String>(creator),
       'group': serializer.toJson<String>(group),
       'isHidden': serializer.toJson<bool>(isHidden),
-      'image': serializer.toJson<Uint8List?>(image),
       'lastSynced': serializer.toJson<DateTime?>(lastSynced),
     };
   }
@@ -1148,7 +1127,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
           String? creator,
           String? group,
           bool? isHidden,
-          Value<Uint8List?> image = const Value.absent(),
           Value<DateTime?> lastSynced = const Value.absent()}) =>
       PinEntityData(
         pinId: pinId ?? this.pinId,
@@ -1158,7 +1136,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
         creator: creator ?? this.creator,
         group: group ?? this.group,
         isHidden: isHidden ?? this.isHidden,
-        image: image.present ? image.value : this.image,
         lastSynced: lastSynced.present ? lastSynced.value : this.lastSynced,
       );
   PinEntityData copyWithCompanion(PinEntityCompanion data) {
@@ -1172,7 +1149,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       creator: data.creator.present ? data.creator.value : this.creator,
       group: data.group.present ? data.group.value : this.group,
       isHidden: data.isHidden.present ? data.isHidden.value : this.isHidden,
-      image: data.image.present ? data.image.value : this.image,
       lastSynced:
           data.lastSynced.present ? data.lastSynced.value : this.lastSynced,
     );
@@ -1188,7 +1164,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
           ..write('creator: $creator, ')
           ..write('group: $group, ')
           ..write('isHidden: $isHidden, ')
-          ..write('image: $image, ')
           ..write('lastSynced: $lastSynced')
           ..write(')'))
         .toString();
@@ -1196,7 +1171,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
 
   @override
   int get hashCode => Object.hash(pinId, latitude, longitude, creationDate,
-      creator, group, isHidden, $driftBlobEquality.hash(image), lastSynced);
+      creator, group, isHidden, lastSynced);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1208,7 +1183,6 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
           other.creator == this.creator &&
           other.group == this.group &&
           other.isHidden == this.isHidden &&
-          $driftBlobEquality.equals(other.image, this.image) &&
           other.lastSynced == this.lastSynced);
 }
 
@@ -1220,7 +1194,6 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
   final Value<String> creator;
   final Value<String> group;
   final Value<bool> isHidden;
-  final Value<Uint8List?> image;
   final Value<DateTime?> lastSynced;
   final Value<int> rowid;
   const PinEntityCompanion({
@@ -1231,7 +1204,6 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     this.creator = const Value.absent(),
     this.group = const Value.absent(),
     this.isHidden = const Value.absent(),
-    this.image = const Value.absent(),
     this.lastSynced = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -1243,7 +1215,6 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     required String creator,
     required String group,
     this.isHidden = const Value.absent(),
-    this.image = const Value.absent(),
     this.lastSynced = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : pinId = Value(pinId),
@@ -1260,7 +1231,6 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     Expression<String>? creator,
     Expression<String>? group,
     Expression<bool>? isHidden,
-    Expression<Uint8List>? image,
     Expression<DateTime>? lastSynced,
     Expression<int>? rowid,
   }) {
@@ -1272,7 +1242,6 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
       if (creator != null) 'creator': creator,
       if (group != null) 'group': group,
       if (isHidden != null) 'is_hidden': isHidden,
-      if (image != null) 'image': image,
       if (lastSynced != null) 'last_synced': lastSynced,
       if (rowid != null) 'rowid': rowid,
     });
@@ -1286,7 +1255,6 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
       Value<String>? creator,
       Value<String>? group,
       Value<bool>? isHidden,
-      Value<Uint8List?>? image,
       Value<DateTime?>? lastSynced,
       Value<int>? rowid}) {
     return PinEntityCompanion(
@@ -1297,7 +1265,6 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
       creator: creator ?? this.creator,
       group: group ?? this.group,
       isHidden: isHidden ?? this.isHidden,
-      image: image ?? this.image,
       lastSynced: lastSynced ?? this.lastSynced,
       rowid: rowid ?? this.rowid,
     );
@@ -1327,9 +1294,6 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     if (isHidden.present) {
       map['is_hidden'] = Variable<bool>(isHidden.value);
     }
-    if (image.present) {
-      map['image'] = Variable<Uint8List>(image.value);
-    }
     if (lastSynced.present) {
       map['last_synced'] = Variable<DateTime>(lastSynced.value);
     }
@@ -1349,7 +1313,6 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
           ..write('creator: $creator, ')
           ..write('group: $group, ')
           ..write('isHidden: $isHidden, ')
-          ..write('image: $image, ')
           ..write('lastSynced: $lastSynced, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -1374,8 +1337,14 @@ class $MemberEntityTable extends MemberEntity
   late final GeneratedColumn<String> userId = GeneratedColumn<String>(
       'user_id', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _rankingMeta =
+      const VerificationMeta('ranking');
   @override
-  List<GeneratedColumn> get $columns => [groupId, userId];
+  late final GeneratedColumn<int> ranking = GeneratedColumn<int>(
+      'ranking', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [groupId, userId, ranking];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1398,6 +1367,12 @@ class $MemberEntityTable extends MemberEntity
     } else if (isInserting) {
       context.missing(_userIdMeta);
     }
+    if (data.containsKey('ranking')) {
+      context.handle(_rankingMeta,
+          ranking.isAcceptableOrUnknown(data['ranking']!, _rankingMeta));
+    } else if (isInserting) {
+      context.missing(_rankingMeta);
+    }
     return context;
   }
 
@@ -1411,6 +1386,8 @@ class $MemberEntityTable extends MemberEntity
           .read(DriftSqlType.string, data['${effectivePrefix}group_id'])!,
       userId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      ranking: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ranking'])!,
     );
   }
 
@@ -1424,12 +1401,15 @@ class MemberEntityData extends DataClass
     implements Insertable<MemberEntityData> {
   final String groupId;
   final String userId;
-  const MemberEntityData({required this.groupId, required this.userId});
+  final int ranking;
+  const MemberEntityData(
+      {required this.groupId, required this.userId, required this.ranking});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['group_id'] = Variable<String>(groupId);
     map['user_id'] = Variable<String>(userId);
+    map['ranking'] = Variable<int>(ranking);
     return map;
   }
 
@@ -1437,6 +1417,7 @@ class MemberEntityData extends DataClass
     return MemberEntityCompanion(
       groupId: Value(groupId),
       userId: Value(userId),
+      ranking: Value(ranking),
     );
   }
 
@@ -1446,6 +1427,7 @@ class MemberEntityData extends DataClass
     return MemberEntityData(
       groupId: serializer.fromJson<String>(json['groupId']),
       userId: serializer.fromJson<String>(json['userId']),
+      ranking: serializer.fromJson<int>(json['ranking']),
     );
   }
   @override
@@ -1454,18 +1436,21 @@ class MemberEntityData extends DataClass
     return <String, dynamic>{
       'groupId': serializer.toJson<String>(groupId),
       'userId': serializer.toJson<String>(userId),
+      'ranking': serializer.toJson<int>(ranking),
     };
   }
 
-  MemberEntityData copyWith({String? groupId, String? userId}) =>
+  MemberEntityData copyWith({String? groupId, String? userId, int? ranking}) =>
       MemberEntityData(
         groupId: groupId ?? this.groupId,
         userId: userId ?? this.userId,
+        ranking: ranking ?? this.ranking,
       );
   MemberEntityData copyWithCompanion(MemberEntityCompanion data) {
     return MemberEntityData(
       groupId: data.groupId.present ? data.groupId.value : this.groupId,
       userId: data.userId.present ? data.userId.value : this.userId,
+      ranking: data.ranking.present ? data.ranking.value : this.ranking,
     );
   }
 
@@ -1473,53 +1458,65 @@ class MemberEntityData extends DataClass
   String toString() {
     return (StringBuffer('MemberEntityData(')
           ..write('groupId: $groupId, ')
-          ..write('userId: $userId')
+          ..write('userId: $userId, ')
+          ..write('ranking: $ranking')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(groupId, userId);
+  int get hashCode => Object.hash(groupId, userId, ranking);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is MemberEntityData &&
           other.groupId == this.groupId &&
-          other.userId == this.userId);
+          other.userId == this.userId &&
+          other.ranking == this.ranking);
 }
 
 class MemberEntityCompanion extends UpdateCompanion<MemberEntityData> {
   final Value<String> groupId;
   final Value<String> userId;
+  final Value<int> ranking;
   final Value<int> rowid;
   const MemberEntityCompanion({
     this.groupId = const Value.absent(),
     this.userId = const Value.absent(),
+    this.ranking = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   MemberEntityCompanion.insert({
     required String groupId,
     required String userId,
+    required int ranking,
     this.rowid = const Value.absent(),
   })  : groupId = Value(groupId),
-        userId = Value(userId);
+        userId = Value(userId),
+        ranking = Value(ranking);
   static Insertable<MemberEntityData> custom({
     Expression<String>? groupId,
     Expression<String>? userId,
+    Expression<int>? ranking,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (groupId != null) 'group_id': groupId,
       if (userId != null) 'user_id': userId,
+      if (ranking != null) 'ranking': ranking,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   MemberEntityCompanion copyWith(
-      {Value<String>? groupId, Value<String>? userId, Value<int>? rowid}) {
+      {Value<String>? groupId,
+      Value<String>? userId,
+      Value<int>? ranking,
+      Value<int>? rowid}) {
     return MemberEntityCompanion(
       groupId: groupId ?? this.groupId,
       userId: userId ?? this.userId,
+      ranking: ranking ?? this.ranking,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1533,6 +1530,9 @@ class MemberEntityCompanion extends UpdateCompanion<MemberEntityData> {
     if (userId.present) {
       map['user_id'] = Variable<String>(userId.value);
     }
+    if (ranking.present) {
+      map['ranking'] = Variable<int>(ranking.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1544,6 +1544,321 @@ class MemberEntityCompanion extends UpdateCompanion<MemberEntityData> {
     return (StringBuffer('MemberEntityCompanion(')
           ..write('groupId: $groupId, ')
           ..write('userId: $userId, ')
+          ..write('ranking: $ranking, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PinImageEntityTable extends PinImageEntity
+    with TableInfo<$PinImageEntityTable, PinImageEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PinImageEntityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
+  @override
+  late final GeneratedColumn<Uint8List> image = GeneratedColumn<Uint8List>(
+      'image', aliasedName, false,
+      type: DriftSqlType.blob, requiredDuringInsert: true);
+  static const VerificationMeta _pinIdMeta = const VerificationMeta('pinId');
+  @override
+  late final GeneratedColumn<String> pinId = GeneratedColumn<String>(
+      'pin_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _hitCountMeta =
+      const VerificationMeta('hitCount');
+  @override
+  late final GeneratedColumn<int> hitCount = GeneratedColumn<int>(
+      'hit_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: Constant(0));
+  static const VerificationMeta _lastAccessedMeta =
+      const VerificationMeta('lastAccessed');
+  @override
+  late final GeneratedColumn<DateTime> lastAccessed = GeneratedColumn<DateTime>(
+      'last_accessed', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  static const VerificationMeta _keepAliveMeta =
+      const VerificationMeta('keepAlive');
+  @override
+  late final GeneratedColumn<bool> keepAlive = GeneratedColumn<bool>(
+      'keep_alive', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("keep_alive" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [image, pinId, hitCount, lastAccessed, keepAlive];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'pin_image_entity';
+  @override
+  VerificationContext validateIntegrity(Insertable<PinImageEntityData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('image')) {
+      context.handle(
+          _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
+    } else if (isInserting) {
+      context.missing(_imageMeta);
+    }
+    if (data.containsKey('pin_id')) {
+      context.handle(
+          _pinIdMeta, pinId.isAcceptableOrUnknown(data['pin_id']!, _pinIdMeta));
+    } else if (isInserting) {
+      context.missing(_pinIdMeta);
+    }
+    if (data.containsKey('hit_count')) {
+      context.handle(_hitCountMeta,
+          hitCount.isAcceptableOrUnknown(data['hit_count']!, _hitCountMeta));
+    }
+    if (data.containsKey('last_accessed')) {
+      context.handle(
+          _lastAccessedMeta,
+          lastAccessed.isAcceptableOrUnknown(
+              data['last_accessed']!, _lastAccessedMeta));
+    }
+    if (data.containsKey('keep_alive')) {
+      context.handle(_keepAliveMeta,
+          keepAlive.isAcceptableOrUnknown(data['keep_alive']!, _keepAliveMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {pinId};
+  @override
+  PinImageEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PinImageEntityData(
+      image: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}image'])!,
+      pinId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pin_id'])!,
+      hitCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}hit_count'])!,
+      lastAccessed: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}last_accessed'])!,
+      keepAlive: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}keep_alive'])!,
+    );
+  }
+
+  @override
+  $PinImageEntityTable createAlias(String alias) {
+    return $PinImageEntityTable(attachedDatabase, alias);
+  }
+}
+
+class PinImageEntityData extends DataClass
+    implements Insertable<PinImageEntityData> {
+  final Uint8List image;
+  final String pinId;
+  final int hitCount;
+  final DateTime lastAccessed;
+  final bool keepAlive;
+  const PinImageEntityData(
+      {required this.image,
+      required this.pinId,
+      required this.hitCount,
+      required this.lastAccessed,
+      required this.keepAlive});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['image'] = Variable<Uint8List>(image);
+    map['pin_id'] = Variable<String>(pinId);
+    map['hit_count'] = Variable<int>(hitCount);
+    map['last_accessed'] = Variable<DateTime>(lastAccessed);
+    map['keep_alive'] = Variable<bool>(keepAlive);
+    return map;
+  }
+
+  PinImageEntityCompanion toCompanion(bool nullToAbsent) {
+    return PinImageEntityCompanion(
+      image: Value(image),
+      pinId: Value(pinId),
+      hitCount: Value(hitCount),
+      lastAccessed: Value(lastAccessed),
+      keepAlive: Value(keepAlive),
+    );
+  }
+
+  factory PinImageEntityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PinImageEntityData(
+      image: serializer.fromJson<Uint8List>(json['image']),
+      pinId: serializer.fromJson<String>(json['pinId']),
+      hitCount: serializer.fromJson<int>(json['hitCount']),
+      lastAccessed: serializer.fromJson<DateTime>(json['lastAccessed']),
+      keepAlive: serializer.fromJson<bool>(json['keepAlive']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'image': serializer.toJson<Uint8List>(image),
+      'pinId': serializer.toJson<String>(pinId),
+      'hitCount': serializer.toJson<int>(hitCount),
+      'lastAccessed': serializer.toJson<DateTime>(lastAccessed),
+      'keepAlive': serializer.toJson<bool>(keepAlive),
+    };
+  }
+
+  PinImageEntityData copyWith(
+          {Uint8List? image,
+          String? pinId,
+          int? hitCount,
+          DateTime? lastAccessed,
+          bool? keepAlive}) =>
+      PinImageEntityData(
+        image: image ?? this.image,
+        pinId: pinId ?? this.pinId,
+        hitCount: hitCount ?? this.hitCount,
+        lastAccessed: lastAccessed ?? this.lastAccessed,
+        keepAlive: keepAlive ?? this.keepAlive,
+      );
+  PinImageEntityData copyWithCompanion(PinImageEntityCompanion data) {
+    return PinImageEntityData(
+      image: data.image.present ? data.image.value : this.image,
+      pinId: data.pinId.present ? data.pinId.value : this.pinId,
+      hitCount: data.hitCount.present ? data.hitCount.value : this.hitCount,
+      lastAccessed: data.lastAccessed.present
+          ? data.lastAccessed.value
+          : this.lastAccessed,
+      keepAlive: data.keepAlive.present ? data.keepAlive.value : this.keepAlive,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PinImageEntityData(')
+          ..write('image: $image, ')
+          ..write('pinId: $pinId, ')
+          ..write('hitCount: $hitCount, ')
+          ..write('lastAccessed: $lastAccessed, ')
+          ..write('keepAlive: $keepAlive')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      $driftBlobEquality.hash(image), pinId, hitCount, lastAccessed, keepAlive);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PinImageEntityData &&
+          $driftBlobEquality.equals(other.image, this.image) &&
+          other.pinId == this.pinId &&
+          other.hitCount == this.hitCount &&
+          other.lastAccessed == this.lastAccessed &&
+          other.keepAlive == this.keepAlive);
+}
+
+class PinImageEntityCompanion extends UpdateCompanion<PinImageEntityData> {
+  final Value<Uint8List> image;
+  final Value<String> pinId;
+  final Value<int> hitCount;
+  final Value<DateTime> lastAccessed;
+  final Value<bool> keepAlive;
+  final Value<int> rowid;
+  const PinImageEntityCompanion({
+    this.image = const Value.absent(),
+    this.pinId = const Value.absent(),
+    this.hitCount = const Value.absent(),
+    this.lastAccessed = const Value.absent(),
+    this.keepAlive = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PinImageEntityCompanion.insert({
+    required Uint8List image,
+    required String pinId,
+    this.hitCount = const Value.absent(),
+    this.lastAccessed = const Value.absent(),
+    this.keepAlive = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : image = Value(image),
+        pinId = Value(pinId);
+  static Insertable<PinImageEntityData> custom({
+    Expression<Uint8List>? image,
+    Expression<String>? pinId,
+    Expression<int>? hitCount,
+    Expression<DateTime>? lastAccessed,
+    Expression<bool>? keepAlive,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (image != null) 'image': image,
+      if (pinId != null) 'pin_id': pinId,
+      if (hitCount != null) 'hit_count': hitCount,
+      if (lastAccessed != null) 'last_accessed': lastAccessed,
+      if (keepAlive != null) 'keep_alive': keepAlive,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PinImageEntityCompanion copyWith(
+      {Value<Uint8List>? image,
+      Value<String>? pinId,
+      Value<int>? hitCount,
+      Value<DateTime>? lastAccessed,
+      Value<bool>? keepAlive,
+      Value<int>? rowid}) {
+    return PinImageEntityCompanion(
+      image: image ?? this.image,
+      pinId: pinId ?? this.pinId,
+      hitCount: hitCount ?? this.hitCount,
+      lastAccessed: lastAccessed ?? this.lastAccessed,
+      keepAlive: keepAlive ?? this.keepAlive,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (image.present) {
+      map['image'] = Variable<Uint8List>(image.value);
+    }
+    if (pinId.present) {
+      map['pin_id'] = Variable<String>(pinId.value);
+    }
+    if (hitCount.present) {
+      map['hit_count'] = Variable<int>(hitCount.value);
+    }
+    if (lastAccessed.present) {
+      map['last_accessed'] = Variable<DateTime>(lastAccessed.value);
+    }
+    if (keepAlive.present) {
+      map['keep_alive'] = Variable<bool>(keepAlive.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PinImageEntityCompanion(')
+          ..write('image: $image, ')
+          ..write('pinId: $pinId, ')
+          ..write('hitCount: $hitCount, ')
+          ..write('lastAccessed: $lastAccessed, ')
+          ..write('keepAlive: $keepAlive, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1557,14 +1872,21 @@ abstract class _$Database extends GeneratedDatabase {
   late final $GroupEntityTable groupEntity = $GroupEntityTable(this);
   late final $PinEntityTable pinEntity = $PinEntityTable(this);
   late final $MemberEntityTable memberEntity = $MemberEntityTable(this);
+  late final $PinImageEntityTable pinImageEntity = $PinImageEntityTable(this);
   late final Index userUsername = Index(
       'user_username', 'CREATE INDEX user_username ON user_entity (username)');
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [userEntity, groupEntity, pinEntity, memberEntity, userUsername];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        userEntity,
+        groupEntity,
+        pinEntity,
+        memberEntity,
+        pinImageEntity,
+        userUsername
+      ];
 }
 
 typedef $$UserEntityTableCreateCompanionBuilder = UserEntityCompanion Function({
@@ -2158,7 +2480,6 @@ typedef $$PinEntityTableCreateCompanionBuilder = PinEntityCompanion Function({
   required String creator,
   required String group,
   Value<bool> isHidden,
-  Value<Uint8List?> image,
   Value<DateTime?> lastSynced,
   Value<int> rowid,
 });
@@ -2170,7 +2491,6 @@ typedef $$PinEntityTableUpdateCompanionBuilder = PinEntityCompanion Function({
   Value<String> creator,
   Value<String> group,
   Value<bool> isHidden,
-  Value<Uint8List?> image,
   Value<DateTime?> lastSynced,
   Value<int> rowid,
 });
@@ -2236,11 +2556,6 @@ class $$PinEntityTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<Uint8List> get image => $state.composableBuilder(
-      column: $state.table.image,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
-
   ColumnFilters<DateTime> get lastSynced => $state.composableBuilder(
       column: $state.table.lastSynced,
       builder: (column, joinBuilders) =>
@@ -2296,11 +2611,6 @@ class $$PinEntityTableOrderingComposer
 
   ColumnOrderings<bool> get isHidden => $state.composableBuilder(
       column: $state.table.isHidden,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
-
-  ColumnOrderings<Uint8List> get image => $state.composableBuilder(
-      column: $state.table.image,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
@@ -2361,7 +2671,6 @@ class $$PinEntityTableTableManager extends RootTableManager<
             Value<String> creator = const Value.absent(),
             Value<String> group = const Value.absent(),
             Value<bool> isHidden = const Value.absent(),
-            Value<Uint8List?> image = const Value.absent(),
             Value<DateTime?> lastSynced = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
@@ -2373,7 +2682,6 @@ class $$PinEntityTableTableManager extends RootTableManager<
             creator: creator,
             group: group,
             isHidden: isHidden,
-            image: image,
             lastSynced: lastSynced,
             rowid: rowid,
           ),
@@ -2385,7 +2693,6 @@ class $$PinEntityTableTableManager extends RootTableManager<
             required String creator,
             required String group,
             Value<bool> isHidden = const Value.absent(),
-            Value<Uint8List?> image = const Value.absent(),
             Value<DateTime?> lastSynced = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
@@ -2397,7 +2704,6 @@ class $$PinEntityTableTableManager extends RootTableManager<
             creator: creator,
             group: group,
             isHidden: isHidden,
-            image: image,
             lastSynced: lastSynced,
             rowid: rowid,
           ),
@@ -2468,12 +2774,14 @@ typedef $$MemberEntityTableCreateCompanionBuilder = MemberEntityCompanion
     Function({
   required String groupId,
   required String userId,
+  required int ranking,
   Value<int> rowid,
 });
 typedef $$MemberEntityTableUpdateCompanionBuilder = MemberEntityCompanion
     Function({
   Value<String> groupId,
   Value<String> userId,
+  Value<int> ranking,
   Value<int> rowid,
 });
 
@@ -2489,6 +2797,11 @@ class $$MemberEntityTableFilterComposer
       column: $state.table.userId,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get ranking => $state.composableBuilder(
+      column: $state.table.ranking,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
 class $$MemberEntityTableOrderingComposer
@@ -2501,6 +2814,11 @@ class $$MemberEntityTableOrderingComposer
 
   ColumnOrderings<String> get userId => $state.composableBuilder(
       column: $state.table.userId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get ranking => $state.composableBuilder(
+      column: $state.table.ranking,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
@@ -2530,21 +2848,25 @@ class $$MemberEntityTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<String> groupId = const Value.absent(),
             Value<String> userId = const Value.absent(),
+            Value<int> ranking = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               MemberEntityCompanion(
             groupId: groupId,
             userId: userId,
+            ranking: ranking,
             rowid: rowid,
           ),
           createCompanionCallback: ({
             required String groupId,
             required String userId,
+            required int ranking,
             Value<int> rowid = const Value.absent(),
           }) =>
               MemberEntityCompanion.insert(
             groupId: groupId,
             userId: userId,
+            ranking: ranking,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
@@ -2568,6 +2890,158 @@ typedef $$MemberEntityTableProcessedTableManager = ProcessedTableManager<
     ),
     MemberEntityData,
     PrefetchHooks Function()>;
+typedef $$PinImageEntityTableCreateCompanionBuilder = PinImageEntityCompanion
+    Function({
+  required Uint8List image,
+  required String pinId,
+  Value<int> hitCount,
+  Value<DateTime> lastAccessed,
+  Value<bool> keepAlive,
+  Value<int> rowid,
+});
+typedef $$PinImageEntityTableUpdateCompanionBuilder = PinImageEntityCompanion
+    Function({
+  Value<Uint8List> image,
+  Value<String> pinId,
+  Value<int> hitCount,
+  Value<DateTime> lastAccessed,
+  Value<bool> keepAlive,
+  Value<int> rowid,
+});
+
+class $$PinImageEntityTableFilterComposer
+    extends FilterComposer<_$Database, $PinImageEntityTable> {
+  $$PinImageEntityTableFilterComposer(super.$state);
+  ColumnFilters<Uint8List> get image => $state.composableBuilder(
+      column: $state.table.image,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get pinId => $state.composableBuilder(
+      column: $state.table.pinId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get hitCount => $state.composableBuilder(
+      column: $state.table.hitCount,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get lastAccessed => $state.composableBuilder(
+      column: $state.table.lastAccessed,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<bool> get keepAlive => $state.composableBuilder(
+      column: $state.table.keepAlive,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$PinImageEntityTableOrderingComposer
+    extends OrderingComposer<_$Database, $PinImageEntityTable> {
+  $$PinImageEntityTableOrderingComposer(super.$state);
+  ColumnOrderings<Uint8List> get image => $state.composableBuilder(
+      column: $state.table.image,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get pinId => $state.composableBuilder(
+      column: $state.table.pinId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get hitCount => $state.composableBuilder(
+      column: $state.table.hitCount,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get lastAccessed => $state.composableBuilder(
+      column: $state.table.lastAccessed,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<bool> get keepAlive => $state.composableBuilder(
+      column: $state.table.keepAlive,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+class $$PinImageEntityTableTableManager extends RootTableManager<
+    _$Database,
+    $PinImageEntityTable,
+    PinImageEntityData,
+    $$PinImageEntityTableFilterComposer,
+    $$PinImageEntityTableOrderingComposer,
+    $$PinImageEntityTableCreateCompanionBuilder,
+    $$PinImageEntityTableUpdateCompanionBuilder,
+    (
+      PinImageEntityData,
+      BaseReferences<_$Database, $PinImageEntityTable, PinImageEntityData>
+    ),
+    PinImageEntityData,
+    PrefetchHooks Function()> {
+  $$PinImageEntityTableTableManager(_$Database db, $PinImageEntityTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$PinImageEntityTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$PinImageEntityTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<Uint8List> image = const Value.absent(),
+            Value<String> pinId = const Value.absent(),
+            Value<int> hitCount = const Value.absent(),
+            Value<DateTime> lastAccessed = const Value.absent(),
+            Value<bool> keepAlive = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PinImageEntityCompanion(
+            image: image,
+            pinId: pinId,
+            hitCount: hitCount,
+            lastAccessed: lastAccessed,
+            keepAlive: keepAlive,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required Uint8List image,
+            required String pinId,
+            Value<int> hitCount = const Value.absent(),
+            Value<DateTime> lastAccessed = const Value.absent(),
+            Value<bool> keepAlive = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              PinImageEntityCompanion.insert(
+            image: image,
+            pinId: pinId,
+            hitCount: hitCount,
+            lastAccessed: lastAccessed,
+            keepAlive: keepAlive,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$PinImageEntityTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $PinImageEntityTable,
+    PinImageEntityData,
+    $$PinImageEntityTableFilterComposer,
+    $$PinImageEntityTableOrderingComposer,
+    $$PinImageEntityTableCreateCompanionBuilder,
+    $$PinImageEntityTableUpdateCompanionBuilder,
+    (
+      PinImageEntityData,
+      BaseReferences<_$Database, $PinImageEntityTable, PinImageEntityData>
+    ),
+    PinImageEntityData,
+    PrefetchHooks Function()>;
 
 class $DatabaseManager {
   final _$Database _db;
@@ -2580,6 +3054,8 @@ class $DatabaseManager {
       $$PinEntityTableTableManager(_db, _db.pinEntity);
   $$MemberEntityTableTableManager get memberEntity =>
       $$MemberEntityTableTableManager(_db, _db.memberEntity);
+  $$PinImageEntityTableTableManager get pinImageEntity =>
+      $$PinImageEntityTableTableManager(_db, _db.pinImageEntity);
 }
 
 // **************************************************************************

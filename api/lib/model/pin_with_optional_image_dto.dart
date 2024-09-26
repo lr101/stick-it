@@ -14,7 +14,7 @@ class PinWithOptionalImageDto {
   /// Returns a new [PinWithOptionalImageDto] instance.
   PinWithOptionalImageDto({
     required this.id,
-    this.creationDate,
+    required this.creationDate,
     required this.latitude,
     required this.longitude,
     required this.creationUser,
@@ -24,13 +24,7 @@ class PinWithOptionalImageDto {
 
   String id;
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  DateTime? creationDate;
+  DateTime creationDate;
 
   /// Minimum value: -90
   /// Maximum value: 90
@@ -66,7 +60,7 @@ class PinWithOptionalImageDto {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (id.hashCode) +
-    (creationDate == null ? 0 : creationDate!.hashCode) +
+    (creationDate.hashCode) +
     (latitude.hashCode) +
     (longitude.hashCode) +
     (creationUser.hashCode) +
@@ -79,11 +73,7 @@ class PinWithOptionalImageDto {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'id'] = this.id;
-    if (this.creationDate != null) {
-      json[r'creationDate'] = this.creationDate!.toUtc().toIso8601String();
-    } else {
-      json[r'creationDate'] = null;
-    }
+      json[r'creationDate'] = this.creationDate.toUtc().toIso8601String();
       json[r'latitude'] = this.latitude;
       json[r'longitude'] = this.longitude;
       json[r'creationUser'] = this.creationUser;
@@ -116,7 +106,7 @@ class PinWithOptionalImageDto {
 
       return PinWithOptionalImageDto(
         id: mapValueOfType<String>(json, r'id')!,
-        creationDate: mapDateTime(json, r'creationDate', r''),
+        creationDate: mapDateTime(json, r'creationDate', r'')!,
         latitude: num.parse('${json[r'latitude']}'),
         longitude: num.parse('${json[r'longitude']}'),
         creationUser: mapValueOfType<String>(json, r'creationUser')!,
@@ -170,6 +160,7 @@ class PinWithOptionalImageDto {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'id',
+    'creationDate',
     'latitude',
     'longitude',
     'creationUser',

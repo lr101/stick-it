@@ -21,7 +21,7 @@ class ImageGrid extends ConsumerStatefulWidget {
 
 class _ImageGridState extends ConsumerState<ImageGrid> {
   PagingController<int, LocalPinDto> _pagingController =
-      PagingController(firstPageKey: 0, invisibleItemsThreshold: 10);
+      PagingController(firstPageKey: 0, invisibleItemsThreshold: 4);
 
   final int _pageSize = 18;
 
@@ -36,8 +36,10 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
       _fetchPage(pageKey);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.watch(widget.pinProvider).whenData((data) => _images = data);
-      _pagingController.refresh();
+      ref.watch(widget.pinProvider).whenData((data) {
+        _images = data;
+        _pagingController.refresh();
+      });
     });
   }
 
@@ -45,7 +47,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
   Widget build(BuildContext context) {
     ref.listen(widget.pinProvider, (previous, next) {
       _images = next.value ?? [];
-      _pagingController.refresh();
+      _pagingController.notifyPageRequestListeners(0);
     });
     return PagedGridView<int, LocalPinDto>(
       pagingController: _pagingController,
@@ -72,16 +74,17 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
   Future<void> _fetchPage(pageKey) async {
     try {
       int end;
-      if (pageKey + _pageSize > _images.length) {
-        end = _images.length;
+      final images = _images;
+      if (pageKey + _pageSize > images.length) {
+        end = images.length;
       } else {
         end = pageKey + _pageSize;
       }
-      final idList = _images.getRange(pageKey, end).toList();
-      ref
+      final idList = images.getRange(pageKey, end).toList();
+      await ref
           .read(pinImageServiceProvider.notifier)
           .addImages(idList.map((e) => e.id).toList());
-      if (end == _images.length) {
+      if (end == images.length) {
         _pagingController.appendLastPage(idList);
       } else {
         _pagingController.appendPage(idList, pageKey + _pageSize);

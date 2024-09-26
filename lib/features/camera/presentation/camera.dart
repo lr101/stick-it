@@ -204,16 +204,17 @@ class _CameraState extends ConsumerState<Camera> {
       return;
     }
     if (_m.isLocked) return;
-    _m.protect(() async {
-        try {
-          final image = await controller.takePicture();
-          Uint8List bytes = await image.readAsBytes();
-          Position position = await Geolocator.getCurrentPosition();
-          await Routing.to(context, ImageUpload(image: bytes, position: position));
-        } catch (e) {
-          print(e);
-        }
-    });
+    await _m.acquire();
+      try {
+        final image = await controller.takePicture();
+        Uint8List bytes = await image.readAsBytes();
+        Position position = await Geolocator.getCurrentPosition();
+        Routing.to(context, ImageUpload(image: bytes, position: position));
+      } catch (e) {
+        print(e);
+      } finally {
+        _m.release();
+      }
   }
 
 }

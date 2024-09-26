@@ -47,7 +47,7 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
       });
       final result = await ref.read(userServiceProvider.notifier).report("userId: ${widget.userId}, groupId: ${widget.groupId}, pinId: ${widget.pinId}, issueType: ${_selectedIssueType}", _messageController.text);
       if (result != null) {
-        CustomErrorSnackBar.message(context: context, message: result);
+        CustomErrorSnackBar.message(message: result);
       } else {
         Navigator.of(context).pop();
       }

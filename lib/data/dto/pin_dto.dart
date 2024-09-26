@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:buff_lisa/data/entity/database.dart';
+import 'package:buff_lisa/data/repository/pin_image_repository.dart';
 import 'package:drift/drift.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 
 class LocalPinDto {
@@ -10,7 +12,6 @@ class LocalPinDto {
   final DateTime creationDate;
   final String creatorId;
   final String groupId;
-  final Uint8List? image;
   final bool isHidden;
   final DateTime? lastSynced;
 
@@ -22,7 +23,6 @@ class LocalPinDto {
     required this.creatorId,
     required this.groupId,
     required this.isHidden,
-    this.image,
     this.lastSynced
   });
 
@@ -34,7 +34,6 @@ class LocalPinDto {
       creationDate: entityData.creationDate,
       creatorId: entityData.creator,
       groupId: entityData.group,
-      image: entityData.image,
       lastSynced: entityData.lastSynced,
       isHidden: entityData.isHidden,
     );
@@ -48,13 +47,12 @@ class LocalPinDto {
       creationDate: Value(creationDate),
       creator: Value(creatorId),
       group: Value(groupId),
-      image: Value(image),
       isHidden: Value(isHidden),
       lastSynced: Value(lastSynced)
     );
   }
 
-  factory LocalPinDto.fromDto(PinWithoutImageDto pinDto) {
+  factory LocalPinDto.fromDto(PinWithOptionalImageDto pinDto) {
     return LocalPinDto(
       latitude : pinDto.latitude.toDouble(),
       longitude : pinDto.longitude.toDouble(),
@@ -73,21 +71,20 @@ class LocalPinDto {
       longitude : pinDto.longitude.toDouble(),
       id : pinDto.id,
       creatorId : pinDto.creationUser,
-      creationDate : pinDto.creationDate!,
-      image: pinDto.image != null ? base64Decode(pinDto.image!) : null,
+      creationDate : pinDto.creationDate,
       groupId: pinDto.groupId,
       isHidden: false,
       lastSynced: pinDto.creationDate // TODO update to last updated
     );
   }
 
-  PinRequestDto toPinRequestDto() {
+  PinRequestDto toPinRequestDto(String image) {
     return PinRequestDto(
       latitude: latitude,
       longitude: longitude,
       groupId: groupId,
-      image: base64Encode(image!.toList()),
       creationDate: creationDate,
+      image: image,
       userId: creatorId
     );
   }

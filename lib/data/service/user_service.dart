@@ -5,6 +5,7 @@ import 'package:buff_lisa/data/dto/user_dto.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter/services.dart';
@@ -29,22 +30,25 @@ class UserService extends _$UserService {
     _usersApi = ref.watch(userApiProvider);
     _authApi = ref.watch(authApiProvider);
     _reportApi = ref.watch(reportApiProvider);
-
-    final localUser = await _userRepository.getUserById(_data.userId!);
     if (_data.userId == null) return {};
-    if (localUser != null) return {_data.userId!: localUser};
 
-    final profileImageSmall =
-        await _usersApi.getUserProfileImageSmallWithHttpInfo(_data.userId!);
-    return {
-      _data.userId!: LocalUserDto(
+    LocalUserDto? localUser = await _userRepository.getUserById(_data.userId!);
+    if (localUser != null) this.state = AsyncData({_data.userId!: localUser});
+
+    try {
+      final profileImageSmall = await _usersApi.getUserProfileImageSmallWithHttpInfo(_data.userId!);
+      localUser = LocalUserDto(
           userId: _data.userId!,
           username: _data.username!,
           profileImageSmall: profileImageSmall.statusCode == 200 &&
-                  profileImageSmall.bodyBytes.isNotEmpty
-              ? profileImageSmall.bodyBytes
-              : null)
-    };
+              profileImageSmall.bodyBytes.isNotEmpty ? profileImageSmall
+              .bodyBytes : null
+      );
+      await _userRepository.createUser(localUser);
+    } catch(e) {
+      if (kDebugMode) print(e);
+    }
+    return {_data.userId!: localUser!};
   }
 
   Future<LocalUserDto> fetchUserById(String userId) async {

@@ -186,6 +186,8 @@ class ApiClient {
           return CreateGroupDto.fromJson(value);
         case 'GroupDto':
           return GroupDto.fromJson(value);
+        case 'GroupsSyncDto':
+          return GroupsSyncDto.fromJson(value);
         case 'InfoDto':
           return InfoDto.fromJson(value);
         case 'MemberResponseDto':
@@ -194,8 +196,8 @@ class ApiClient {
           return PinRequestDto.fromJson(value);
         case 'PinWithOptionalImageDto':
           return PinWithOptionalImageDto.fromJson(value);
-        case 'PinWithoutImageDto':
-          return PinWithoutImageDto.fromJson(value);
+        case 'PinsSyncDto':
+          return PinsSyncDto.fromJson(value);
         case 'RankingResponseDto':
           return RankingResponseDto.fromJson(value);
         case 'ReportDto':

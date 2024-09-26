@@ -15,18 +15,6 @@ class GlobalDataService  extends _$GlobalDataService {
   @override
   GlobalDataDto build() => ref.watch(globalDataOnceProvider);
 
-  Future<void> setLastSeen() async {
-    await ref.watch(globalDataRepositoryProvider).setLastSeenNow();
-    state.lastSeen = DateTime.now();
-    ref.notifyListeners();
-  }
-
-  Future<void> setGroupOrder(List<String> order) async {
-    await ref.watch(globalDataRepositoryProvider).setGroupOrder(order);
-    state.groupOrder = order;
-    ref.notifyListeners();
-  }
-
   Future<void> login(String username, String userId, String token) async {
     await ref.watch(globalDataRepositoryProvider).login(username, userId, token);
     state.refreshToken = token;
@@ -62,4 +50,27 @@ class CameraTorch extends _$CameraTorch {
     state = value;
     ref.watch(sharedPreferencesProvider).setBool(GlobalDataRepository.cameraTorch, value);
   }
+}
+
+@Riverpod(keepAlive: true)
+class LastSeen extends _$LastSeen {
+
+  @override
+  DateTime? build(String key) {
+    final lastSeen = ref.watch(sharedPreferencesProvider).getInt(key);
+    if (lastSeen == null) return null;
+    return DateTime.fromMicrosecondsSinceEpoch(lastSeen);
+  }
+
+
+  void setLastSeenNow() {
+    state = DateTime.now();
+    ref.watch(sharedPreferencesProvider).setInt(key, state!.microsecondsSinceEpoch);
+  }
+
+  void clear() {
+    state = null;
+    ref.watch(sharedPreferencesProvider).remove(key);
+  }
+
 }
