@@ -68,3 +68,12 @@ class PinImageService extends _$PinImageService {
 Future<Uint8List?> getPinImage(GetPinImageRef ref, String pinId) async {
   return await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pinId]));
 }
+
+@riverpod
+Future<Uint8List?> getPinImageAndFetch(GetPinImageAndFetchRef ref, String pinId) async {
+  final image = await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pinId]));
+  if (image == null) {
+    ref.watch(pinImageServiceProvider.notifier).addImage(pinId);
+  }
+  return image;
+}

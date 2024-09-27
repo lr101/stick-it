@@ -6,7 +6,7 @@ import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/auth/presentation/loading.dart';
-import 'package:buff_lisa/util/theme/data/dark_theme.dart';
+import 'package:buff_lisa/util/theme/data/material_theme.dart';
 import 'package:buff_lisa/util/theme/data/light_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
@@ -77,17 +77,14 @@ class MyApp extends ConsumerWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    /// Statusbar color (where time and notification are displayed) is set to transparent
-    /// app will not use the space if not set specifically in widget
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    /// create [ClusterNotifier] used to save all important information
+    final theme = MaterialTheme(Theme.of(context).textTheme);
     return MaterialApp(
-
       debugShowCheckedModeBanner: false,
       title: 'Mona App',
       themeMode: ref.watch(themeStateProvider),
-      darkTheme: darkTheme,
-      theme: lightTheme,
+      darkTheme: theme.dark(),
+      theme: theme.light(),
       initialRoute: ref.watch(globalDataServiceProvider).userId != null ? '/home' : '/login',
       routes: {
         '/login': (context) => Auth(),

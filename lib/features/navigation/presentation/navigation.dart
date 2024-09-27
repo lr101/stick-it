@@ -98,8 +98,8 @@ class _NavigationState extends ConsumerState<Navigation> {
           ],
           currentIndex: state,
           onTap: onItemTapped,
-          selectedItemColor: Theme.of(context).textTheme.titleLarge?.color,
-          unselectedItemColor: Theme.of(context).disabledColor,
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedItemColor: Theme.of(context).hintColor,
         ));
   }
 

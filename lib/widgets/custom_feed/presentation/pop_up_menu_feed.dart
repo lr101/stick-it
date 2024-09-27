@@ -20,7 +20,7 @@ class PopUpMenuFeed extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    final adminId = ref.watch(groupByIdProvider(pinDto.groupId)).value?.groupAdmin;
+    final adminId = ref.watch(groupByIdProvider(pinDto.groupId)).whenOrNull(data: (d) => d?.groupAdmin);
     bool isNotCreator =  userId != pinDto.creatorId;
     return PopupMenuButton(
         itemBuilder: (context) {

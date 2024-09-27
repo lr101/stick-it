@@ -6,6 +6,7 @@ import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
+import 'package:buff_lisa/data/service/no_user_group_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/reachability_service.dart';
 import 'package:buff_lisa/data/service/syncing_service_schedular.dart';
@@ -201,19 +202,23 @@ class UserGroupService extends _$UserGroupService {
   }
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 Future<LocalGroupDto?> groupById(GroupByIdRef ref, String groupId) async {
-  return ref.watch(userGroupServiceProvider
-      .selectAsync((groups) => groups.firstWhere((t) => t.groupId == groupId)));
+  if(await ref.watch(userGroupServiceProvider.selectAsync((e) => e.any((t) => t.groupId == groupId)))) {
+    return ref.watch(userGroupServiceProvider.selectAsync((groups) =>
+        groups.firstWhere((t) => t.groupId == groupId)));
+  } else {
+    return ref.watch(noUserGroupServiceProvider(groupId)).value;
+  }
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 Future<Uint8List> groupImageById(GroupImageByIdRef ref, String groupId) async {
   return ref.watch(
       groupByIdProvider(groupId).select((group) => group.value!.profileImage));
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 Future<Uint8List> groupPinImageById(
     GroupPinImageByIdRef ref, String groupId) async {
   return ref.watch(

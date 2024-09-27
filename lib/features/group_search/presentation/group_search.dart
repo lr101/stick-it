@@ -56,6 +56,7 @@ class _GroupSearchState extends ConsumerState<GroupSearch> {
           height: 40,
         child: SearchBar(
             controller: _textEditController,
+            shadowColor:  WidgetStateProperty.all(Colors.transparent),
             leading: const Icon(Icons.search),
             trailing: <Widget>[
               Tooltip(

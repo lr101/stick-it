@@ -17,6 +17,7 @@ class _GroupSelectorState extends ConsumerState<GroupSelector>  with AutomaticKe
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final groups = ref.watch(userGroupServiceProvider);
 
     return Container(
@@ -30,8 +31,7 @@ class _GroupSelectorState extends ConsumerState<GroupSelector>  with AutomaticKe
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.transparent),
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(widget.height / 2)),
+                  borderRadius: BorderRadius.all(Radius.circular(widget.height / 2)),
                   color: Colors.grey.withOpacity(0.4)
               ),
               width: MediaQuery
@@ -90,7 +90,7 @@ class _GroupSelectorState extends ConsumerState<GroupSelector>  with AutomaticKe
               child: Stack(
                 children: [
                   CircleAvatar(
-                    radius: baseHeight / 2,
+                    radius: baseHeight / 2 + 1,
                     backgroundColor: color,
                   ),
                   Align(

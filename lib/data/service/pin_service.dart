@@ -31,15 +31,23 @@ class PinService extends _$PinService {
 
   @override
   Future<List<LocalPinDto>> build(String groupId) async {
+    final isUserGroup = (await ref.watch(groupRepositoryProvider).getGroupById(groupId)) != null;
     _pinRepository = ref.watch(pinRepositoryProvider);
     _pinsApi = ref.watch(pinApiProvider);
     final hiddenUsers = ref.watch(hiddenUserServiceProvider);
     final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
-    final localPins = await _pinRepository.getPinsOfGroup(groupId);
-    localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
-    this.state = AsyncData(localPins);
-    await sync();
-    return localPins;
+    if (isUserGroup) {
+      final localPins = await _pinRepository.getPinsOfGroup(groupId);
+      localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
+      this.state = AsyncData(localPins);
+      await sync();
+      return state.value ?? [];
+    } else {
+      final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
+      final localPins = remotePins!.items.map((e) => LocalPinDto.fromDtoWithImage(e)).toList();
+      localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
+      return localPins;
+    }
   }
 
   Future<void> sync() async {
@@ -68,7 +76,7 @@ class PinService extends _$PinService {
         }
       }
       if (numSynced > 0) {
-        CustomErrorSnackBar.message(message: "${numSynced} sticks in ${await ref.watch(groupByIdProvider(groupId).selectAsync((e) => e?.name))} have been uploaded");
+        CustomErrorSnackBar.message(message: "Multiple sticks in have been uploaded");
       }
       ref.read(syncingServiceSchedularProvider.notifier).setState(SyncingServiceSchedularState.done);
     } catch (e) {
@@ -107,44 +115,6 @@ class PinService extends _$PinService {
     }
   }
 
-  void updateMultiplePins(List<LocalPinDto> updatedPin) {
-    final currentState = state.value ?? [];
-    final updatedState = [...currentState];
-    for (var pin in updatedPin) {
-      final index = currentState.indexWhere((p) => p.id == pin.id);
-      if (index != -1) {
-        updatedState[index] = pin;
-      }
-    }
-    state = AsyncValue.data(updatedState);
-  }
-
-  Future<List<LocalPinDto>> getPinsOfActiveGroup() async {
-    try {
-      final localPins = await _pinRepository.getPinsOActiveGroup();
-      if (localPins.isNotEmpty) return localPins;
-
-      final List<LocalPinDto> groups = await ref.watch(userGroupServiceProvider).whenOrNull() ?? [];
-      final List<PinWithOptionalImageDto> remotePins = [];
-      for (var group in groups) {
-        final p = await _pinsApi.getPinImagesByIds(groupId: group.groupId, withImage: false);
-        if (p == null) continue;
-        remotePins.addAll(p.items);
-      }
-      List<LocalPinDto> pins = [];
-      for (var pin in remotePins) {
-        final pinDto = LocalPinDto.fromDtoWithImage(pin);
-        pins.add(pinDto);
-        await _pinRepository.createOrUpdate(pinDto);
-        updateSinglePin(pinDto); // Update state for each pin
-      }
-      return pins;
-    } catch (e) {
-      print('Error fetching pins: $e');
-      return [];
-    }
-  }
-
   Future<String?> addPinToGroup(LocalPinDto pin, Uint8List image) async {
     try {
       await _pinRepository.createOrUpdate(pin);
@@ -163,27 +133,6 @@ class PinService extends _$PinService {
       }
     } on ApiException catch (e) {
       return e.message;
-    }
-  }
-
-  Future<LocalPinDto?> getPinById(String pinId) async {
-    try {
-      final localPin = await _pinRepository.getPinById(pinId);
-      if (localPin != null) return localPin;
-
-      final remotePin = await _pinsApi.getPin(pinId);
-      if (remotePin != null) {
-        final pinDto = LocalPinDto.fromDtoWithImage(remotePin);
-        await _pinRepository.createOrUpdate(pinDto);
-
-        // Update state for the fetched pin
-        updateSinglePin(pinDto);
-        return pinDto;
-      }
-      return null;
-    } catch (e) {
-      print('Error fetching pin by ID: $e');
-      return null;
     }
   }
 

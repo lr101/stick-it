@@ -6,7 +6,7 @@ part of 'user_group_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupByIdHash() => r'8c23af5a2f47a81164c849f2c917538006c2bd60';
+String _$groupByIdHash() => r'4e274b4d3f8898fee63830162c0f54ecc82e7444';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -72,7 +72,7 @@ class GroupByIdFamily extends Family<AsyncValue<LocalGroupDto?>> {
 }
 
 /// See also [groupById].
-class GroupByIdProvider extends FutureProvider<LocalGroupDto?> {
+class GroupByIdProvider extends AutoDisposeFutureProvider<LocalGroupDto?> {
   /// See also [groupById].
   GroupByIdProvider(
     String groupId,
@@ -123,7 +123,7 @@ class GroupByIdProvider extends FutureProvider<LocalGroupDto?> {
   }
 
   @override
-  FutureProviderElement<LocalGroupDto?> createElement() {
+  AutoDisposeFutureProviderElement<LocalGroupDto?> createElement() {
     return _GroupByIdProviderElement(this);
   }
 
@@ -141,20 +141,20 @@ class GroupByIdProvider extends FutureProvider<LocalGroupDto?> {
   }
 }
 
-mixin GroupByIdRef on FutureProviderRef<LocalGroupDto?> {
+mixin GroupByIdRef on AutoDisposeFutureProviderRef<LocalGroupDto?> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
-class _GroupByIdProviderElement extends FutureProviderElement<LocalGroupDto?>
-    with GroupByIdRef {
+class _GroupByIdProviderElement
+    extends AutoDisposeFutureProviderElement<LocalGroupDto?> with GroupByIdRef {
   _GroupByIdProviderElement(super.provider);
 
   @override
   String get groupId => (origin as GroupByIdProvider).groupId;
 }
 
-String _$groupImageByIdHash() => r'1649aa1417ef277bb3b97d13ee6cff7f50d4fa38';
+String _$groupImageByIdHash() => r'73db90edcc4101c3e4fdd570aebe82964244dcf7';
 
 /// See also [groupImageById].
 @ProviderFor(groupImageById)
@@ -199,7 +199,7 @@ class GroupImageByIdFamily extends Family<AsyncValue<Uint8List>> {
 }
 
 /// See also [groupImageById].
-class GroupImageByIdProvider extends FutureProvider<Uint8List> {
+class GroupImageByIdProvider extends AutoDisposeFutureProvider<Uint8List> {
   /// See also [groupImageById].
   GroupImageByIdProvider(
     String groupId,
@@ -251,7 +251,7 @@ class GroupImageByIdProvider extends FutureProvider<Uint8List> {
   }
 
   @override
-  FutureProviderElement<Uint8List> createElement() {
+  AutoDisposeFutureProviderElement<Uint8List> createElement() {
     return _GroupImageByIdProviderElement(this);
   }
 
@@ -269,20 +269,20 @@ class GroupImageByIdProvider extends FutureProvider<Uint8List> {
   }
 }
 
-mixin GroupImageByIdRef on FutureProviderRef<Uint8List> {
+mixin GroupImageByIdRef on AutoDisposeFutureProviderRef<Uint8List> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
-class _GroupImageByIdProviderElement extends FutureProviderElement<Uint8List>
-    with GroupImageByIdRef {
+class _GroupImageByIdProviderElement
+    extends AutoDisposeFutureProviderElement<Uint8List> with GroupImageByIdRef {
   _GroupImageByIdProviderElement(super.provider);
 
   @override
   String get groupId => (origin as GroupImageByIdProvider).groupId;
 }
 
-String _$groupPinImageByIdHash() => r'16d5c026744f42bf30638f020b7fb1e9b42478f6';
+String _$groupPinImageByIdHash() => r'14290fa8ed4eb10c9b9abd9d722de7fc1145911f';
 
 /// See also [groupPinImageById].
 @ProviderFor(groupPinImageById)
@@ -327,7 +327,7 @@ class GroupPinImageByIdFamily extends Family<AsyncValue<Uint8List>> {
 }
 
 /// See also [groupPinImageById].
-class GroupPinImageByIdProvider extends FutureProvider<Uint8List> {
+class GroupPinImageByIdProvider extends AutoDisposeFutureProvider<Uint8List> {
   /// See also [groupPinImageById].
   GroupPinImageByIdProvider(
     String groupId,
@@ -379,7 +379,7 @@ class GroupPinImageByIdProvider extends FutureProvider<Uint8List> {
   }
 
   @override
-  FutureProviderElement<Uint8List> createElement() {
+  AutoDisposeFutureProviderElement<Uint8List> createElement() {
     return _GroupPinImageByIdProviderElement(this);
   }
 
@@ -397,12 +397,13 @@ class GroupPinImageByIdProvider extends FutureProvider<Uint8List> {
   }
 }
 
-mixin GroupPinImageByIdRef on FutureProviderRef<Uint8List> {
+mixin GroupPinImageByIdRef on AutoDisposeFutureProviderRef<Uint8List> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
-class _GroupPinImageByIdProviderElement extends FutureProviderElement<Uint8List>
+class _GroupPinImageByIdProviderElement
+    extends AutoDisposeFutureProviderElement<Uint8List>
     with GroupPinImageByIdRef {
   _GroupPinImageByIdProviderElement(super.provider);
 

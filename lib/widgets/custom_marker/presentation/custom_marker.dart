@@ -26,7 +26,7 @@ class CustomMarkerWidget extends Marker {
 class CustomMarkerProvider extends Marker {
 
   final LocalPinDto pinDto;
-  final Ref ref;
+  final AutoDisposeNotifierProviderRef ref;
 
 
   CustomMarkerProvider({required this.pinDto, required this.ref}) : super(
