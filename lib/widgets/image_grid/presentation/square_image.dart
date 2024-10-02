@@ -1,5 +1,4 @@
 import 'package:buff_lisa/data/service/pin_image_service.dart';
-import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_image_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
@@ -25,7 +24,7 @@ class SquareImage extends ConsumerWidget {
     final item = ref.watch(getPinImageProvider(pinId));
     return item.when(
         data: (data) => data == null
-            ? const Center(child: Icon(Icons.error))
+            ? const SizedBox.shrink()
             : GestureDetector(
                 onTap: () => onTap(index),
                 child: FadeInImage(
@@ -35,10 +34,6 @@ class SquareImage extends ConsumerWidget {
                     placeholder: MemoryImage(kTransparentImage),
                     image: MemoryImage(data))),
         error: (_, __) => const Center(child: Icon(Icons.error)),
-        loading: () => Shimmer.fromColors(
-            baseColor: Colors.grey.shade300,
-            highlightColor: Colors.grey.shade100,
-            enabled: true,
-            child: Container()));
+        loading: () => SizedBox.shrink());
   }
 }

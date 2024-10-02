@@ -10,35 +10,42 @@ class RoundImage extends ConsumerWidget {
 
   final AsyncValue<Uint8List?> imageCallback;
   final bool clickable;
-  final double size;
+  final double? size;
   final Widget? child;
   final VoidCallback? handleOpenImage;
 
-  RoundImage({super.key, required this.imageCallback, this.clickable = false, required this.size, this.child, this.handleOpenImage}) : assert (clickable && handleOpenImage != null || !clickable);
+  RoundImage({super.key, required this.imageCallback, this.clickable = false, this.size, this.child, this.handleOpenImage}) : assert (clickable && handleOpenImage != null || !clickable);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return _clickable(
           context: context,
           child: imageCallback.when<Widget>(
-              data: (data) => CircleAvatar(
-                backgroundImage: getImage(data, ref.watch(defaultErrorImageProvider)),
-                radius: size,
-                backgroundColor: Colors.transparent,
-                child: child,
-              ),
+              data: (data) {
+                try {
+                  return CircleAvatar(
+                    backgroundImage: getImage(data, ref.watch(defaultErrorImageProvider)),
+                    radius: size,
+                    backgroundColor: Colors.transparent,
+                    child: child,
+                  );
+                } catch(e) {
+                  return CircleAvatar(
+                    backgroundImage: MemoryImage(ref.watch(defaultErrorImageProvider)),
+                    radius: size,
+                    backgroundColor: Colors.transparent,
+                    child: child,
+                  );
+                }
+              },
               error: (_, __) => CircleAvatar(
                 radius: size,
                 backgroundColor: Colors.transparent,
-                child: ClipOval(
-                  child: FadeInImage(
-                      placeholder: MemoryImage(kTransparentImage),
-                      image: MemoryImage(ref.watch(defaultErrorImageProvider)),
-                    fadeInDuration: Duration(seconds: 1),
-                    height: size * 2,
-                    width: size * 2,
-                    fit: BoxFit.cover,
-                  )
+                child: CircleAvatar(
+                    backgroundImage: MemoryImage(ref.watch(defaultErrorImageProvider)),
+                    radius: size,
+                    backgroundColor: Colors.transparent,
+                    child: child,
                 )
               ),
               loading: () => CircleAvatar(radius: size, backgroundColor: Colors.grey ,child: Stack(

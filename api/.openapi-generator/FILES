@@ -26,7 +26,6 @@ doc/UserRequestDto.md
 doc/UserUpdateDto.md
 doc/UserUpdateResponseDto.md
 doc/UsersApi.md
-doc/Visibility.md
 git_push.sh
 lib/api.dart
 lib/api/auth_api.dart
@@ -61,5 +60,4 @@ lib/model/user_login_request.dart
 lib/model/user_request_dto.dart
 lib/model/user_update_dto.dart
 lib/model/user_update_response_dto.dart
-lib/model/visibility.dart
 pubspec.yaml

@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **description** | **String** |  | [optional] 
 **name** | **String** |  | [optional] 
 **profileImage** | **String** |  | [optional] 
-**visibility** | [**Visibility**](Visibility.md) |  | [optional] 
+**visibility** | **int** | The visibility of the group. 0 for public, 1 for private | [optional] 
 **groupAdmin** | **String** |  | [optional] 
 **link** | **String** |  | [optional] 
 

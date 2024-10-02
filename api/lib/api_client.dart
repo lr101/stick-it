@@ -216,8 +216,6 @@ class ApiClient {
           return UserUpdateDto.fromJson(value);
         case 'UserUpdateResponseDto':
           return UserUpdateResponseDto.fromJson(value);
-        case 'Visibility':
-          return VisibilityTypeTransformer().decode(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

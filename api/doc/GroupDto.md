@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **description** | **String** |  | [optional] 
 **inviteUrl** | **String** |  | [optional] 
 **name** | **String** |  | 
-**visibility** | [**Visibility**](Visibility.md) |  | 
+**visibility** | **int** | The visibility of the group. 0 for public, 1 for private | 
 **groupAdmin** | **String** |  | [optional] 
 **link** | **String** |  | [optional] 
 **lastUpdated** | [**DateTime**](DateTime.md) |  | [optional] 

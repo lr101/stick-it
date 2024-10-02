@@ -53,7 +53,6 @@ part 'model/user_login_request.dart';
 part 'model/user_request_dto.dart';
 part 'model/user_update_dto.dart';
 part 'model/user_update_response_dto.dart';
-part 'model/visibility.dart';
 
 
 /// An [ApiClient] instance that uses the default values obtained from

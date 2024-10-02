@@ -219,5 +219,21 @@ final cameraGroupIndexProvider =
 );
 
 typedef _$CameraGroupIndex = Notifier<int>;
+String _$cameraCapturingHash() => r'd82a1d173ce7bbde1bf2c3e7ffc79869833964e8';
+
+/// See also [CameraCapturing].
+@ProviderFor(CameraCapturing)
+final cameraCapturingProvider =
+    AutoDisposeNotifierProvider<CameraCapturing, bool>.internal(
+  CameraCapturing.new,
+  name: r'cameraCapturingProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$cameraCapturingHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$CameraCapturing = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

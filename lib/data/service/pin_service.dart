@@ -76,7 +76,7 @@ class PinService extends _$PinService {
         }
       }
       if (numSynced > 0) {
-        CustomErrorSnackBar.message(message: "Multiple sticks in have been uploaded");
+        CustomErrorSnackBar.message(message: "Your offline sticks have been uploaded");
       }
       ref.read(syncingServiceSchedularProvider.notifier).setState(SyncingServiceSchedularState.done);
     } catch (e) {

@@ -244,7 +244,7 @@ final pinsSortedByDistanceProvider = AutoDisposeProvider<
 
 typedef PinsSortedByDistanceRef
     = AutoDisposeProviderRef<AsyncValue<List<MapEntry<LocalPinDto, double>>>>;
-String _$pinServiceHash() => r'e3519e412c4bf0226951dca3b8dcd0c644183f3a';
+String _$pinServiceHash() => r'5a40c0ac80e5c416ebdb3d197e08055ae23939a1';
 
 abstract class _$PinService extends BuildlessAsyncNotifier<List<LocalPinDto>> {
   late final String groupId;

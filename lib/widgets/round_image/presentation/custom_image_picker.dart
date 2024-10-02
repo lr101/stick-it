@@ -38,8 +38,9 @@ class CustomImagePicker {
             AndroidUiSettings(
                 toolbarTitle: 'Cropper',
                 toolbarWidgetColor: Colors.white,
+                toolbarColor: Theme.of(context).primaryColor,
                 initAspectRatio: CropAspectRatioPreset.square,
-                lockAspectRatio: true
+                lockAspectRatio: true,
             ),
             IOSUiSettings(
                title: 'Cropper',

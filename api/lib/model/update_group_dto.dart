@@ -45,13 +45,14 @@ class UpdateGroupDto {
   ///
   String? profileImage;
 
+  /// The visibility of the group. 0 for public, 1 for private
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
   /// does not include a default value (using the "default:" property), however, the generated
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Visibility? visibility;
+  int? visibility;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -148,7 +149,7 @@ class UpdateGroupDto {
         description: mapValueOfType<String>(json, r'description'),
         name: mapValueOfType<String>(json, r'name'),
         profileImage: mapValueOfType<String>(json, r'profileImage'),
-        visibility: Visibility.fromJson(json[r'visibility']),
+        visibility: mapValueOfType<int>(json, r'visibility'),
         groupAdmin: mapValueOfType<String>(json, r'groupAdmin'),
         link: mapValueOfType<String>(json, r'link'),
       );

@@ -75,6 +75,20 @@ class _CameraState extends ConsumerState<Camera> {
                   )
                 ),
                 Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 75),
+                    child: ref.watch(cameraCapturingProvider) ? Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).highlightColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(padding: const EdgeInsets.all(5),
+                      child:  Text("Hold steady capturing ...") ,
+                      )
+                    ) : SizedBox.shrink()
+                )),
+                Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: Padding(
                         padding: const EdgeInsets.all(5),
@@ -143,15 +157,19 @@ class _CameraState extends ConsumerState<Camera> {
                     children: List.generate(groups.length, (index) => groupCard(groups[index], index)),
                     ),
                   ),
-                IgnorePointer(
+                Center(child: IgnorePointer(
                   child: Container(
+                    padding: EdgeInsets.all(2.0),
                     decoration: BoxDecoration(
-                      border: Border.all(width: 3.0),
+                      border: Border.all(
+                          width: 5.0,
+                        color: Theme.of(context).focusColor
+                      ),
                       shape: BoxShape.circle,
                     ),
-                    height: (MediaQuery.of(context).size.height) * 0.15,
+                    height: (MediaQuery.of(context).size.height) * 0.07 * 2,
                   ),
-                )
+                ))
               ],
             ),
           ),
@@ -205,6 +223,7 @@ class _CameraState extends ConsumerState<Camera> {
     }
     if (_m.isLocked) return;
     await _m.acquire();
+    ref.read(cameraCapturingProvider.notifier).setCapturing(true);
       try {
         final image = await controller.takePicture();
         Uint8List bytes = await image.readAsBytes();
@@ -214,6 +233,7 @@ class _CameraState extends ConsumerState<Camera> {
         print(e);
       } finally {
         _m.release();
+        ref.read(cameraCapturingProvider.notifier).setCapturing(false);
       }
   }
 

@@ -19,14 +19,11 @@ class MemberTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    TextStyle? textStyle;
-    if (userId == memberDto.userId) {
-      textStyle = TextStyle(color: Theme.of(context).highlightColor);
-    }
     final listTile = ListTile(
-      title: Align(alignment: Alignment.centerLeft,child: Text(memberDto.username + " ${memberDto.userId == adminId ? "(Admin)" : ""}", style: textStyle,)),
+      tileColor: userId == memberDto.userId ? Theme.of(context).highlightColor: null,
+      title: Align(alignment: Alignment.centerLeft,child: Text(memberDto.username + " ${memberDto.userId == adminId ? "(Admin)" : ""}")),
       leading: RoundImage(imageCallback: AsyncData(memberDto.profileImageSmall), size: 20.0, child: Container()),
-      trailing: Text(memberDto.points.toString() + " sticks", style: textStyle,),
+      trailing: Text(memberDto.points.toString() + " sticks"),
     );
     if (userId == memberDto.userId) {
       return listTile;

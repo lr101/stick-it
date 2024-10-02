@@ -77,3 +77,16 @@ LocalGroupDto cameraSelectedGroup(CameraSelectedGroupRef ref) {
   final index = ref.watch(cameraGroupIndexProvider);
   return ref.watch(userGroupServiceProvider).value![index];
 }
+
+@riverpod
+class CameraCapturing extends _$CameraCapturing {
+
+  @override
+  bool build() {
+    return false;
+  }
+
+  void setCapturing(bool value) {
+    state = value;
+  }
+}

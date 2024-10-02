@@ -27,7 +27,8 @@ class CreateGroupDto {
 
   String profileImage;
 
-  Visibility visibility;
+  /// The visibility of the group. 0 for public, 1 for private
+  int visibility;
 
   String groupAdmin;
 
@@ -98,7 +99,7 @@ class CreateGroupDto {
         description: mapValueOfType<String>(json, r'description')!,
         name: mapValueOfType<String>(json, r'name')!,
         profileImage: mapValueOfType<String>(json, r'profileImage')!,
-        visibility: Visibility.fromJson(json[r'visibility'])!,
+        visibility: mapValueOfType<int>(json, r'visibility')!,
         groupAdmin: mapValueOfType<String>(json, r'groupAdmin')!,
         link: mapValueOfType<String>(json, r'link'),
       );

@@ -111,7 +111,6 @@ Class | Method | HTTP request | Description
  - [UserRequestDto](doc//UserRequestDto.md)
  - [UserUpdateDto](doc//UserUpdateDto.md)
  - [UserUpdateResponseDto](doc//UserUpdateResponseDto.md)
- - [Visibility](doc//Visibility.md)
 
 
 ## Documentation For Authorization

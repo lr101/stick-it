@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:buff_lisa/data/config/visibility_extender.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
@@ -29,7 +28,7 @@ class GroupCreate extends ConsumerWidget {
       final createDto = api.CreateGroupDto(
           description: description,
           name: name,
-          visibility: fromOrdinal(visibility),
+          visibility: visibility,
           profileImage: base64Encode(profileImage.toList()),
           groupAdmin: ref.watch(globalDataServiceProvider).userId!,
           link: link);

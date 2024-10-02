@@ -45,7 +45,8 @@ class GroupDto {
 
   String name;
 
-  Visibility visibility;
+  /// The visibility of the group. 0 for public, 1 for private
+  int visibility;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -183,7 +184,7 @@ class GroupDto {
         description: mapValueOfType<String>(json, r'description'),
         inviteUrl: mapValueOfType<String>(json, r'invite_url'),
         name: mapValueOfType<String>(json, r'name')!,
-        visibility: Visibility.fromJson(json[r'visibility'])!,
+        visibility: mapValueOfType<int>(json, r'visibility')!,
         groupAdmin: mapValueOfType<String>(json, r'group_admin'),
         link: mapValueOfType<String>(json, r'link'),
         lastUpdated: mapDateTime(json, r'lastUpdated', r''),
