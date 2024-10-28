@@ -21,6 +21,8 @@ final activatedPinsProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ActivatedPinsRef
     = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
 String _$activatedPinsWithoutLoadingHash() =>
@@ -39,6 +41,8 @@ final activatedPinsWithoutLoadingProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ActivatedPinsWithoutLoadingRef
     = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
 String _$sortedActivatedPinsHash() =>
@@ -57,6 +61,8 @@ final sortedActivatedPinsProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef SortedActivatedPinsRef
     = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
 String _$sortedGroupPinsHash() => r'3cce5480e31b82639bb97162d197a333f9d0b75a';
@@ -196,6 +202,8 @@ class SortedGroupPinsProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin SortedGroupPinsRef on AutoDisposeFutureProviderRef<List<LocalPinDto>> {
   /// The parameter `groupId` of this provider.
   String get groupId;
@@ -225,6 +233,8 @@ final sortedUserPinsProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef SortedUserPinsRef = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
 String _$pinsSortedByDistanceHash() =>
     r'b9ebc315f3a794865db786198768e7459e856326';
@@ -242,6 +252,8 @@ final pinsSortedByDistanceProvider = AutoDisposeProvider<
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef PinsSortedByDistanceRef
     = AutoDisposeProviderRef<AsyncValue<List<MapEntry<LocalPinDto, double>>>>;
 String _$pinServiceHash() => r'5a40c0ac80e5c416ebdb3d197e08055ae23939a1';
@@ -372,6 +384,8 @@ class PinServiceProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin PinServiceRef on AsyncNotifierProviderRef<List<LocalPinDto>> {
   /// The parameter `groupId` of this provider.
   String get groupId;
@@ -386,4 +400,4 @@ class _PinServiceProviderElement
   String get groupId => (origin as PinServiceProvider).groupId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

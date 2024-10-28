@@ -21,6 +21,8 @@ final globalDataRepositoryProvider = Provider<GlobalDataRepository>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GlobalDataRepositoryRef = ProviderRef<GlobalDataRepository>;
 String _$globalDataOnceHash() => r'ace7760bbefa02c62cf20fd40207d59095139944';
 
@@ -36,6 +38,8 @@ final globalDataOnceProvider = Provider<GlobalDataDto>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GlobalDataOnceRef = ProviderRef<GlobalDataDto>;
 String _$flutterSecureStorageHash() =>
     r'75f9b15c7c347b7e26f39cec5547e7c606d23b44';
@@ -52,6 +56,8 @@ final flutterSecureStorageProvider = Provider<FlutterSecureStorage>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FlutterSecureStorageRef = ProviderRef<FlutterSecureStorage>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

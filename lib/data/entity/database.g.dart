@@ -1940,77 +1940,156 @@ final class $$UserEntityTableReferences
 }
 
 class $$UserEntityTableFilterComposer
-    extends FilterComposer<_$Database, $UserEntityTable> {
-  $$UserEntityTableFilterComposer(super.$state);
-  ColumnFilters<String> get userId => $state.composableBuilder(
-      column: $state.table.userId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $UserEntityTable> {
+  $$UserEntityTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get username => $state.composableBuilder(
-      column: $state.table.username,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get username => $composableBuilder(
+      column: $table.username, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<Uint8List> get profileImage => $state.composableBuilder(
-      column: $state.table.profileImage,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<Uint8List> get profileImage => $composableBuilder(
+      column: $table.profileImage, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<Uint8List> get profileImageSmall => $state.composableBuilder(
-      column: $state.table.profileImageSmall,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<Uint8List> get profileImageSmall => $composableBuilder(
+      column: $table.profileImageSmall,
+      builder: (column) => ColumnFilters(column));
 
-  ComposableFilter groupEntityRefs(
-      ComposableFilter Function($$GroupEntityTableFilterComposer f) f) {
-    final $$GroupEntityTableFilterComposer composer = $state.composerBuilder(
+  Expression<bool> groupEntityRefs(
+      Expression<bool> Function($$GroupEntityTableFilterComposer f) f) {
+    final $$GroupEntityTableFilterComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.userId,
-        referencedTable: $state.db.groupEntity,
+        referencedTable: $db.groupEntity,
         getReferencedColumn: (t) => t.groupAdmin,
-        builder: (joinBuilder, parentComposers) =>
-            $$GroupEntityTableFilterComposer(ComposerState($state.db,
-                $state.db.groupEntity, joinBuilder, parentComposers)));
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GroupEntityTableFilterComposer(
+              $db: $db,
+              $table: $db.groupEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return f(composer);
   }
 
-  ComposableFilter pinEntityRefs(
-      ComposableFilter Function($$PinEntityTableFilterComposer f) f) {
-    final $$PinEntityTableFilterComposer composer = $state.composerBuilder(
+  Expression<bool> pinEntityRefs(
+      Expression<bool> Function($$PinEntityTableFilterComposer f) f) {
+    final $$PinEntityTableFilterComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.userId,
-        referencedTable: $state.db.pinEntity,
+        referencedTable: $db.pinEntity,
         getReferencedColumn: (t) => t.creator,
-        builder: (joinBuilder, parentComposers) =>
-            $$PinEntityTableFilterComposer(ComposerState(
-                $state.db, $state.db.pinEntity, joinBuilder, parentComposers)));
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PinEntityTableFilterComposer(
+              $db: $db,
+              $table: $db.pinEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return f(composer);
   }
 }
 
 class $$UserEntityTableOrderingComposer
-    extends OrderingComposer<_$Database, $UserEntityTable> {
-  $$UserEntityTableOrderingComposer(super.$state);
-  ColumnOrderings<String> get userId => $state.composableBuilder(
-      column: $state.table.userId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $UserEntityTable> {
+  $$UserEntityTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get username => $state.composableBuilder(
-      column: $state.table.username,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get username => $composableBuilder(
+      column: $table.username, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<Uint8List> get profileImage => $state.composableBuilder(
-      column: $state.table.profileImage,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<Uint8List> get profileImage => $composableBuilder(
+      column: $table.profileImage,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<Uint8List> get profileImageSmall => $state.composableBuilder(
-      column: $state.table.profileImageSmall,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<Uint8List> get profileImageSmall => $composableBuilder(
+      column: $table.profileImageSmall,
+      builder: (column) => ColumnOrderings(column));
+}
+
+class $$UserEntityTableAnnotationComposer
+    extends Composer<_$Database, $UserEntityTable> {
+  $$UserEntityTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get username =>
+      $composableBuilder(column: $table.username, builder: (column) => column);
+
+  GeneratedColumn<Uint8List> get profileImage => $composableBuilder(
+      column: $table.profileImage, builder: (column) => column);
+
+  GeneratedColumn<Uint8List> get profileImageSmall => $composableBuilder(
+      column: $table.profileImageSmall, builder: (column) => column);
+
+  Expression<T> groupEntityRefs<T extends Object>(
+      Expression<T> Function($$GroupEntityTableAnnotationComposer a) f) {
+    final $$GroupEntityTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.groupEntity,
+        getReferencedColumn: (t) => t.groupAdmin,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GroupEntityTableAnnotationComposer(
+              $db: $db,
+              $table: $db.groupEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<T> pinEntityRefs<T extends Object>(
+      Expression<T> Function($$PinEntityTableAnnotationComposer a) f) {
+    final $$PinEntityTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.pinEntity,
+        getReferencedColumn: (t) => t.creator,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PinEntityTableAnnotationComposer(
+              $db: $db,
+              $table: $db.pinEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$UserEntityTableTableManager extends RootTableManager<
@@ -2019,6 +2098,7 @@ class $$UserEntityTableTableManager extends RootTableManager<
     UserEntityData,
     $$UserEntityTableFilterComposer,
     $$UserEntityTableOrderingComposer,
+    $$UserEntityTableAnnotationComposer,
     $$UserEntityTableCreateCompanionBuilder,
     $$UserEntityTableUpdateCompanionBuilder,
     (UserEntityData, $$UserEntityTableReferences),
@@ -2028,10 +2108,12 @@ class $$UserEntityTableTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $$UserEntityTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$UserEntityTableOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $$UserEntityTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserEntityTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UserEntityTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> userId = const Value.absent(),
             Value<String> username = const Value.absent(),
@@ -2114,6 +2196,7 @@ typedef $$UserEntityTableProcessedTableManager = ProcessedTableManager<
     UserEntityData,
     $$UserEntityTableFilterComposer,
     $$UserEntityTableOrderingComposer,
+    $$UserEntityTableAnnotationComposer,
     $$UserEntityTableCreateCompanionBuilder,
     $$UserEntityTableUpdateCompanionBuilder,
     (UserEntityData, $$UserEntityTableReferences),
@@ -2185,147 +2268,225 @@ final class $$GroupEntityTableReferences
 }
 
 class $$GroupEntityTableFilterComposer
-    extends FilterComposer<_$Database, $GroupEntityTable> {
-  $$GroupEntityTableFilterComposer(super.$state);
-  ColumnFilters<String> get groupId => $state.composableBuilder(
-      column: $state.table.groupId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $GroupEntityTable> {
+  $$GroupEntityTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get groupId => $composableBuilder(
+      column: $table.groupId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get visibility => $state.composableBuilder(
-      column: $state.table.visibility,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get visibility => $composableBuilder(
+      column: $table.visibility, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get inviteUrl => $state.composableBuilder(
-      column: $state.table.inviteUrl,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get inviteUrl => $composableBuilder(
+      column: $table.inviteUrl, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get description => $state.composableBuilder(
-      column: $state.table.description,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<Uint8List> get profileImage => $state.composableBuilder(
-      column: $state.table.profileImage,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<Uint8List> get profileImage => $composableBuilder(
+      column: $table.profileImage, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<Uint8List> get pinImage => $state.composableBuilder(
-      column: $state.table.pinImage,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<Uint8List> get pinImage => $composableBuilder(
+      column: $table.pinImage, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<bool> get isActivated => $state.composableBuilder(
-      column: $state.table.isActivated,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<bool> get isActivated => $composableBuilder(
+      column: $table.isActivated, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get lastUpdated => $state.composableBuilder(
-      column: $state.table.lastUpdated,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<DateTime> get lastUpdated => $composableBuilder(
+      column: $table.lastUpdated, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get link => $state.composableBuilder(
-      column: $state.table.link,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get link => $composableBuilder(
+      column: $table.link, builder: (column) => ColumnFilters(column));
 
   $$UserEntityTableFilterComposer get groupAdmin {
-    final $$UserEntityTableFilterComposer composer = $state.composerBuilder(
+    final $$UserEntityTableFilterComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.groupAdmin,
-        referencedTable: $state.db.userEntity,
+        referencedTable: $db.userEntity,
         getReferencedColumn: (t) => t.userId,
-        builder: (joinBuilder, parentComposers) =>
-            $$UserEntityTableFilterComposer(ComposerState($state.db,
-                $state.db.userEntity, joinBuilder, parentComposers)));
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserEntityTableFilterComposer(
+              $db: $db,
+              $table: $db.userEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return composer;
   }
 
-  ComposableFilter pinEntityRefs(
-      ComposableFilter Function($$PinEntityTableFilterComposer f) f) {
-    final $$PinEntityTableFilterComposer composer = $state.composerBuilder(
+  Expression<bool> pinEntityRefs(
+      Expression<bool> Function($$PinEntityTableFilterComposer f) f) {
+    final $$PinEntityTableFilterComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.groupId,
-        referencedTable: $state.db.pinEntity,
+        referencedTable: $db.pinEntity,
         getReferencedColumn: (t) => t.group,
-        builder: (joinBuilder, parentComposers) =>
-            $$PinEntityTableFilterComposer(ComposerState(
-                $state.db, $state.db.pinEntity, joinBuilder, parentComposers)));
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PinEntityTableFilterComposer(
+              $db: $db,
+              $table: $db.pinEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return f(composer);
   }
 }
 
 class $$GroupEntityTableOrderingComposer
-    extends OrderingComposer<_$Database, $GroupEntityTable> {
-  $$GroupEntityTableOrderingComposer(super.$state);
-  ColumnOrderings<String> get groupId => $state.composableBuilder(
-      column: $state.table.groupId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $GroupEntityTable> {
+  $$GroupEntityTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get groupId => $composableBuilder(
+      column: $table.groupId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get visibility => $state.composableBuilder(
-      column: $state.table.visibility,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get visibility => $composableBuilder(
+      column: $table.visibility, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get inviteUrl => $state.composableBuilder(
-      column: $state.table.inviteUrl,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get inviteUrl => $composableBuilder(
+      column: $table.inviteUrl, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get description => $state.composableBuilder(
-      column: $state.table.description,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<Uint8List> get profileImage => $state.composableBuilder(
-      column: $state.table.profileImage,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<Uint8List> get profileImage => $composableBuilder(
+      column: $table.profileImage,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<Uint8List> get pinImage => $state.composableBuilder(
-      column: $state.table.pinImage,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<Uint8List> get pinImage => $composableBuilder(
+      column: $table.pinImage, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<bool> get isActivated => $state.composableBuilder(
-      column: $state.table.isActivated,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<bool> get isActivated => $composableBuilder(
+      column: $table.isActivated, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get lastUpdated => $state.composableBuilder(
-      column: $state.table.lastUpdated,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<DateTime> get lastUpdated => $composableBuilder(
+      column: $table.lastUpdated, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get link => $state.composableBuilder(
-      column: $state.table.link,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get link => $composableBuilder(
+      column: $table.link, builder: (column) => ColumnOrderings(column));
 
   $$UserEntityTableOrderingComposer get groupAdmin {
-    final $$UserEntityTableOrderingComposer composer = $state.composerBuilder(
+    final $$UserEntityTableOrderingComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.groupAdmin,
-        referencedTable: $state.db.userEntity,
+        referencedTable: $db.userEntity,
         getReferencedColumn: (t) => t.userId,
-        builder: (joinBuilder, parentComposers) =>
-            $$UserEntityTableOrderingComposer(ComposerState($state.db,
-                $state.db.userEntity, joinBuilder, parentComposers)));
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserEntityTableOrderingComposer(
+              $db: $db,
+              $table: $db.userEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return composer;
+  }
+}
+
+class $$GroupEntityTableAnnotationComposer
+    extends Composer<_$Database, $GroupEntityTable> {
+  $$GroupEntityTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get groupId =>
+      $composableBuilder(column: $table.groupId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get visibility => $composableBuilder(
+      column: $table.visibility, builder: (column) => column);
+
+  GeneratedColumn<String> get inviteUrl =>
+      $composableBuilder(column: $table.inviteUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => column);
+
+  GeneratedColumn<Uint8List> get profileImage => $composableBuilder(
+      column: $table.profileImage, builder: (column) => column);
+
+  GeneratedColumn<Uint8List> get pinImage =>
+      $composableBuilder(column: $table.pinImage, builder: (column) => column);
+
+  GeneratedColumn<bool> get isActivated => $composableBuilder(
+      column: $table.isActivated, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastUpdated => $composableBuilder(
+      column: $table.lastUpdated, builder: (column) => column);
+
+  GeneratedColumn<String> get link =>
+      $composableBuilder(column: $table.link, builder: (column) => column);
+
+  $$UserEntityTableAnnotationComposer get groupAdmin {
+    final $$UserEntityTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.groupAdmin,
+        referencedTable: $db.userEntity,
+        getReferencedColumn: (t) => t.userId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserEntityTableAnnotationComposer(
+              $db: $db,
+              $table: $db.userEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  Expression<T> pinEntityRefs<T extends Object>(
+      Expression<T> Function($$PinEntityTableAnnotationComposer a) f) {
+    final $$PinEntityTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.groupId,
+        referencedTable: $db.pinEntity,
+        getReferencedColumn: (t) => t.group,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PinEntityTableAnnotationComposer(
+              $db: $db,
+              $table: $db.pinEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
   }
 }
 
@@ -2335,6 +2496,7 @@ class $$GroupEntityTableTableManager extends RootTableManager<
     GroupEntityData,
     $$GroupEntityTableFilterComposer,
     $$GroupEntityTableOrderingComposer,
+    $$GroupEntityTableAnnotationComposer,
     $$GroupEntityTableCreateCompanionBuilder,
     $$GroupEntityTableUpdateCompanionBuilder,
     (GroupEntityData, $$GroupEntityTableReferences),
@@ -2344,10 +2506,12 @@ class $$GroupEntityTableTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $$GroupEntityTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$GroupEntityTableOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $$GroupEntityTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GroupEntityTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GroupEntityTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> groupId = const Value.absent(),
             Value<String> name = const Value.absent(),
@@ -2425,6 +2589,7 @@ class $$GroupEntityTableTableManager extends RootTableManager<
                       dynamic,
                       dynamic,
                       dynamic,
+                      dynamic,
                       dynamic>>(state) {
                 if (groupAdmin) {
                   state = state.withJoin(
@@ -2467,6 +2632,7 @@ typedef $$GroupEntityTableProcessedTableManager = ProcessedTableManager<
     GroupEntityData,
     $$GroupEntityTableFilterComposer,
     $$GroupEntityTableOrderingComposer,
+    $$GroupEntityTableAnnotationComposer,
     $$GroupEntityTableCreateCompanionBuilder,
     $$GroupEntityTableUpdateCompanionBuilder,
     (GroupEntityData, $$GroupEntityTableReferences),
@@ -2529,117 +2695,206 @@ final class $$PinEntityTableReferences
 }
 
 class $$PinEntityTableFilterComposer
-    extends FilterComposer<_$Database, $PinEntityTable> {
-  $$PinEntityTableFilterComposer(super.$state);
-  ColumnFilters<String> get pinId => $state.composableBuilder(
-      column: $state.table.pinId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $PinEntityTable> {
+  $$PinEntityTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get pinId => $composableBuilder(
+      column: $table.pinId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<double> get latitude => $state.composableBuilder(
-      column: $state.table.latitude,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<double> get latitude => $composableBuilder(
+      column: $table.latitude, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<double> get longitude => $state.composableBuilder(
-      column: $state.table.longitude,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<double> get longitude => $composableBuilder(
+      column: $table.longitude, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get creationDate => $state.composableBuilder(
-      column: $state.table.creationDate,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<DateTime> get creationDate => $composableBuilder(
+      column: $table.creationDate, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<bool> get isHidden => $state.composableBuilder(
-      column: $state.table.isHidden,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<bool> get isHidden => $composableBuilder(
+      column: $table.isHidden, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get lastSynced => $state.composableBuilder(
-      column: $state.table.lastSynced,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<DateTime> get lastSynced => $composableBuilder(
+      column: $table.lastSynced, builder: (column) => ColumnFilters(column));
 
   $$UserEntityTableFilterComposer get creator {
-    final $$UserEntityTableFilterComposer composer = $state.composerBuilder(
+    final $$UserEntityTableFilterComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.creator,
-        referencedTable: $state.db.userEntity,
+        referencedTable: $db.userEntity,
         getReferencedColumn: (t) => t.userId,
-        builder: (joinBuilder, parentComposers) =>
-            $$UserEntityTableFilterComposer(ComposerState($state.db,
-                $state.db.userEntity, joinBuilder, parentComposers)));
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserEntityTableFilterComposer(
+              $db: $db,
+              $table: $db.userEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return composer;
   }
 
   $$GroupEntityTableFilterComposer get group {
-    final $$GroupEntityTableFilterComposer composer = $state.composerBuilder(
+    final $$GroupEntityTableFilterComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.group,
-        referencedTable: $state.db.groupEntity,
+        referencedTable: $db.groupEntity,
         getReferencedColumn: (t) => t.groupId,
-        builder: (joinBuilder, parentComposers) =>
-            $$GroupEntityTableFilterComposer(ComposerState($state.db,
-                $state.db.groupEntity, joinBuilder, parentComposers)));
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GroupEntityTableFilterComposer(
+              $db: $db,
+              $table: $db.groupEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return composer;
   }
 }
 
 class $$PinEntityTableOrderingComposer
-    extends OrderingComposer<_$Database, $PinEntityTable> {
-  $$PinEntityTableOrderingComposer(super.$state);
-  ColumnOrderings<String> get pinId => $state.composableBuilder(
-      column: $state.table.pinId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $PinEntityTable> {
+  $$PinEntityTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get pinId => $composableBuilder(
+      column: $table.pinId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<double> get latitude => $state.composableBuilder(
-      column: $state.table.latitude,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<double> get latitude => $composableBuilder(
+      column: $table.latitude, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<double> get longitude => $state.composableBuilder(
-      column: $state.table.longitude,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<double> get longitude => $composableBuilder(
+      column: $table.longitude, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get creationDate => $state.composableBuilder(
-      column: $state.table.creationDate,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<DateTime> get creationDate => $composableBuilder(
+      column: $table.creationDate,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<bool> get isHidden => $state.composableBuilder(
-      column: $state.table.isHidden,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<bool> get isHidden => $composableBuilder(
+      column: $table.isHidden, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get lastSynced => $state.composableBuilder(
-      column: $state.table.lastSynced,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<DateTime> get lastSynced => $composableBuilder(
+      column: $table.lastSynced, builder: (column) => ColumnOrderings(column));
 
   $$UserEntityTableOrderingComposer get creator {
-    final $$UserEntityTableOrderingComposer composer = $state.composerBuilder(
+    final $$UserEntityTableOrderingComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.creator,
-        referencedTable: $state.db.userEntity,
+        referencedTable: $db.userEntity,
         getReferencedColumn: (t) => t.userId,
-        builder: (joinBuilder, parentComposers) =>
-            $$UserEntityTableOrderingComposer(ComposerState($state.db,
-                $state.db.userEntity, joinBuilder, parentComposers)));
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserEntityTableOrderingComposer(
+              $db: $db,
+              $table: $db.userEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return composer;
   }
 
   $$GroupEntityTableOrderingComposer get group {
-    final $$GroupEntityTableOrderingComposer composer = $state.composerBuilder(
+    final $$GroupEntityTableOrderingComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.group,
-        referencedTable: $state.db.groupEntity,
+        referencedTable: $db.groupEntity,
         getReferencedColumn: (t) => t.groupId,
-        builder: (joinBuilder, parentComposers) =>
-            $$GroupEntityTableOrderingComposer(ComposerState($state.db,
-                $state.db.groupEntity, joinBuilder, parentComposers)));
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GroupEntityTableOrderingComposer(
+              $db: $db,
+              $table: $db.groupEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$PinEntityTableAnnotationComposer
+    extends Composer<_$Database, $PinEntityTable> {
+  $$PinEntityTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get pinId =>
+      $composableBuilder(column: $table.pinId, builder: (column) => column);
+
+  GeneratedColumn<double> get latitude =>
+      $composableBuilder(column: $table.latitude, builder: (column) => column);
+
+  GeneratedColumn<double> get longitude =>
+      $composableBuilder(column: $table.longitude, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get creationDate => $composableBuilder(
+      column: $table.creationDate, builder: (column) => column);
+
+  GeneratedColumn<bool> get isHidden =>
+      $composableBuilder(column: $table.isHidden, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastSynced => $composableBuilder(
+      column: $table.lastSynced, builder: (column) => column);
+
+  $$UserEntityTableAnnotationComposer get creator {
+    final $$UserEntityTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.creator,
+        referencedTable: $db.userEntity,
+        getReferencedColumn: (t) => t.userId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserEntityTableAnnotationComposer(
+              $db: $db,
+              $table: $db.userEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$GroupEntityTableAnnotationComposer get group {
+    final $$GroupEntityTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.group,
+        referencedTable: $db.groupEntity,
+        getReferencedColumn: (t) => t.groupId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GroupEntityTableAnnotationComposer(
+              $db: $db,
+              $table: $db.groupEntity,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
     return composer;
   }
 }
@@ -2650,6 +2905,7 @@ class $$PinEntityTableTableManager extends RootTableManager<
     PinEntityData,
     $$PinEntityTableFilterComposer,
     $$PinEntityTableOrderingComposer,
+    $$PinEntityTableAnnotationComposer,
     $$PinEntityTableCreateCompanionBuilder,
     $$PinEntityTableUpdateCompanionBuilder,
     (PinEntityData, $$PinEntityTableReferences),
@@ -2659,10 +2915,12 @@ class $$PinEntityTableTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $$PinEntityTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$PinEntityTableOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $$PinEntityTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PinEntityTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PinEntityTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> pinId = const Value.absent(),
             Value<double> latitude = const Value.absent(),
@@ -2728,6 +2986,7 @@ class $$PinEntityTableTableManager extends RootTableManager<
                       dynamic,
                       dynamic,
                       dynamic,
+                      dynamic,
                       dynamic>>(state) {
                 if (creator) {
                   state = state.withJoin(
@@ -2765,6 +3024,7 @@ typedef $$PinEntityTableProcessedTableManager = ProcessedTableManager<
     PinEntityData,
     $$PinEntityTableFilterComposer,
     $$PinEntityTableOrderingComposer,
+    $$PinEntityTableAnnotationComposer,
     $$PinEntityTableCreateCompanionBuilder,
     $$PinEntityTableUpdateCompanionBuilder,
     (PinEntityData, $$PinEntityTableReferences),
@@ -2786,41 +3046,60 @@ typedef $$MemberEntityTableUpdateCompanionBuilder = MemberEntityCompanion
 });
 
 class $$MemberEntityTableFilterComposer
-    extends FilterComposer<_$Database, $MemberEntityTable> {
-  $$MemberEntityTableFilterComposer(super.$state);
-  ColumnFilters<String> get groupId => $state.composableBuilder(
-      column: $state.table.groupId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $MemberEntityTable> {
+  $$MemberEntityTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get groupId => $composableBuilder(
+      column: $table.groupId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get userId => $state.composableBuilder(
-      column: $state.table.userId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get ranking => $state.composableBuilder(
-      column: $state.table.ranking,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get ranking => $composableBuilder(
+      column: $table.ranking, builder: (column) => ColumnFilters(column));
 }
 
 class $$MemberEntityTableOrderingComposer
-    extends OrderingComposer<_$Database, $MemberEntityTable> {
-  $$MemberEntityTableOrderingComposer(super.$state);
-  ColumnOrderings<String> get groupId => $state.composableBuilder(
-      column: $state.table.groupId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $MemberEntityTable> {
+  $$MemberEntityTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get groupId => $composableBuilder(
+      column: $table.groupId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get userId => $state.composableBuilder(
-      column: $state.table.userId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get ranking => $state.composableBuilder(
-      column: $state.table.ranking,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get ranking => $composableBuilder(
+      column: $table.ranking, builder: (column) => ColumnOrderings(column));
+}
+
+class $$MemberEntityTableAnnotationComposer
+    extends Composer<_$Database, $MemberEntityTable> {
+  $$MemberEntityTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get groupId =>
+      $composableBuilder(column: $table.groupId, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<int> get ranking =>
+      $composableBuilder(column: $table.ranking, builder: (column) => column);
 }
 
 class $$MemberEntityTableTableManager extends RootTableManager<
@@ -2829,6 +3108,7 @@ class $$MemberEntityTableTableManager extends RootTableManager<
     MemberEntityData,
     $$MemberEntityTableFilterComposer,
     $$MemberEntityTableOrderingComposer,
+    $$MemberEntityTableAnnotationComposer,
     $$MemberEntityTableCreateCompanionBuilder,
     $$MemberEntityTableUpdateCompanionBuilder,
     (
@@ -2841,10 +3121,12 @@ class $$MemberEntityTableTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $$MemberEntityTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$MemberEntityTableOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $$MemberEntityTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MemberEntityTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MemberEntityTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<String> groupId = const Value.absent(),
             Value<String> userId = const Value.absent(),
@@ -2882,6 +3164,7 @@ typedef $$MemberEntityTableProcessedTableManager = ProcessedTableManager<
     MemberEntityData,
     $$MemberEntityTableFilterComposer,
     $$MemberEntityTableOrderingComposer,
+    $$MemberEntityTableAnnotationComposer,
     $$MemberEntityTableCreateCompanionBuilder,
     $$MemberEntityTableUpdateCompanionBuilder,
     (
@@ -2910,61 +3193,79 @@ typedef $$PinImageEntityTableUpdateCompanionBuilder = PinImageEntityCompanion
 });
 
 class $$PinImageEntityTableFilterComposer
-    extends FilterComposer<_$Database, $PinImageEntityTable> {
-  $$PinImageEntityTableFilterComposer(super.$state);
-  ColumnFilters<Uint8List> get image => $state.composableBuilder(
-      column: $state.table.image,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $PinImageEntityTable> {
+  $$PinImageEntityTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<Uint8List> get image => $composableBuilder(
+      column: $table.image, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get pinId => $state.composableBuilder(
-      column: $state.table.pinId,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get pinId => $composableBuilder(
+      column: $table.pinId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get hitCount => $state.composableBuilder(
-      column: $state.table.hitCount,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<int> get hitCount => $composableBuilder(
+      column: $table.hitCount, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get lastAccessed => $state.composableBuilder(
-      column: $state.table.lastAccessed,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<DateTime> get lastAccessed => $composableBuilder(
+      column: $table.lastAccessed, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<bool> get keepAlive => $state.composableBuilder(
-      column: $state.table.keepAlive,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<bool> get keepAlive => $composableBuilder(
+      column: $table.keepAlive, builder: (column) => ColumnFilters(column));
 }
 
 class $$PinImageEntityTableOrderingComposer
-    extends OrderingComposer<_$Database, $PinImageEntityTable> {
-  $$PinImageEntityTableOrderingComposer(super.$state);
-  ColumnOrderings<Uint8List> get image => $state.composableBuilder(
-      column: $state.table.image,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $PinImageEntityTable> {
+  $$PinImageEntityTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<Uint8List> get image => $composableBuilder(
+      column: $table.image, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get pinId => $state.composableBuilder(
-      column: $state.table.pinId,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get pinId => $composableBuilder(
+      column: $table.pinId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get hitCount => $state.composableBuilder(
-      column: $state.table.hitCount,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<int> get hitCount => $composableBuilder(
+      column: $table.hitCount, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get lastAccessed => $state.composableBuilder(
-      column: $state.table.lastAccessed,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<DateTime> get lastAccessed => $composableBuilder(
+      column: $table.lastAccessed,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<bool> get keepAlive => $state.composableBuilder(
-      column: $state.table.keepAlive,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<bool> get keepAlive => $composableBuilder(
+      column: $table.keepAlive, builder: (column) => ColumnOrderings(column));
+}
+
+class $$PinImageEntityTableAnnotationComposer
+    extends Composer<_$Database, $PinImageEntityTable> {
+  $$PinImageEntityTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<Uint8List> get image =>
+      $composableBuilder(column: $table.image, builder: (column) => column);
+
+  GeneratedColumn<String> get pinId =>
+      $composableBuilder(column: $table.pinId, builder: (column) => column);
+
+  GeneratedColumn<int> get hitCount =>
+      $composableBuilder(column: $table.hitCount, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastAccessed => $composableBuilder(
+      column: $table.lastAccessed, builder: (column) => column);
+
+  GeneratedColumn<bool> get keepAlive =>
+      $composableBuilder(column: $table.keepAlive, builder: (column) => column);
 }
 
 class $$PinImageEntityTableTableManager extends RootTableManager<
@@ -2973,6 +3274,7 @@ class $$PinImageEntityTableTableManager extends RootTableManager<
     PinImageEntityData,
     $$PinImageEntityTableFilterComposer,
     $$PinImageEntityTableOrderingComposer,
+    $$PinImageEntityTableAnnotationComposer,
     $$PinImageEntityTableCreateCompanionBuilder,
     $$PinImageEntityTableUpdateCompanionBuilder,
     (
@@ -2985,10 +3287,12 @@ class $$PinImageEntityTableTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $$PinImageEntityTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$PinImageEntityTableOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $$PinImageEntityTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PinImageEntityTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PinImageEntityTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<Uint8List> image = const Value.absent(),
             Value<String> pinId = const Value.absent(),
@@ -3034,6 +3338,7 @@ typedef $$PinImageEntityTableProcessedTableManager = ProcessedTableManager<
     PinImageEntityData,
     $$PinImageEntityTableFilterComposer,
     $$PinImageEntityTableOrderingComposer,
+    $$PinImageEntityTableAnnotationComposer,
     $$PinImageEntityTableCreateCompanionBuilder,
     $$PinImageEntityTableUpdateCompanionBuilder,
     (
@@ -3075,6 +3380,8 @@ final databaseProvider = Provider<Database>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef DatabaseRef = ProviderRef<Database>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

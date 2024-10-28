@@ -24,9 +24,7 @@
                         android:id="@+id/ad_app_icon"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:padding="2pt"
-                        app:civ_border_color="#FFFFFFFF"
-                        app:civ_border_width="0dp" />
+                        android:padding="2pt" />
 
                 <LinearLayout
                         android:layout_width="wrap_content"

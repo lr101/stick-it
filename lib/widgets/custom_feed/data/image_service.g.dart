@@ -142,6 +142,8 @@ class GetPinImageInfoProvider extends AutoDisposeFutureProvider<PinImageInfo?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetPinImageInfoRef on AutoDisposeFutureProviderRef<PinImageInfo?> {
   /// The parameter `pinId` of this provider.
   String get pinId;
@@ -156,4 +158,4 @@ class _GetPinImageInfoProviderElement
   String get pinId => (origin as GetPinImageInfoProvider).pinId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

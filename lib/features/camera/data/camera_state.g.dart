@@ -21,6 +21,8 @@ final cameraSelectedGroupProvider = Provider<LocalGroupDto>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef CameraSelectedGroupRef = ProviderRef<LocalGroupDto>;
 String _$cameraIndexHash() => r'2acc52147deba74fc547bc9a8c2de36017647cf9';
 
@@ -188,6 +190,8 @@ class CameraValuesProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CameraValuesRef on AutoDisposeAsyncNotifierProviderRef<CameraState> {
   /// The parameter `controller` of this provider.
   CameraController get controller;
@@ -236,4 +240,4 @@ final cameraCapturingProvider =
 
 typedef _$CameraCapturing = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

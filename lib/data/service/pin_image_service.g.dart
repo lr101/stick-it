@@ -142,6 +142,8 @@ class GetPinImageProvider extends AutoDisposeFutureProvider<Uint8List?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetPinImageRef on AutoDisposeFutureProviderRef<Uint8List?> {
   /// The parameter `pinId` of this provider.
   String get pinId;
@@ -272,6 +274,8 @@ class GetPinImageAndFetchProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetPinImageAndFetchRef on AutoDisposeFutureProviderRef<Uint8List?> {
   /// The parameter `pinId` of this provider.
   String get pinId;
@@ -303,4 +307,4 @@ final pinImageServiceProvider =
 
 typedef _$PinImageService = AsyncNotifier<Map<String, Uint8List>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

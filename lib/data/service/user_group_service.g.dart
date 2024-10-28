@@ -141,6 +141,8 @@ class GroupByIdProvider extends AutoDisposeFutureProvider<LocalGroupDto?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GroupByIdRef on AutoDisposeFutureProviderRef<LocalGroupDto?> {
   /// The parameter `groupId` of this provider.
   String get groupId;
@@ -269,6 +271,8 @@ class GroupImageByIdProvider extends AutoDisposeFutureProvider<Uint8List> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GroupImageByIdRef on AutoDisposeFutureProviderRef<Uint8List> {
   /// The parameter `groupId` of this provider.
   String get groupId;
@@ -397,6 +401,8 @@ class GroupPinImageByIdProvider extends AutoDisposeFutureProvider<Uint8List> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GroupPinImageByIdRef on AutoDisposeFutureProviderRef<Uint8List> {
   /// The parameter `groupId` of this provider.
   String get groupId;
@@ -424,6 +430,8 @@ final activeGroupsProvider = FutureProvider<List<LocalGroupDto>>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ActiveGroupsRef = FutureProviderRef<List<LocalGroupDto>>;
 String _$userGroupServiceHash() => r'bc74cb590f1e7dc9e57efaf1c3a8daba26fe8812';
 
@@ -442,4 +450,4 @@ final userGroupServiceProvider =
 
 typedef _$UserGroupService = AsyncNotifier<List<LocalGroupDto>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

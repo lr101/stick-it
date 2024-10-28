@@ -19,6 +19,8 @@ final pinApiProvider = Provider<PinsApi>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef PinApiRef = ProviderRef<PinsApi>;
 String _$groupApiHash() => r'00189fd1d0550c1fa8be5a8c86165fa45a891ec0';
 
@@ -33,6 +35,8 @@ final groupApiProvider = Provider<GroupsApi>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GroupApiRef = ProviderRef<GroupsApi>;
 String _$userApiHash() => r'f0f9b9fc33340e683bfb574065c15e469bb1496c';
 
@@ -47,6 +51,8 @@ final userApiProvider = Provider<UsersApi>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef UserApiRef = ProviderRef<UsersApi>;
 String _$authApiHash() => r'af9a3b8e714b3b19714aec735a5b005ff4de3d59';
 
@@ -61,6 +67,8 @@ final authApiProvider = Provider<AuthApi>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef AuthApiRef = ProviderRef<AuthApi>;
 String _$memberApiHash() => r'68ef62a59b1721762900ec32103a44ee1f3c1780';
 
@@ -75,6 +83,8 @@ final memberApiProvider = Provider<MembersApi>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef MemberApiRef = ProviderRef<MembersApi>;
 String _$reportApiHash() => r'689be88433efecbf7c28f05bdfb99e8672394dba';
 
@@ -89,6 +99,8 @@ final reportApiProvider = Provider<ReportApi>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ReportApiRef = ProviderRef<ReportApi>;
 String _$openApiConfigHash() => r'5b820e6fade1598e23c18c59f0bc4b896de6f29d';
 
@@ -107,4 +119,4 @@ final openApiConfigProvider =
 
 typedef _$OpenApiConfig = Notifier<ApiClient>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
