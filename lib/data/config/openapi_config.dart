@@ -3,6 +3,7 @@ import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:http/retry.dart';
+import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,7 +14,13 @@ class OpenApiConfig extends _$OpenApiConfig {
 
   final HttpBearerAuth _authentication = HttpBearerAuth();
 
-  String accessToken = "NOTANACCESSTOKEN";
+  String _accessToken = "NOTANACCESSTOKEN";
+
+  Client _client = Client();
+
+  Mutex _m = Mutex();
+
+  DateTime? _lastCheck = null;
 
   @override
   ApiClient build() {
@@ -23,7 +30,7 @@ class OpenApiConfig extends _$OpenApiConfig {
 
     // set retry client
     apiClient.client = RetryClient(
-      Client(),
+      _client,
       delay: (_) => const Duration(),
       retries: 1,
       when: (response) {
@@ -32,7 +39,7 @@ class OpenApiConfig extends _$OpenApiConfig {
       onRetry: (req, res, retryCount) async {
         if (retryCount == 0 && (res?.statusCode == 401 || res?.statusCode == 403)) {
           await provideAccessToken(); // get new access token after 401
-          req.headers['Authorization'] = 'Bearer $accessToken';
+          req.headers['Authorization'] = 'Bearer $_accessToken';
         }
       },
     );
@@ -40,36 +47,39 @@ class OpenApiConfig extends _$OpenApiConfig {
   }
 
   Future<void> provideAccessToken() async {
-    final data = ref.watch(globalDataServiceProvider);
-    if (data.refreshToken != null) {
-      final authApi = AuthApi(ApiClient(basePath: data.host));
-      final response = await authApi.refreshToken(body: data.refreshToken);
-      if (response != null) {
-        accessToken = response.accessToken;
-      } else {
-        // TODO (logout or retry later)
-      }
-    }
+    _m.protect(() async {
+      final data = ref.watch(globalDataServiceProvider);
+      if (data.refreshToken != null && _lastCheck == null || _lastCheck!.difference(DateTime.now()) > Duration(minutes: 1)) {
+        final authApi = AuthApi(ApiClient(basePath: data.host));
+        final response = await authApi.refreshToken(body: data.refreshToken);
+        if (response != null) {
+          _accessToken = response.accessToken;
+          _lastCheck = DateTime.now();
+        } else {
+          // TODO (logout or retry later)
+        }
+      }}
+    );
   }
 
-  String getToken() => accessToken;
+  String getToken() => _accessToken;
 }
 
 @Riverpod(keepAlive: true)
-PinsApi pinApi(PinApiRef ref) => PinsApi(ref.watch(openApiConfigProvider));
+PinsApi pinApi(Ref ref) => PinsApi(ref.watch(openApiConfigProvider));
 
 @Riverpod(keepAlive: true)
-GroupsApi groupApi(GroupApiRef ref) => GroupsApi(ref.watch(openApiConfigProvider));
+GroupsApi groupApi(Ref ref) => GroupsApi(ref.watch(openApiConfigProvider));
 
 @Riverpod(keepAlive: true)
-UsersApi userApi(UserApiRef ref) => UsersApi(ref.watch(openApiConfigProvider));
+UsersApi userApi(Ref ref) => UsersApi(ref.watch(openApiConfigProvider));
 
 @Riverpod(keepAlive: true)
-AuthApi authApi(AuthApiRef ref) => AuthApi(ref.watch(openApiConfigProvider));
+AuthApi authApi(Ref ref) => AuthApi(ref.watch(openApiConfigProvider));
 
 @Riverpod(keepAlive: true)
-MembersApi memberApi(MemberApiRef ref) => MembersApi(ref.watch(openApiConfigProvider));
+MembersApi memberApi(Ref ref) => MembersApi(ref.watch(openApiConfigProvider));
 
 @Riverpod(keepAlive: true)
-ReportApi reportApi(ReportApiRef ref) => ReportApi(ref.watch(openApiConfigProvider));
+ReportApi reportApi(Ref ref) => ReportApi(ref.watch(openApiConfigProvider));
 

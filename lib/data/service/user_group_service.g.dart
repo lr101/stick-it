@@ -433,7 +433,7 @@ final activeGroupsProvider = FutureProvider<List<LocalGroupDto>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ActiveGroupsRef = FutureProviderRef<List<LocalGroupDto>>;
-String _$userGroupServiceHash() => r'bc74cb590f1e7dc9e57efaf1c3a8daba26fe8812';
+String _$userGroupServiceHash() => r'f39ff7889d0faf68bbe1bd4c4613c503cd9ea3e5';
 
 /// See also [UserGroupService].
 @ProviderFor(UserGroupService)

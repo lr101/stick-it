@@ -38,6 +38,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.watch(widget.pinProvider).whenData((data) {
         _images = data;
+        isInitial = false;
         _pagingController.refresh();
       });
     });
@@ -46,6 +47,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
   @override
   Widget build(BuildContext context) {
     ref.listen(widget.pinProvider, (previous, next) {
+      if (next.hasValue && next.value!.isEmpty) isInitial = false;
       _images = next.value ?? [];
       _pagingController.notifyPageRequestListeners(0);
     });

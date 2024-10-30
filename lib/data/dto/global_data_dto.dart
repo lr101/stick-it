@@ -6,7 +6,7 @@ class GlobalDataDto {
   String? userId;
   String? username;
   String? refreshToken;
-  String host = "http://192.168.0.41:8081"; //10.0.2.2
+  String host = "http://10.217.236.10:8081"; //10.0.2.2
   List<CameraDescription> cameras = [];
 
   GlobalDataDto({

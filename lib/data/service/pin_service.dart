@@ -6,6 +6,7 @@ import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
+import 'package:buff_lisa/data/service/offline_init_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/reachability_service.dart';
 import 'package:buff_lisa/data/service/syncing_service_schedular.dart';
@@ -39,9 +40,8 @@ class PinService extends _$PinService {
     if (isUserGroup) {
       final localPins = await _pinRepository.getPinsOfGroup(groupId);
       localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
-      this.state = AsyncData(localPins);
-      await sync();
-      return state.value ?? [];
+      ref.read(offlineInitServiceProvider.notifier).setLoadedPinGroup(groupId);
+      return localPins;
     } else {
       final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
       final localPins = remotePins!.items.map((e) => LocalPinDto.fromDtoWithImage(e)).toList();

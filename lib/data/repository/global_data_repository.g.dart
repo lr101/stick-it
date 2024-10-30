@@ -7,7 +7,7 @@ part of 'global_data_repository.dart';
 // **************************************************************************
 
 String _$globalDataRepositoryHash() =>
-    r'0042f7e446fdc9ad4945e4df7075c3cb192b8e8f';
+    r'52018c90eb3d4d4a9b0367097eaa4aa0695da2f0';
 
 /// See also [globalDataRepository].
 @ProviderFor(globalDataRepository)
@@ -24,7 +24,7 @@ final globalDataRepositoryProvider = Provider<GlobalDataRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GlobalDataRepositoryRef = ProviderRef<GlobalDataRepository>;
-String _$globalDataOnceHash() => r'ace7760bbefa02c62cf20fd40207d59095139944';
+String _$globalDataOnceHash() => r'94d894761acf917a095162ba6b7f044cef140fee';
 
 /// See also [globalDataOnce].
 @ProviderFor(globalDataOnce)
@@ -42,7 +42,7 @@ final globalDataOnceProvider = Provider<GlobalDataDto>.internal(
 // ignore: unused_element
 typedef GlobalDataOnceRef = ProviderRef<GlobalDataDto>;
 String _$flutterSecureStorageHash() =>
-    r'75f9b15c7c347b7e26f39cec5547e7c606d23b44';
+    r'4edd8f2d834ddb7fab25cf2e14cd3331d1d94d31';
 
 /// See also [flutterSecureStorage].
 @ProviderFor(flutterSecureStorage)

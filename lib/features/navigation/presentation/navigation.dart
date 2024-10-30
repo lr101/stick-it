@@ -9,13 +9,16 @@ import 'package:buff_lisa/features/map_home/presentation/map_home.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../data/service/pin_service.dart';
 import '../../../widgets/group_selector/presentation/group_selector.dart';
 import '../../group_user_list/presentation/user_groups.dart';
 
 class Navigation extends ConsumerStatefulWidget {
-  const Navigation({super.key});
+  const Navigation({super.key, required this.initCenter});
+
+  final LatLng? initCenter;
 
   @override
   ConsumerState<Navigation> createState() => _NavigationState();
@@ -24,18 +27,19 @@ class Navigation extends ConsumerStatefulWidget {
 class _NavigationState extends ConsumerState<Navigation> {
   late PageController _pageController;
 
-  final List<Widget> widgetOptions = <Widget>[
-    const UserGroups(),
-    const Camera(),
-    const MapHome(),
-    const ActiveGroupFeed(),
-    const UserProfile()
-  ];
+  late final List<Widget> widgetOptions;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: ref.read(navigationStateProvider));
+    widgetOptions = <Widget>[
+      const UserGroups(),
+      const Camera(),
+      MapHome(centerInit: widget.initCenter,),
+      const ActiveGroupFeed(),
+      const UserProfile()
+    ];
   }
 
   @override
@@ -98,7 +102,7 @@ class _NavigationState extends ConsumerState<Navigation> {
           ],
           currentIndex: state,
           onTap: onItemTapped,
-          selectedItemColor: Theme.of(context).primaryColor,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
           unselectedItemColor: Theme.of(context).hintColor,
         ));
   }

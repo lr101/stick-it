@@ -70,10 +70,10 @@ class GlobalDataRepository {
 }
 
 @Riverpod(keepAlive: true)
-GlobalDataRepository globalDataRepository(GlobalDataRepositoryRef ref) => GlobalDataRepository(ref: ref);
+GlobalDataRepository globalDataRepository(Ref ref) => GlobalDataRepository(ref: ref);
 
 @Riverpod(keepAlive: true)
-GlobalDataDto globalDataOnce(GlobalDataOnceRef ref) => throw UnimplementedError();
+GlobalDataDto globalDataOnce(Ref ref) => throw UnimplementedError();
 
 @Riverpod(keepAlive: true)
-FlutterSecureStorage flutterSecureStorage(FlutterSecureStorageRef ref) => throw UnimplementedError();
+FlutterSecureStorage flutterSecureStorage(Ref ref) => throw UnimplementedError();

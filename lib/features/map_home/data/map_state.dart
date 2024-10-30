@@ -7,6 +7,7 @@ import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_s
 import 'package:buff_lisa/widgets/custom_marker/presentation/custom_marker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -23,7 +24,7 @@ class MapState with _$MapState {
   }) = _MapState;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class MapStates extends _$MapStates {
 
   @override
@@ -36,7 +37,7 @@ class MapStates extends _$MapStates {
 }
 
 @Riverpod(keepAlive: true)
-Stream<Position> currentLocation(CurrentLocationRef ref) async* {
+Stream<Position> currentLocation(Ref ref) async* {
   final permission  = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     await Geolocator.requestPermission();
