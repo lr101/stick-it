@@ -60,6 +60,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthApi* | [**createUser**](doc//AuthApi.md#createuser) | **POST** /api/v2/public/signup | User registration
 *AuthApi* | [**generateDeleteCode**](doc//AuthApi.md#generatedeletecode) | **GET** /api/v2/public/delete-code/{username} | Generate delete code
+*AuthApi* | [**getStatus**](doc//AuthApi.md#getstatus) | **GET** /api/v2/status | Gets the status of the server and user specific information
 *AuthApi* | [**refreshToken**](doc//AuthApi.md#refreshtoken) | **POST** /api/v2/public/refresh | Request a new access token
 *AuthApi* | [**requestPasswordRecovery**](doc//AuthApi.md#requestpasswordrecovery) | **GET** /api/v2/public/recover | Request password recovery
 *AuthApi* | [**userLogin**](doc//AuthApi.md#userlogin) | **POST** /api/v2/public/login | User login
@@ -74,6 +75,7 @@ Class | Method | HTTP request | Description
 *GroupsApi* | [**getGroupProfileImage**](doc//GroupsApi.md#getgroupprofileimage) | **GET** /api/v2/groups/{groupId}/profile_image | Get profile of group
 *GroupsApi* | [**getGroupsByIds**](doc//GroupsApi.md#getgroupsbyids) | **GET** /api/v2/groups | Get groups by IDs
 *GroupsApi* | [**updateGroup**](doc//GroupsApi.md#updategroup) | **PUT** /api/v2/groups/{groupId} | Update a group by ID
+*LikesApi* | [**createOrUpdateLike**](doc//LikesApi.md#createorupdatelike) | **POST** /api/v2/likes/{pinId} | Create or update a like
 *MembersApi* | [**deleteMemberFromGroup**](doc//MembersApi.md#deletememberfromgroup) | **DELETE** /api/v2/groups/{groupId}/members | leave group or delete group when the user is the last group member
 *MembersApi* | [**getGroupMembers**](doc//MembersApi.md#getgroupmembers) | **GET** /api/v2/groups/{groupId}/members | Get members of a group by ID
 *MembersApi* | [**getGroupRanking**](doc//MembersApi.md#getgroupranking) | **GET** /api/v2/groups/{groupId}/members/ranking | Get ranking of a group by ID
@@ -95,6 +97,7 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [CreateGroupDto](doc//CreateGroupDto.md)
+ - [CreateLikeDto](doc//CreateLikeDto.md)
  - [GroupDto](doc//GroupDto.md)
  - [GroupsSyncDto](doc//GroupsSyncDto.md)
  - [InfoDto](doc//InfoDto.md)
@@ -104,6 +107,7 @@ Class | Method | HTTP request | Description
  - [PinsSyncDto](doc//PinsSyncDto.md)
  - [RankingResponseDto](doc//RankingResponseDto.md)
  - [ReportDto](doc//ReportDto.md)
+ - [Status](doc//Status.md)
  - [TokenResponseDto](doc//TokenResponseDto.md)
  - [UpdateGroupDto](doc//UpdateGroupDto.md)
  - [UserInfoDto](doc//UserInfoDto.md)

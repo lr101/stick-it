@@ -19,6 +19,7 @@ class CreateGroupDto {
     required this.visibility,
     required this.groupAdmin,
     this.link,
+    this.userId,
   });
 
   String description;
@@ -40,6 +41,14 @@ class CreateGroupDto {
   ///
   String? link;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? userId;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is CreateGroupDto &&
     other.description == description &&
@@ -47,7 +56,8 @@ class CreateGroupDto {
     other.profileImage == profileImage &&
     other.visibility == visibility &&
     other.groupAdmin == groupAdmin &&
-    other.link == link;
+    other.link == link &&
+    other.userId == userId;
 
   @override
   int get hashCode =>
@@ -57,10 +67,11 @@ class CreateGroupDto {
     (profileImage.hashCode) +
     (visibility.hashCode) +
     (groupAdmin.hashCode) +
-    (link == null ? 0 : link!.hashCode);
+    (link == null ? 0 : link!.hashCode) +
+    (userId == null ? 0 : userId!.hashCode);
 
   @override
-  String toString() => 'CreateGroupDto[description=$description, name=$name, profileImage=$profileImage, visibility=$visibility, groupAdmin=$groupAdmin, link=$link]';
+  String toString() => 'CreateGroupDto[description=$description, name=$name, profileImage=$profileImage, visibility=$visibility, groupAdmin=$groupAdmin, link=$link, userId=$userId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -73,6 +84,11 @@ class CreateGroupDto {
       json[r'link'] = this.link;
     } else {
       json[r'link'] = null;
+    }
+    if (this.userId != null) {
+      json[r'userId'] = this.userId;
+    } else {
+      json[r'userId'] = null;
     }
     return json;
   }
@@ -102,6 +118,7 @@ class CreateGroupDto {
         visibility: mapValueOfType<int>(json, r'visibility')!,
         groupAdmin: mapValueOfType<String>(json, r'groupAdmin')!,
         link: mapValueOfType<String>(json, r'link'),
+        userId: mapValueOfType<String>(json, r'userId'),
       );
     }
     return null;

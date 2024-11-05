@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**createUser**](AuthApi.md#createuser) | **POST** /api/v2/public/signup | User registration
 [**generateDeleteCode**](AuthApi.md#generatedeletecode) | **GET** /api/v2/public/delete-code/{username} | Generate delete code
+[**getStatus**](AuthApi.md#getstatus) | **GET** /api/v2/status | Gets the status of the server and user specific information
 [**refreshToken**](AuthApi.md#refreshtoken) | **POST** /api/v2/public/refresh | Request a new access token
 [**requestPasswordRecovery**](AuthApi.md#requestpasswordrecovery) | **GET** /api/v2/public/recover | Request password recovery
 [**userLogin**](AuthApi.md#userlogin) | **POST** /api/v2/public/login | User login
@@ -94,6 +95,43 @@ No authorization required
 
  - **Content-Type**: Not defined
  - **Accept**: text/plain; charset=utf-8
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getStatus**
+> Status getStatus()
+
+Gets the status of the server and user specific information
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = AuthApi();
+
+try {
+    final result = api_instance.getStatus();
+    print(result);
+} catch (e) {
+    print('Exception when calling AuthApi->getStatus: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**Status**](Status.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

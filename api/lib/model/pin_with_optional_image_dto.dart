@@ -20,6 +20,8 @@ class PinWithOptionalImageDto {
     required this.creationUser,
     this.image,
     required this.groupId,
+    required this.likeCount,
+    required this.likedByUser,
   });
 
   String id;
@@ -46,6 +48,10 @@ class PinWithOptionalImageDto {
 
   String groupId;
 
+  int likeCount;
+
+  bool likedByUser;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is PinWithOptionalImageDto &&
     other.id == id &&
@@ -54,7 +60,9 @@ class PinWithOptionalImageDto {
     other.longitude == longitude &&
     other.creationUser == creationUser &&
     other.image == image &&
-    other.groupId == groupId;
+    other.groupId == groupId &&
+    other.likeCount == likeCount &&
+    other.likedByUser == likedByUser;
 
   @override
   int get hashCode =>
@@ -65,10 +73,12 @@ class PinWithOptionalImageDto {
     (longitude.hashCode) +
     (creationUser.hashCode) +
     (image == null ? 0 : image!.hashCode) +
-    (groupId.hashCode);
+    (groupId.hashCode) +
+    (likeCount.hashCode) +
+    (likedByUser.hashCode);
 
   @override
-  String toString() => 'PinWithOptionalImageDto[id=$id, creationDate=$creationDate, latitude=$latitude, longitude=$longitude, creationUser=$creationUser, image=$image, groupId=$groupId]';
+  String toString() => 'PinWithOptionalImageDto[id=$id, creationDate=$creationDate, latitude=$latitude, longitude=$longitude, creationUser=$creationUser, image=$image, groupId=$groupId, likeCount=$likeCount, likedByUser=$likedByUser]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -83,6 +93,8 @@ class PinWithOptionalImageDto {
       json[r'image'] = null;
     }
       json[r'groupId'] = this.groupId;
+      json[r'likeCount'] = this.likeCount;
+      json[r'likedByUser'] = this.likedByUser;
     return json;
   }
 
@@ -112,6 +124,8 @@ class PinWithOptionalImageDto {
         creationUser: mapValueOfType<String>(json, r'creationUser')!,
         image: mapValueOfType<String>(json, r'image'),
         groupId: mapValueOfType<String>(json, r'groupId')!,
+        likeCount: mapValueOfType<int>(json, r'likeCount')!,
+        likedByUser: mapValueOfType<bool>(json, r'likedByUser')!,
       );
     }
     return null;
@@ -165,6 +179,8 @@ class PinWithOptionalImageDto {
     'longitude',
     'creationUser',
     'groupId',
+    'likeCount',
+    'likedByUser',
   };
 }
 

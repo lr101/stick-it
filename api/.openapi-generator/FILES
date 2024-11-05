@@ -4,10 +4,12 @@ README.md
 analysis_options.yaml
 doc/AuthApi.md
 doc/CreateGroupDto.md
+doc/CreateLikeDto.md
 doc/GroupDto.md
 doc/GroupsApi.md
 doc/GroupsSyncDto.md
 doc/InfoDto.md
+doc/LikesApi.md
 doc/MemberResponseDto.md
 doc/MembersApi.md
 doc/PinRequestDto.md
@@ -18,6 +20,7 @@ doc/PublicApi.md
 doc/RankingResponseDto.md
 doc/ReportApi.md
 doc/ReportDto.md
+doc/Status.md
 doc/TokenResponseDto.md
 doc/UpdateGroupDto.md
 doc/UserInfoDto.md
@@ -30,6 +33,7 @@ git_push.sh
 lib/api.dart
 lib/api/auth_api.dart
 lib/api/groups_api.dart
+lib/api/likes_api.dart
 lib/api/members_api.dart
 lib/api/pins_api.dart
 lib/api/public_api.dart
@@ -44,6 +48,7 @@ lib/auth/http_basic_auth.dart
 lib/auth/http_bearer_auth.dart
 lib/auth/oauth.dart
 lib/model/create_group_dto.dart
+lib/model/create_like_dto.dart
 lib/model/group_dto.dart
 lib/model/groups_sync_dto.dart
 lib/model/info_dto.dart
@@ -53,6 +58,7 @@ lib/model/pin_with_optional_image_dto.dart
 lib/model/pins_sync_dto.dart
 lib/model/ranking_response_dto.dart
 lib/model/report_dto.dart
+lib/model/status.dart
 lib/model/token_response_dto.dart
 lib/model/update_group_dto.dart
 lib/model/user_info_dto.dart
@@ -61,3 +67,6 @@ lib/model/user_request_dto.dart
 lib/model/user_update_dto.dart
 lib/model/user_update_response_dto.dart
 pubspec.yaml
+test/create_like_dto_test.dart
+test/likes_api_test.dart
+test/status_test.dart

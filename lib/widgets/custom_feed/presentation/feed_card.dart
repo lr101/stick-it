@@ -7,6 +7,7 @@ import 'package:buff_lisa/widgets/custom_map_setup//presentation/custom_tile_lay
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +15,7 @@ import '../../../data/dto/pin_dto.dart';
 import '../../../data/service/pin_image_service.dart';
 import '../../../widgets/pin_header/presentation/pin_header.dart';
 import '../data/image_service.dart';
+import 'like_item.dart';
 
 class FeedCard extends ConsumerStatefulWidget {
   FeedCard({super.key, required this.item, this.distance});
@@ -109,8 +111,33 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                   SizedBox(
                     height: 3,
                   ),
-                  Center(
-                    child: Text("Comment:"),
+                  Row(
+                    children: [
+                      LikeItem(
+                        iconLiked: CupertinoIcons.heart_fill,
+                        iconNotLiked: CupertinoIcons.heart,
+                        liked: false,
+                        count: 123,
+                      ),
+                      LikeItem(
+                        iconNotLiked: Icons.location_on_outlined,
+                        iconLiked: Icons.location_on,
+                        liked: false,
+                        count: 45,
+                      ),
+                      LikeItem(
+                        iconLiked: CupertinoIcons.camera_fill,
+                        iconNotLiked: CupertinoIcons.camera,
+                        liked: false,
+                        count: 78,
+                      ),
+                      LikeItem(
+                        iconNotLiked: Icons.palette,
+                        iconLiked: Icons.palette,
+                        liked: false,
+                        count: 34,
+                      ),
+                    ],
                   )
                 ]),
               );

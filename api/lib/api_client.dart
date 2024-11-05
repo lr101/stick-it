@@ -184,6 +184,8 @@ class ApiClient {
           return value is DateTime ? value : DateTime.tryParse(value);
         case 'CreateGroupDto':
           return CreateGroupDto.fromJson(value);
+        case 'CreateLikeDto':
+          return CreateLikeDto.fromJson(value);
         case 'GroupDto':
           return GroupDto.fromJson(value);
         case 'GroupsSyncDto':
@@ -202,6 +204,8 @@ class ApiClient {
           return RankingResponseDto.fromJson(value);
         case 'ReportDto':
           return ReportDto.fromJson(value);
+        case 'Status':
+          return Status.fromJson(value);
         case 'TokenResponseDto':
           return TokenResponseDto.fromJson(value);
         case 'UpdateGroupDto':

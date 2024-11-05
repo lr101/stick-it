@@ -30,6 +30,7 @@ part 'auth/http_bearer_auth.dart';
 
 part 'api/auth_api.dart';
 part 'api/groups_api.dart';
+part 'api/likes_api.dart';
 part 'api/members_api.dart';
 part 'api/pins_api.dart';
 part 'api/public_api.dart';
@@ -37,6 +38,7 @@ part 'api/report_api.dart';
 part 'api/users_api.dart';
 
 part 'model/create_group_dto.dart';
+part 'model/create_like_dto.dart';
 part 'model/group_dto.dart';
 part 'model/groups_sync_dto.dart';
 part 'model/info_dto.dart';
@@ -46,6 +48,7 @@ part 'model/pin_with_optional_image_dto.dart';
 part 'model/pins_sync_dto.dart';
 part 'model/ranking_response_dto.dart';
 part 'model/report_dto.dart';
+part 'model/status.dart';
 part 'model/token_response_dto.dart';
 part 'model/update_group_dto.dart';
 part 'model/user_info_dto.dart';
