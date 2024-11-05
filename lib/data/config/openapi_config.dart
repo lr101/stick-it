@@ -16,8 +16,6 @@ class OpenApiConfig extends _$OpenApiConfig {
 
   String _accessToken = "NOTANACCESSTOKEN";
 
-  Client _client = Client();
-
   Mutex _m = Mutex();
 
   DateTime? _lastCheck = null;
@@ -30,7 +28,7 @@ class OpenApiConfig extends _$OpenApiConfig {
 
     // set retry client
     apiClient.client = RetryClient(
-      _client,
+      Client(),
       delay: (_) => const Duration(),
       retries: 1,
       when: (response) {
@@ -47,9 +45,9 @@ class OpenApiConfig extends _$OpenApiConfig {
   }
 
   Future<void> provideAccessToken() async {
-    _m.protect(() async {
+    await _m.protect(() async {
       final data = ref.watch(globalDataServiceProvider);
-      if (data.refreshToken != null && _lastCheck == null || _lastCheck!.difference(DateTime.now()) > Duration(minutes: 1)) {
+      if (data.refreshToken != null && _lastCheck == null || DateTime.now().difference(_lastCheck!) > Duration(minutes: 1)) {
         final authApi = AuthApi(ApiClient(basePath: data.host));
         final response = await authApi.refreshToken(body: data.refreshToken);
         if (response != null) {

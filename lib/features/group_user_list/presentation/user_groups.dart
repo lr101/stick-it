@@ -40,7 +40,7 @@ class _UserGroupsState extends ConsumerState<UserGroups> {
   
   @override
   Widget build(BuildContext context) {
-    ref.listen(userGroupServiceProvider, (_, next) => updatePage(next.value ?? []));
+    ref.listen(orderedGroupsProvider, (_, next) => updatePage(next.value ?? []));
     return CustomScaffold<LocalGroupDto>(
         title: Text("User groups"),
         actions: [const PopUpMenuCreateGroup()],

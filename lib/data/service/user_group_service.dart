@@ -11,10 +11,14 @@ import 'package:buff_lisa/data/service/offline_init_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/reachability_service.dart';
 import 'package:buff_lisa/data/service/syncing_service_schedular.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_group_service.g.dart';
@@ -70,10 +74,12 @@ class UserGroupService extends _$UserGroupService {
       for (var group in localGroups) group.groupId: group
     };
     localGroupsMap.removeWhere((k, v) => remoteGroups.deleted.contains(k));
+    ref.read(groupOrderServiceProvider.notifier).remove(remoteGroups.deleted);
     for (var group in remoteGroups.items) {
       final g = LocalGroupDto.fromDto(group);
       localGroupsMap[group.id] = g;
       _groupRepository.createGroup(g);
+      ref.read(groupOrderServiceProvider.notifier).add(group.id);
     }
     remoteGroups.deleted
         .forEach((a) async => await _groupRepository.deleteGroup(a));
@@ -89,6 +95,7 @@ class UserGroupService extends _$UserGroupService {
     if (groupIndex == -1) {
       group = updateGroup;
       currentState.add(group);
+      ref.read(groupOrderServiceProvider.notifier).add(group.groupId);
     } else {
       group = currentState[groupIndex];
       group.isActivated = updateGroup.isActivated;
@@ -190,12 +197,14 @@ class UserGroupService extends _$UserGroupService {
     }
   }
 
-  Future<String?> leaveGroup(String groupId) async {
+  Future<String?> leaveGroup(String groupId, VoidCallback afterSuccess) async {
     try {
       await _membersApi.deleteMemberFromGroup(groupId, _data.userId!);
+      afterSuccess();
       await _groupRepository.leaveGroup(groupId);
       state.value!.removeWhere((e) => e.groupId == groupId);
       ref.notifyListeners();
+      ref.read(groupOrderServiceProvider.notifier).remove([groupId]);
       return null;
     } on ApiException catch (e) {
       return e.message;
@@ -204,30 +213,42 @@ class UserGroupService extends _$UserGroupService {
 }
 
 @riverpod
-Future<LocalGroupDto?> groupById(GroupByIdRef ref, String groupId) async {
-  if(await ref.watch(userGroupServiceProvider.selectAsync((e) => e.any((t) => t.groupId == groupId)))) {
-    return ref.watch(userGroupServiceProvider.selectAsync((groups) =>
-        groups.firstWhere((t) => t.groupId == groupId)));
+Future<LocalGroupDto?> groupById(Ref ref, String groupId) async {
+  final groups = await ref.watch(userGroupServiceProvider.future);
+  if (groups.any((t) => t.groupId == groupId)) {
+    return groups.firstWhereOrNull((t) => t.groupId == groupId);
   } else {
     return ref.watch(noUserGroupServiceProvider(groupId)).value;
   }
 }
 
 @riverpod
-Future<Uint8List> groupImageById(GroupImageByIdRef ref, String groupId) async {
+Future<Uint8List> groupImageById(Ref ref, String groupId) async {
   return ref.watch(
       groupByIdProvider(groupId).select((group) => group.value!.profileImage));
 }
 
 @riverpod
-Future<Uint8List> groupPinImageById(
-    GroupPinImageByIdRef ref, String groupId) async {
+Future<Uint8List> groupPinImageById(Ref ref, String groupId) async {
   return ref.watch(
       groupByIdProvider(groupId).select((group) => group.value!.pinImage));
 }
 
 @Riverpod(keepAlive: true)
-Future<List<LocalGroupDto>> activeGroups(ActiveGroupsRef ref) async {
+Future<List<LocalGroupDto>> activeGroups(Ref ref) async {
   return ref.watch(userGroupServiceProvider.selectAsync(
       (groups) => groups.where((t) => t.isActivated == true).toList()));
+}
+
+@riverpod
+Future<List<LocalGroupDto>> orderedGroups(Ref ref) async {
+  final groupOrder = ref.watch(groupOrderServiceProvider);
+  final groups = ref.watch(userGroupServiceProvider).value ?? [];
+  groups.sort((a,b) => groupOrder.indexOf(a.groupId) - groupOrder.indexOf(b.groupId));
+  return groups;
+}
+
+@riverpod
+Future<bool> groupByIdActivated(Ref ref, String groupId) async {
+  return ref.watch(groupByIdProvider(groupId).selectAsync((group) => group!.isActivated));
 }

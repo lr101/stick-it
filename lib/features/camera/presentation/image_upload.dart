@@ -22,7 +22,7 @@ class ImageUpload extends ConsumerStatefulWidget {
   const ImageUpload({super.key, required this.image, required this.position});
 
   final Uint8List image;
-  final Position position;
+  final LatLng position;
 
   @override
   ConsumerState<ImageUpload> createState() => _ImageUploadState();
@@ -142,7 +142,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
                 message: "Successfully synced to server");
           }
         }));
-    Navigator.pop(context);
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Future<void> handleEdit() async {

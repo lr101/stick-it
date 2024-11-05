@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mutex/mutex.dart';
 
 import '../../../widgets/round_image/presentation/round_image.dart';
 import '../service/group_create_service.dart';
@@ -11,7 +12,7 @@ import '../service/group_create_service.dart';
 class GroupEditTemplate extends ConsumerStatefulWidget {
   const GroupEditTemplate({super.key, required this.onSubmit, this.rowItems, this.groupDto});
 
-  final Function(String name, String description, String? link,
+  final Future<void> Function(String name, String description, String? link,
       Uint8List profileImage, int visibility) onSubmit;
 
   final List<Widget>? rowItems;
@@ -25,7 +26,8 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
   final _textEditControllerName = TextEditingController();
   final _textEditControllerDescription = TextEditingController();
   final _textEditControllerLink = TextEditingController();
-
+  final _isLoading = ValueNotifier(false);
+  final _mutex = Mutex();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -168,16 +170,24 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("Group privacy (default public):",
+                          const Text("Group privacy:",
                               style: TextStyle(
                                   fontSize: 14,
                                   fontStyle: FontStyle.italic,
                                   fontWeight: FontWeight.normal)),
-                          Switch(
-                            value: group.visibility == 0,
-                            onChanged: (value) =>
-                                groupNotifier.updateVisibility(value ? 0 : 1),
-                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Icon(Icons.lock_open),
+                              SizedBox(width: 5,),
+                              Switch(
+                                value: group.visibility == 1,
+                                onChanged: (value) => groupNotifier.updateVisibility(!value ? 0 : 1),
+                              ),
+                              SizedBox(width: 5,),
+                              Icon(Icons.lock)
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -190,17 +200,27 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
               )),
         ),
         floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.check),
-            onPressed: () {
+            child: ValueListenableBuilder<bool>(
+              valueListenable: _isLoading,
+              builder: (_,value,__) => value ? CircularProgressIndicator() : const Icon(Icons.check)),
+            onPressed: () async {
               final group = ref.watch(groupCreateServiceProvider);
-              if (_formKey.currentState!.validate() &&
-                  group.profileImage != null) {
-                widget.onSubmit(
-                    _textEditControllerName.text,
-                    _textEditControllerDescription.text,
-                    _textEditControllerLink.text.isEmpty ? null : _textEditControllerLink.text,
-                    group.profileImage!,
-                    group.visibility);
+              if (_formKey.currentState!.validate() && group.profileImage != null && !_mutex.isLocked) {
+                try {
+                  _mutex.acquire();
+                  _isLoading.value = true;
+                  await widget.onSubmit(
+                      _textEditControllerName.text,
+                      _textEditControllerDescription.text,
+                      _textEditControllerLink.text.isEmpty
+                          ? null
+                          : _textEditControllerLink.text,
+                      group.profileImage!,
+                      group.visibility);
+                } finally {
+                  _isLoading.value = false;
+                  _mutex.release();
+                }
               }
             }));
   }

@@ -39,6 +39,12 @@ class _AuthState extends ConsumerState<Auth> {
           recoverPasswordSuccess: "Check your emails for a recovery link"
       ),
       additionalSignupFields: const [UserFormField(keyName: "email", userType: LoginUserType.email)],
+      theme: LoginTheme(
+        primaryColor: Theme.of(context).colorScheme.primary,
+        titleStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+      ),
       children: [ Positioned.fill(
           child: Align(
               alignment: Alignment.bottomCenter,
@@ -62,9 +68,11 @@ class _AuthState extends ConsumerState<Auth> {
         ),
             children: <TextSpan>[
               TextSpan(
-                  text: 'Terms of Service', style: const TextStyle(
+                  text: 'Terms of Service', style: TextStyle(
                 fontSize: 16,
                 decoration: TextDecoration.underline,
+                decorationColor: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
@@ -77,9 +85,11 @@ class _AuthState extends ConsumerState<Auth> {
               ),
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Privacy Policy', style: const TextStyle(
-                        fontSize: 18,
-                        decoration: TextDecoration.underline
+                        text: 'Privacy Policy', style: TextStyle(
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
+                      decorationColor: Theme.of(context).colorScheme.onSurface,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {

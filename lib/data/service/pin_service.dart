@@ -14,6 +14,7 @@ import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
@@ -27,14 +28,13 @@ part 'pin_service.g.dart';
 @Riverpod(keepAlive: true)
 class PinService extends _$PinService {
   late PinRepository _pinRepository;
-  late PinsApi _pinsApi;
   Mutex _mutex = Mutex();
 
   @override
   Future<List<LocalPinDto>> build(String groupId) async {
     final isUserGroup = (await ref.watch(groupRepositoryProvider).getGroupById(groupId)) != null;
     _pinRepository = ref.watch(pinRepositoryProvider);
-    _pinsApi = ref.watch(pinApiProvider);
+    final pinsApi = ref.watch(pinApiProvider);
     final hiddenUsers = ref.watch(hiddenUserServiceProvider);
     final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
     if (isUserGroup) {
@@ -43,7 +43,7 @@ class PinService extends _$PinService {
       ref.read(offlineInitServiceProvider.notifier).setLoadedPinGroup(groupId);
       return localPins;
     } else {
-      final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
+      final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
       final localPins = remotePins!.items.map((e) => LocalPinDto.fromDtoWithImage(e)).toList();
       localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
       return localPins;
@@ -58,7 +58,8 @@ class PinService extends _$PinService {
       final key = GlobalDataRepository.lastSeenPinKey + groupId;
       final lastSeen = ref.read(lastSeenProvider(key));
       // sync updated and deleted pins from server
-      final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false, updatedAfter: lastSeen);
+      final pinsApi = ref.watch(pinApiProvider);
+      final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false, updatedAfter: lastSeen);
       final localPins = this.state.value ?? [];
       state = AsyncData(await _mergeGroups(localPins, remotePins!));
       ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
@@ -68,7 +69,7 @@ class PinService extends _$PinService {
       for (int i = 0 ; i < unsynced.length; i++) {
         final pin = unsynced[i];
         if (pin.lastSynced == null) {
-          final newPin = await _pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
+          final newPin = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
           state.value![i] = LocalPinDto.fromDtoWithImage(newPin!);
           _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin), pin.id, base64Decode(newPin.image!));
           ref.read(pinImageServiceProvider.notifier).addUint8ListImage(newPin.id, base64Decode(newPin.image!));
@@ -121,7 +122,8 @@ class PinService extends _$PinService {
       await ref.watch(pinImageServiceProvider.notifier).addOfflineImage(pin.id, image);
       updateSinglePin(pin);
       ref.watch(groupRepositoryProvider).addPoint(pin.creatorId, pin.groupId);
-      final result = await _pinsApi.createPin(pin.toPinRequestDto(base64Encode(image)));
+      final pinsApi = ref.watch(pinApiProvider);
+      final result = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(image)));
       if (result != null) {
         final newPin = LocalPinDto.fromDto(result);
         updateSinglePin(newPin, oldPinId: pin.id);
@@ -138,7 +140,8 @@ class PinService extends _$PinService {
 
   Future<String?> deletePinFromGroup(String pinId) async {
     try {
-      await _pinsApi.deletePin(pinId);
+      final pinsApi = ref.watch(pinApiProvider);
+      await pinsApi.deletePin(pinId);
       final currentState = state.value ?? [];
       currentState.removeWhere((pin) => pin.id == pinId);
       state = AsyncValue.data(currentState);
@@ -153,7 +156,7 @@ class PinService extends _$PinService {
 }
 
 @riverpod
-AsyncValue<List<LocalPinDto>> activatedPins(ActivatedPinsRef ref) {
+AsyncValue<List<LocalPinDto>> activatedPins(Ref ref) {
   final groups = ref.watch(activeGroupsProvider);
   if (groups.isLoading) return AsyncLoading();
   final pins = <LocalPinDto>[];
@@ -165,7 +168,7 @@ AsyncValue<List<LocalPinDto>> activatedPins(ActivatedPinsRef ref) {
 }
 
 @riverpod
-AsyncValue<List<LocalPinDto>> activatedPinsWithoutLoading(ActivatedPinsWithoutLoadingRef ref) {
+AsyncValue<List<LocalPinDto>> activatedPinsWithoutLoading(Ref ref) {
   final groups = ref.watch(activeGroupsProvider);
   final pins = <LocalPinDto>[];
   for (var group in groups.value ?? []) {
@@ -176,21 +179,21 @@ AsyncValue<List<LocalPinDto>> activatedPinsWithoutLoading(ActivatedPinsWithoutLo
 }
 
 @riverpod
-Future<List<LocalPinDto>> sortedActivatedPins(SortedActivatedPinsRef ref) async {
+Future<List<LocalPinDto>> sortedActivatedPins(Ref ref) async {
   final value = ref.watch(activatedPinsProvider).value ?? [];
   value.sort((a, b) => b.creationDate.compareTo(a.creationDate));
   return value;
 }
 
 @riverpod
-Future<List<LocalPinDto>> sortedGroupPins(SortedGroupPinsRef ref, String groupId) async {
+Future<List<LocalPinDto>> sortedGroupPins(Ref ref, String groupId) async {
   final pins = ref.watch(pinServiceProvider(groupId)).value ?? [];
   pins.sort((a, b) => b.creationDate.compareTo(a.creationDate));
   return pins;
 }
 
 @riverpod
-Future<List<LocalPinDto>> sortedUserPins(SortedUserPinsRef ref) async {
+Future<List<LocalPinDto>> sortedUserPins(Ref ref) async {
   final userId = ref.watch(globalDataServiceProvider).userId!;
   final groups = await ref.watch(userGroupServiceProvider.selectAsync((e) => e.map((e) => e.groupId)));
   final pins = <LocalPinDto>[];
@@ -203,7 +206,7 @@ Future<List<LocalPinDto>> sortedUserPins(SortedUserPinsRef ref) async {
 }
 
 @riverpod
-AsyncValue<List<MapEntry<LocalPinDto, double>>> pinsSortedByDistance(PinsSortedByDistanceRef ref) {
+AsyncValue<List<MapEntry<LocalPinDto, double>>> pinsSortedByDistance(Ref ref) {
   Distance d = Distance();
   final value = ref.watch(activatedPinsProvider);
   if (value.isLoading) return AsyncLoading();

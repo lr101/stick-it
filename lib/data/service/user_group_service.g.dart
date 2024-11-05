@@ -6,7 +6,7 @@ part of 'user_group_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupByIdHash() => r'4e274b4d3f8898fee63830162c0f54ecc82e7444';
+String _$groupByIdHash() => r'e8a4cfba2437d42244aedae1b2da9bb0cb4b0314';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -156,7 +156,7 @@ class _GroupByIdProviderElement
   String get groupId => (origin as GroupByIdProvider).groupId;
 }
 
-String _$groupImageByIdHash() => r'73db90edcc4101c3e4fdd570aebe82964244dcf7';
+String _$groupImageByIdHash() => r'f86ba4960d5dcbd0cc7cf285ebffdd608d24f1e0';
 
 /// See also [groupImageById].
 @ProviderFor(groupImageById)
@@ -286,7 +286,7 @@ class _GroupImageByIdProviderElement
   String get groupId => (origin as GroupImageByIdProvider).groupId;
 }
 
-String _$groupPinImageByIdHash() => r'14290fa8ed4eb10c9b9abd9d722de7fc1145911f';
+String _$groupPinImageByIdHash() => r'12c4dd896ad09d6069eafbd37bc90cb584a32077';
 
 /// See also [groupPinImageById].
 @ProviderFor(groupPinImageById)
@@ -417,7 +417,7 @@ class _GroupPinImageByIdProviderElement
   String get groupId => (origin as GroupPinImageByIdProvider).groupId;
 }
 
-String _$activeGroupsHash() => r'ea3e8fe0122dfeb75eece23ecb77743918277bce';
+String _$activeGroupsHash() => r'a77af0293d026ef6f7ce675f8e4ca370847dcbbf';
 
 /// See also [activeGroups].
 @ProviderFor(activeGroups)
@@ -433,7 +433,156 @@ final activeGroupsProvider = FutureProvider<List<LocalGroupDto>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ActiveGroupsRef = FutureProviderRef<List<LocalGroupDto>>;
-String _$userGroupServiceHash() => r'f39ff7889d0faf68bbe1bd4c4613c503cd9ea3e5';
+String _$orderedGroupsHash() => r'bd7a246e5153635ad9fc15610f713687e6e06a33';
+
+/// See also [orderedGroups].
+@ProviderFor(orderedGroups)
+final orderedGroupsProvider =
+    AutoDisposeFutureProvider<List<LocalGroupDto>>.internal(
+  orderedGroups,
+  name: r'orderedGroupsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$orderedGroupsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef OrderedGroupsRef = AutoDisposeFutureProviderRef<List<LocalGroupDto>>;
+String _$groupByIdActivatedHash() =>
+    r'3ec24fb3d7be5d6966f9eb8c4b89f6f3bdb3ff32';
+
+/// See also [groupByIdActivated].
+@ProviderFor(groupByIdActivated)
+const groupByIdActivatedProvider = GroupByIdActivatedFamily();
+
+/// See also [groupByIdActivated].
+class GroupByIdActivatedFamily extends Family<AsyncValue<bool>> {
+  /// See also [groupByIdActivated].
+  const GroupByIdActivatedFamily();
+
+  /// See also [groupByIdActivated].
+  GroupByIdActivatedProvider call(
+    String groupId,
+  ) {
+    return GroupByIdActivatedProvider(
+      groupId,
+    );
+  }
+
+  @override
+  GroupByIdActivatedProvider getProviderOverride(
+    covariant GroupByIdActivatedProvider provider,
+  ) {
+    return call(
+      provider.groupId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'groupByIdActivatedProvider';
+}
+
+/// See also [groupByIdActivated].
+class GroupByIdActivatedProvider extends AutoDisposeFutureProvider<bool> {
+  /// See also [groupByIdActivated].
+  GroupByIdActivatedProvider(
+    String groupId,
+  ) : this._internal(
+          (ref) => groupByIdActivated(
+            ref as GroupByIdActivatedRef,
+            groupId,
+          ),
+          from: groupByIdActivatedProvider,
+          name: r'groupByIdActivatedProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$groupByIdActivatedHash,
+          dependencies: GroupByIdActivatedFamily._dependencies,
+          allTransitiveDependencies:
+              GroupByIdActivatedFamily._allTransitiveDependencies,
+          groupId: groupId,
+        );
+
+  GroupByIdActivatedProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.groupId,
+  }) : super.internal();
+
+  final String groupId;
+
+  @override
+  Override overrideWith(
+    FutureOr<bool> Function(GroupByIdActivatedRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GroupByIdActivatedProvider._internal(
+        (ref) => create(ref as GroupByIdActivatedRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        groupId: groupId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<bool> createElement() {
+    return _GroupByIdActivatedProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GroupByIdActivatedProvider && other.groupId == groupId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, groupId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin GroupByIdActivatedRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `groupId` of this provider.
+  String get groupId;
+}
+
+class _GroupByIdActivatedProviderElement
+    extends AutoDisposeFutureProviderElement<bool> with GroupByIdActivatedRef {
+  _GroupByIdActivatedProviderElement(super.provider);
+
+  @override
+  String get groupId => (origin as GroupByIdActivatedProvider).groupId;
+}
+
+String _$userGroupServiceHash() => r'c677fdafc09e334ab17318c82a560bd20e6f6103';
 
 /// See also [UserGroupService].
 @ProviderFor(UserGroupService)

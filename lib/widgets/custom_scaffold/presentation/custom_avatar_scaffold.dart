@@ -16,6 +16,7 @@ class CustomAvatarScaffold extends ConsumerStatefulWidget {
       this.bottom,
       this.actions,
       this.floatingActionButton,
+      this.profileQuickViewBoxes,
       required this.body});
 
   final AsyncValue<Uint8List?> avatar;
@@ -23,6 +24,7 @@ class CustomAvatarScaffold extends ConsumerStatefulWidget {
   final List<SliverToBoxAdapter>? boxes;
   final Widget body;
   final PreferredSizeWidget? bottom;
+  final Widget? profileQuickViewBoxes;
   final List<Widget>? actions;
   final Widget? floatingActionButton;
 
@@ -57,12 +59,24 @@ class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
           SliverAppBar(
               pinned: true,
               actions: widget.actions,
-              expandedHeight: width,
+              expandedHeight: (width / 2) + kToolbarHeight + 20,
               centerTitle: false,
               title: Text(widget.title),
-              flexibleSpace: SafeArea(child: Padding(
-                padding: EdgeInsets.symmetric(vertical: kToolbarHeight, horizontal: 10),
-                child: RoundImage(imageCallback: widget.avatar, size: width - (widget.bottom == null ? 1 : 2) * kToolbarHeight,))),
+              flexibleSpace: FlexibleSpaceBar(
+                background: SafeArea(
+                    child: Padding(
+                        padding: EdgeInsets.all(10), child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          RoundImage(
+                            imageCallback: widget.avatar,
+                            size: (width/4) - 20,
+                          ),
+                          SizedBox(width: 10,),
+                          SizedBox(width: MediaQuery.of(context).size.width - width/2 - 30, height: (width/2) - 20, child: widget.profileQuickViewBoxes ?? SizedBox.shrink()),
+                ]))),
+              ),
               bottom: widget.bottom),
           ...?widget.boxes
         ],

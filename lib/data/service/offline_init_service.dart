@@ -8,7 +8,7 @@ part 'offline_init_service.g.dart';
 @Riverpod(keepAlive: true)
 class OfflineInitService extends _$OfflineInitService {
 
-  Set<String> loadedPinGroups = {};
+  Set<String> _loadedPinGroups = {};
 
   @override
   OfflineLoginDto build() {
@@ -17,12 +17,15 @@ class OfflineInitService extends _$OfflineInitService {
 
   void setNumberOfGroup(int numberOfGroup) {
     state = state.copyWith(numberOfGroups: numberOfGroup, loadedGroups: true);
+    if (numberOfGroup == 0) {
+      state = state.copyWith(loadedPins: true);
+    }
   }
 
   void setLoadedPinGroup(String uuid) {
-    loadedPinGroups.add(uuid);
-    state = state.copyWith(numberOfLoadedPinGroups: loadedPinGroups.length);
-    if (loadedPinGroups.length == state.numberOfGroups) {
+    _loadedPinGroups.add(uuid);
+    state = state.copyWith(numberOfLoadedPinGroups: _loadedPinGroups.length);
+    if (_loadedPinGroups.length == state.numberOfGroups) {
       state = state.copyWith(loadedPins: true);
     }
   }

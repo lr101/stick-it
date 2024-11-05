@@ -102,7 +102,7 @@ final reportApiProvider = Provider<ReportApi>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ReportApiRef = ProviderRef<ReportApi>;
-String _$openApiConfigHash() => r'3c6edbf522538f60fbf5eaa481d1f217d15255df';
+String _$openApiConfigHash() => r'46ae15774da44e0f50f6c33cd1e649d46bb8e7b6';
 
 /// See also [OpenApiConfig].
 @ProviderFor(OpenApiConfig)

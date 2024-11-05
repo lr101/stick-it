@@ -1,6 +1,7 @@
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data/dto/pin_dto.dart';
@@ -24,6 +25,6 @@ class OtherUserPinService extends _$OtherUserPinService {
 }
 
 @riverpod
-Future<List<LocalPinDto>> otherUserPin(OtherUserPinRef ref, String userId) async {
-  return ref.watch(otherUserPinServiceProvider(userId)).value ?? [];
+Future<List<LocalPinDto>> otherUserPin(Ref ref, String userId) async {
+  return await ref.watch(otherUserPinServiceProvider(userId).future);
 }

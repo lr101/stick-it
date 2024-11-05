@@ -15,16 +15,13 @@ import 'package:uuid/uuid.dart';
 import '../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 
 class GroupCreate extends ConsumerWidget {
-  GroupCreate({super.key});
+  const GroupCreate({super.key});
 
-  Mutex _mutex = Mutex();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GroupEditTemplate(
         onSubmit: (name, description, link, profileImage, visibility) async {
-      if (_mutex.isLocked) return;
-      _mutex.acquire();
       final createDto = api.CreateGroupDto(
           description: description,
           name: name,
@@ -35,7 +32,6 @@ class GroupCreate extends ConsumerWidget {
       final result = await ref
           .read(userGroupServiceProvider.notifier)
           .createGroup(createDto);
-      _mutex.release();
       if (result == null) {
         Navigator.of(context).pop();
       } else {

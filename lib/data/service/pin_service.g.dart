@@ -6,7 +6,7 @@ part of 'pin_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$activatedPinsHash() => r'f9a8f965832f71afe27a7552bcf8a25b4543e984';
+String _$activatedPinsHash() => r'608477fefb1d49e0e83bee1a906a7ba77f93552f';
 
 /// See also [activatedPins].
 @ProviderFor(activatedPins)
@@ -26,7 +26,7 @@ final activatedPinsProvider =
 typedef ActivatedPinsRef
     = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
 String _$activatedPinsWithoutLoadingHash() =>
-    r'd21f324acfb22d4cac0578ac017ae62cb4eb7117';
+    r'a5c1c8d7fdd31cac7c180c2fa402e63f26a0f9f1';
 
 /// See also [activatedPinsWithoutLoading].
 @ProviderFor(activatedPinsWithoutLoading)
@@ -46,7 +46,7 @@ final activatedPinsWithoutLoadingProvider =
 typedef ActivatedPinsWithoutLoadingRef
     = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
 String _$sortedActivatedPinsHash() =>
-    r'30f1791af810e64bac60225248a4cd2afc1522e5';
+    r'21b177ae50c64702d9791d100dc58370036bf1e6';
 
 /// See also [sortedActivatedPins].
 @ProviderFor(sortedActivatedPins)
@@ -65,7 +65,7 @@ final sortedActivatedPinsProvider =
 // ignore: unused_element
 typedef SortedActivatedPinsRef
     = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
-String _$sortedGroupPinsHash() => r'3cce5480e31b82639bb97162d197a333f9d0b75a';
+String _$sortedGroupPinsHash() => r'5da6f1627cc6ef0b1729da41531ebbbae2950387';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -218,7 +218,7 @@ class _SortedGroupPinsProviderElement
   String get groupId => (origin as SortedGroupPinsProvider).groupId;
 }
 
-String _$sortedUserPinsHash() => r'f749a7772a8913752c4df0c49c2090534251bc49';
+String _$sortedUserPinsHash() => r'd8d8d0f626f5086019d0fcddaf32e383b3d56652';
 
 /// See also [sortedUserPins].
 @ProviderFor(sortedUserPins)
@@ -237,7 +237,7 @@ final sortedUserPinsProvider =
 // ignore: unused_element
 typedef SortedUserPinsRef = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
 String _$pinsSortedByDistanceHash() =>
-    r'b9ebc315f3a794865db786198768e7459e856326';
+    r'd912d94aa138bd53d85e92bf06f7ad9357be6667';
 
 /// See also [pinsSortedByDistance].
 @ProviderFor(pinsSortedByDistance)
@@ -256,7 +256,7 @@ final pinsSortedByDistanceProvider = AutoDisposeProvider<
 // ignore: unused_element
 typedef PinsSortedByDistanceRef
     = AutoDisposeProviderRef<AsyncValue<List<MapEntry<LocalPinDto, double>>>>;
-String _$pinServiceHash() => r'21a44cdf8f42f8107d8fd4c7d048710d0cbe576c';
+String _$pinServiceHash() => r'6dd819f32dfaeee1f58323c7eec1b25a29b2d60f';
 
 abstract class _$PinService extends BuildlessAsyncNotifier<List<LocalPinDto>> {
   late final String groupId;

@@ -1,19 +1,25 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
-import 'package:buff_lisa/features/camera/presentation/imageUpload.dart';
+import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
+import 'package:buff_lisa/features/camera/presentation/select_location.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
+import 'package:native_exif/native_exif.dart';
 import 'package:snapping_page_scroll/snapping_page_scroll.dart';
 import 'package:super_tooltip/super_tooltip.dart';
-
+import 'package:exif/exif.dart';
 import '../../../data/service/global_data_service.dart';
 
 class Camera extends ConsumerStatefulWidget {
@@ -128,16 +134,11 @@ class _CameraState extends ConsumerState<Camera> {
                                       radius: 20,
                                       backgroundColor: Colors.grey.withOpacity(0.5),
                                       child: Center(
-                                          // child: SuperTooltip(
-                                          //   controller: state.tooltipController,
-                                          //   popupDirection: TooltipDirection.up,
-                                          //   content: const Text("New: Upload an image with existing location metadata from your gallery"),
-                                          //   child: GestureDetector(
-                                          //     onTap: state.upload,
-                                          //     onLongPress: () => state.tooltipController.showTooltip(),
-                                          //     child: Container(child: const Icon(Icons.upload)),
-                                          //   ),))
-                                  ))
+                                          child: GestureDetector(
+                                             onTap: uploadFileImage,
+                                             child: Container(child: const Icon(Icons.upload)),
+                                             ),)
+                                  )
                               )
                             ],
                           ),
@@ -189,6 +190,24 @@ class _CameraState extends ConsumerState<Camera> {
     }
   }
 
+  Future<void> uploadFileImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      try {
+        final exif = await Exif.fromPath(pickedFile.path);
+        final coord = await exif.getLatLong();
+        final bytes = await pickedFile.readAsBytes();
+
+        Routing.to(context, SelectLocation(image: bytes, center:  coord != null ? LatLng(coord.latitude, coord.longitude) : null,));
+      } catch (e) {
+        CustomErrorSnackBar.message(message: "Could not load image data");
+        debugPrint(e.toString());
+      }
+    }
+  }
+
   void handleCameraChange() {
     ref.read(cameraIndexProvider.notifier).increment();
   }
@@ -228,7 +247,8 @@ class _CameraState extends ConsumerState<Camera> {
         final image = await controller.takePicture();
         Uint8List bytes = await image.readAsBytes();
         Position position = await Geolocator.getCurrentPosition();
-        Routing.to(context, ImageUpload(image: bytes, position: position));
+        final pos = LatLng(position.latitude, position.longitude);
+        Routing.to(context, ImageUpload(image: bytes, position: pos));
       } catch (e) {
         print(e);
       } finally {
