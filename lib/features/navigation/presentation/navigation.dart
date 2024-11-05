@@ -47,7 +47,7 @@ class _NavigationState extends ConsumerState<Navigation> {
     final height = MediaQuery.of(context).size.height * 0.09;
     final groupSelector = GroupSelector(height: height);
     final state = ref.watch(navigationStateProvider);
-    return Scaffold(
+    return  Scaffold(
         appBar: null,
         backgroundColor: state == 2 ? Colors.transparent : null,
         body: Stack(

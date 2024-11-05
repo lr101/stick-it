@@ -74,12 +74,10 @@ class UserGroupService extends _$UserGroupService {
       for (var group in localGroups) group.groupId: group
     };
     localGroupsMap.removeWhere((k, v) => remoteGroups.deleted.contains(k));
-    ref.read(groupOrderServiceProvider.notifier).remove(remoteGroups.deleted);
     for (var group in remoteGroups.items) {
       final g = LocalGroupDto.fromDto(group);
       localGroupsMap[group.id] = g;
       _groupRepository.createGroup(g);
-      ref.read(groupOrderServiceProvider.notifier).add(group.id);
     }
     remoteGroups.deleted
         .forEach((a) async => await _groupRepository.deleteGroup(a));
@@ -95,7 +93,6 @@ class UserGroupService extends _$UserGroupService {
     if (groupIndex == -1) {
       group = updateGroup;
       currentState.add(group);
-      ref.read(groupOrderServiceProvider.notifier).add(group.groupId);
     } else {
       group = currentState[groupIndex];
       group.isActivated = updateGroup.isActivated;
@@ -204,7 +201,6 @@ class UserGroupService extends _$UserGroupService {
       await _groupRepository.leaveGroup(groupId);
       state.value!.removeWhere((e) => e.groupId == groupId);
       ref.notifyListeners();
-      ref.read(groupOrderServiceProvider.notifier).remove([groupId]);
       return null;
     } on ApiException catch (e) {
       return e.message;

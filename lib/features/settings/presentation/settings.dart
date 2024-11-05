@@ -4,12 +4,16 @@ import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
+import 'package:buff_lisa/data/service/offline_init_service.dart';
+import 'package:buff_lisa/data/service/online_init_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
+import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
+import 'package:buff_lisa/features/auth/presentation/loading.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_password.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_profile_picture.dart';
@@ -17,6 +21,7 @@ import 'package:buff_lisa/features/settings/presentation/sub_widgets/delete_acco
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_posts.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_users.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
+import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
@@ -188,19 +193,23 @@ class _SettingsState extends ConsumerState<Settings> {
   }
 
   Future<void> invalidateCache() async {
+    showDialog(context: context, builder: (context) => SizedBox.square(dimension: MediaQuery.of(context).size.width - 40, child: Center(child: const CircularProgressIndicator())));
     await ref.watch(databaseProvider).deleteEverything();
     final mgmt = FMTCStore('tileStore').manage;
     await mgmt.reset();
-    final groups = ref.watch(userGroupServiceProvider).value ?? [];
     ref.read(lastSeenProvider(GlobalDataRepository.lastSeenKey).notifier).clear();
-    for (var userGroup in groups) {
-      ref.read(lastSeenProvider(GlobalDataRepository.lastSeenPinKey + userGroup.groupId).notifier).clear();
-    }
-    await ref.read(userGroupServiceProvider.notifier).sync();
+    final sharedPreferences = ref.watch(sharedPreferencesProvider);
+    await sharedPreferences.clear();
+    ref.invalidate(lastSeenProvider);
     ref.invalidate(pinServiceProvider);
+    ref.invalidate(groupOrderServiceProvider);
     ref.invalidate(userImageServiceProvider);
     ref.invalidate(pinImageServiceProvider);
     ref.invalidate(memberServiceProvider);
     ref.invalidate(noUserGroupServiceProvider);
+    ref.invalidate(userGroupServiceProvider);
+    ref.invalidate(offlineInitServiceProvider);
+    ref.invalidate(onlineInitServiceProvider);
+    Routing.toAndDelete(context, Loading(), "/home");
   }
 }

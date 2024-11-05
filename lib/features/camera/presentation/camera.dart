@@ -192,7 +192,11 @@ class _CameraState extends ConsumerState<Camera> {
 
   Future<void> uploadFileImage() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final LostDataResponse response = await picker.retrieveLostData();
+    if (response.file != null) {
+      pickedFile = response.file;
+    }
 
     if (pickedFile != null) {
       try {

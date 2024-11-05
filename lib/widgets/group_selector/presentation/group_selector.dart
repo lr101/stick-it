@@ -29,7 +29,6 @@ class _GroupSelectorState extends ConsumerState<GroupSelector>  with AutomaticKe
   Widget build(BuildContext context) {
     super.build(context);
     final groups = ref.watch(groupOrderServiceProvider);
-    print(groups);
 
     return Container(
         color: Colors.transparent,

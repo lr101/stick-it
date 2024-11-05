@@ -1,24 +1,18 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:buff_lisa/data/entity/database.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/auth/presentation/loading.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
-import 'package:buff_lisa/util/theme/data/light_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -84,7 +78,7 @@ class MyApp extends ConsumerWidget {
       title: 'Mona App',
       themeMode: ref.watch(themeStateProvider),
       darkTheme: theme.dark(),
-      theme: theme.light(),
+      theme: theme.lightHighContrast(),
       initialRoute: ref.watch(globalDataServiceProvider).userId != null ? '/home' : '/login',
       routes: {
         '/login': (context) => Auth(),

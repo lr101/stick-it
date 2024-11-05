@@ -52,6 +52,7 @@ class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width * 0.8;
+    double leftPadding = Navigator.of(context).canPop() ? 66.0 : 16.0;
     return Scaffold(
       body: NestedScrollView(
         controller: controller,
@@ -65,8 +66,8 @@ class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
               flexibleSpace: FlexibleSpaceBar(
                 background: SafeArea(
                     child: Padding(
-                        padding: EdgeInsets.all(10), child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                        padding: EdgeInsets.only(left: leftPadding, top: 10, right: 10), child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           RoundImage(
@@ -74,7 +75,7 @@ class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
                             size: (width/4) - 20,
                           ),
                           SizedBox(width: 10,),
-                          SizedBox(width: MediaQuery.of(context).size.width - width/2 - 30, height: (width/2) - 20, child: widget.profileQuickViewBoxes ?? SizedBox.shrink()),
+                          SizedBox(width: MediaQuery.of(context).size.width - width/2 - leftPadding - 10, height: (width/2) - leftPadding - 10, child: widget.profileQuickViewBoxes ?? SizedBox.shrink()),
                 ]))),
               ),
               bottom: widget.bottom),

@@ -69,7 +69,7 @@ class GroupRepository {
     ])
           ..where(_db.memberEntity.groupId.equals(groupId)))
         .get();
-    return groupRow
+    final members =  groupRow
         .map((e) => MemberDto(
             userId: e.readTable(_db.userEntity).userId,
             groupId: groupId,
@@ -77,6 +77,8 @@ class GroupRepository {
             profileImageSmall: e.readTable(_db.userEntity).profileImageSmall,
             points: e.readTable(_db.memberEntity).ranking))
         .toList();
+    members.sort((a,b) => b.points - a.points);
+    return members;
   }
 
   Future<void> overrideMember(
@@ -134,6 +136,6 @@ class GroupRepository {
 }
 
 @Riverpod(keepAlive: true)
-GroupRepository groupRepository(GroupRepositoryRef ref) {
+GroupRepository groupRepository(Ref ref) {
   return GroupRepository(ref: ref);
 }

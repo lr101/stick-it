@@ -14,7 +14,7 @@ class OnlineInitService extends _$OnlineInitService {
     await ref.read(userGroupServiceProvider.notifier).sync();
     final groups = ref.read(userGroupServiceProvider).value!;
     for (var group in groups) {
-      await ref.read(pinServiceProvider(group.groupId).notifier).sync();
+      ref.read(pinServiceProvider(group.groupId).notifier).sync();
     }
     return true;
   }

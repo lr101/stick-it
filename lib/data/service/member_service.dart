@@ -15,9 +15,12 @@ class MemberService extends _$MemberService {
 
   @override
   Future<List<MemberDto>> build(String groupId) async {
-    final bool isUserGroup = ref.watch(userGroupServiceProvider).value!.any((e) => e.groupId == groupId);
+    final bool isUserGroup = await ref.watch(userGroupServiceProvider.selectAsync((e) => e.any((f) => f.groupId == groupId)));
     if (isUserGroup) {
       final localMembers = await ref.watch(groupRepositoryProvider).getMembers(groupId);
+      if (localMembers.isEmpty) {
+        this.state = const AsyncLoading();
+      }
       this.state = AsyncData(localMembers);
     }
     final memberApi = ref.watch(memberApiProvider);

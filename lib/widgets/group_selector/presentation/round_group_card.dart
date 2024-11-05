@@ -56,7 +56,7 @@ class _RoundGroupCardState extends ConsumerState<RoundGroupCard>  {
               )
           );
         },
-        error: (error, stackTrace) => Icon(Icons.error), loading: () => SizedBox.square(dimension: baseHeight,child: Center(child: Icon(Icons.downloading))));
+        error: (error, stackTrace) => Icon(Icons.error), loading: () => SizedBox.square(dimension: baseHeight + 10));
 
   }
 
