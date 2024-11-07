@@ -102,6 +102,22 @@ final reportApiProvider = Provider<ReportApi>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ReportApiRef = ProviderRef<ReportApi>;
+String _$likeApiHash() => r'5095098e8e98d14190505cce9fad7482cb1d5bca';
+
+/// See also [likeApi].
+@ProviderFor(likeApi)
+final likeApiProvider = Provider<LikesApi>.internal(
+  likeApi,
+  name: r'likeApiProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$likeApiHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef LikeApiRef = ProviderRef<LikesApi>;
 String _$openApiConfigHash() => r'46ae15774da44e0f50f6c33cd1e649d46bb8e7b6';
 
 /// See also [OpenApiConfig].

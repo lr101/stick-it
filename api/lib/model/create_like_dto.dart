@@ -13,20 +13,44 @@ part of openapi.api;
 class CreateLikeDto {
   /// Returns a new [CreateLikeDto] instance.
   CreateLikeDto({
-    this.like = true,
-    this.likeLocation = false,
-    this.likePhotography = false,
-    this.likeArt = false,
+    this.like,
+    this.likeLocation,
+    this.likePhotography,
+    this.likeArt,
     required this.userId,
   });
 
-  bool like;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? like;
 
-  bool likeLocation;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? likeLocation;
 
-  bool likePhotography;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? likePhotography;
 
-  bool likeArt;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? likeArt;
 
   String userId;
 
@@ -41,10 +65,10 @@ class CreateLikeDto {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (like.hashCode) +
-    (likeLocation.hashCode) +
-    (likePhotography.hashCode) +
-    (likeArt.hashCode) +
+    (like == null ? 0 : like!.hashCode) +
+    (likeLocation == null ? 0 : likeLocation!.hashCode) +
+    (likePhotography == null ? 0 : likePhotography!.hashCode) +
+    (likeArt == null ? 0 : likeArt!.hashCode) +
     (userId.hashCode);
 
   @override
@@ -52,10 +76,26 @@ class CreateLikeDto {
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.like != null) {
       json[r'like'] = this.like;
+    } else {
+      json[r'like'] = null;
+    }
+    if (this.likeLocation != null) {
       json[r'likeLocation'] = this.likeLocation;
+    } else {
+      json[r'likeLocation'] = null;
+    }
+    if (this.likePhotography != null) {
       json[r'likePhotography'] = this.likePhotography;
+    } else {
+      json[r'likePhotography'] = null;
+    }
+    if (this.likeArt != null) {
       json[r'likeArt'] = this.likeArt;
+    } else {
+      json[r'likeArt'] = null;
+    }
       json[r'userId'] = this.userId;
     return json;
   }
@@ -79,10 +119,10 @@ class CreateLikeDto {
       }());
 
       return CreateLikeDto(
-        like: mapValueOfType<bool>(json, r'like')!,
-        likeLocation: mapValueOfType<bool>(json, r'likeLocation')!,
-        likePhotography: mapValueOfType<bool>(json, r'likePhotography')!,
-        likeArt: mapValueOfType<bool>(json, r'likeArt')!,
+        like: mapValueOfType<bool>(json, r'like'),
+        likeLocation: mapValueOfType<bool>(json, r'likeLocation'),
+        likePhotography: mapValueOfType<bool>(json, r'likePhotography'),
+        likeArt: mapValueOfType<bool>(json, r'likeArt'),
         userId: mapValueOfType<String>(json, r'userId')!,
       );
     }
@@ -131,10 +171,6 @@ class CreateLikeDto {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'like',
-    'likeLocation',
-    'likePhotography',
-    'likeArt',
     'userId',
   };
 }

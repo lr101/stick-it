@@ -12,6 +12,7 @@ import 'package:buff_lisa/data/service/reachability_service.dart';
 import 'package:buff_lisa/data/service/syncing_service_schedular.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
+import 'package:buff_lisa/util/error/pin_not_found_exception.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +22,8 @@ import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../repository/global_data_repository.dart';
 import '../repository/pin_repository.dart';
+import 'package:collection/collection.dart';
+
 import 'global_data_service.dart';
 
 part 'pin_service.g.dart';

@@ -6,7 +6,7 @@ part of 'user_group_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupByIdHash() => r'e8a4cfba2437d42244aedae1b2da9bb0cb4b0314';
+String _$groupByIdHash() => r'8e8485b96fd0837f8c4dc719977ef2de91738583';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -582,7 +582,7 @@ class _GroupByIdActivatedProviderElement
   String get groupId => (origin as GroupByIdActivatedProvider).groupId;
 }
 
-String _$userGroupServiceHash() => r'c677fdafc09e334ab17318c82a560bd20e6f6103';
+String _$userGroupServiceHash() => r'cfd6811eea52eaa20f39283126aab28be9195a32';
 
 /// See also [UserGroupService].
 @ProviderFor(UserGroupService)

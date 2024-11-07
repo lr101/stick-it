@@ -81,3 +81,7 @@ MembersApi memberApi(Ref ref) => MembersApi(ref.watch(openApiConfigProvider));
 @Riverpod(keepAlive: true)
 ReportApi reportApi(Ref ref) => ReportApi(ref.watch(openApiConfigProvider));
 
+@Riverpod(keepAlive: true)
+LikesApi likeApi(Ref ref) => LikesApi(ref.watch(openApiConfigProvider));
+
+

@@ -76,6 +76,7 @@ Class | Method | HTTP request | Description
 *GroupsApi* | [**getGroupsByIds**](doc//GroupsApi.md#getgroupsbyids) | **GET** /api/v2/groups | Get groups by IDs
 *GroupsApi* | [**updateGroup**](doc//GroupsApi.md#updategroup) | **PUT** /api/v2/groups/{groupId} | Update a group by ID
 *LikesApi* | [**createOrUpdateLike**](doc//LikesApi.md#createorupdatelike) | **POST** /api/v2/likes/{pinId} | Create or update a like
+*LikesApi* | [**getPinLikes**](doc//LikesApi.md#getpinlikes) | **GET** /api/v2/likes/{pinId} | Get pin likes
 *MembersApi* | [**deleteMemberFromGroup**](doc//MembersApi.md#deletememberfromgroup) | **DELETE** /api/v2/groups/{groupId}/members | leave group or delete group when the user is the last group member
 *MembersApi* | [**getGroupMembers**](doc//MembersApi.md#getgroupmembers) | **GET** /api/v2/groups/{groupId}/members | Get members of a group by ID
 *MembersApi* | [**getGroupRanking**](doc//MembersApi.md#getgroupranking) | **GET** /api/v2/groups/{groupId}/members/ranking | Get ranking of a group by ID
@@ -102,6 +103,7 @@ Class | Method | HTTP request | Description
  - [GroupsSyncDto](doc//GroupsSyncDto.md)
  - [InfoDto](doc//InfoDto.md)
  - [MemberResponseDto](doc//MemberResponseDto.md)
+ - [PinLikeDto](doc//PinLikeDto.md)
  - [PinRequestDto](doc//PinRequestDto.md)
  - [PinWithOptionalImageDto](doc//PinWithOptionalImageDto.md)
  - [PinsSyncDto](doc//PinsSyncDto.md)

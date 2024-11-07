@@ -20,8 +20,7 @@ class PinWithOptionalImageDto {
     required this.creationUser,
     this.image,
     required this.groupId,
-    required this.likeCount,
-    required this.likedByUser,
+    this.likes,
   });
 
   String id;
@@ -48,9 +47,13 @@ class PinWithOptionalImageDto {
 
   String groupId;
 
-  int likeCount;
-
-  bool likedByUser;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  PinLikeDto? likes;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PinWithOptionalImageDto &&
@@ -61,8 +64,7 @@ class PinWithOptionalImageDto {
     other.creationUser == creationUser &&
     other.image == image &&
     other.groupId == groupId &&
-    other.likeCount == likeCount &&
-    other.likedByUser == likedByUser;
+    other.likes == likes;
 
   @override
   int get hashCode =>
@@ -74,11 +76,10 @@ class PinWithOptionalImageDto {
     (creationUser.hashCode) +
     (image == null ? 0 : image!.hashCode) +
     (groupId.hashCode) +
-    (likeCount.hashCode) +
-    (likedByUser.hashCode);
+    (likes == null ? 0 : likes!.hashCode);
 
   @override
-  String toString() => 'PinWithOptionalImageDto[id=$id, creationDate=$creationDate, latitude=$latitude, longitude=$longitude, creationUser=$creationUser, image=$image, groupId=$groupId, likeCount=$likeCount, likedByUser=$likedByUser]';
+  String toString() => 'PinWithOptionalImageDto[id=$id, creationDate=$creationDate, latitude=$latitude, longitude=$longitude, creationUser=$creationUser, image=$image, groupId=$groupId, likes=$likes]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -93,8 +94,11 @@ class PinWithOptionalImageDto {
       json[r'image'] = null;
     }
       json[r'groupId'] = this.groupId;
-      json[r'likeCount'] = this.likeCount;
-      json[r'likedByUser'] = this.likedByUser;
+    if (this.likes != null) {
+      json[r'likes'] = this.likes;
+    } else {
+      json[r'likes'] = null;
+    }
     return json;
   }
 
@@ -124,8 +128,7 @@ class PinWithOptionalImageDto {
         creationUser: mapValueOfType<String>(json, r'creationUser')!,
         image: mapValueOfType<String>(json, r'image'),
         groupId: mapValueOfType<String>(json, r'groupId')!,
-        likeCount: mapValueOfType<int>(json, r'likeCount')!,
-        likedByUser: mapValueOfType<bool>(json, r'likedByUser')!,
+        likes: PinLikeDto.fromJson(json[r'likes']),
       );
     }
     return null;
@@ -179,8 +182,6 @@ class PinWithOptionalImageDto {
     'longitude',
     'creationUser',
     'groupId',
-    'likeCount',
-    'likedByUser',
   };
 }
 

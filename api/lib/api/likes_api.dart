@@ -62,10 +62,75 @@ class LikesApi {
   /// * [String] pinId (required):
   ///
   /// * [CreateLikeDto] createLikeDto (required):
-  Future<void> createOrUpdateLike(String pinId, CreateLikeDto createLikeDto,) async {
+  Future<PinLikeDto?> createOrUpdateLike(String pinId, CreateLikeDto createLikeDto,) async {
     final response = await createOrUpdateLikeWithHttpInfo(pinId, createLikeDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PinLikeDto',) as PinLikeDto;
+    
+    }
+    return null;
+  }
+
+  /// Get pin likes
+  ///
+  /// Get pin likes
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] pinId (required):
+  Future<Response> getPinLikesWithHttpInfo(String pinId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/v2/likes/{pinId}'
+      .replaceAll('{pinId}', pinId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get pin likes
+  ///
+  /// Get pin likes
+  ///
+  /// Parameters:
+  ///
+  /// * [String] pinId (required):
+  Future<PinLikeDto?> getPinLikes(String pinId,) async {
+    final response = await getPinLikesWithHttpInfo(pinId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PinLikeDto',) as PinLikeDto;
+    
+    }
+    return null;
   }
 }

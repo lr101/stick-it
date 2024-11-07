@@ -6,7 +6,7 @@ part of 'other_user_pin_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$otherUserPinHash() => r'72405bb60bb0364d04275ccd93f65afdef11a0c9';
+String _$otherUserPinHash() => r'af3ccbd4c816d1319ba7c2cd1e4e5b4c691e5107';
 
 /// Copied from Dart SDK
 class _SystemHash {

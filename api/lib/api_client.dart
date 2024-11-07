@@ -194,6 +194,8 @@ class ApiClient {
           return InfoDto.fromJson(value);
         case 'MemberResponseDto':
           return MemberResponseDto.fromJson(value);
+        case 'PinLikeDto':
+          return PinLikeDto.fromJson(value);
         case 'PinRequestDto':
           return PinRequestDto.fromJson(value);
         case 'PinWithOptionalImageDto':

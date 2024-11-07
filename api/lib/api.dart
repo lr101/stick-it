@@ -43,6 +43,7 @@ part 'model/group_dto.dart';
 part 'model/groups_sync_dto.dart';
 part 'model/info_dto.dart';
 part 'model/member_response_dto.dart';
+part 'model/pin_like_dto.dart';
 part 'model/pin_request_dto.dart';
 part 'model/pin_with_optional_image_dto.dart';
 part 'model/pins_sync_dto.dart';

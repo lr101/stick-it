@@ -14,6 +14,7 @@ class LocalPinDto {
   final String groupId;
   final bool isHidden;
   final DateTime? lastSynced;
+  final PinLikeDto? likes;
 
   LocalPinDto({
     required this.id,
@@ -23,7 +24,8 @@ class LocalPinDto {
     required this.creatorId,
     required this.groupId,
     required this.isHidden,
-    this.lastSynced
+    this.lastSynced,
+    this.likes
   });
 
   factory LocalPinDto.fromEntityData(PinEntityData entityData) {
@@ -61,7 +63,8 @@ class LocalPinDto {
       creationDate : pinDto.creationDate,
       groupId: pinDto.groupId,
       isHidden: false,
-      lastSynced: pinDto.creationDate // TODO update to last updated
+      lastSynced: pinDto.creationDate, // TODO update to last updated
+      likes: pinDto.likes
     );
   }
 
@@ -74,7 +77,8 @@ class LocalPinDto {
       creationDate : pinDto.creationDate,
       groupId: pinDto.groupId,
       isHidden: false,
-      lastSynced: pinDto.creationDate // TODO update to last updated
+      lastSynced: pinDto.creationDate, // TODO update to last updated
+      likes: pinDto.likes
     );
   }
 

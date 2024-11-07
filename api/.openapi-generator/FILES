@@ -12,6 +12,7 @@ doc/InfoDto.md
 doc/LikesApi.md
 doc/MemberResponseDto.md
 doc/MembersApi.md
+doc/PinLikeDto.md
 doc/PinRequestDto.md
 doc/PinWithOptionalImageDto.md
 doc/PinsApi.md
@@ -53,6 +54,7 @@ lib/model/group_dto.dart
 lib/model/groups_sync_dto.dart
 lib/model/info_dto.dart
 lib/model/member_response_dto.dart
+lib/model/pin_like_dto.dart
 lib/model/pin_request_dto.dart
 lib/model/pin_with_optional_image_dto.dart
 lib/model/pins_sync_dto.dart
@@ -67,6 +69,3 @@ lib/model/user_request_dto.dart
 lib/model/user_update_dto.dart
 lib/model/user_update_response_dto.dart
 pubspec.yaml
-test/create_like_dto_test.dart
-test/likes_api_test.dart
-test/status_test.dart

@@ -6,7 +6,7 @@ part of 'online_init_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$onlineInitServiceHash() => r'03281e00f68cf8a0cadd8f1412051b5decebfc8a';
+String _$onlineInitServiceHash() => r'9aa03e0b2c09af3f2841ee246b549a863b8ad924';
 
 /// See also [OnlineInitService].
 @ProviderFor(OnlineInitService)
