@@ -21,6 +21,7 @@ import 'package:buff_lisa/features/settings/presentation/sub_widgets/delete_acco
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_posts.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_users.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
@@ -210,6 +211,7 @@ class _SettingsState extends ConsumerState<Settings> {
     ref.invalidate(userGroupServiceProvider);
     ref.invalidate(offlineInitServiceProvider);
     ref.invalidate(onlineInitServiceProvider);
+    ref.invalidate(likeServiceProvider);
     Routing.toAndDelete(context, Loading(), "/home");
   }
 }

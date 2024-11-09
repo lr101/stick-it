@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -47,8 +48,7 @@ class UserImageService extends _$UserImageService {
 }
 
 @riverpod
-Future<Uint8List?> profilePictureById(
-    ProfilePictureByIdRef ref, String userId) async {
+Future<Uint8List?> profilePictureById(Ref ref, String userId) async {
   bool containsKey = false;
   final profilePicture = await ref.watch(userImageServiceProvider.selectAsync((u) {
     containsKey = u.containsKey(userId);

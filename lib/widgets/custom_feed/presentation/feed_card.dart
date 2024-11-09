@@ -121,7 +121,7 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                   SizedBox(
                     height: 3,
                   ),
-                  LikeButtons(pinId: widget.item.id)
+                  SizedBox(height: 40, child: LikeButtons(pinId: widget.item.id))
                 ]),
               );
             },

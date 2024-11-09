@@ -6,6 +6,7 @@ import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter/services.dart';
@@ -178,7 +179,7 @@ class UserService extends _$UserService {
 }
 
 @riverpod
-Future<LocalUserDto> userById(UserByIdRef ref, String userId) async {
+Future<LocalUserDto> userById(Ref ref, String userId) async {
   final user = await ref.watch(userServiceProvider
       .selectAsync((u) => u.containsKey(userId) ? u[userId] : null));
   if (user != null) {
@@ -189,8 +190,7 @@ Future<LocalUserDto> userById(UserByIdRef ref, String userId) async {
 }
 
 @riverpod
-Future<Uint8List?> profilePictureSmallById(
-    ProfilePictureSmallByIdRef ref, String userId) async {
+Future<Uint8List?> profilePictureSmallById(Ref ref, String userId) async {
   return await ref
       .watch(userByIdProvider(userId).selectAsync((u) => u.profileImageSmall));
 }

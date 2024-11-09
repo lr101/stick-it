@@ -23,7 +23,7 @@ class LikeButtons extends ConsumerWidget {
     return Row(
           children: [
             LikeButton(
-              isLiked: pinLike.value?.likedByUser ?? false,
+              isLiked: pinLike.valueOrNull?.likedByUser ?? false,
               likeBuilder: (isLiked) {
                 return Icon(
                   Icons.favorite,
@@ -31,7 +31,7 @@ class LikeButtons extends ConsumerWidget {
                   size: 30,
                 );
               },
-              likeCount: pinLike.value?.likeCount ?? 0,
+              likeCount: pinLike.valueOrNull?.likeCount ?? 0,
               onTap: (isLiked) async {
                 try {
                   if (isLiked) {
@@ -47,7 +47,7 @@ class LikeButtons extends ConsumerWidget {
             ),
             SizedBox(width: 10),
             LikeButton(
-              isLiked: pinLike.value?.likedLocationByUser ?? false,
+              isLiked: pinLike.valueOrNull?.likedLocationByUser ?? false,
               likeBuilder: (isLiked) {
                 return Icon(
                   CupertinoIcons.location_solid,
@@ -55,7 +55,7 @@ class LikeButtons extends ConsumerWidget {
                   size: 30,
                 );
               },
-              likeCount: pinLike.value?.likeLocationCount ?? 0,
+              likeCount: pinLike.valueOrNull?.likeLocationCount ?? 0,
               onTap: (isLiked) async {
 
                 try {
@@ -72,7 +72,7 @@ class LikeButtons extends ConsumerWidget {
             ),
             SizedBox(width: 10),
             LikeButton(
-              isLiked: pinLike.value?.likedPhotographyByUser ?? false,
+              isLiked: pinLike.valueOrNull?.likedPhotographyByUser ?? false,
               likeBuilder: (isLiked) {
                 return Icon(
                   Icons.photo_camera,
@@ -80,7 +80,7 @@ class LikeButtons extends ConsumerWidget {
                   size: 30,
                 );
               },
-              likeCount: pinLike.value?.likePhotographyCount ?? 0,
+              likeCount: pinLike.valueOrNull?.likePhotographyCount ?? 0,
               onTap: (isLiked) async {
                 try {
                   if (isLiked) {
@@ -96,7 +96,7 @@ class LikeButtons extends ConsumerWidget {
             ),
             SizedBox(width: 10),
             LikeButton(
-              isLiked: pinLike.value?.likedArtByUser ?? false,
+              isLiked: pinLike.valueOrNull?.likedArtByUser ?? false,
               likeBuilder: (isLiked) {
                 return Icon(
                   Icons.palette,
@@ -104,7 +104,7 @@ class LikeButtons extends ConsumerWidget {
                   size: 30,
                 );
               },
-              likeCount: pinLike.value?.likeArtCount ?? 0,
+              likeCount: pinLike.valueOrNull?.likeArtCount ?? 0,
               onTap: (isLiked) async {
                 final userId = ref.watch(globalDataServiceProvider).userId!;
                 try {

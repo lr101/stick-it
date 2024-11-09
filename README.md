@@ -50,5 +50,5 @@ How the different pages interact with each can be found [here]().
   ```
 2. Run generator:
   ```shell
-  openapi-generator generate -i ../MonaServer/openapi/openapi.yaml -g dart -o ./api
+  openapi-generator generate -i ../MonaServerApi/openapi.yaml -g dart -o ./api
   ```
