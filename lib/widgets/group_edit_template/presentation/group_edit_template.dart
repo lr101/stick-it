@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,8 +35,9 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
   void initState() {
     super.initState();
     if (widget.groupDto != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(groupCreateServiceProvider.notifier).init(widget.groupDto!);
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final image = ref.watch(groupProfilePictureByIdProvider(widget.groupDto!.groupId)).valueOrNull; // should exists because editing can only be done to a user group but better solution needed in the future
+        ref.read(groupCreateServiceProvider.notifier).init(widget.groupDto!, image);
         _textEditControllerName.text = widget.groupDto!.name;
         _textEditControllerDescription.text = widget.groupDto!.description!;
         _textEditControllerLink.text = widget.groupDto!.link ?? "";

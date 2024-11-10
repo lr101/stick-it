@@ -1,4 +1,5 @@
 import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
@@ -45,7 +46,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
     final members = ref.watch(memberServiceProvider(widget.group.groupId));
     return CustomAvatarScaffold(
         floatingActionButton: widget.floatingActionButton,
-        avatar: AsyncData(widget.group.profileImage),
+        avatar: ref.watch(groupProfilePictureByIdProvider(widget.group.groupId)),
         title: widget.group.name,
         actions: widget.actions,
         bottom: TabBar(controller: _tabController, tabs: const [

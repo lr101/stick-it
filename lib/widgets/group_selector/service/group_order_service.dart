@@ -33,5 +33,6 @@ class GroupOrderService extends _$GroupOrderService {
     final sharedPrefs = ref.watch(sharedPreferencesProvider);
     sharedPrefs.setStringList('groupOrder', groupIds);
     state = groupIds;
+    ref.notifyListeners();
   }
 }

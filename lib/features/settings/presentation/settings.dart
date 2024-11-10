@@ -118,7 +118,7 @@ class _SettingsState extends ConsumerState<Settings> {
                         context,
                         ShowWebWidget(
                           route:
-                              "https://${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",
+                              "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",
                           title: "Privacy Policy",
                         ));
                   },
@@ -131,7 +131,7 @@ class _SettingsState extends ConsumerState<Settings> {
                         context,
                         ShowWebWidget(
                           route:
-                              "https://${ref.watch(globalDataServiceProvider).host}/public/agb",
+                              "${ref.watch(globalDataServiceProvider).host}/public/agb",
                           title: "Terms of Service",
                         ));
                   },

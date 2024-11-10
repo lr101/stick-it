@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
 import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
@@ -68,7 +69,7 @@ class _CameraState extends ConsumerState<Camera> {
                   alignment: Alignment.bottomCenter,
                   child: state.when(
                       data: (data) => GestureDetector(
-                            onDoubleTap: handleCameraChange,
+                            onDoubleTap: ref.read(cameraIndexProvider.notifier).increment,
                             onScaleStart: (_) => basScaleFactor = scaleFactor,
                             onScaleUpdate: handleZoom,
                             child: Padding(
@@ -123,7 +124,7 @@ class _CameraState extends ConsumerState<Camera> {
                                           radius: 20,
                                           backgroundColor: cameraIndex == index ? Colors.grey.withOpacity(0.8) : Colors.grey.withOpacity(0.5),
                                           child: Center(child: IconButton(
-                                              onPressed: handleCameraChange,
+                                              onPressed: () => handleCameraChange(index),
                                               icon: cameras[index].lensDirection == CameraLensDirection.back ? const Icon(Icons.landscape) : const Icon(Icons.person)
                                           ),)
                                       ))
@@ -164,7 +165,7 @@ class _CameraState extends ConsumerState<Camera> {
                     decoration: BoxDecoration(
                       border: Border.all(
                           width: 5.0,
-                        color: Theme.of(context).focusColor
+                        color: Theme.of(context).colorScheme.primary
                       ),
                       shape: BoxShape.circle,
                     ),
@@ -212,8 +213,8 @@ class _CameraState extends ConsumerState<Camera> {
     }
   }
 
-  void handleCameraChange() {
-    ref.read(cameraIndexProvider.notifier).increment();
+  void handleCameraChange(int index) {
+    ref.read(cameraIndexProvider.notifier).setIndex(index);
   }
 
   void handleFlashChange(bool value) {
@@ -231,7 +232,7 @@ class _CameraState extends ConsumerState<Camera> {
             onTap: () => takePicture(group, index),
             child:  RoundImage(
               size: (MediaQuery.of(context).size.height) * 0.065,
-              imageCallback: AsyncData(group.profileImage),
+              imageCallback: ref.watch(groupProfilePictureByIdProvider(group.groupId)),
               clickable: false,
               child: Container(),
             )

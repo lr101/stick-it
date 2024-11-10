@@ -87,7 +87,7 @@ class _GroupSearchState extends ConsumerState<GroupSearch> {
     }
     final groupDtos = <LocalGroupDto>[];
     for (var e in groups.items) {
-      groupDtos.add(await LocalGroupDto.fromDtoAsync(e));
+      groupDtos.add(await LocalGroupDto.fromDto(e));
     }
     if (groupDtos.length < _pageSize) {
       _pagingController.appendLastPage(groupDtos);

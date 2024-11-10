@@ -4,6 +4,7 @@ import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/service/group_image_service.dart';
 import '../../../widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 
 class NoUserGroupOverview extends ConsumerWidget {
@@ -22,7 +23,7 @@ class NoUserGroupOverview extends ConsumerWidget {
         } else {
           return CustomAvatarScaffold(
               floatingActionButton: GroupJoinActionButton(groupDto: data),
-              avatar: AsyncData(data.profileImage),
+              avatar: ref.watch(groupProfilePictureByIdProvider(groupId)),
               title: data.name,
             body: Center(child: Icon(Icons.lock),),
           );

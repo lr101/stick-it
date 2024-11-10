@@ -2,6 +2,7 @@ import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/service/group_image_service.dart';
 import '../../round_image/presentation/round_image.dart';
 
 class GroupTile extends ConsumerWidget {
@@ -24,7 +25,7 @@ class GroupTile extends ConsumerWidget {
 
         ],
       ),
-      leading: RoundImage(imageCallback: AsyncData(groupDto.profileImage), size: 20.0, child: Container()),
+      leading: RoundImage(imageCallback: ref.watch(groupProfilePictureByIdProvider(groupDto.groupId)), size: 20.0, child: Container()),
     );
     if (onTap == null) {
       return listTile;

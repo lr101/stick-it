@@ -52,7 +52,7 @@ class PinImageRepository {
      final imageUrl = await ref.watch(pinApiProvider).getPinImage(pinId);
      final image = await http.get(Uri.parse(imageUrl!));
      final decodedImage = image.bodyBytes;
-     await _addImageToCache(PinImageEntityCompanion(
+     _addImageToCache(PinImageEntityCompanion( // run add async
        pinId: Value(pinId),
        image: Value(decodedImage),
        lastAccessed: Value(DateTime.now()),

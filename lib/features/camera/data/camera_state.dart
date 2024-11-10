@@ -29,6 +29,10 @@ class CameraIndex extends _$CameraIndex {
     state = (state + 1) % ref.watch(globalDataServiceProvider.select((t) => t.cameras)).length;
   }
 
+  void setIndex(int index) {
+    state = index;
+  }
+
 }
 
 @riverpod

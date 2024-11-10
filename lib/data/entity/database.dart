@@ -6,13 +6,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'group_entity.dart';
+import 'group_image_entity.dart';
 import 'member_entity.dart';
 import 'pin_entity.dart';
 import 'user_entity.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [GroupEntity, PinEntity, UserEntity, MemberEntity, PinImageEntity])
+@DriftDatabase(tables: [GroupEntity, PinEntity, UserEntity, MemberEntity, PinImageEntity, GroupImageEntity])
 class Database extends _$Database {
 
   Database() : super(_openConnection());
