@@ -31,7 +31,7 @@ class NoUserGroupOverview extends ConsumerWidget {
 
       },
       error: (error, stackTrace) => Icon(Icons.error),
-      loading: () => Center(child: CircularProgressIndicator()),
+      loading: () => SizedBox.shrink(),
     );
   }
 }

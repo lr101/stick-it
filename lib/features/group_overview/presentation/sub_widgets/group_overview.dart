@@ -116,13 +116,13 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
         ]));
   }
 
-  void clickedOnLink() {
+  Future<void> clickedOnLink() async {
     if (widget.group.link != null) {
       try {
-        launchUrl(Uri.parse(widget.group.link!),
+        await launchUrl(Uri.parse(widget.group.link!),
             mode: LaunchMode.externalApplication);
       } catch (e) {
-        CustomErrorSnackBar.message(message: "Link is not a valid url", type: CustomErrorSnackBarType.error);
+        CustomErrorSnackBar.message(message: "No app to open link in found", type: CustomErrorSnackBarType.error);
       }
     }
   }
