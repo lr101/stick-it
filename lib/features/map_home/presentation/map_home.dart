@@ -110,6 +110,7 @@ class _MapHomeState extends ConsumerState<MapHome>
                   size: const Size(40, 40),
                   markers: mapState.markers,
                   centerMarkerOnClick: true,
+                  polygonOptions: PolygonOptions(color: Colors.transparent),
                   onMarkerTap: (marker) async {
                     final m = marker as CustomMarkerProvider;
                     ref

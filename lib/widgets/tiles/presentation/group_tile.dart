@@ -20,7 +20,7 @@ class GroupTile extends ConsumerWidget {
           Align(alignment: Alignment.centerLeft,child: Text(groupDto.name)),
           Align(
               alignment: Alignment.centerLeft,
-              child: groupDto.description == null ? Icon(Icons.lock, size: 12,) : Text(groupDto.description!, overflow: TextOverflow.clip, maxLines: 1, style: TextStyle(fontStyle:  FontStyle.italic, fontSize: 12))
+              child: groupDto.description == null ? Icon(Icons.lock, size: 12,) : Text(groupDto.description!, overflow: TextOverflow.ellipsis, maxLines: 1, style: TextStyle(fontStyle:  FontStyle.italic, fontSize: 12))
           )
 
         ],
