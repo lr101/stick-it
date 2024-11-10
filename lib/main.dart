@@ -1,93 +1,92 @@
 import 'dart:async';
-
-import 'package:buff_lisa/0_ScreenSignIn/login_logic.dart';
-import 'package:buff_lisa/1_BottomNavigationBar/navbar_logic.dart';
-import 'package:buff_lisa/Providers/cluster_notifier.dart';
-import 'package:buff_lisa/Providers/date_notifier.dart';
-import 'package:buff_lisa/Providers/map_notifier.dart';
-import 'package:buff_lisa/Providers/marker_notifier.dart';
-import 'package:buff_lisa/Providers/theme_provider.dart';
-import 'package:buff_lisa/Providers/user_notifier.dart';
-import 'package:camera/camera.dart';
+import 'dart:io';
+import 'package:buff_lisa/data/repository/global_data_repository.dart';
+import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/features/auth/presentation/auth.dart';
+import 'package:buff_lisa/features/auth/presentation/loading.dart';
+import 'package:buff_lisa/util/theme/data/material_theme.dart';
+import 'package:buff_lisa/util/theme/service/theme_state.dart';
+import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:provider/provider.dart';
-
-import '1_BottomNavigationBar/splash_loading.dart';
-import 'Files/DTOClasses/groupDTO.dart';
-import 'Files/DTOClasses/pinDTO.dart';
-import 'Files/Other/global.dart' as global;
-import 'Files/Other/local_data.dart';
-import 'Files/ServerCalls/openapi_service.dart';
-
-/// global key for enabling different routes on startup
-final navigatorKey = GlobalKey<NavigatorState>();
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'data/service/shared_preferences_service.dart';
+import 'features/navigation/data/navigation_provider.dart';
 
 /// THIS IS THE START OF THE PROGRAMM
 /// binding Widgets before initialization is required by multiple packages
 /// initializes access to env variables
 /// checks if user is logged in on this device by checking device storage
+///
+///
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
-  global.cameras = await availableCameras();
+  final sharedPreferences = await SharedPreferences.getInstance();
+  try {
+    await FMTCObjectBoxBackend().initialise();
+    final mgmt = FMTCStore('tileStore').manage;
+    final ready = await mgmt.ready; // Check whether the store exists
+    if (!ready) await mgmt.create(); // Create the store
+  } catch (e) {
+    final dir = Directory(
+      path.join(
+        (await getApplicationDocumentsDirectory()).absolute.path,
+        'fmtc',
+      ),
+    );
+    await dir.delete(recursive: true);
+    await FMTCObjectBoxBackend().initialise();
+  }
+  final storage = await FlutterSecureStorage();
+  final globalData = await GlobalDataRepository.get(sharedPreferences, storage);
+  final defaultGroupImage =  (await rootBundle.load('assets/image/pin_border.png')).buffer.asUint8List();
+  final defaultErrorImage =  (await rootBundle.load('assets/image/profile.jpg')).buffer.asUint8List();
   await dotenv.load();
-  await Hive.initFlutter();
-  Hive.registerAdapter(GroupDTOAdapter());
-  Hive.registerAdapter(PinDTOAdapter());
-  global.localData = await LocalData.fromInit();
-  global.openApiServices = OpenApiServices();
-  runApp(MyApp(isLoggedIn: global.localData.userId != ""));
+  runApp(
+    ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+          flutterSecureStorageProvider.overrideWithValue(storage),
+          globalDataOnceProvider.overrideWithValue(globalData),
+          defaultGroupPinImageProvider.overrideWithValue(defaultGroupImage),
+          defaultErrorImageProvider.overrideWithValue(defaultErrorImage),
+        ],
+        child: MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-
-  /// true: user is already logged in on this device: direct route to [BottomNavigationWidget]
-  /// false: user is not logged in on this device: redirect to [LoginScreen]
-  final bool isLoggedIn;
-
-  ///Constructor
-  const MyApp({super.key, required this.isLoggedIn});
+class MyApp extends ConsumerWidget {
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     /// App orientation can only be portrait mode (no landscape)
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    /// Statusbar color (where time and notification are displayed) is set to transparent
-    /// app will not use the space if not set specifically in widget
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    /// create [ClusterNotifier] used to save all important information
-    return MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (_) => ClusterNotifier(),),
-              ChangeNotifierProvider(create: (_) => ThemeNotifier(global.localData.theme == Brightness.dark),),
-              ChangeNotifierProvider(create: (_) => UserNotifier(),),
-              ChangeNotifierProvider(create: (_) => DateNotifier(),),
-              ChangeNotifierProvider(create: (_) => MarkerNotifier()),
-              ChangeNotifierProvider(create: (_) => MapNotifier()),
-            ],
-            builder: (context, child) {
-              Provider.of<ClusterNotifier>(context, listen: false).init(context.read<UserNotifier>(), context.read<MarkerNotifier>());
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: Provider.of<ThemeNotifier>(context).getTheme,
-                title: 'Mona App',
-                initialRoute: isLoggedIn ? '/home' : '/login',
-                routes: {
-                  '/login': (context) => const LoginScreen(),
-                  '/home': (context) {
-                    return const SplashLoading();
-                  }
-                },
-                navigatorKey: navigatorKey, // Setting a global key for navigator
-              );
-            }
+    final theme = MaterialTheme(Theme.of(context).textTheme);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Mona App',
+      themeMode: ref.watch(themeStateProvider),
+      darkTheme: theme.dark(),
+      theme: theme.lightHighContrast(),
+      initialRoute: ref.watch(globalDataServiceProvider).userId != null ? '/home' : '/login',
+      routes: {
+        '/login': (context) => Auth(),
+        '/home': (context) {
+          return const Loading();
+        }
+      },
+      navigatorKey: NavigationService.navigatorKey,
     );
   }
 }

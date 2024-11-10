@@ -63,3 +63,5 @@ pubspec.lock
 /linux/
 /RELEASES/
 /openapitools.json
+/old/
+/out/

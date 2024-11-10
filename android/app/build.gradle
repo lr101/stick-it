@@ -29,64 +29,36 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.TheGermanApps.buff_lisa"
-    compileSdkVersion  rootProject.ext.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    namespace = "com.TheGermanApps.buff_lisa"
+    compileSdk = flutter.compileSdkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     defaultConfig {
-        applicationId "com.TheGermanApps.buff_lisa"
+        applicationId = "com.TheGermanApps.buff_lisa"
         // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion rootProject.ext.minSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionName flutterVersionName
-        multiDexEnabled true
+        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+        multiDexEnabled = true
     }
 
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['storePassword']
-        }
-    }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig = signingConfigs.debug
         }
     }
 }
 
 flutter {
-    source '../..'
-}
-
-dependencies {
-    implementation 'com.google.android.gms:play-services-ads:23.0.0'
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-}
-
-configurations.all {
-    resolutionStrategy {
-        eachDependency {
-            if ((requested.group == "org.jetbrains.kotlin") && (requested.name.startsWith("kotlin-stdlib"))) {
-                useVersion("1.8.0")
-            }
-        }
-    }
+    source = "../.."
 }
