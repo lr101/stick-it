@@ -21,7 +21,7 @@ class SquareImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final item = ref.watch(getPinImageProvider(pinId));
+    final item = ref.watch(getPinImageAndFetchProvider(pinId));
     return item.when(
         data: (data) => data == null
             ? const SizedBox.shrink()

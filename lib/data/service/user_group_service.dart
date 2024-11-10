@@ -12,6 +12,7 @@ import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/reachability_service.dart';
 import 'package:buff_lisa/data/service/syncing_service_schedular.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:http/http.dart' as http;
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
@@ -75,7 +76,7 @@ class UserGroupService extends _$UserGroupService {
     };
     localGroupsMap.removeWhere((k, v) => remoteGroups.deleted.contains(k));
     for (var group in remoteGroups.items) {
-      final g = LocalGroupDto.fromDto(group);
+      final g = await LocalGroupDto.fromDtoAsync(group);
       localGroupsMap[group.id] = g;
       _groupRepository.createGroup(g);
     }
@@ -122,7 +123,7 @@ class UserGroupService extends _$UserGroupService {
     try {
       final result = await _groupsApi.addGroup(group);
       if (result != null) {
-        final group = LocalGroupDto.fromDto(result);
+        final group = await LocalGroupDto.fromDtoAsync(result);
         _updateSingleGroup(group);
         await _groupRepository.createGroup(group);
         return null;
@@ -139,7 +140,8 @@ class UserGroupService extends _$UserGroupService {
       // Sync with the server
       final result = await _groupsApi.updateGroup(groupId, group);
       if (result != null) {
-        await _groupRepository.createGroup(LocalGroupDto.fromDto(result));
+        final g = await LocalGroupDto.fromDtoAsync(result);
+        await _groupRepository.createGroup(g);
       } else {
         return "Failed to update group remotely";
       }
@@ -170,7 +172,7 @@ class UserGroupService extends _$UserGroupService {
       final result = await _membersApi.joinGroup(groupId, _data.userId!,
           inviteUrl: inviteUrl);
       if (result != null) {
-        final group = LocalGroupDto.fromDto(result);
+        final group = await LocalGroupDto.fromDtoAsync(result);
         _updateSingleGroup(group);
         await _groupRepository.createGroup(group);
       } else {
@@ -186,7 +188,8 @@ class UserGroupService extends _$UserGroupService {
     try {
       final result = await _groupsApi.getGroup(group.groupId);
       if (result != null) {
-        await _groupRepository.createGroup(LocalGroupDto.fromDto(result));
+        final g = await LocalGroupDto.fromDtoAsync(result);
+        await _groupRepository.createGroup(g);
         _updateSingleGroup(group);
       }
     } catch (e) {

@@ -22,21 +22,8 @@ class $UserEntityTable extends UserEntity
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
-  static const VerificationMeta _profileImageMeta =
-      const VerificationMeta('profileImage');
   @override
-  late final GeneratedColumn<Uint8List> profileImage =
-      GeneratedColumn<Uint8List>('profile_image', aliasedName, true,
-          type: DriftSqlType.blob, requiredDuringInsert: false);
-  static const VerificationMeta _profileImageSmallMeta =
-      const VerificationMeta('profileImageSmall');
-  @override
-  late final GeneratedColumn<Uint8List> profileImageSmall =
-      GeneratedColumn<Uint8List>('profile_image_small', aliasedName, true,
-          type: DriftSqlType.blob, requiredDuringInsert: false);
-  @override
-  List<GeneratedColumn> get $columns =>
-      [userId, username, profileImage, profileImageSmall];
+  List<GeneratedColumn> get $columns => [userId, username];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -59,18 +46,6 @@ class $UserEntityTable extends UserEntity
     } else if (isInserting) {
       context.missing(_usernameMeta);
     }
-    if (data.containsKey('profile_image')) {
-      context.handle(
-          _profileImageMeta,
-          profileImage.isAcceptableOrUnknown(
-              data['profile_image']!, _profileImageMeta));
-    }
-    if (data.containsKey('profile_image_small')) {
-      context.handle(
-          _profileImageSmallMeta,
-          profileImageSmall.isAcceptableOrUnknown(
-              data['profile_image_small']!, _profileImageSmallMeta));
-    }
     return context;
   }
 
@@ -84,10 +59,6 @@ class $UserEntityTable extends UserEntity
           .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
       username: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}username'])!,
-      profileImage: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}profile_image']),
-      profileImageSmall: attachedDatabase.typeMapping.read(
-          DriftSqlType.blob, data['${effectivePrefix}profile_image_small']),
     );
   }
 
@@ -100,24 +71,12 @@ class $UserEntityTable extends UserEntity
 class UserEntityData extends DataClass implements Insertable<UserEntityData> {
   final String userId;
   final String username;
-  final Uint8List? profileImage;
-  final Uint8List? profileImageSmall;
-  const UserEntityData(
-      {required this.userId,
-      required this.username,
-      this.profileImage,
-      this.profileImageSmall});
+  const UserEntityData({required this.userId, required this.username});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['user_id'] = Variable<String>(userId);
     map['username'] = Variable<String>(username);
-    if (!nullToAbsent || profileImage != null) {
-      map['profile_image'] = Variable<Uint8List>(profileImage);
-    }
-    if (!nullToAbsent || profileImageSmall != null) {
-      map['profile_image_small'] = Variable<Uint8List>(profileImageSmall);
-    }
     return map;
   }
 
@@ -125,12 +84,6 @@ class UserEntityData extends DataClass implements Insertable<UserEntityData> {
     return UserEntityCompanion(
       userId: Value(userId),
       username: Value(username),
-      profileImage: profileImage == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileImage),
-      profileImageSmall: profileImageSmall == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileImageSmall),
     );
   }
 
@@ -140,9 +93,6 @@ class UserEntityData extends DataClass implements Insertable<UserEntityData> {
     return UserEntityData(
       userId: serializer.fromJson<String>(json['userId']),
       username: serializer.fromJson<String>(json['username']),
-      profileImage: serializer.fromJson<Uint8List?>(json['profileImage']),
-      profileImageSmall:
-          serializer.fromJson<Uint8List?>(json['profileImageSmall']),
     );
   }
   @override
@@ -151,35 +101,17 @@ class UserEntityData extends DataClass implements Insertable<UserEntityData> {
     return <String, dynamic>{
       'userId': serializer.toJson<String>(userId),
       'username': serializer.toJson<String>(username),
-      'profileImage': serializer.toJson<Uint8List?>(profileImage),
-      'profileImageSmall': serializer.toJson<Uint8List?>(profileImageSmall),
     };
   }
 
-  UserEntityData copyWith(
-          {String? userId,
-          String? username,
-          Value<Uint8List?> profileImage = const Value.absent(),
-          Value<Uint8List?> profileImageSmall = const Value.absent()}) =>
-      UserEntityData(
+  UserEntityData copyWith({String? userId, String? username}) => UserEntityData(
         userId: userId ?? this.userId,
         username: username ?? this.username,
-        profileImage:
-            profileImage.present ? profileImage.value : this.profileImage,
-        profileImageSmall: profileImageSmall.present
-            ? profileImageSmall.value
-            : this.profileImageSmall,
       );
   UserEntityData copyWithCompanion(UserEntityCompanion data) {
     return UserEntityData(
       userId: data.userId.present ? data.userId.value : this.userId,
       username: data.username.present ? data.username.value : this.username,
-      profileImage: data.profileImage.present
-          ? data.profileImage.value
-          : this.profileImage,
-      profileImageSmall: data.profileImageSmall.present
-          ? data.profileImageSmall.value
-          : this.profileImageSmall,
     );
   }
 
@@ -187,78 +119,53 @@ class UserEntityData extends DataClass implements Insertable<UserEntityData> {
   String toString() {
     return (StringBuffer('UserEntityData(')
           ..write('userId: $userId, ')
-          ..write('username: $username, ')
-          ..write('profileImage: $profileImage, ')
-          ..write('profileImageSmall: $profileImageSmall')
+          ..write('username: $username')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      userId,
-      username,
-      $driftBlobEquality.hash(profileImage),
-      $driftBlobEquality.hash(profileImageSmall));
+  int get hashCode => Object.hash(userId, username);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is UserEntityData &&
           other.userId == this.userId &&
-          other.username == this.username &&
-          $driftBlobEquality.equals(other.profileImage, this.profileImage) &&
-          $driftBlobEquality.equals(
-              other.profileImageSmall, this.profileImageSmall));
+          other.username == this.username);
 }
 
 class UserEntityCompanion extends UpdateCompanion<UserEntityData> {
   final Value<String> userId;
   final Value<String> username;
-  final Value<Uint8List?> profileImage;
-  final Value<Uint8List?> profileImageSmall;
   final Value<int> rowid;
   const UserEntityCompanion({
     this.userId = const Value.absent(),
     this.username = const Value.absent(),
-    this.profileImage = const Value.absent(),
-    this.profileImageSmall = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   UserEntityCompanion.insert({
     required String userId,
     required String username,
-    this.profileImage = const Value.absent(),
-    this.profileImageSmall = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : userId = Value(userId),
         username = Value(username);
   static Insertable<UserEntityData> custom({
     Expression<String>? userId,
     Expression<String>? username,
-    Expression<Uint8List>? profileImage,
-    Expression<Uint8List>? profileImageSmall,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (userId != null) 'user_id': userId,
       if (username != null) 'username': username,
-      if (profileImage != null) 'profile_image': profileImage,
-      if (profileImageSmall != null) 'profile_image_small': profileImageSmall,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   UserEntityCompanion copyWith(
-      {Value<String>? userId,
-      Value<String>? username,
-      Value<Uint8List?>? profileImage,
-      Value<Uint8List?>? profileImageSmall,
-      Value<int>? rowid}) {
+      {Value<String>? userId, Value<String>? username, Value<int>? rowid}) {
     return UserEntityCompanion(
       userId: userId ?? this.userId,
       username: username ?? this.username,
-      profileImage: profileImage ?? this.profileImage,
-      profileImageSmall: profileImageSmall ?? this.profileImageSmall,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -272,12 +179,6 @@ class UserEntityCompanion extends UpdateCompanion<UserEntityData> {
     if (username.present) {
       map['username'] = Variable<String>(username.value);
     }
-    if (profileImage.present) {
-      map['profile_image'] = Variable<Uint8List>(profileImage.value);
-    }
-    if (profileImageSmall.present) {
-      map['profile_image_small'] = Variable<Uint8List>(profileImageSmall.value);
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -289,8 +190,6 @@ class UserEntityCompanion extends UpdateCompanion<UserEntityData> {
     return (StringBuffer('UserEntityCompanion(')
           ..write('userId: $userId, ')
           ..write('username: $username, ')
-          ..write('profileImage: $profileImage, ')
-          ..write('profileImageSmall: $profileImageSmall, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1892,15 +1791,11 @@ abstract class _$Database extends GeneratedDatabase {
 typedef $$UserEntityTableCreateCompanionBuilder = UserEntityCompanion Function({
   required String userId,
   required String username,
-  Value<Uint8List?> profileImage,
-  Value<Uint8List?> profileImageSmall,
   Value<int> rowid,
 });
 typedef $$UserEntityTableUpdateCompanionBuilder = UserEntityCompanion Function({
   Value<String> userId,
   Value<String> username,
-  Value<Uint8List?> profileImage,
-  Value<Uint8List?> profileImageSmall,
   Value<int> rowid,
 });
 
@@ -1953,13 +1848,6 @@ class $$UserEntityTableFilterComposer
 
   ColumnFilters<String> get username => $composableBuilder(
       column: $table.username, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<Uint8List> get profileImage => $composableBuilder(
-      column: $table.profileImage, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<Uint8List> get profileImageSmall => $composableBuilder(
-      column: $table.profileImageSmall,
-      builder: (column) => ColumnFilters(column));
 
   Expression<bool> groupEntityRefs(
       Expression<bool> Function($$GroupEntityTableFilterComposer f) f) {
@@ -2018,14 +1906,6 @@ class $$UserEntityTableOrderingComposer
 
   ColumnOrderings<String> get username => $composableBuilder(
       column: $table.username, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<Uint8List> get profileImage => $composableBuilder(
-      column: $table.profileImage,
-      builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<Uint8List> get profileImageSmall => $composableBuilder(
-      column: $table.profileImageSmall,
-      builder: (column) => ColumnOrderings(column));
 }
 
 class $$UserEntityTableAnnotationComposer
@@ -2042,12 +1922,6 @@ class $$UserEntityTableAnnotationComposer
 
   GeneratedColumn<String> get username =>
       $composableBuilder(column: $table.username, builder: (column) => column);
-
-  GeneratedColumn<Uint8List> get profileImage => $composableBuilder(
-      column: $table.profileImage, builder: (column) => column);
-
-  GeneratedColumn<Uint8List> get profileImageSmall => $composableBuilder(
-      column: $table.profileImageSmall, builder: (column) => column);
 
   Expression<T> groupEntityRefs<T extends Object>(
       Expression<T> Function($$GroupEntityTableAnnotationComposer a) f) {
@@ -2117,29 +1991,21 @@ class $$UserEntityTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<String> userId = const Value.absent(),
             Value<String> username = const Value.absent(),
-            Value<Uint8List?> profileImage = const Value.absent(),
-            Value<Uint8List?> profileImageSmall = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UserEntityCompanion(
             userId: userId,
             username: username,
-            profileImage: profileImage,
-            profileImageSmall: profileImageSmall,
             rowid: rowid,
           ),
           createCompanionCallback: ({
             required String userId,
             required String username,
-            Value<Uint8List?> profileImage = const Value.absent(),
-            Value<Uint8List?> profileImageSmall = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UserEntityCompanion.insert(
             userId: userId,
             username: username,
-            profileImage: profileImage,
-            profileImageSmall: profileImageSmall,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

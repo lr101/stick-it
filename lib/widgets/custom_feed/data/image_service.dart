@@ -15,7 +15,7 @@ class PinImageInfo {
 
 @riverpod
 Future<PinImageInfo?> getPinImageInfo(GetPinImageInfoRef ref, String pinId) async {
-  final imageData = await ref.watch(getPinImageProvider(pinId));
+  final imageData = await ref.watch(getPinImageAndFetchProvider(pinId));
   if (imageData.value == null) return null;
   final Completer<ui.Image> completer = Completer();
   ui.decodeImageFromList(imageData.value!, (ui.Image img) {

@@ -83,9 +83,6 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
         end = pageKey + _pageSize;
       }
       final idList = images.getRange(pageKey, end).toList();
-      await ref
-          .read(pinImageServiceProvider.notifier)
-          .addImages(idList.map((e) => e.id).toList());
       if (end == images.length) {
         _pagingController.appendLastPage(idList);
       } else {

@@ -23,6 +23,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../repository/global_data_repository.dart';
 import '../repository/pin_repository.dart';
 import 'package:collection/collection.dart';
+import 'package:http/http.dart' as http;
 
 import 'global_data_service.dart';
 
@@ -130,7 +131,8 @@ class PinService extends _$PinService {
       if (result != null) {
         final newPin = LocalPinDto.fromDto(result);
         updateSinglePin(newPin, oldPinId: pin.id);
-        _pinRepository.updateToSynced(newPin, pin.id, base64Decode(result.image!));
+        final newImage = await http.get(Uri.parse(result.image!));
+        _pinRepository.updateToSynced(newPin, pin.id, newImage.bodyBytes);
         await ref.watch(pinImageServiceProvider.notifier).addImage(newPin.id, removeKeepAlive: true);
         return null;
       } else {

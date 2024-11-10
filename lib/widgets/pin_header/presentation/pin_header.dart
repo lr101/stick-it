@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_group.dart';
 import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_user.dart';
@@ -35,8 +36,7 @@ class PinHeader extends ConsumerWidget {
                   padding: const EdgeInsets.all(2),
                   child: RoundImage(
                     size: 16,
-                    imageCallback:
-                        AsyncData(data.whenOrNull(data: (d) => d.profileImageSmall)),
+                    imageCallback: ref.watch(userProfilePictureSmallByIdProvider(pinDto.creatorId)),
                   ),
                 ),
                 Column(

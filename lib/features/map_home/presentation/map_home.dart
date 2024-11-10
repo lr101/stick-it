@@ -200,8 +200,8 @@ class _MapHomeState extends ConsumerState<MapHome>
   }
 
   Future<void> moveToCurrentPosition() async {
-    if (!(await Permission.accessMediaLocation.isGranted)) {
-      await Permission.accessMediaLocation.request();
+    if ((await Geolocator.checkPermission()) == LocationPermission.denied) {
+      await Geolocator.requestPermission();
     }
     final destLocation = await Geolocator.getCurrentPosition();
     setLocation(LatLng(destLocation.latitude, destLocation.longitude), 15);
@@ -235,9 +235,6 @@ class _MapHomeState extends ConsumerState<MapHome>
         end = pageKey + pageSize;
       }
       final idList = _pins.getRange(pageKey, end).toList();
-      ref
-          .read(pinImageServiceProvider.notifier)
-          .addImages(idList.map((e) => e.key.id).toList());
       if (end == _pins.length) {
         _pagingController.appendLastPage(idList);
       } else {

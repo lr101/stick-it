@@ -27,10 +27,6 @@ class GlobalDataService  extends _$GlobalDataService {
     await ref.watch(sharedPreferencesProvider).clear();
     await ref.watch(flutterSecureStorageProvider).deleteAll();
     await ref.watch(databaseProvider).deleteEverything();
-    state = await GlobalDataRepository.get(
-      ref.watch(sharedPreferencesProvider),
-      ref.watch(flutterSecureStorageProvider)
-    );
   }
 
 

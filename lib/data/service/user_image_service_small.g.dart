@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_image_service.dart';
+part of 'user_image_service_small.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profilePictureByIdHash() =>
-    r'5c600cc9819cc74f204416e3b7945ad04df2f2a9';
+String _$userProfilePictureSmallByIdHash() =>
+    r'c789e324ae49e823857d7f2bed5d5e11dd495495';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,27 +30,27 @@ class _SystemHash {
   }
 }
 
-/// See also [profilePictureById].
-@ProviderFor(profilePictureById)
-const profilePictureByIdProvider = ProfilePictureByIdFamily();
+/// See also [userProfilePictureSmallById].
+@ProviderFor(userProfilePictureSmallById)
+const userProfilePictureSmallByIdProvider = UserProfilePictureSmallByIdFamily();
 
-/// See also [profilePictureById].
-class ProfilePictureByIdFamily extends Family<AsyncValue<Uint8List?>> {
-  /// See also [profilePictureById].
-  const ProfilePictureByIdFamily();
+/// See also [userProfilePictureSmallById].
+class UserProfilePictureSmallByIdFamily extends Family<AsyncValue<Uint8List?>> {
+  /// See also [userProfilePictureSmallById].
+  const UserProfilePictureSmallByIdFamily();
 
-  /// See also [profilePictureById].
-  ProfilePictureByIdProvider call(
+  /// See also [userProfilePictureSmallById].
+  UserProfilePictureSmallByIdProvider call(
     String userId,
   ) {
-    return ProfilePictureByIdProvider(
+    return UserProfilePictureSmallByIdProvider(
       userId,
     );
   }
 
   @override
-  ProfilePictureByIdProvider getProviderOverride(
-    covariant ProfilePictureByIdProvider provider,
+  UserProfilePictureSmallByIdProvider getProviderOverride(
+    covariant UserProfilePictureSmallByIdProvider provider,
   ) {
     return call(
       provider.userId,
@@ -69,32 +69,33 @@ class ProfilePictureByIdFamily extends Family<AsyncValue<Uint8List?>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'profilePictureByIdProvider';
+  String? get name => r'userProfilePictureSmallByIdProvider';
 }
 
-/// See also [profilePictureById].
-class ProfilePictureByIdProvider extends AutoDisposeFutureProvider<Uint8List?> {
-  /// See also [profilePictureById].
-  ProfilePictureByIdProvider(
+/// See also [userProfilePictureSmallById].
+class UserProfilePictureSmallByIdProvider
+    extends AutoDisposeFutureProvider<Uint8List?> {
+  /// See also [userProfilePictureSmallById].
+  UserProfilePictureSmallByIdProvider(
     String userId,
   ) : this._internal(
-          (ref) => profilePictureById(
-            ref as ProfilePictureByIdRef,
+          (ref) => userProfilePictureSmallById(
+            ref as UserProfilePictureSmallByIdRef,
             userId,
           ),
-          from: profilePictureByIdProvider,
-          name: r'profilePictureByIdProvider',
+          from: userProfilePictureSmallByIdProvider,
+          name: r'userProfilePictureSmallByIdProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$profilePictureByIdHash,
-          dependencies: ProfilePictureByIdFamily._dependencies,
+                  : _$userProfilePictureSmallByIdHash,
+          dependencies: UserProfilePictureSmallByIdFamily._dependencies,
           allTransitiveDependencies:
-              ProfilePictureByIdFamily._allTransitiveDependencies,
+              UserProfilePictureSmallByIdFamily._allTransitiveDependencies,
           userId: userId,
         );
 
-  ProfilePictureByIdProvider._internal(
+  UserProfilePictureSmallByIdProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -108,12 +109,13 @@ class ProfilePictureByIdProvider extends AutoDisposeFutureProvider<Uint8List?> {
 
   @override
   Override overrideWith(
-    FutureOr<Uint8List?> Function(ProfilePictureByIdRef provider) create,
+    FutureOr<Uint8List?> Function(UserProfilePictureSmallByIdRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: ProfilePictureByIdProvider._internal(
-        (ref) => create(ref as ProfilePictureByIdRef),
+      override: UserProfilePictureSmallByIdProvider._internal(
+        (ref) => create(ref as UserProfilePictureSmallByIdRef),
         from: from,
         name: null,
         dependencies: null,
@@ -126,12 +128,13 @@ class ProfilePictureByIdProvider extends AutoDisposeFutureProvider<Uint8List?> {
 
   @override
   AutoDisposeFutureProviderElement<Uint8List?> createElement() {
-    return _ProfilePictureByIdProviderElement(this);
+    return _UserProfilePictureSmallByIdProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ProfilePictureByIdProvider && other.userId == userId;
+    return other is UserProfilePictureSmallByIdProvider &&
+        other.userId == userId;
   }
 
   @override
@@ -145,35 +148,37 @@ class ProfilePictureByIdProvider extends AutoDisposeFutureProvider<Uint8List?> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin ProfilePictureByIdRef on AutoDisposeFutureProviderRef<Uint8List?> {
+mixin UserProfilePictureSmallByIdRef
+    on AutoDisposeFutureProviderRef<Uint8List?> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
-class _ProfilePictureByIdProviderElement
+class _UserProfilePictureSmallByIdProviderElement
     extends AutoDisposeFutureProviderElement<Uint8List?>
-    with ProfilePictureByIdRef {
-  _ProfilePictureByIdProviderElement(super.provider);
+    with UserProfilePictureSmallByIdRef {
+  _UserProfilePictureSmallByIdProviderElement(super.provider);
 
   @override
-  String get userId => (origin as ProfilePictureByIdProvider).userId;
+  String get userId => (origin as UserProfilePictureSmallByIdProvider).userId;
 }
 
-String _$userImageServiceHash() => r'02060c5231a4cb69a9a3ddeb37d84ed88caebd60';
+String _$userImageServiceSmallHash() =>
+    r'9efad8bd475b2d19441daedd9534daa790448a1d';
 
-/// See also [UserImageService].
-@ProviderFor(UserImageService)
-final userImageServiceProvider =
-    AsyncNotifierProvider<UserImageService, Map<String, Uint8List?>>.internal(
-  UserImageService.new,
-  name: r'userImageServiceProvider',
+/// See also [UserImageServiceSmall].
+@ProviderFor(UserImageServiceSmall)
+final userImageServiceSmallProvider = AsyncNotifierProvider<
+    UserImageServiceSmall, Map<String, Uint8List?>>.internal(
+  UserImageServiceSmall.new,
+  name: r'userImageServiceSmallProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$userImageServiceHash,
+      : _$userImageServiceSmallHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$UserImageService = AsyncNotifier<Map<String, Uint8List?>>;
+typedef _$UserImageServiceSmall = AsyncNotifier<Map<String, Uint8List?>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

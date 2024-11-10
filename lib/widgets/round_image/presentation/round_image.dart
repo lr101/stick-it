@@ -4,6 +4,7 @@ import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class RoundImage extends ConsumerWidget {
@@ -48,11 +49,11 @@ class RoundImage extends ConsumerWidget {
                     child: child,
                 )
               ),
-              loading: () => CircleAvatar(radius: size, backgroundColor: Colors.grey ,child: Stack(
-                children: [
-                  Center(child: CircularProgressIndicator()),
-                  child != null ? child! : SizedBox.shrink()
-                ]
+              loading: () => Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  enabled: true,
+                  child:CircleAvatar(radius: size, backgroundColor: Colors.grey ,child: child != null ? child! : SizedBox.shrink()
               ))
           )
         );

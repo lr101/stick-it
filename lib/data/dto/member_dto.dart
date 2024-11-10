@@ -10,9 +10,8 @@ class MemberDto {
   final String groupId;
   final String username;
   final int points;
-  final Uint8List? profileImageSmall;
 
-  MemberDto({required this.userId, required this.groupId, required this.username, required this.profileImageSmall, required this.points});
+  MemberDto({required this.userId, required this.groupId, required this.username, required this.points});
 
   factory MemberDto.fromRanking(RankingResponseDto ranking, String groupId) {
     return MemberDto(
@@ -20,7 +19,6 @@ class MemberDto {
       username: ranking.username,
       groupId: groupId,
       points: ranking.ranking,
-      profileImageSmall: ranking.profileImageSmall != null ? base64Decode(ranking.profileImageSmall!) : null,
     );
   }
 }

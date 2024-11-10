@@ -85,7 +85,10 @@ class _GroupSearchState extends ConsumerState<GroupSearch> {
       _pagingController.error = "Groups could not be fetched";
       return;
     }
-    final groupDtos = groups.items.map((e) => LocalGroupDto.fromDto(e)).toList();
+    final groupDtos = <LocalGroupDto>[];
+    for (var e in groups.items) {
+      groupDtos.add(await LocalGroupDto.fromDtoAsync(e));
+    }
     if (groupDtos.length < _pageSize) {
       _pagingController.appendLastPage(groupDtos);
     } else {

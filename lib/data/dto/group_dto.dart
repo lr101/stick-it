@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:http/http.dart' as http;
 import 'package:buff_lisa/data/entity/database.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
@@ -65,7 +65,7 @@ class   LocalGroupDto {
     );
   }
 
-  factory LocalGroupDto.fromDto(GroupDto dto) {
+  factory LocalGroupDto.fromDto(GroupDto dto, Uint8List profileImage, Uint8List pinImage) {
     return LocalGroupDto(
         groupId: dto.id,
         name:  dto.name,
@@ -74,12 +74,15 @@ class   LocalGroupDto {
         description: dto.description,
         groupAdmin:  dto.groupAdmin,
         link: dto.link,
-        profileImage: base64Decode(dto.profileImage!),
-        pinImage:  base64Decode(dto.pinImage!),
+        profileImage: profileImage,
+        pinImage:  pinImage,
         lastUpdated: dto.lastUpdated,
         isActivated: false
     );
   }
+
+  static Future<LocalGroupDto> fromDtoAsync(GroupDto dto) async =>
+      LocalGroupDto.fromDto(dto, (await http.get(Uri.parse(dto.profileImage!))).bodyBytes, (await http.get(Uri.parse(dto.pinImage!))).bodyBytes);
 
   CreateGroupDto toCreateGroupDto() {
     return CreateGroupDto(

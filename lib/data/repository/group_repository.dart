@@ -74,7 +74,6 @@ class GroupRepository {
             userId: e.readTable(_db.userEntity).userId,
             groupId: groupId,
             username: e.readTable(_db.userEntity).username,
-            profileImageSmall: e.readTable(_db.userEntity).profileImageSmall,
             points: e.readTable(_db.memberEntity).ranking))
         .toList();
     members.sort((a,b) => b.points - a.points);
@@ -97,27 +96,40 @@ class GroupRepository {
           member.map((e) => UserEntityCompanion(
             userId: Value(e.userId),
             username: Value(e.username),
-            profileImageSmall: Value(e.profileImageSmall != null ? base64Decode(e.profileImageSmall!): null)
           )))));
     });
   }
   
   Future<void> addPoint(String userId, String groupId) async {
-    final entity = await (_db.select(_db.memberEntity)..where((e) => e.userId.equals(userId) & e.groupId.equals(groupId))).getSingle();
-    await (_db.into(_db.memberEntity)).insertOnConflictUpdate(MemberEntityData(
-        userId: userId,
-        groupId: groupId,
-        ranking: entity.ranking + 1
-    ));
+    try {
+      final entity = await (_db.select(_db.memberEntity)
+        ..where((e) => e.userId.equals(userId) & e.groupId.equals(groupId)))
+          .getSingle();
+      await (_db.into(_db.memberEntity)).insertOnConflictUpdate(
+          MemberEntityData(
+              userId: userId,
+              groupId: groupId,
+              ranking: entity.ranking + 1
+          ));
+    } catch (e) {
+      return;
+    }
   }
 
   Future<void> removePoint(String userId, String groupId) async {
-    final entity = await (_db.select(_db.memberEntity)..where((e) => e.userId.equals(userId) & e.groupId.equals(groupId))).getSingle();
-    await (_db.into(_db.memberEntity)).insertOnConflictUpdate(MemberEntityData(
-        userId: userId,
-        groupId: groupId,
-        ranking: entity.ranking - 1
-    ));
+    try {
+      final entity = await (_db.select(_db.memberEntity)
+        ..where((e) => e.userId.equals(userId) & e.groupId.equals(groupId)))
+          .getSingle();
+      await (_db.into(_db.memberEntity)).insertOnConflictUpdate(
+          MemberEntityData(
+              userId: userId,
+              groupId: groupId,
+              ranking: entity.ranking - 1
+          ));
+    } catch (e) {
+      return;
+    }
   }
 
   Future<void> addMember(String userId, String groupId, int ranking) async {

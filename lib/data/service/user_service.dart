@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/user_dto.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
+import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,13 +38,9 @@ class UserService extends _$UserService {
     if (localUser != null) this.state = AsyncData({_data.userId!: localUser});
 
     try {
-      final profileImageSmall = await _usersApi.getUserProfileImageSmallWithHttpInfo(_data.userId!);
       localUser = LocalUserDto(
           userId: _data.userId!,
           username: _data.username!,
-          profileImageSmall: profileImageSmall.statusCode == 200 &&
-              profileImageSmall.bodyBytes.isNotEmpty ? profileImageSmall
-              .bodyBytes : null
       );
       await _userRepository.createUser(localUser);
     } catch(e) {
@@ -125,16 +122,9 @@ class UserService extends _$UserService {
               image: profilePicture == null
                   ? null
                   : base64Encode(profilePicture)));
-      if (result != null && result.profileImage != null) {
-        state.value![userId] = LocalUserDto(
-            userId: userId,
-            username: global.username!,
-            profileImageSmall: base64Decode(result.profileImageSmall!));
-        ref
-            .read(userImageServiceProvider.notifier)
-            .updateUserImage(userId, base64Decode(result.profileImage!));
-        await _userRepository.createUser(state.value![userId]!);
-        ref.notifyListeners();
+      if (result != null) {
+        ref.read(userImageServiceSmallProvider.notifier).fetchUserImage(userId);
+        ref.read(userImageServiceProvider.notifier).fetchUserImage(userId);
       }
       return null;
     } on ApiException catch (e) {
@@ -189,8 +179,3 @@ Future<LocalUserDto> userById(Ref ref, String userId) async {
   }
 }
 
-@riverpod
-Future<Uint8List?> profilePictureSmallById(Ref ref, String userId) async {
-  return await ref
-      .watch(userByIdProvider(userId).selectAsync((u) => u.profileImageSmall));
-}

@@ -16,14 +16,6 @@ class EditHiddenPosts extends ConsumerStatefulWidget {
 }
 
 class _EditHiddenPostsState extends ConsumerState<EditHiddenPosts> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
-      ref.watch(pinImageServiceProvider.notifier).addImages(hiddenPosts);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +36,7 @@ class _EditHiddenPostsState extends ConsumerState<EditHiddenPosts> {
                         .read(hiddenPostsServiceProvider.notifier)
                         .removeHiddenPost(hiddenPosts[index])),
                 title: ref
-                        .watch(getPinImageProvider(hiddenPosts[index]))
+                        .watch(getPinImageAndFetchProvider(hiddenPosts[index]))
                         .whenOrNull(
                           data: (data) {
                             if (data == null) return null;

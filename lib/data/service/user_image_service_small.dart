@@ -9,16 +9,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'global_data_service.dart';
 import 'package:http/http.dart' as http;
 
-part 'user_image_service.g.dart';
+part 'user_image_service_small.g.dart';
 
 @Riverpod(keepAlive: true)
-class UserImageService extends _$UserImageService {
+class UserImageServiceSmall extends _$UserImageServiceSmall {
 
   @override
   Future<Map<String, Uint8List?>> build() async {
     final _data = ref.watch(globalDataServiceProvider);
     final _usersApi = ref.watch(userApiProvider);
-    final profileImageUrl = await _usersApi.getUserProfileImage(_data.userId!);
+    final profileImageUrl = await _usersApi.getUserProfileImageSmall(_data.userId!);
     if (profileImageUrl != null) {
       final profileImage = await http.get(Uri.parse(profileImageUrl));
       return {_data.userId!: profileImage.bodyBytes};
@@ -30,7 +30,7 @@ class UserImageService extends _$UserImageService {
   Future<String?> fetchUserImage(String userId) async {
     try {
       final _usersApi = ref.watch(userApiProvider);
-      final profileImageUrl = await _usersApi.getUserProfileImage(userId);
+      final profileImageUrl = await _usersApi.getUserProfileImageSmall(userId);
       if (profileImageUrl != null) {
         final profileImage = await http.get(Uri.parse(profileImageUrl));
         state.value![userId] = profileImage.bodyBytes;
@@ -51,16 +51,16 @@ class UserImageService extends _$UserImageService {
 }
 
 @riverpod
-Future<Uint8List?> profilePictureById(Ref ref, String userId) async {
+Future<Uint8List?> userProfilePictureSmallById(Ref ref, String userId) async {
   bool containsKey = false;
-  final profilePicture = await ref.watch(userImageServiceProvider.selectAsync((u) {
+  final profilePicture = await ref.watch(userImageServiceSmallProvider.selectAsync((u) {
     containsKey = u.containsKey(userId);
     return containsKey ? u[userId] : null;
   }));
   if (containsKey) {
     return profilePicture;
   } else {
-    await ref.read(userImageServiceProvider.notifier).fetchUserImage(userId);
+    await ref.read(userImageServiceSmallProvider.notifier).fetchUserImage(userId);
     return null;
   }
 }

@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
@@ -36,8 +37,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   @override
   Widget build(BuildContext context) {
     final global = ref.watch(globalDataServiceProvider);
-    final userImage =
-        ref.watch(profilePictureSmallByIdProvider(global.userId!));
+    final userImage = ref.watch(userProfilePictureSmallByIdProvider(global.userId!));
     return Scaffold(
         appBar: AppBar(
           title: Text("Approve"),

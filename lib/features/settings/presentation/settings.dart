@@ -165,9 +165,9 @@ class _SettingsState extends ConsumerState<Settings> {
                     'Logout',
                     style: TextStyle(color: Colors.red),
                   ),
-                  onPressed: (context) => showDialog(
-                      context: context,
-                      builder: (context) => CustomDialog(
+                  onPressed: (c2) => showDialog(
+                      context: c2,
+                      builder: (c) => CustomDialog(
                             title: "Confirm Logout",
                             text2: "Logout",
                             text1: "Cancel",

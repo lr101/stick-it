@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/repository/pin_image_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -35,42 +36,10 @@ class PinImageService extends _$PinImageService {
       await _imageRepository.addOfflineImage(pinId, image);
   }
 
-  Future<String?> addImages(List<String> pinIds) async {
-    final missingImages = <String>[];
-    for (var pinId in pinIds) {
-      if (state.value == null || !state.value!.containsKey(pinId)) {
-        missingImages.add(pinId);
-      }
-    }
-    if (missingImages.isEmpty) return null;
-    try {
-      final image = await ref.watch(pinApiProvider).getPinImagesByIds(
-          ids: missingImages, withImage: true);
-      final map = {...state.value ?? {}};
-      if (image != null) {
-        for (var pin in image.items) {
-          final uintImage = base64Decode(pin.image!).buffer.asUint8List();
-          map[pin.id] = uintImage;
-          await _imageRepository.addImage(pin.id, uintImage);
-        }
-      }
-      state = AsyncData(map);
-      return null;
-    } on ApiException catch(e) {
-      return e.message;
-    }
-
-  }
-
 }
 
 @riverpod
-Future<Uint8List?> getPinImage(GetPinImageRef ref, String pinId) async {
-  return await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pinId]));
-}
-
-@riverpod
-Future<Uint8List?> getPinImageAndFetch(GetPinImageAndFetchRef ref, String pinId) async {
+Future<Uint8List?> getPinImageAndFetch(Ref ref, String pinId) async {
   final image = await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pinId]));
   if (image == null) {
     ref.watch(pinImageServiceProvider.notifier).addImage(pinId);

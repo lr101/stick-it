@@ -1,5 +1,6 @@
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
+import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class UserTile extends ConsumerWidget {
             onPressed: () => ref.read(hiddenUserServiceProvider.notifier).removeHiddenUser(userId)),
           title: Align(alignment: Alignment.centerLeft, child: Text(data.username)),
           leading: RoundImage(
-                imageCallback: AsyncData(data.profileImageSmall),
+                imageCallback: ref.watch(userProfilePictureSmallByIdProvider(userId)),
                 size: 20.0,
                 child: Container()),
             ),

@@ -63,8 +63,7 @@ class LocalPinDto {
       creationDate : pinDto.creationDate,
       groupId: pinDto.groupId,
       isHidden: false,
-      lastSynced: pinDto.creationDate, // TODO update to last updated
-      likes: pinDto.likes
+      lastSynced: pinDto.creationDate, // TODO update to last updatedd
     );
   }
 
@@ -78,7 +77,6 @@ class LocalPinDto {
       groupId: pinDto.groupId,
       isHidden: false,
       lastSynced: pinDto.creationDate, // TODO update to last updated
-      likes: pinDto.likes
     );
   }
 

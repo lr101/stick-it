@@ -49,8 +49,9 @@ class PinImageRepository {
   // Fetch the image from the API and cache it
   Future<Uint8List> _fetchAndCacheImage(String pinId) async {
     try {
-     final image = await ref.watch(pinApiProvider).getPin(pinId, withImage: true);
-     final decodedImage = base64Decode(image!.image!);
+     final imageUrl = await ref.watch(pinApiProvider).getPinImage(pinId);
+     final image = await http.get(Uri.parse(imageUrl!));
+     final decodedImage = image.bodyBytes;
      await _addImageToCache(PinImageEntityCompanion(
        pinId: Value(pinId),
        image: Value(decodedImage),
@@ -89,7 +90,10 @@ class PinImageRepository {
   }
 
   Future<void> _deleteLeastUsedImage() async {
-    final leastUsedImage = await (_db.select(_db.pinImageEntity)..orderBy([(tbl) => OrderingTerm(expression: tbl.hitCount, mode: OrderingMode.asc)])).getSingleOrNull();
+    final leastUsedImage = await (_db.select(_db.pinImageEntity)
+      ..where((tbl) => tbl.keepAlive.equals(false))
+      ..orderBy([(tbl) => OrderingTerm(expression: tbl.hitCount, mode: OrderingMode.asc)])
+    ).getSingleOrNull();
     if (leastUsedImage != null) {
       await (_db.delete(_db.pinImageEntity)..where((tbl) => tbl.pinId.equals(leastUsedImage.pinId))).go();
     }
@@ -113,6 +117,6 @@ class PinImageRepository {
 }
 
 @Riverpod(keepAlive: true)
-PinImageRepository pinImageRepository(PinImageRepositoryRef ref) {
+PinImageRepository pinImageRepository(Ref ref) {
   return PinImageRepository(ref: ref, maxCacheSize: 1000);
 }
