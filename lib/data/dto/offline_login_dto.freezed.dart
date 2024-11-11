@@ -25,6 +25,8 @@ mixin _$OfflineLoginDto {
   bool get loadedPins => throw _privateConstructorUsedError;
   int? get numberOfLoadedPinGroups => throw _privateConstructorUsedError;
   bool get loadedUser => throw _privateConstructorUsedError;
+  int? get numberOfSyncedPinGroups => throw _privateConstructorUsedError;
+  bool get syncedPins => throw _privateConstructorUsedError;
 
   /// Serializes this OfflineLoginDto to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,7 +49,9 @@ abstract class $OfflineLoginDtoCopyWith<$Res> {
       int? numberOfGroups,
       bool loadedPins,
       int? numberOfLoadedPinGroups,
-      bool loadedUser});
+      bool loadedUser,
+      int? numberOfSyncedPinGroups,
+      bool syncedPins});
 }
 
 /// @nodoc
@@ -70,6 +74,8 @@ class _$OfflineLoginDtoCopyWithImpl<$Res, $Val extends OfflineLoginDto>
     Object? loadedPins = null,
     Object? numberOfLoadedPinGroups = freezed,
     Object? loadedUser = null,
+    Object? numberOfSyncedPinGroups = freezed,
+    Object? syncedPins = null,
   }) {
     return _then(_value.copyWith(
       loadedGroups: null == loadedGroups
@@ -92,6 +98,14 @@ class _$OfflineLoginDtoCopyWithImpl<$Res, $Val extends OfflineLoginDto>
           ? _value.loadedUser
           : loadedUser // ignore: cast_nullable_to_non_nullable
               as bool,
+      numberOfSyncedPinGroups: freezed == numberOfSyncedPinGroups
+          ? _value.numberOfSyncedPinGroups
+          : numberOfSyncedPinGroups // ignore: cast_nullable_to_non_nullable
+              as int?,
+      syncedPins: null == syncedPins
+          ? _value.syncedPins
+          : syncedPins // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -109,7 +123,9 @@ abstract class _$$OfflineLoginDtoImplCopyWith<$Res>
       int? numberOfGroups,
       bool loadedPins,
       int? numberOfLoadedPinGroups,
-      bool loadedUser});
+      bool loadedUser,
+      int? numberOfSyncedPinGroups,
+      bool syncedPins});
 }
 
 /// @nodoc
@@ -130,6 +146,8 @@ class __$$OfflineLoginDtoImplCopyWithImpl<$Res>
     Object? loadedPins = null,
     Object? numberOfLoadedPinGroups = freezed,
     Object? loadedUser = null,
+    Object? numberOfSyncedPinGroups = freezed,
+    Object? syncedPins = null,
   }) {
     return _then(_$OfflineLoginDtoImpl(
       loadedGroups: null == loadedGroups
@@ -152,6 +170,14 @@ class __$$OfflineLoginDtoImplCopyWithImpl<$Res>
           ? _value.loadedUser
           : loadedUser // ignore: cast_nullable_to_non_nullable
               as bool,
+      numberOfSyncedPinGroups: freezed == numberOfSyncedPinGroups
+          ? _value.numberOfSyncedPinGroups
+          : numberOfSyncedPinGroups // ignore: cast_nullable_to_non_nullable
+              as int?,
+      syncedPins: null == syncedPins
+          ? _value.syncedPins
+          : syncedPins // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -164,7 +190,9 @@ class _$OfflineLoginDtoImpl implements _OfflineLoginDto {
       this.numberOfGroups,
       this.loadedPins = false,
       this.numberOfLoadedPinGroups,
-      this.loadedUser = false});
+      this.loadedUser = false,
+      this.numberOfSyncedPinGroups,
+      this.syncedPins = false});
 
   factory _$OfflineLoginDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$OfflineLoginDtoImplFromJson(json);
@@ -182,10 +210,15 @@ class _$OfflineLoginDtoImpl implements _OfflineLoginDto {
   @override
   @JsonKey()
   final bool loadedUser;
+  @override
+  final int? numberOfSyncedPinGroups;
+  @override
+  @JsonKey()
+  final bool syncedPins;
 
   @override
   String toString() {
-    return 'OfflineLoginDto(loadedGroups: $loadedGroups, numberOfGroups: $numberOfGroups, loadedPins: $loadedPins, numberOfLoadedPinGroups: $numberOfLoadedPinGroups, loadedUser: $loadedUser)';
+    return 'OfflineLoginDto(loadedGroups: $loadedGroups, numberOfGroups: $numberOfGroups, loadedPins: $loadedPins, numberOfLoadedPinGroups: $numberOfLoadedPinGroups, loadedUser: $loadedUser, numberOfSyncedPinGroups: $numberOfSyncedPinGroups, syncedPins: $syncedPins)';
   }
 
   @override
@@ -203,13 +236,25 @@ class _$OfflineLoginDtoImpl implements _OfflineLoginDto {
                     other.numberOfLoadedPinGroups, numberOfLoadedPinGroups) ||
                 other.numberOfLoadedPinGroups == numberOfLoadedPinGroups) &&
             (identical(other.loadedUser, loadedUser) ||
-                other.loadedUser == loadedUser));
+                other.loadedUser == loadedUser) &&
+            (identical(
+                    other.numberOfSyncedPinGroups, numberOfSyncedPinGroups) ||
+                other.numberOfSyncedPinGroups == numberOfSyncedPinGroups) &&
+            (identical(other.syncedPins, syncedPins) ||
+                other.syncedPins == syncedPins));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, loadedGroups, numberOfGroups,
-      loadedPins, numberOfLoadedPinGroups, loadedUser);
+  int get hashCode => Object.hash(
+      runtimeType,
+      loadedGroups,
+      numberOfGroups,
+      loadedPins,
+      numberOfLoadedPinGroups,
+      loadedUser,
+      numberOfSyncedPinGroups,
+      syncedPins);
 
   /// Create a copy of OfflineLoginDto
   /// with the given fields replaced by the non-null parameter values.
@@ -234,7 +279,9 @@ abstract class _OfflineLoginDto implements OfflineLoginDto {
       final int? numberOfGroups,
       final bool loadedPins,
       final int? numberOfLoadedPinGroups,
-      final bool loadedUser}) = _$OfflineLoginDtoImpl;
+      final bool loadedUser,
+      final int? numberOfSyncedPinGroups,
+      final bool syncedPins}) = _$OfflineLoginDtoImpl;
 
   factory _OfflineLoginDto.fromJson(Map<String, dynamic> json) =
       _$OfflineLoginDtoImpl.fromJson;
@@ -249,6 +296,10 @@ abstract class _OfflineLoginDto implements OfflineLoginDto {
   int? get numberOfLoadedPinGroups;
   @override
   bool get loadedUser;
+  @override
+  int? get numberOfSyncedPinGroups;
+  @override
+  bool get syncedPins;
 
   /// Create a copy of OfflineLoginDto
   /// with the given fields replaced by the non-null parameter values.

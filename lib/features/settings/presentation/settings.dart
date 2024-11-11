@@ -1,19 +1,11 @@
 import 'package:buff_lisa/data/entity/database.dart';
-import 'package:buff_lisa/data/repository/group_repository.dart';
-import 'package:buff_lisa/data/repository/pin_repository.dart';
-import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
-import 'package:buff_lisa/data/service/offline_init_service.dart';
-import 'package:buff_lisa/data/service/online_init_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
-import 'package:buff_lisa/features/auth/presentation/auth.dart';
-import 'package:buff_lisa/features/auth/presentation/loading.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_password.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_profile_picture.dart';
@@ -25,10 +17,10 @@ import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
-import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../../../data/repository/global_data_repository.dart';
@@ -172,9 +164,9 @@ class _SettingsState extends ConsumerState<Settings> {
                             text2: "Logout",
                             text1: "Cancel",
                             onPressed: () async {
-                              await invalidateCache();
                               await ref.read(globalDataServiceProvider.notifier).logout();
-                              Routing.toAndDelete(context, Auth(), "/login");
+                              await invalidateCache();
+                              context.go("/login");
                             },
                           ))),
             ])
@@ -209,9 +201,6 @@ class _SettingsState extends ConsumerState<Settings> {
     ref.invalidate(memberServiceProvider);
     ref.invalidate(noUserGroupServiceProvider);
     ref.invalidate(userGroupServiceProvider);
-    ref.invalidate(offlineInitServiceProvider);
-    ref.invalidate(onlineInitServiceProvider);
     ref.invalidate(likeServiceProvider);
-    Routing.toAndDelete(context, Loading(), "/home");
   }
 }

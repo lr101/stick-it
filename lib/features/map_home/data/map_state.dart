@@ -1,6 +1,7 @@
 
 
 
+import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
@@ -38,18 +39,24 @@ class MapStates extends _$MapStates {
 
 @Riverpod(keepAlive: true)
 Stream<Position> currentLocation(Ref ref) async* {
+  final sharedPrefs = ref.watch(sharedPreferencesProvider);
   final permission  = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     await Geolocator.requestPermission();
   }
   if (permission != LocationPermission.denied &&
       permission != LocationPermission.deniedForever) {
-    yield* Geolocator.getPositionStream(
+    final positionStream = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: 10, // Emit position updates when moved by 10 meters
+        distanceFilter: 100, // Emit position updates when moved by 10 meters
       ),
     );
+    positionStream.first.then((v) {
+      sharedPrefs.setDouble("lastKnownLong", v.longitude);
+      sharedPrefs.setDouble("lastKnownLat", v.latitude);
+    });
+    yield* positionStream;
   } else {
     CustomErrorSnackBar.message(message: "Some functions do not work without location permission", type: CustomErrorSnackBarType.error);
   }

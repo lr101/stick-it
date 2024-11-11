@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
-import 'package:buff_lisa/features/auth/presentation/loading.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
@@ -73,20 +74,13 @@ class MyApp extends ConsumerWidget {
     ]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     final theme = MaterialTheme(Theme.of(context).textTheme);
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Mona App',
       themeMode: ref.watch(themeStateProvider),
       darkTheme: theme.dark(),
       theme: theme.lightHighContrast(),
-      initialRoute: ref.watch(globalDataServiceProvider).userId != null ? '/home' : '/login',
-      routes: {
-        '/login': (context) => Auth(),
-        '/home': (context) {
-          return const Loading();
-        }
-      },
-      navigatorKey: NavigationService.navigatorKey,
+      routerConfig: Routing.goRoute(ref.watch(globalDataServiceProvider).refreshToken != null),
     );
   }
 }

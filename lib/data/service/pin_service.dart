@@ -5,11 +5,8 @@ import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
-import 'package:buff_lisa/data/service/member_service.dart';
-import 'package:buff_lisa/data/service/offline_init_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/reachability_service.dart';
-import 'package:buff_lisa/data/service/syncing_service_schedular.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/util/error/pin_not_found_exception.dart';
@@ -44,7 +41,7 @@ class PinService extends _$PinService {
     if (isUserGroup) {
       final localPins = await _pinRepository.getPinsOfGroup(groupId);
       localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
-      ref.read(offlineInitServiceProvider.notifier).setLoadedPinGroup(groupId);
+      sync();
       return localPins;
     } else {
       final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
@@ -58,7 +55,6 @@ class PinService extends _$PinService {
     if (_mutex.isLocked) return;
     await _mutex.acquire();
     try {
-      ref.read(syncingServiceSchedularProvider.notifier).setState(SyncingServiceSchedularState.loading);
       final key = GlobalDataRepository.lastSeenPinKey + groupId;
       final lastSeen = ref.read(lastSeenProvider(key));
       // sync updated and deleted pins from server
@@ -83,11 +79,11 @@ class PinService extends _$PinService {
       if (numSynced > 0) {
         CustomErrorSnackBar.message(message: "Your offline sticks have been uploaded");
       }
-      ref.read(syncingServiceSchedularProvider.notifier).setState(SyncingServiceSchedularState.done);
     } catch (e) {
       if (kDebugMode) print(e);
     } finally {
       _mutex.release();
+      if (kDebugMode) print("synced ${state.value!.length} pins of group ${groupId}");
     }
   }
 

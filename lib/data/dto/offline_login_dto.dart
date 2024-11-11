@@ -11,6 +11,8 @@ class OfflineLoginDto with _$OfflineLoginDto {
     @Default(false) bool loadedPins,
     int? numberOfLoadedPinGroups,
     @Default(false) bool loadedUser,
+    int? numberOfSyncedPinGroups,
+    @Default(false) bool syncedPins,
   }) = _OfflineLoginDto;
 
   factory OfflineLoginDto.fromJson(Map<String, dynamic> json) => _$OfflineLoginDtoFromJson(json);

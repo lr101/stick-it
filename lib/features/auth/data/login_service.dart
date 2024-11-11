@@ -1,10 +1,9 @@
 import 'package:buff_lisa/data/service/user_service.dart';
-import 'package:buff_lisa/features/auth/presentation/loading.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:string_validator/string_validator.dart';
 part 'login_service.g.dart';
@@ -16,7 +15,7 @@ class LoginService {
 
   /// Navigates to the NavBar Widget when authentication was successful
   void handleLoginComplete(BuildContext context) {
-    Routing.to(context, const Loading());
+    context.go("/");
   }
 
   /// This method is called when the user tries to login with a username and password to an existing account

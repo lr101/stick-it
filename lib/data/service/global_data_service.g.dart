@@ -6,6 +6,23 @@ part of 'global_data_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$lastKnownLocationHash() => r'a7747ffd98bed64169822ee672ea88adadc7fcf5';
+
+/// See also [lastKnownLocation].
+@ProviderFor(lastKnownLocation)
+final lastKnownLocationProvider = AutoDisposeProvider<LatLng>.internal(
+  lastKnownLocation,
+  name: r'lastKnownLocationProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$lastKnownLocationHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef LastKnownLocationRef = AutoDisposeProviderRef<LatLng>;
 String _$globalDataServiceHash() => r'8313e0c416b79b8667ec821ecd75e0f935647e62';
 
 /// See also [GlobalDataService].

@@ -1,5 +1,4 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/online_init_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/closest_pin_card.dart';
@@ -23,9 +22,7 @@ import '../data/marker_window_state.dart';
 import '../../../widgets/custom_marker/presentation/custom_marker.dart';
 
 class MapHome extends ConsumerStatefulWidget {
-  const MapHome({super.key,  required this.centerInit});
-
-  final LatLng? centerInit;
+  const MapHome({super.key});
 
   @override
   ConsumerState<MapHome> createState() => _MapHomeState();
@@ -62,16 +59,24 @@ class _MapHomeState extends ConsumerState<MapHome>
   }
 
   @override
+  void dispose() {
+    animateController.dispose();
+    _controller.dispose();
+    _pagingController.dispose();
+    super.dispose();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     final height = MediaQuery.of(context).size.height;
     final windowsState = ref.watch(markerWindowStateProvider);
     ref.listen(pinsSortedByDistanceProvider, (previous, next) {
-      _pins = next.value ?? [];
+      _pins = next.valueOrNull ?? [];
       _pagingController.refresh();
     });
     final mapState = ref.watch(mapStatesProvider);
-    ref.watch(onlineInitServiceProvider);
     return Scaffold(
       appBar: null,
       body: SizedBox(
@@ -96,7 +101,7 @@ class _MapHomeState extends ConsumerState<MapHome>
               maxZoom: 18,
               initialZoom: 5,
               keepAlive: true,
-              initialCenter: widget.centerInit ?? LatLng(49.01105, 8.25190),
+              initialCenter: ref.watch(lastKnownLocationProvider),
               interactionOptions: InteractionOptions(
                   flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag),
             ),

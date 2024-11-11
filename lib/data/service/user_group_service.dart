@@ -6,16 +6,9 @@ import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/group_image_service.dart';
-import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
-import 'package:buff_lisa/data/service/offline_init_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
-import 'package:buff_lisa/data/service/reachability_service.dart';
-import 'package:buff_lisa/data/service/syncing_service_schedular.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
-import 'package:http/http.dart' as http;
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
-import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mutex/mutex.dart';
@@ -40,7 +33,7 @@ class UserGroupService extends _$UserGroupService {
     _membersApi = ref.watch(memberApiProvider);
     _data = ref.watch(globalDataServiceProvider);
     final groups =  await _groupRepository.getAllGroups();
-    ref.read(offlineInitServiceProvider.notifier).setNumberOfGroup(groups.length);
+    sync();
     return groups;
   }
 
@@ -48,7 +41,6 @@ class UserGroupService extends _$UserGroupService {
     if (_mutex.isLocked) return;
     await _mutex.acquire();
     try {
-      ref.read(syncingServiceSchedularProvider.notifier).setState(SyncingServiceSchedularState.loading);
       final lastSeen = ref.read(lastSeenProvider(GlobalDataRepository.lastSeenKey));
       final remoteGroups = await _groupsApi.getGroupsByIds(
           userId: _data.userId,
@@ -57,16 +49,20 @@ class UserGroupService extends _$UserGroupService {
           updatedAfter: lastSeen);
       state = AsyncData(await _mergeGroups(state.value ?? [], remoteGroups!));
       ref.read(lastSeenProvider(GlobalDataRepository.lastSeenKey).notifier).setLastSeenNow();
-      ref.read(syncingServiceSchedularProvider.notifier).setState(SyncingServiceSchedularState.done);
     } catch (e) {
       if (kDebugMode) print(e);
     }finally {
       _mutex.release();
-      // Activate providers
-      for (var group in state.value ?? <LocalGroupDto>[]) {
-        ref.read(pinServiceProvider(group.groupId));
+      if (kDebugMode) print("Groups synced");
+      for (LocalGroupDto group in state.value ?? []) {
+        if (group.isActivated) {
+          ref.read(pinServiceProvider(group.groupId));
+        } else {
+          Future.delayed(Duration(seconds: 10), () {
+            ref.read(pinServiceProvider(group.groupId));
+          });
+        }
       }
-
     }
   }
 

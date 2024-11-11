@@ -1,6 +1,3 @@
-import 'package:buff_lisa/data/service/reachability_service.dart';
-import 'package:buff_lisa/data/service/syncing_service_schedular.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/presentation/camera.dart';
 import 'package:buff_lisa/features/feed/presentation/active_group_feed.dart';
 import 'package:buff_lisa/features/profile/presentation/user_profile.dart';
@@ -16,9 +13,7 @@ import '../../../widgets/group_selector/presentation/group_selector.dart';
 import '../../group_user_list/presentation/user_groups.dart';
 
 class Navigation extends ConsumerStatefulWidget {
-  const Navigation({super.key, required this.initCenter});
-
-  final LatLng? initCenter;
+  const Navigation({super.key});
 
   @override
   ConsumerState<Navigation> createState() => _NavigationState();
@@ -36,7 +31,7 @@ class _NavigationState extends ConsumerState<Navigation> {
     widgetOptions = <Widget>[
       const UserGroups(),
       const Camera(),
-      MapHome(centerInit: widget.initCenter,),
+      const MapHome(),
       const ActiveGroupFeed(),
       const UserProfile()
     ];
@@ -64,16 +59,7 @@ class _NavigationState extends ConsumerState<Navigation> {
                 )
               ],
             ),
-            state == 2 || state == 3 ? groupSelector : const SizedBox.shrink(),
-            state == 2 || state == 3
-                ? Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: CircleAvatar(
-                      backgroundColor:
-                          ref.watch(syncingServiceSchedularProvider).color,
-                      radius: 5,
-                    ))
-                : const SizedBox.shrink(),
+            state == 2 || state == 3 ? groupSelector : const SizedBox.shrink()
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
