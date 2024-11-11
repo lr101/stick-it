@@ -11,13 +11,9 @@ class GroupOrderService extends _$GroupOrderService {
     final sharedPrefs = ref.watch(sharedPreferencesProvider);
     final orderedGroups = sharedPrefs.getStringList('groupOrder') ?? [];
     state = orderedGroups;
-
-    // Watch userGroupServiceProvider and update orderedGroups accordingly
-    ref.listen(userGroupServiceProvider, (previous, next) {
-      _syncGroupsWithUserList((next.value??[]).map((e) => e.groupId).toList());
-    });
-
-    return orderedGroups;
+    final userGroupList = ref.watch(userGroupServiceProvider.select((e) => e.value?.map((e) => e.groupId).toList() ?? []));
+    _syncGroupsWithUserList(userGroupList);
+    return state;
   }
 
   void _syncGroupsWithUserList(List<String> userGroupList) {

@@ -66,10 +66,6 @@ class LastSeen extends _$LastSeen {
     ref.watch(sharedPreferencesProvider).setInt(key, state!.microsecondsSinceEpoch);
   }
 
-  void clear() {
-    state = null;
-    ref.watch(sharedPreferencesProvider).remove(key);
-  }
 
 }
 

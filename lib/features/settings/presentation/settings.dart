@@ -1,4 +1,5 @@
 import 'package:buff_lisa/data/entity/database.dart';
+import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
@@ -6,6 +7,7 @@ import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
+import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_password.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_profile_picture.dart';
@@ -181,26 +183,55 @@ class _SettingsState extends ConsumerState<Settings> {
         cancelText: "Cancel",
         child: Text(
             "Deleting the cache can fix wrong states of the app caused by outdated data. This does not log you out and an automatic refresh of all deleted data is performed. IMPORTANT: Posts that are not synced to the server will be lost forever.",
-            maxLines: 10), onPressed: () => invalidateCache()
+            maxLines: 10), onPressed: () async {
+          await invalidateCache();
+        }
+    );
+  }
+
+  void showLoading() {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width - 40,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(height: 15),
+                const Text(
+                  "Please don't close this screen, this can take a few seconds",
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
   Future<void> invalidateCache() async {
-    showDialog(context: context, builder: (context) => SizedBox.square(dimension: MediaQuery.of(context).size.width - 40, child: Center(child: const CircularProgressIndicator())));
+    showLoading();
     await ref.watch(databaseProvider).deleteEverything();
     final mgmt = FMTCStore('tileStore').manage;
     await mgmt.reset();
-    ref.read(lastSeenProvider(GlobalDataRepository.lastSeenKey).notifier).clear();
     final sharedPreferences = ref.watch(sharedPreferencesProvider);
     await sharedPreferences.clear();
     ref.invalidate(lastSeenProvider);
     ref.invalidate(pinServiceProvider);
-    ref.invalidate(groupOrderServiceProvider);
     ref.invalidate(userImageServiceProvider);
+    ref.invalidate(userImageServiceSmallProvider);
     ref.invalidate(pinImageServiceProvider);
     ref.invalidate(memberServiceProvider);
     ref.invalidate(noUserGroupServiceProvider);
-    ref.invalidate(userGroupServiceProvider);
     ref.invalidate(likeServiceProvider);
+    ref.invalidate(groupImageServiceProvider);
+    ref.invalidate(userGroupServiceProvider);
+    ref.invalidate(groupOrderServiceProvider);
+    Navigator.of(context).pop();
   }
 }

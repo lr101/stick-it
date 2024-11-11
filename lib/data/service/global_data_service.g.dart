@@ -54,7 +54,7 @@ final cameraTorchProvider =
 );
 
 typedef _$CameraTorch = AutoDisposeNotifier<bool>;
-String _$lastSeenHash() => r'38fc1f14c7c2aecf169bcad10b1d591b31e1fa59';
+String _$lastSeenHash() => r'2116a21cd5c291835d95e9b948f7cd80f579e40f';
 
 /// Copied from Dart SDK
 class _SystemHash {
