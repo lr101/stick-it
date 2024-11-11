@@ -1,5 +1,7 @@
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/data/login_service.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,9 +15,14 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
   final TextEditingController _newEmailController = TextEditingController();
 
 
-  void _changeEmail() {
+  Future<void> _changeEmail() async {
     if (_formKey.currentState!.validate()) {
-      ref.read(userServiceProvider.notifier).changeUser(email: _newEmailController.text);
+      final result = await ref.read(userServiceProvider.notifier).changeUser(email: _newEmailController.text);
+      if (result != null) {
+        CustomErrorSnackBar.message(message: result, type: CustomErrorSnackBarType.error);
+      } else {
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -41,19 +48,7 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
                   validator: LoginService.emailValidatorWithErrorMessage,
                 ),
                 SizedBox(height: 24.0),
-
-                // Submit Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _changeEmail,
-                    child: Text('Change Email'),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      textStyle: TextStyle(fontSize: 18.0),
-                    ),
-                  ),
-                ),
+                SubmitButton(onPressed: _changeEmail, text: 'Change Email'),
               ],
             ),
           ),

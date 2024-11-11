@@ -184,6 +184,7 @@ class UserGroupService extends _$UserGroupService {
 
   Future<String?> leaveGroup(String groupId, VoidCallback afterSuccess) async {
     try {
+      await ref.watch(memberApiProvider).deleteMemberFromGroup(groupId, _data.userId!);
       await _membersApi.deleteMemberFromGroup(groupId, _data.userId!);
       afterSuccess();
       await _groupRepository.leaveGroup(groupId);
