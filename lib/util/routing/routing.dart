@@ -1,11 +1,18 @@
 import 'dart:convert';
 
+import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/features/group_overview/presentation/no_user_group_overview.dart';
 import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_overview.dart';
 import 'package:buff_lisa/features/group_overview/presentation/user_group_overview.dart';
 import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
+import 'package:buff_lisa/features/profile/presentation/other_user_profile.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../data/service/global_data_service.dart';
 import '../../features/auth/presentation/auth.dart';
 
 class Routing {
@@ -65,17 +72,34 @@ class Routing {
     );
   }
 
-  static GoRouter goRoute(bool isLoggedIn) {return GoRouter(
-    initialLocation: isLoggedIn ? '/' : '/login',
+  static CustomTransitionPage loadingPage({String text = "Loading..."}) {
+    return buildPageWithAnimation(
+      Scaffold(
+        appBar: null,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              Text(text)
+            ],
+          ),
+        ),
+      )
+    );
+  }
+
+  static GoRouter goRoute(WidgetRef ref) {return GoRouter(
+    initialLocation: ref.watch(globalDataServiceProvider).refreshToken != null ? '/deeplink' : '/deeplink/login',
     routes: <RouteBase>[
       GoRoute(
-        path: '/login',
+        path: '/deeplink/login',
         pageBuilder: (BuildContext context, GoRouterState state) {
           return buildPageWithAnimation(const Auth());
         },
       ),
       GoRoute(
-        path: '/',
+        path: '/deeplink',
         pageBuilder: (BuildContext context, GoRouterState state) {
           return buildPageWithAnimation(const Navigation());
         },
@@ -83,11 +107,42 @@ class Routing {
           GoRoute(
             path: 'groups/:groupId',
             pageBuilder: (BuildContext context, GoRouterState state) {
-              return buildPageWithAnimation(
-                UserGroupOverview(groupId: state.pathParameters['groupId']!),
-              );
+              final isUserGroup = ref.watch(userGroupServiceProvider.select((e) => e.value?.any((f) => f.groupId == state.pathParameters['groupId'])));
+              if (isUserGroup == null) {
+                return loadingPage();
+              } else if (isUserGroup) {
+                return buildPageWithAnimation(UserGroupOverview(groupId: state.pathParameters['groupId']!),);
+              } else {
+                return buildPageWithAnimation(NoUserGroupOverview(groupId: state.pathParameters['groupId']!,));
+              }
             },
           ),
+          GoRoute(
+            path: 'groups/:groupId/join/:inviteUrl',
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              final isUserGroup = ref.watch(userGroupServiceProvider.select((e) => e.value?.any((f) => f.groupId == state.pathParameters['groupId'])));
+              if (isUserGroup == true) {
+                return buildPageWithAnimation(
+                  UserGroupOverview(groupId: state.pathParameters['groupId']!),
+                );
+              } else if (isUserGroup == false) {
+                ref.read(userGroupServiceProvider.notifier)
+                    .joinGroup(state.pathParameters['groupId']!, inviteUrl: state.pathParameters['inviteUrl']!)
+                    .then((e) => e != null ? CustomErrorSnackBar.message(message: e) : null);
+                return loadingPage(text: "Joining group...");
+              } else {
+                return loadingPage();
+              }
+            },
+          ),
+          GoRoute(path: 'users/:userId',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            if (state.pathParameters['userId'] == ref.watch(globalDataServiceProvider).userId) {
+              return buildPageWithAnimation(OtherUserProfile(userId: state.pathParameters['userId']!));
+            } else {
+              return buildPageWithAnimation(const Navigation());
+            }
+          })
         ],
       ),
     ],

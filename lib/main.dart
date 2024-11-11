@@ -80,7 +80,7 @@ class MyApp extends ConsumerWidget {
       themeMode: ref.watch(themeStateProvider),
       darkTheme: theme.dark(),
       theme: theme.lightHighContrast(),
-      routerConfig: Routing.goRoute(ref.watch(globalDataServiceProvider).refreshToken != null),
+      routerConfig: Routing.goRoute(ref),
     );
   }
 }

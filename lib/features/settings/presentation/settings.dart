@@ -168,7 +168,7 @@ class _SettingsState extends ConsumerState<Settings> {
                             onPressed: () async {
                               await ref.read(globalDataServiceProvider.notifier).logout();
                               await invalidateCache();
-                              context.go("/login");
+                              context.go("/deeplink/login");
                             },
                           ))),
             ])

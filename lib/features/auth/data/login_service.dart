@@ -15,7 +15,7 @@ class LoginService {
 
   /// Navigates to the NavBar Widget when authentication was successful
   void handleLoginComplete(BuildContext context) {
-    context.go("/");
+    context.go("/deeplink");
   }
 
   /// This method is called when the user tries to login with a username and password to an existing account
