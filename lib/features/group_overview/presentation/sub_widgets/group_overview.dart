@@ -8,6 +8,7 @@ import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_sca
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/member_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -85,14 +86,14 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
           )),
           if (widget.group.link != null)
             SliverToBoxAdapter(
-                child: GestureDetector(
-                  onTap: clickedOnLink,
                     child: ListTile(
-                    title: Row( children: [Text("External Link"), Spacer(), Icon(Icons.link)]),
-                    subtitle: Text(widget.group.link ?? "No link set", maxLines: 1, overflow: TextOverflow.ellipsis,)))),
+                      onTap: clickedOnLink,
+                    title: Row( children: [Text("External Link"), Spacer(), Icon(Icons.open_in_new_rounded)]),
+                    subtitle: Text(widget.group.link ?? "No link set", maxLines: 1, overflow: TextOverflow.ellipsis,))),
           if (widget.group.visibility != 0)
             SliverToBoxAdapter(
               child: ListTile(
+                onTap: clickedOnInviteCode,
                 title: Text("Invite code"),
                 subtitle:
                     Text(widget.group.inviteUrl ?? "Ups something went wrong"),
@@ -124,6 +125,12 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
       } catch (e) {
         CustomErrorSnackBar.message(message: "No app to open link in found", type: CustomErrorSnackBarType.error);
       }
+    }
+  }
+
+  void clickedOnInviteCode() {
+    if (widget.group.inviteUrl != null) {
+      Clipboard.setData(ClipboardData(text: widget.group.inviteUrl!));
     }
   }
 }
