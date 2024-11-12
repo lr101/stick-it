@@ -26,6 +26,7 @@ import 'features/navigation/data/navigation_provider.dart';
 /// checks if user is logged in on this device by checking device storage
 ///
 ///
+///
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();

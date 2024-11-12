@@ -8,21 +8,22 @@ part 'group_order_service.g.dart';
 class GroupOrderService extends _$GroupOrderService {
   @override
   List<String> build() {
-    final sharedPrefs = ref.watch(sharedPreferencesProvider);
-    final orderedGroups = sharedPrefs.getStringList('groupOrder') ?? [];
-    state = orderedGroups;
     final userGroupList = ref.watch(userGroupServiceProvider.select((e) => e.value?.map((e) => e.groupId).toList() ?? []));
-    _syncGroupsWithUserList(userGroupList);
-    return state;
+    if (userGroupList.isEmpty) {
+      return [];
+    } else {
+      return _syncGroupsWithUserList(userGroupList);
+    }
   }
 
-  void _syncGroupsWithUserList(List<String> userGroupList) {
+  List<String> _syncGroupsWithUserList(List<String> userGroupList) {
+    final sharedPrefs = ref.watch(sharedPreferencesProvider);
+    final orderedGroups = sharedPrefs.getStringList('groupOrder') ?? [];
     final userGroupSet = Set<String>.from(userGroupList);
-    List<String> updatedGroups = state.where((id) => userGroupSet.contains(id)).toList();
+    List<String> updatedGroups = orderedGroups.where(userGroupSet.contains).toList();
     updatedGroups.addAll(userGroupList.where((id) => !updatedGroups.contains(id)));
-    if (updatedGroups != state) {
-      setList(updatedGroups);
-    }
+    sharedPrefs.setStringList('groupOrder', updatedGroups);
+    return updatedGroups;
   }
 
   void setList(List<String> groupIds) {

@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/group_overview/presentation/no_user_group_overview.dart';
 import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_overview.dart';
 import 'package:buff_lisa/features/group_overview/presentation/user_group_overview.dart';
+import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
 import 'package:buff_lisa/features/profile/presentation/other_user_profile.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
@@ -90,6 +91,7 @@ class Routing {
   }
 
   static GoRouter goRoute(WidgetRef ref) {return GoRouter(
+    navigatorKey: NavigationService.navigatorKey,
     initialLocation: ref.watch(globalDataServiceProvider).refreshToken != null ? '/deeplink' : '/deeplink/login',
     routes: <RouteBase>[
       GoRoute(
