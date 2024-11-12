@@ -185,6 +185,7 @@ class _SettingsState extends ConsumerState<Settings> {
             "Deleting the cache can fix wrong states of the app caused by outdated data. This does not log you out and an automatic refresh of all deleted data is performed. IMPORTANT: Posts that are not synced to the server will be lost forever.",
             maxLines: 10), onPressed: () async {
           await invalidateCache();
+          Navigator.of(context).pop();
         }
     );
   }
@@ -232,6 +233,5 @@ class _SettingsState extends ConsumerState<Settings> {
     ref.invalidate(groupImageServiceProvider);
     ref.invalidate(userGroupServiceProvider);
     ref.invalidate(groupOrderServiceProvider);
-    Navigator.of(context).pop();
   }
 }

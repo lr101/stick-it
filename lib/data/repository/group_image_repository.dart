@@ -1,13 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-import 'dart:typed_data';
+
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/entity/pin_image_entity.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -45,7 +39,9 @@ class GroupImageRepository {
   Future<GroupImageDto> _fetchAndCacheImage(String groupId, bool userGroup) async {
     try {
      final groupProfileUrl = await ref.watch(groupApiProvider).getGroupProfileImage(groupId);
+     final groupProfileSmallUrl = await ref.watch(groupApiProvider).getGroupProfileImageSmall(groupId);
      final groupProfile = await http.get(Uri.parse(groupProfileUrl!));
+     final groupProfileSmall = await http.get(Uri.parse(groupProfileSmallUrl!));
      final groupPinUrl = await ref.watch(groupApiProvider).getGroupPinImage(groupId);
      final groupPin = await http.get(Uri.parse(groupPinUrl!));
      if (userGroup) {
@@ -53,14 +49,13 @@ class GroupImageRepository {
          groupId: Value(groupId),
          profileImage: Value(groupProfile.bodyBytes),
          pinImage: Value(groupPin.bodyBytes),
-         profileImageSmall: Value(null),
+         profileImageSmall: Value(groupProfileSmall.bodyBytes),
        ));
      }
      return GroupImageDto(
-
          profileImage: groupProfile.bodyBytes, 
          pinImage: groupPin.bodyBytes, 
-         profileImageSmall: null
+         profileImageSmall: groupProfileSmall.bodyBytes
      );
     } catch (e) {
       throw e;

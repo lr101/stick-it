@@ -9,7 +9,7 @@ class GroupImageDto {
 
   final Uint8List profileImage;
   final Uint8List pinImage;
-  final Uint8List? profileImageSmall;
+  final Uint8List profileImageSmall;
 
   GroupImageDto({
     required this.profileImage,
@@ -29,7 +29,7 @@ class GroupImageDto {
     return GroupImageDto(
         profileImage: (await http.get(Uri.parse(dto.profileImage!))).bodyBytes,
         pinImage: (await http.get(Uri.parse(dto.pinImage!))).bodyBytes,
-        profileImageSmall: null
+        profileImageSmall: (await http.get(Uri.parse(dto.profileImageSmall!))).bodyBytes
     );
   }
 

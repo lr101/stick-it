@@ -6,7 +6,7 @@ part of 'group_order_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupOrderServiceHash() => r'dff5861ffbb547b31b4e585498208d09608cde21';
+String _$groupOrderServiceHash() => r'da33d6278933de3d852273dee33df29941c7638a';
 
 /// See also [GroupOrderService].
 @ProviderFor(GroupOrderService)

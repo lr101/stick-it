@@ -1690,8 +1690,8 @@ class $GroupImageEntityTable extends GroupImageEntity
       const VerificationMeta('profileImageSmall');
   @override
   late final GeneratedColumn<Uint8List> profileImageSmall =
-      GeneratedColumn<Uint8List>('profile_image_small', aliasedName, true,
-          type: DriftSqlType.blob, requiredDuringInsert: false);
+      GeneratedColumn<Uint8List>('profile_image_small', aliasedName, false,
+          type: DriftSqlType.blob, requiredDuringInsert: true);
   static const VerificationMeta _pinImageMeta =
       const VerificationMeta('pinImage');
   @override
@@ -1731,6 +1731,8 @@ class $GroupImageEntityTable extends GroupImageEntity
           _profileImageSmallMeta,
           profileImageSmall.isAcceptableOrUnknown(
               data['profile_image_small']!, _profileImageSmallMeta));
+    } else if (isInserting) {
+      context.missing(_profileImageSmallMeta);
     }
     if (data.containsKey('pin_image')) {
       context.handle(_pinImageMeta,
@@ -1756,7 +1758,7 @@ class $GroupImageEntityTable extends GroupImageEntity
       profileImage: attachedDatabase.typeMapping
           .read(DriftSqlType.blob, data['${effectivePrefix}profile_image'])!,
       profileImageSmall: attachedDatabase.typeMapping.read(
-          DriftSqlType.blob, data['${effectivePrefix}profile_image_small']),
+          DriftSqlType.blob, data['${effectivePrefix}profile_image_small'])!,
       pinImage: attachedDatabase.typeMapping
           .read(DriftSqlType.blob, data['${effectivePrefix}pin_image'])!,
       groupId: attachedDatabase.typeMapping
@@ -1773,21 +1775,19 @@ class $GroupImageEntityTable extends GroupImageEntity
 class GroupImageEntityData extends DataClass
     implements Insertable<GroupImageEntityData> {
   final Uint8List profileImage;
-  final Uint8List? profileImageSmall;
+  final Uint8List profileImageSmall;
   final Uint8List pinImage;
   final String groupId;
   const GroupImageEntityData(
       {required this.profileImage,
-      this.profileImageSmall,
+      required this.profileImageSmall,
       required this.pinImage,
       required this.groupId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['profile_image'] = Variable<Uint8List>(profileImage);
-    if (!nullToAbsent || profileImageSmall != null) {
-      map['profile_image_small'] = Variable<Uint8List>(profileImageSmall);
-    }
+    map['profile_image_small'] = Variable<Uint8List>(profileImageSmall);
     map['pin_image'] = Variable<Uint8List>(pinImage);
     map['group_id'] = Variable<String>(groupId);
     return map;
@@ -1796,9 +1796,7 @@ class GroupImageEntityData extends DataClass
   GroupImageEntityCompanion toCompanion(bool nullToAbsent) {
     return GroupImageEntityCompanion(
       profileImage: Value(profileImage),
-      profileImageSmall: profileImageSmall == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileImageSmall),
+      profileImageSmall: Value(profileImageSmall),
       pinImage: Value(pinImage),
       groupId: Value(groupId),
     );
@@ -1810,7 +1808,7 @@ class GroupImageEntityData extends DataClass
     return GroupImageEntityData(
       profileImage: serializer.fromJson<Uint8List>(json['profileImage']),
       profileImageSmall:
-          serializer.fromJson<Uint8List?>(json['profileImageSmall']),
+          serializer.fromJson<Uint8List>(json['profileImageSmall']),
       pinImage: serializer.fromJson<Uint8List>(json['pinImage']),
       groupId: serializer.fromJson<String>(json['groupId']),
     );
@@ -1820,7 +1818,7 @@ class GroupImageEntityData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'profileImage': serializer.toJson<Uint8List>(profileImage),
-      'profileImageSmall': serializer.toJson<Uint8List?>(profileImageSmall),
+      'profileImageSmall': serializer.toJson<Uint8List>(profileImageSmall),
       'pinImage': serializer.toJson<Uint8List>(pinImage),
       'groupId': serializer.toJson<String>(groupId),
     };
@@ -1828,14 +1826,12 @@ class GroupImageEntityData extends DataClass
 
   GroupImageEntityData copyWith(
           {Uint8List? profileImage,
-          Value<Uint8List?> profileImageSmall = const Value.absent(),
+          Uint8List? profileImageSmall,
           Uint8List? pinImage,
           String? groupId}) =>
       GroupImageEntityData(
         profileImage: profileImage ?? this.profileImage,
-        profileImageSmall: profileImageSmall.present
-            ? profileImageSmall.value
-            : this.profileImageSmall,
+        profileImageSmall: profileImageSmall ?? this.profileImageSmall,
         pinImage: pinImage ?? this.pinImage,
         groupId: groupId ?? this.groupId,
       );
@@ -1882,7 +1878,7 @@ class GroupImageEntityData extends DataClass
 
 class GroupImageEntityCompanion extends UpdateCompanion<GroupImageEntityData> {
   final Value<Uint8List> profileImage;
-  final Value<Uint8List?> profileImageSmall;
+  final Value<Uint8List> profileImageSmall;
   final Value<Uint8List> pinImage;
   final Value<String> groupId;
   final Value<int> rowid;
@@ -1895,11 +1891,12 @@ class GroupImageEntityCompanion extends UpdateCompanion<GroupImageEntityData> {
   });
   GroupImageEntityCompanion.insert({
     required Uint8List profileImage,
-    this.profileImageSmall = const Value.absent(),
+    required Uint8List profileImageSmall,
     required Uint8List pinImage,
     required String groupId,
     this.rowid = const Value.absent(),
   })  : profileImage = Value(profileImage),
+        profileImageSmall = Value(profileImageSmall),
         pinImage = Value(pinImage),
         groupId = Value(groupId);
   static Insertable<GroupImageEntityData> custom({
@@ -1920,7 +1917,7 @@ class GroupImageEntityCompanion extends UpdateCompanion<GroupImageEntityData> {
 
   GroupImageEntityCompanion copyWith(
       {Value<Uint8List>? profileImage,
-      Value<Uint8List?>? profileImageSmall,
+      Value<Uint8List>? profileImageSmall,
       Value<Uint8List>? pinImage,
       Value<String>? groupId,
       Value<int>? rowid}) {
@@ -3391,7 +3388,7 @@ typedef $$PinImageEntityTableProcessedTableManager = ProcessedTableManager<
 typedef $$GroupImageEntityTableCreateCompanionBuilder
     = GroupImageEntityCompanion Function({
   required Uint8List profileImage,
-  Value<Uint8List?> profileImageSmall,
+  required Uint8List profileImageSmall,
   required Uint8List pinImage,
   required String groupId,
   Value<int> rowid,
@@ -3399,7 +3396,7 @@ typedef $$GroupImageEntityTableCreateCompanionBuilder
 typedef $$GroupImageEntityTableUpdateCompanionBuilder
     = GroupImageEntityCompanion Function({
   Value<Uint8List> profileImage,
-  Value<Uint8List?> profileImageSmall,
+  Value<Uint8List> profileImageSmall,
   Value<Uint8List> pinImage,
   Value<String> groupId,
   Value<int> rowid,
@@ -3502,7 +3499,7 @@ class $$GroupImageEntityTableTableManager extends RootTableManager<
               $$GroupImageEntityTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<Uint8List> profileImage = const Value.absent(),
-            Value<Uint8List?> profileImageSmall = const Value.absent(),
+            Value<Uint8List> profileImageSmall = const Value.absent(),
             Value<Uint8List> pinImage = const Value.absent(),
             Value<String> groupId = const Value.absent(),
             Value<int> rowid = const Value.absent(),
@@ -3516,7 +3513,7 @@ class $$GroupImageEntityTableTableManager extends RootTableManager<
           ),
           createCompanionCallback: ({
             required Uint8List profileImage,
-            Value<Uint8List?> profileImageSmall = const Value.absent(),
+            required Uint8List profileImageSmall,
             required Uint8List pinImage,
             required String groupId,
             Value<int> rowid = const Value.absent(),

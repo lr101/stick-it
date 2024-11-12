@@ -25,7 +25,7 @@ class GroupTile extends ConsumerWidget {
 
         ],
       ),
-      leading: RoundImage(imageCallback: ref.watch(groupProfilePictureByIdProvider(groupDto.groupId)), size: 20.0, child: Container()),
+      leading: RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(groupDto.groupId)), size: 20.0, child: Container()),
     );
     if (onTap == null) {
       return listTile;

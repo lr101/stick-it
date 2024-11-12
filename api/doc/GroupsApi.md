@@ -18,6 +18,7 @@ Method | HTTP request | Description
 [**getGroupLink**](GroupsApi.md#getgrouplink) | **GET** /api/v2/groups/{groupId}/link | Get link of group
 [**getGroupPinImage**](GroupsApi.md#getgrouppinimage) | **GET** /api/v2/groups/{groupId}/pin_image | Get pin image of group
 [**getGroupProfileImage**](GroupsApi.md#getgroupprofileimage) | **GET** /api/v2/groups/{groupId}/profile_image | Get profile of group
+[**getGroupProfileImageSmall**](GroupsApi.md#getgroupprofileimagesmall) | **GET** /api/v2/groups/{groupId}/profile_image_small | Get small profile image url of group
 [**getGroupsByIds**](GroupsApi.md#getgroupsbyids) | **GET** /api/v2/groups | Get groups by IDs
 [**updateGroup**](GroupsApi.md#updategroup) | **PUT** /api/v2/groups/{groupId} | Update a group by ID
 
@@ -366,6 +367,47 @@ try {
     print(result);
 } catch (e) {
     print('Exception when calling GroupsApi->getGroupProfileImage: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **groupId** | **String**| group id | 
+
+### Return type
+
+**String**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: image/*, text/plain; charset=utf-8
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getGroupProfileImageSmall**
+> String getGroupProfileImageSmall(groupId)
+
+Get small profile image url of group
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = GroupsApi();
+final groupId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | group id
+
+try {
+    final result = api_instance.getGroupProfileImageSmall(groupId);
+    print(result);
+} catch (e) {
+    print('Exception when calling GroupsApi->getGroupProfileImageSmall: $e\n');
 }
 ```
 

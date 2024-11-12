@@ -37,8 +37,10 @@ class UserImageServiceSmall extends _$UserImageServiceSmall {
         ref.notifyListeners();
         return null;
       } else {
-        return 'Failed to fetch profile image';
+        state.value![userId] = null;
       }
+      ref.notifyListeners();
+      return null;
     } on ApiException catch (e) {
       return e.message;
     }

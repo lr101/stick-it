@@ -291,6 +291,145 @@ class _GroupProfilePictureByIdProviderElement
   String get groupId => (origin as GroupProfilePictureByIdProvider).groupId;
 }
 
+String _$groupProfilePictureSmallByIdHash() =>
+    r'95e7e60a55115f08d89af5c5f1712090150a44e1';
+
+/// See also [groupProfilePictureSmallById].
+@ProviderFor(groupProfilePictureSmallById)
+const groupProfilePictureSmallByIdProvider =
+    GroupProfilePictureSmallByIdFamily();
+
+/// See also [groupProfilePictureSmallById].
+class GroupProfilePictureSmallByIdFamily
+    extends Family<AsyncValue<Uint8List?>> {
+  /// See also [groupProfilePictureSmallById].
+  const GroupProfilePictureSmallByIdFamily();
+
+  /// See also [groupProfilePictureSmallById].
+  GroupProfilePictureSmallByIdProvider call(
+    String groupId,
+  ) {
+    return GroupProfilePictureSmallByIdProvider(
+      groupId,
+    );
+  }
+
+  @override
+  GroupProfilePictureSmallByIdProvider getProviderOverride(
+    covariant GroupProfilePictureSmallByIdProvider provider,
+  ) {
+    return call(
+      provider.groupId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'groupProfilePictureSmallByIdProvider';
+}
+
+/// See also [groupProfilePictureSmallById].
+class GroupProfilePictureSmallByIdProvider
+    extends AutoDisposeFutureProvider<Uint8List?> {
+  /// See also [groupProfilePictureSmallById].
+  GroupProfilePictureSmallByIdProvider(
+    String groupId,
+  ) : this._internal(
+          (ref) => groupProfilePictureSmallById(
+            ref as GroupProfilePictureSmallByIdRef,
+            groupId,
+          ),
+          from: groupProfilePictureSmallByIdProvider,
+          name: r'groupProfilePictureSmallByIdProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$groupProfilePictureSmallByIdHash,
+          dependencies: GroupProfilePictureSmallByIdFamily._dependencies,
+          allTransitiveDependencies:
+              GroupProfilePictureSmallByIdFamily._allTransitiveDependencies,
+          groupId: groupId,
+        );
+
+  GroupProfilePictureSmallByIdProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.groupId,
+  }) : super.internal();
+
+  final String groupId;
+
+  @override
+  Override overrideWith(
+    FutureOr<Uint8List?> Function(GroupProfilePictureSmallByIdRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GroupProfilePictureSmallByIdProvider._internal(
+        (ref) => create(ref as GroupProfilePictureSmallByIdRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        groupId: groupId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Uint8List?> createElement() {
+    return _GroupProfilePictureSmallByIdProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GroupProfilePictureSmallByIdProvider &&
+        other.groupId == groupId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, groupId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin GroupProfilePictureSmallByIdRef
+    on AutoDisposeFutureProviderRef<Uint8List?> {
+  /// The parameter `groupId` of this provider.
+  String get groupId;
+}
+
+class _GroupProfilePictureSmallByIdProviderElement
+    extends AutoDisposeFutureProviderElement<Uint8List?>
+    with GroupProfilePictureSmallByIdRef {
+  _GroupProfilePictureSmallByIdProviderElement(super.provider);
+
+  @override
+  String get groupId =>
+      (origin as GroupProfilePictureSmallByIdProvider).groupId;
+}
+
 String _$groupPinImageByIdHash() => r'f9cfeab4d6ce42d99dd1f0d82e2251a87a66d0d0';
 
 /// See also [groupPinImageById].

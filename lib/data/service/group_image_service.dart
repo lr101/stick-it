@@ -80,6 +80,12 @@ Future<Uint8List?> groupProfilePictureById(Ref ref, String groupId) async {
 
 
 @riverpod
+Future<Uint8List?> groupProfilePictureSmallById(Ref ref, String groupId) async {
+  return await ref.watch(groupImageByIdProvider(groupId).selectAsync((e) => e?.profileImageSmall));
+}
+
+
+@riverpod
 Future<Uint8List?> groupPinImageById(Ref ref, String groupId) async {
   return await ref.watch(groupImageByIdProvider(groupId).selectAsync((e) => e?.pinImage));
 }
