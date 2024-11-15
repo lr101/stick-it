@@ -1,3 +1,4 @@
+import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
@@ -9,11 +10,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:transparent_image/transparent_image.dart';
-
 import '../../../util/routing/routing.dart';
 import '../../../widgets/custom_marker/data/default_group_image.dart';
-import '../../group_create/presentation/group_create.dart';
 import '../data/camera_state.dart';
 
 class SelectLocation extends ConsumerStatefulWidget {
@@ -85,7 +83,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                                     .watch(cameraSelectedGroupProvider)
                                     .groupId))
                                 .when(
-                                  data: (data) => Image.memory(data),
+                                  data: (data) => Image.memory(data ?? ref.read(defaultGroupPinImageProvider)),
                                   error: (e, s) => Image.memory(
                                       ref.read(defaultGroupPinImageProvider)),
                                   loading: () => Image.memory(

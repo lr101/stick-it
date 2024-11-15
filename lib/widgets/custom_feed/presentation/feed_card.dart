@@ -8,7 +8,6 @@ import 'package:buff_lisa/widgets/custom_marker/presentation/custom_marker.dart'
 import 'package:buff_lisa/widgets/custom_map_setup//presentation/custom_tile_layer.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:like_button/like_button.dart';
 import 'package:openapi/api.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -105,6 +104,7 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                                         backgroundColor:
                                             Colors.black.withOpacity(0.1),
                                         child: const Icon(Icons.zoom_in)),
+                                    SizedBox(height: 5,),
                                     FloatingActionButton(
                                       onPressed: () => zoomOut(center),
                                       backgroundColor:

@@ -24,7 +24,7 @@ final cameraSelectedGroupProvider = Provider<LocalGroupDto>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CameraSelectedGroupRef = ProviderRef<LocalGroupDto>;
-String _$cameraIndexHash() => r'2acc52147deba74fc547bc9a8c2de36017647cf9';
+String _$cameraIndexHash() => r'1586261879e9dbbace237e964af490a507397937';
 
 /// See also [CameraIndex].
 @ProviderFor(CameraIndex)

@@ -240,18 +240,6 @@ class $GroupEntityTable extends GroupEntity
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _profileImageMeta =
-      const VerificationMeta('profileImage');
-  @override
-  late final GeneratedColumn<Uint8List> profileImage =
-      GeneratedColumn<Uint8List>('profile_image', aliasedName, false,
-          type: DriftSqlType.blob, requiredDuringInsert: true);
-  static const VerificationMeta _pinImageMeta =
-      const VerificationMeta('pinImage');
-  @override
-  late final GeneratedColumn<Uint8List> pinImage = GeneratedColumn<Uint8List>(
-      'pin_image', aliasedName, false,
-      type: DriftSqlType.blob, requiredDuringInsert: true);
   static const VerificationMeta _isActivatedMeta =
       const VerificationMeta('isActivated');
   @override
@@ -281,8 +269,6 @@ class $GroupEntityTable extends GroupEntity
         inviteUrl,
         groupAdmin,
         description,
-        profileImage,
-        pinImage,
         isActivated,
         lastUpdated,
         link
@@ -333,20 +319,6 @@ class $GroupEntityTable extends GroupEntity
           description.isAcceptableOrUnknown(
               data['description']!, _descriptionMeta));
     }
-    if (data.containsKey('profile_image')) {
-      context.handle(
-          _profileImageMeta,
-          profileImage.isAcceptableOrUnknown(
-              data['profile_image']!, _profileImageMeta));
-    } else if (isInserting) {
-      context.missing(_profileImageMeta);
-    }
-    if (data.containsKey('pin_image')) {
-      context.handle(_pinImageMeta,
-          pinImage.isAcceptableOrUnknown(data['pin_image']!, _pinImageMeta));
-    } else if (isInserting) {
-      context.missing(_pinImageMeta);
-    }
     if (data.containsKey('is_activated')) {
       context.handle(
           _isActivatedMeta,
@@ -384,10 +356,6 @@ class $GroupEntityTable extends GroupEntity
           .read(DriftSqlType.string, data['${effectivePrefix}group_admin']),
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
-      profileImage: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}profile_image'])!,
-      pinImage: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}pin_image'])!,
       isActivated: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_activated'])!,
       lastUpdated: attachedDatabase.typeMapping
@@ -410,8 +378,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
   final String? inviteUrl;
   final String? groupAdmin;
   final String? description;
-  final Uint8List profileImage;
-  final Uint8List pinImage;
   final bool isActivated;
   final DateTime? lastUpdated;
   final String? link;
@@ -422,8 +388,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
       this.inviteUrl,
       this.groupAdmin,
       this.description,
-      required this.profileImage,
-      required this.pinImage,
       required this.isActivated,
       this.lastUpdated,
       this.link});
@@ -442,8 +406,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
-    map['profile_image'] = Variable<Uint8List>(profileImage);
-    map['pin_image'] = Variable<Uint8List>(pinImage);
     map['is_activated'] = Variable<bool>(isActivated);
     if (!nullToAbsent || lastUpdated != null) {
       map['last_updated'] = Variable<DateTime>(lastUpdated);
@@ -468,8 +430,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
-      profileImage: Value(profileImage),
-      pinImage: Value(pinImage),
       isActivated: Value(isActivated),
       lastUpdated: lastUpdated == null && nullToAbsent
           ? const Value.absent()
@@ -488,8 +448,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
       inviteUrl: serializer.fromJson<String?>(json['inviteUrl']),
       groupAdmin: serializer.fromJson<String?>(json['groupAdmin']),
       description: serializer.fromJson<String?>(json['description']),
-      profileImage: serializer.fromJson<Uint8List>(json['profileImage']),
-      pinImage: serializer.fromJson<Uint8List>(json['pinImage']),
       isActivated: serializer.fromJson<bool>(json['isActivated']),
       lastUpdated: serializer.fromJson<DateTime?>(json['lastUpdated']),
       link: serializer.fromJson<String?>(json['link']),
@@ -505,8 +463,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
       'inviteUrl': serializer.toJson<String?>(inviteUrl),
       'groupAdmin': serializer.toJson<String?>(groupAdmin),
       'description': serializer.toJson<String?>(description),
-      'profileImage': serializer.toJson<Uint8List>(profileImage),
-      'pinImage': serializer.toJson<Uint8List>(pinImage),
       'isActivated': serializer.toJson<bool>(isActivated),
       'lastUpdated': serializer.toJson<DateTime?>(lastUpdated),
       'link': serializer.toJson<String?>(link),
@@ -520,8 +476,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
           Value<String?> inviteUrl = const Value.absent(),
           Value<String?> groupAdmin = const Value.absent(),
           Value<String?> description = const Value.absent(),
-          Uint8List? profileImage,
-          Uint8List? pinImage,
           bool? isActivated,
           Value<DateTime?> lastUpdated = const Value.absent(),
           Value<String?> link = const Value.absent()}) =>
@@ -532,8 +486,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
         inviteUrl: inviteUrl.present ? inviteUrl.value : this.inviteUrl,
         groupAdmin: groupAdmin.present ? groupAdmin.value : this.groupAdmin,
         description: description.present ? description.value : this.description,
-        profileImage: profileImage ?? this.profileImage,
-        pinImage: pinImage ?? this.pinImage,
         isActivated: isActivated ?? this.isActivated,
         lastUpdated: lastUpdated.present ? lastUpdated.value : this.lastUpdated,
         link: link.present ? link.value : this.link,
@@ -549,10 +501,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
           data.groupAdmin.present ? data.groupAdmin.value : this.groupAdmin,
       description:
           data.description.present ? data.description.value : this.description,
-      profileImage: data.profileImage.present
-          ? data.profileImage.value
-          : this.profileImage,
-      pinImage: data.pinImage.present ? data.pinImage.value : this.pinImage,
       isActivated:
           data.isActivated.present ? data.isActivated.value : this.isActivated,
       lastUpdated:
@@ -570,8 +518,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
           ..write('inviteUrl: $inviteUrl, ')
           ..write('groupAdmin: $groupAdmin, ')
           ..write('description: $description, ')
-          ..write('profileImage: $profileImage, ')
-          ..write('pinImage: $pinImage, ')
           ..write('isActivated: $isActivated, ')
           ..write('lastUpdated: $lastUpdated, ')
           ..write('link: $link')
@@ -580,18 +526,8 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
   }
 
   @override
-  int get hashCode => Object.hash(
-      groupId,
-      name,
-      visibility,
-      inviteUrl,
-      groupAdmin,
-      description,
-      $driftBlobEquality.hash(profileImage),
-      $driftBlobEquality.hash(pinImage),
-      isActivated,
-      lastUpdated,
-      link);
+  int get hashCode => Object.hash(groupId, name, visibility, inviteUrl,
+      groupAdmin, description, isActivated, lastUpdated, link);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -602,8 +538,6 @@ class GroupEntityData extends DataClass implements Insertable<GroupEntityData> {
           other.inviteUrl == this.inviteUrl &&
           other.groupAdmin == this.groupAdmin &&
           other.description == this.description &&
-          $driftBlobEquality.equals(other.profileImage, this.profileImage) &&
-          $driftBlobEquality.equals(other.pinImage, this.pinImage) &&
           other.isActivated == this.isActivated &&
           other.lastUpdated == this.lastUpdated &&
           other.link == this.link);
@@ -616,8 +550,6 @@ class GroupEntityCompanion extends UpdateCompanion<GroupEntityData> {
   final Value<String?> inviteUrl;
   final Value<String?> groupAdmin;
   final Value<String?> description;
-  final Value<Uint8List> profileImage;
-  final Value<Uint8List> pinImage;
   final Value<bool> isActivated;
   final Value<DateTime?> lastUpdated;
   final Value<String?> link;
@@ -629,8 +561,6 @@ class GroupEntityCompanion extends UpdateCompanion<GroupEntityData> {
     this.inviteUrl = const Value.absent(),
     this.groupAdmin = const Value.absent(),
     this.description = const Value.absent(),
-    this.profileImage = const Value.absent(),
-    this.pinImage = const Value.absent(),
     this.isActivated = const Value.absent(),
     this.lastUpdated = const Value.absent(),
     this.link = const Value.absent(),
@@ -643,17 +573,13 @@ class GroupEntityCompanion extends UpdateCompanion<GroupEntityData> {
     this.inviteUrl = const Value.absent(),
     this.groupAdmin = const Value.absent(),
     this.description = const Value.absent(),
-    required Uint8List profileImage,
-    required Uint8List pinImage,
     this.isActivated = const Value.absent(),
     this.lastUpdated = const Value.absent(),
     this.link = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : groupId = Value(groupId),
         name = Value(name),
-        visibility = Value(visibility),
-        profileImage = Value(profileImage),
-        pinImage = Value(pinImage);
+        visibility = Value(visibility);
   static Insertable<GroupEntityData> custom({
     Expression<String>? groupId,
     Expression<String>? name,
@@ -661,8 +587,6 @@ class GroupEntityCompanion extends UpdateCompanion<GroupEntityData> {
     Expression<String>? inviteUrl,
     Expression<String>? groupAdmin,
     Expression<String>? description,
-    Expression<Uint8List>? profileImage,
-    Expression<Uint8List>? pinImage,
     Expression<bool>? isActivated,
     Expression<DateTime>? lastUpdated,
     Expression<String>? link,
@@ -675,8 +599,6 @@ class GroupEntityCompanion extends UpdateCompanion<GroupEntityData> {
       if (inviteUrl != null) 'invite_url': inviteUrl,
       if (groupAdmin != null) 'group_admin': groupAdmin,
       if (description != null) 'description': description,
-      if (profileImage != null) 'profile_image': profileImage,
-      if (pinImage != null) 'pin_image': pinImage,
       if (isActivated != null) 'is_activated': isActivated,
       if (lastUpdated != null) 'last_updated': lastUpdated,
       if (link != null) 'link': link,
@@ -691,8 +613,6 @@ class GroupEntityCompanion extends UpdateCompanion<GroupEntityData> {
       Value<String?>? inviteUrl,
       Value<String?>? groupAdmin,
       Value<String?>? description,
-      Value<Uint8List>? profileImage,
-      Value<Uint8List>? pinImage,
       Value<bool>? isActivated,
       Value<DateTime?>? lastUpdated,
       Value<String?>? link,
@@ -704,8 +624,6 @@ class GroupEntityCompanion extends UpdateCompanion<GroupEntityData> {
       inviteUrl: inviteUrl ?? this.inviteUrl,
       groupAdmin: groupAdmin ?? this.groupAdmin,
       description: description ?? this.description,
-      profileImage: profileImage ?? this.profileImage,
-      pinImage: pinImage ?? this.pinImage,
       isActivated: isActivated ?? this.isActivated,
       lastUpdated: lastUpdated ?? this.lastUpdated,
       link: link ?? this.link,
@@ -734,12 +652,6 @@ class GroupEntityCompanion extends UpdateCompanion<GroupEntityData> {
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
-    if (profileImage.present) {
-      map['profile_image'] = Variable<Uint8List>(profileImage.value);
-    }
-    if (pinImage.present) {
-      map['pin_image'] = Variable<Uint8List>(pinImage.value);
-    }
     if (isActivated.present) {
       map['is_activated'] = Variable<bool>(isActivated.value);
     }
@@ -764,8 +676,6 @@ class GroupEntityCompanion extends UpdateCompanion<GroupEntityData> {
           ..write('inviteUrl: $inviteUrl, ')
           ..write('groupAdmin: $groupAdmin, ')
           ..write('description: $description, ')
-          ..write('profileImage: $profileImage, ')
-          ..write('pinImage: $pinImage, ')
           ..write('isActivated: $isActivated, ')
           ..write('lastUpdated: $lastUpdated, ')
           ..write('link: $link, ')
@@ -1764,6 +1674,296 @@ class PinImageEntityCompanion extends UpdateCompanion<PinImageEntityData> {
   }
 }
 
+class $GroupImageEntityTable extends GroupImageEntity
+    with TableInfo<$GroupImageEntityTable, GroupImageEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GroupImageEntityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _profileImageMeta =
+      const VerificationMeta('profileImage');
+  @override
+  late final GeneratedColumn<Uint8List> profileImage =
+      GeneratedColumn<Uint8List>('profile_image', aliasedName, false,
+          type: DriftSqlType.blob, requiredDuringInsert: true);
+  static const VerificationMeta _profileImageSmallMeta =
+      const VerificationMeta('profileImageSmall');
+  @override
+  late final GeneratedColumn<Uint8List> profileImageSmall =
+      GeneratedColumn<Uint8List>('profile_image_small', aliasedName, false,
+          type: DriftSqlType.blob, requiredDuringInsert: true);
+  static const VerificationMeta _pinImageMeta =
+      const VerificationMeta('pinImage');
+  @override
+  late final GeneratedColumn<Uint8List> pinImage = GeneratedColumn<Uint8List>(
+      'pin_image', aliasedName, false,
+      type: DriftSqlType.blob, requiredDuringInsert: true);
+  static const VerificationMeta _groupIdMeta =
+      const VerificationMeta('groupId');
+  @override
+  late final GeneratedColumn<String> groupId = GeneratedColumn<String>(
+      'group_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [profileImage, profileImageSmall, pinImage, groupId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'group_image_entity';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<GroupImageEntityData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('profile_image')) {
+      context.handle(
+          _profileImageMeta,
+          profileImage.isAcceptableOrUnknown(
+              data['profile_image']!, _profileImageMeta));
+    } else if (isInserting) {
+      context.missing(_profileImageMeta);
+    }
+    if (data.containsKey('profile_image_small')) {
+      context.handle(
+          _profileImageSmallMeta,
+          profileImageSmall.isAcceptableOrUnknown(
+              data['profile_image_small']!, _profileImageSmallMeta));
+    } else if (isInserting) {
+      context.missing(_profileImageSmallMeta);
+    }
+    if (data.containsKey('pin_image')) {
+      context.handle(_pinImageMeta,
+          pinImage.isAcceptableOrUnknown(data['pin_image']!, _pinImageMeta));
+    } else if (isInserting) {
+      context.missing(_pinImageMeta);
+    }
+    if (data.containsKey('group_id')) {
+      context.handle(_groupIdMeta,
+          groupId.isAcceptableOrUnknown(data['group_id']!, _groupIdMeta));
+    } else if (isInserting) {
+      context.missing(_groupIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {groupId};
+  @override
+  GroupImageEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GroupImageEntityData(
+      profileImage: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}profile_image'])!,
+      profileImageSmall: attachedDatabase.typeMapping.read(
+          DriftSqlType.blob, data['${effectivePrefix}profile_image_small'])!,
+      pinImage: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}pin_image'])!,
+      groupId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}group_id'])!,
+    );
+  }
+
+  @override
+  $GroupImageEntityTable createAlias(String alias) {
+    return $GroupImageEntityTable(attachedDatabase, alias);
+  }
+}
+
+class GroupImageEntityData extends DataClass
+    implements Insertable<GroupImageEntityData> {
+  final Uint8List profileImage;
+  final Uint8List profileImageSmall;
+  final Uint8List pinImage;
+  final String groupId;
+  const GroupImageEntityData(
+      {required this.profileImage,
+      required this.profileImageSmall,
+      required this.pinImage,
+      required this.groupId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['profile_image'] = Variable<Uint8List>(profileImage);
+    map['profile_image_small'] = Variable<Uint8List>(profileImageSmall);
+    map['pin_image'] = Variable<Uint8List>(pinImage);
+    map['group_id'] = Variable<String>(groupId);
+    return map;
+  }
+
+  GroupImageEntityCompanion toCompanion(bool nullToAbsent) {
+    return GroupImageEntityCompanion(
+      profileImage: Value(profileImage),
+      profileImageSmall: Value(profileImageSmall),
+      pinImage: Value(pinImage),
+      groupId: Value(groupId),
+    );
+  }
+
+  factory GroupImageEntityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GroupImageEntityData(
+      profileImage: serializer.fromJson<Uint8List>(json['profileImage']),
+      profileImageSmall:
+          serializer.fromJson<Uint8List>(json['profileImageSmall']),
+      pinImage: serializer.fromJson<Uint8List>(json['pinImage']),
+      groupId: serializer.fromJson<String>(json['groupId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'profileImage': serializer.toJson<Uint8List>(profileImage),
+      'profileImageSmall': serializer.toJson<Uint8List>(profileImageSmall),
+      'pinImage': serializer.toJson<Uint8List>(pinImage),
+      'groupId': serializer.toJson<String>(groupId),
+    };
+  }
+
+  GroupImageEntityData copyWith(
+          {Uint8List? profileImage,
+          Uint8List? profileImageSmall,
+          Uint8List? pinImage,
+          String? groupId}) =>
+      GroupImageEntityData(
+        profileImage: profileImage ?? this.profileImage,
+        profileImageSmall: profileImageSmall ?? this.profileImageSmall,
+        pinImage: pinImage ?? this.pinImage,
+        groupId: groupId ?? this.groupId,
+      );
+  GroupImageEntityData copyWithCompanion(GroupImageEntityCompanion data) {
+    return GroupImageEntityData(
+      profileImage: data.profileImage.present
+          ? data.profileImage.value
+          : this.profileImage,
+      profileImageSmall: data.profileImageSmall.present
+          ? data.profileImageSmall.value
+          : this.profileImageSmall,
+      pinImage: data.pinImage.present ? data.pinImage.value : this.pinImage,
+      groupId: data.groupId.present ? data.groupId.value : this.groupId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GroupImageEntityData(')
+          ..write('profileImage: $profileImage, ')
+          ..write('profileImageSmall: $profileImageSmall, ')
+          ..write('pinImage: $pinImage, ')
+          ..write('groupId: $groupId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      $driftBlobEquality.hash(profileImage),
+      $driftBlobEquality.hash(profileImageSmall),
+      $driftBlobEquality.hash(pinImage),
+      groupId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GroupImageEntityData &&
+          $driftBlobEquality.equals(other.profileImage, this.profileImage) &&
+          $driftBlobEquality.equals(
+              other.profileImageSmall, this.profileImageSmall) &&
+          $driftBlobEquality.equals(other.pinImage, this.pinImage) &&
+          other.groupId == this.groupId);
+}
+
+class GroupImageEntityCompanion extends UpdateCompanion<GroupImageEntityData> {
+  final Value<Uint8List> profileImage;
+  final Value<Uint8List> profileImageSmall;
+  final Value<Uint8List> pinImage;
+  final Value<String> groupId;
+  final Value<int> rowid;
+  const GroupImageEntityCompanion({
+    this.profileImage = const Value.absent(),
+    this.profileImageSmall = const Value.absent(),
+    this.pinImage = const Value.absent(),
+    this.groupId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  GroupImageEntityCompanion.insert({
+    required Uint8List profileImage,
+    required Uint8List profileImageSmall,
+    required Uint8List pinImage,
+    required String groupId,
+    this.rowid = const Value.absent(),
+  })  : profileImage = Value(profileImage),
+        profileImageSmall = Value(profileImageSmall),
+        pinImage = Value(pinImage),
+        groupId = Value(groupId);
+  static Insertable<GroupImageEntityData> custom({
+    Expression<Uint8List>? profileImage,
+    Expression<Uint8List>? profileImageSmall,
+    Expression<Uint8List>? pinImage,
+    Expression<String>? groupId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (profileImage != null) 'profile_image': profileImage,
+      if (profileImageSmall != null) 'profile_image_small': profileImageSmall,
+      if (pinImage != null) 'pin_image': pinImage,
+      if (groupId != null) 'group_id': groupId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GroupImageEntityCompanion copyWith(
+      {Value<Uint8List>? profileImage,
+      Value<Uint8List>? profileImageSmall,
+      Value<Uint8List>? pinImage,
+      Value<String>? groupId,
+      Value<int>? rowid}) {
+    return GroupImageEntityCompanion(
+      profileImage: profileImage ?? this.profileImage,
+      profileImageSmall: profileImageSmall ?? this.profileImageSmall,
+      pinImage: pinImage ?? this.pinImage,
+      groupId: groupId ?? this.groupId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (profileImage.present) {
+      map['profile_image'] = Variable<Uint8List>(profileImage.value);
+    }
+    if (profileImageSmall.present) {
+      map['profile_image_small'] = Variable<Uint8List>(profileImageSmall.value);
+    }
+    if (pinImage.present) {
+      map['pin_image'] = Variable<Uint8List>(pinImage.value);
+    }
+    if (groupId.present) {
+      map['group_id'] = Variable<String>(groupId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GroupImageEntityCompanion(')
+          ..write('profileImage: $profileImage, ')
+          ..write('profileImageSmall: $profileImageSmall, ')
+          ..write('pinImage: $pinImage, ')
+          ..write('groupId: $groupId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
@@ -1772,6 +1972,8 @@ abstract class _$Database extends GeneratedDatabase {
   late final $PinEntityTable pinEntity = $PinEntityTable(this);
   late final $MemberEntityTable memberEntity = $MemberEntityTable(this);
   late final $PinImageEntityTable pinImageEntity = $PinImageEntityTable(this);
+  late final $GroupImageEntityTable groupImageEntity =
+      $GroupImageEntityTable(this);
   late final Index userUsername = Index(
       'user_username', 'CREATE INDEX user_username ON user_entity (username)');
   @override
@@ -1784,6 +1986,7 @@ abstract class _$Database extends GeneratedDatabase {
         pinEntity,
         memberEntity,
         pinImageEntity,
+        groupImageEntity,
         userUsername
       ];
 }
@@ -2076,8 +2279,6 @@ typedef $$GroupEntityTableCreateCompanionBuilder = GroupEntityCompanion
   Value<String?> inviteUrl,
   Value<String?> groupAdmin,
   Value<String?> description,
-  required Uint8List profileImage,
-  required Uint8List pinImage,
   Value<bool> isActivated,
   Value<DateTime?> lastUpdated,
   Value<String?> link,
@@ -2091,8 +2292,6 @@ typedef $$GroupEntityTableUpdateCompanionBuilder = GroupEntityCompanion
   Value<String?> inviteUrl,
   Value<String?> groupAdmin,
   Value<String?> description,
-  Value<Uint8List> profileImage,
-  Value<Uint8List> pinImage,
   Value<bool> isActivated,
   Value<DateTime?> lastUpdated,
   Value<String?> link,
@@ -2156,12 +2355,6 @@ class $$GroupEntityTableFilterComposer
 
   ColumnFilters<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<Uint8List> get profileImage => $composableBuilder(
-      column: $table.profileImage, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<Uint8List> get pinImage => $composableBuilder(
-      column: $table.pinImage, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<bool> get isActivated => $composableBuilder(
       column: $table.isActivated, builder: (column) => ColumnFilters(column));
@@ -2238,13 +2431,6 @@ class $$GroupEntityTableOrderingComposer
   ColumnOrderings<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<Uint8List> get profileImage => $composableBuilder(
-      column: $table.profileImage,
-      builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<Uint8List> get pinImage => $composableBuilder(
-      column: $table.pinImage, builder: (column) => ColumnOrderings(column));
-
   ColumnOrderings<bool> get isActivated => $composableBuilder(
       column: $table.isActivated, builder: (column) => ColumnOrderings(column));
 
@@ -2298,12 +2484,6 @@ class $$GroupEntityTableAnnotationComposer
 
   GeneratedColumn<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => column);
-
-  GeneratedColumn<Uint8List> get profileImage => $composableBuilder(
-      column: $table.profileImage, builder: (column) => column);
-
-  GeneratedColumn<Uint8List> get pinImage =>
-      $composableBuilder(column: $table.pinImage, builder: (column) => column);
 
   GeneratedColumn<bool> get isActivated => $composableBuilder(
       column: $table.isActivated, builder: (column) => column);
@@ -2385,8 +2565,6 @@ class $$GroupEntityTableTableManager extends RootTableManager<
             Value<String?> inviteUrl = const Value.absent(),
             Value<String?> groupAdmin = const Value.absent(),
             Value<String?> description = const Value.absent(),
-            Value<Uint8List> profileImage = const Value.absent(),
-            Value<Uint8List> pinImage = const Value.absent(),
             Value<bool> isActivated = const Value.absent(),
             Value<DateTime?> lastUpdated = const Value.absent(),
             Value<String?> link = const Value.absent(),
@@ -2399,8 +2577,6 @@ class $$GroupEntityTableTableManager extends RootTableManager<
             inviteUrl: inviteUrl,
             groupAdmin: groupAdmin,
             description: description,
-            profileImage: profileImage,
-            pinImage: pinImage,
             isActivated: isActivated,
             lastUpdated: lastUpdated,
             link: link,
@@ -2413,8 +2589,6 @@ class $$GroupEntityTableTableManager extends RootTableManager<
             Value<String?> inviteUrl = const Value.absent(),
             Value<String?> groupAdmin = const Value.absent(),
             Value<String?> description = const Value.absent(),
-            required Uint8List profileImage,
-            required Uint8List pinImage,
             Value<bool> isActivated = const Value.absent(),
             Value<DateTime?> lastUpdated = const Value.absent(),
             Value<String?> link = const Value.absent(),
@@ -2427,8 +2601,6 @@ class $$GroupEntityTableTableManager extends RootTableManager<
             inviteUrl: inviteUrl,
             groupAdmin: groupAdmin,
             description: description,
-            profileImage: profileImage,
-            pinImage: pinImage,
             isActivated: isActivated,
             lastUpdated: lastUpdated,
             link: link,
@@ -3213,6 +3385,168 @@ typedef $$PinImageEntityTableProcessedTableManager = ProcessedTableManager<
     ),
     PinImageEntityData,
     PrefetchHooks Function()>;
+typedef $$GroupImageEntityTableCreateCompanionBuilder
+    = GroupImageEntityCompanion Function({
+  required Uint8List profileImage,
+  required Uint8List profileImageSmall,
+  required Uint8List pinImage,
+  required String groupId,
+  Value<int> rowid,
+});
+typedef $$GroupImageEntityTableUpdateCompanionBuilder
+    = GroupImageEntityCompanion Function({
+  Value<Uint8List> profileImage,
+  Value<Uint8List> profileImageSmall,
+  Value<Uint8List> pinImage,
+  Value<String> groupId,
+  Value<int> rowid,
+});
+
+class $$GroupImageEntityTableFilterComposer
+    extends Composer<_$Database, $GroupImageEntityTable> {
+  $$GroupImageEntityTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<Uint8List> get profileImage => $composableBuilder(
+      column: $table.profileImage, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<Uint8List> get profileImageSmall => $composableBuilder(
+      column: $table.profileImageSmall,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<Uint8List> get pinImage => $composableBuilder(
+      column: $table.pinImage, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get groupId => $composableBuilder(
+      column: $table.groupId, builder: (column) => ColumnFilters(column));
+}
+
+class $$GroupImageEntityTableOrderingComposer
+    extends Composer<_$Database, $GroupImageEntityTable> {
+  $$GroupImageEntityTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<Uint8List> get profileImage => $composableBuilder(
+      column: $table.profileImage,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<Uint8List> get profileImageSmall => $composableBuilder(
+      column: $table.profileImageSmall,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<Uint8List> get pinImage => $composableBuilder(
+      column: $table.pinImage, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get groupId => $composableBuilder(
+      column: $table.groupId, builder: (column) => ColumnOrderings(column));
+}
+
+class $$GroupImageEntityTableAnnotationComposer
+    extends Composer<_$Database, $GroupImageEntityTable> {
+  $$GroupImageEntityTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<Uint8List> get profileImage => $composableBuilder(
+      column: $table.profileImage, builder: (column) => column);
+
+  GeneratedColumn<Uint8List> get profileImageSmall => $composableBuilder(
+      column: $table.profileImageSmall, builder: (column) => column);
+
+  GeneratedColumn<Uint8List> get pinImage =>
+      $composableBuilder(column: $table.pinImage, builder: (column) => column);
+
+  GeneratedColumn<String> get groupId =>
+      $composableBuilder(column: $table.groupId, builder: (column) => column);
+}
+
+class $$GroupImageEntityTableTableManager extends RootTableManager<
+    _$Database,
+    $GroupImageEntityTable,
+    GroupImageEntityData,
+    $$GroupImageEntityTableFilterComposer,
+    $$GroupImageEntityTableOrderingComposer,
+    $$GroupImageEntityTableAnnotationComposer,
+    $$GroupImageEntityTableCreateCompanionBuilder,
+    $$GroupImageEntityTableUpdateCompanionBuilder,
+    (
+      GroupImageEntityData,
+      BaseReferences<_$Database, $GroupImageEntityTable, GroupImageEntityData>
+    ),
+    GroupImageEntityData,
+    PrefetchHooks Function()> {
+  $$GroupImageEntityTableTableManager(
+      _$Database db, $GroupImageEntityTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GroupImageEntityTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GroupImageEntityTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GroupImageEntityTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<Uint8List> profileImage = const Value.absent(),
+            Value<Uint8List> profileImageSmall = const Value.absent(),
+            Value<Uint8List> pinImage = const Value.absent(),
+            Value<String> groupId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              GroupImageEntityCompanion(
+            profileImage: profileImage,
+            profileImageSmall: profileImageSmall,
+            pinImage: pinImage,
+            groupId: groupId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required Uint8List profileImage,
+            required Uint8List profileImageSmall,
+            required Uint8List pinImage,
+            required String groupId,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              GroupImageEntityCompanion.insert(
+            profileImage: profileImage,
+            profileImageSmall: profileImageSmall,
+            pinImage: pinImage,
+            groupId: groupId,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$GroupImageEntityTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $GroupImageEntityTable,
+    GroupImageEntityData,
+    $$GroupImageEntityTableFilterComposer,
+    $$GroupImageEntityTableOrderingComposer,
+    $$GroupImageEntityTableAnnotationComposer,
+    $$GroupImageEntityTableCreateCompanionBuilder,
+    $$GroupImageEntityTableUpdateCompanionBuilder,
+    (
+      GroupImageEntityData,
+      BaseReferences<_$Database, $GroupImageEntityTable, GroupImageEntityData>
+    ),
+    GroupImageEntityData,
+    PrefetchHooks Function()>;
 
 class $DatabaseManager {
   final _$Database _db;
@@ -3227,6 +3561,8 @@ class $DatabaseManager {
       $$MemberEntityTableTableManager(_db, _db.memberEntity);
   $$PinImageEntityTableTableManager get pinImageEntity =>
       $$PinImageEntityTableTableManager(_db, _db.pinImageEntity);
+  $$GroupImageEntityTableTableManager get groupImageEntity =>
+      $$GroupImageEntityTableTableManager(_db, _db.groupImageEntity);
 }
 
 // **************************************************************************

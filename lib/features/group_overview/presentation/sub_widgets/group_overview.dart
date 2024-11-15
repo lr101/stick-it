@@ -1,12 +1,16 @@
 import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/member_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../data/dto/user_dto.dart';
 import '../../../../util/routing/routing.dart';
@@ -45,7 +49,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
     final members = ref.watch(memberServiceProvider(widget.group.groupId));
     return CustomAvatarScaffold(
         floatingActionButton: widget.floatingActionButton,
-        avatar: AsyncData(widget.group.profileImage),
+        avatar: ref.watch(groupProfilePictureByIdProvider(widget.group.groupId)),
         title: widget.group.name,
         actions: widget.actions,
         bottom: TabBar(controller: _tabController, tabs: const [
@@ -82,12 +86,14 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
           )),
           if (widget.group.link != null)
             SliverToBoxAdapter(
-                child: ListTile(
-                    title: Text("External Link"),
-                    subtitle: Text(widget.group.link ?? "No link set"))),
+                    child: ListTile(
+                      onTap: clickedOnLink,
+                    title: Row( children: [Text("External Link"), Spacer(), Icon(Icons.open_in_new_rounded)]),
+                    subtitle: Text(widget.group.link ?? "No link set", maxLines: 1, overflow: TextOverflow.ellipsis,))),
           if (widget.group.visibility != 0)
             SliverToBoxAdapter(
               child: ListTile(
+                onTap: clickedOnInviteCode,
                 title: Text("Invite code"),
                 subtitle:
                     Text(widget.group.inviteUrl ?? "Ups something went wrong"),
@@ -109,5 +115,22 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
                 GroupImageFeed(index: index, groupId: widget.group.groupId)),
           ),
         ]));
+  }
+
+  Future<void> clickedOnLink() async {
+    if (widget.group.link != null) {
+      try {
+        await launchUrl(Uri.parse(widget.group.link!),
+            mode: LaunchMode.externalApplication);
+      } catch (e) {
+        CustomErrorSnackBar.message(message: "No app to open link in found", type: CustomErrorSnackBarType.error);
+      }
+    }
+  }
+
+  void clickedOnInviteCode() {
+    if (widget.group.inviteUrl != null) {
+      Clipboard.setData(ClipboardData(text: widget.group.inviteUrl!));
+    }
   }
 }

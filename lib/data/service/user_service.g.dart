@@ -156,7 +156,7 @@ class _UserByIdProviderElement
   String get userId => (origin as UserByIdProvider).userId;
 }
 
-String _$userServiceHash() => r'14eccfaeb716a6950aa94b3f83fc5240fe6b50f2';
+String _$userServiceHash() => r'bdce01bead67347c14522f5b98175e7fd6522646';
 
 /// See also [UserService].
 @ProviderFor(UserService)

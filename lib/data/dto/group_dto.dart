@@ -14,8 +14,6 @@ class   LocalGroupDto {
   String? inviteUrl;
   String? groupAdmin;
   String? description;
-  Uint8List profileImage;
-  Uint8List pinImage;
   DateTime? lastUpdated;
   bool isActivated;
 
@@ -27,8 +25,6 @@ class   LocalGroupDto {
     this.inviteUrl,
     this.groupAdmin,
     this.description,
-    required this.profileImage,
-    required this.pinImage,
     this.lastUpdated,
     required this.isActivated
   });
@@ -42,8 +38,6 @@ class   LocalGroupDto {
       inviteUrl: entityData.inviteUrl,
       groupAdmin: entityData.groupAdmin,
       description: entityData.description,
-      profileImage: entityData.profileImage,
-      pinImage: entityData.pinImage,
       lastUpdated: entityData.lastUpdated,
       isActivated: entityData.isActivated
     );
@@ -58,14 +52,12 @@ class   LocalGroupDto {
       inviteUrl: Value(inviteUrl),
       groupAdmin: Value(groupAdmin),
       description: Value(description),
-      profileImage: Value(profileImage),
-      pinImage: Value(pinImage),
       lastUpdated: Value(lastUpdated),
       isActivated: Value(isActivated)
     );
   }
 
-  factory LocalGroupDto.fromDto(GroupDto dto, Uint8List profileImage, Uint8List pinImage) {
+  factory LocalGroupDto.fromDto(GroupDto dto) {
     return LocalGroupDto(
         groupId: dto.id,
         name:  dto.name,
@@ -74,32 +66,27 @@ class   LocalGroupDto {
         description: dto.description,
         groupAdmin:  dto.groupAdmin,
         link: dto.link,
-        profileImage: profileImage,
-        pinImage:  pinImage,
         lastUpdated: dto.lastUpdated,
         isActivated: false
     );
   }
 
-  static Future<LocalGroupDto> fromDtoAsync(GroupDto dto) async =>
-      LocalGroupDto.fromDto(dto, (await http.get(Uri.parse(dto.profileImage!))).bodyBytes, (await http.get(Uri.parse(dto.pinImage!))).bodyBytes);
-
-  CreateGroupDto toCreateGroupDto() {
+  CreateGroupDto toCreateGroupDto(Uint8List image) {
     return CreateGroupDto(
       name: name,
       groupAdmin: groupAdmin!,
       description: description!,
-      profileImage: base64Encode(profileImage),
+      profileImage: base64Encode(image),
       visibility: visibility,
       link: link!
     );
   }
 
-  UpdateGroupDto toUpdateGroupDto() {
+  UpdateGroupDto toUpdateGroupDto(Uint8List? image) {
     return UpdateGroupDto(
       name: name,
       description: description,
-      profileImage: base64Encode(profileImage),
+      profileImage: image != null ?base64Encode(image) : null,
       visibility: this.visibility,
       groupAdmin: groupAdmin,
       link: link
@@ -127,8 +114,6 @@ class   LocalGroupDto {
         inviteUrl: inviteUrl ?? this.inviteUrl,
         groupAdmin: groupAdmin ?? this.groupAdmin,
         description: description ?? this.description,
-        profileImage: profileImage ?? this.profileImage,
-        pinImage: pinImage ?? this.pinImage,
         lastUpdated: lastUpdated ?? this.lastUpdated,
         isActivated: isActivated ?? this.isActivated
     );

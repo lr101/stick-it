@@ -22,6 +22,7 @@ class GroupDto {
     this.link,
     this.lastUpdated,
     this.profileImage,
+    this.profileImageSmall,
     this.pinImage,
   });
 
@@ -86,6 +87,14 @@ class GroupDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
+  String? profileImageSmall;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   String? pinImage;
 
   @override
@@ -99,6 +108,7 @@ class GroupDto {
     other.link == link &&
     other.lastUpdated == lastUpdated &&
     other.profileImage == profileImage &&
+    other.profileImageSmall == profileImageSmall &&
     other.pinImage == pinImage;
 
   @override
@@ -113,10 +123,11 @@ class GroupDto {
     (link == null ? 0 : link!.hashCode) +
     (lastUpdated == null ? 0 : lastUpdated!.hashCode) +
     (profileImage == null ? 0 : profileImage!.hashCode) +
+    (profileImageSmall == null ? 0 : profileImageSmall!.hashCode) +
     (pinImage == null ? 0 : pinImage!.hashCode);
 
   @override
-  String toString() => 'GroupDto[id=$id, description=$description, inviteUrl=$inviteUrl, name=$name, visibility=$visibility, groupAdmin=$groupAdmin, link=$link, lastUpdated=$lastUpdated, profileImage=$profileImage, pinImage=$pinImage]';
+  String toString() => 'GroupDto[id=$id, description=$description, inviteUrl=$inviteUrl, name=$name, visibility=$visibility, groupAdmin=$groupAdmin, link=$link, lastUpdated=$lastUpdated, profileImage=$profileImage, profileImageSmall=$profileImageSmall, pinImage=$pinImage]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -152,6 +163,11 @@ class GroupDto {
       json[r'profileImage'] = this.profileImage;
     } else {
       json[r'profileImage'] = null;
+    }
+    if (this.profileImageSmall != null) {
+      json[r'profileImageSmall'] = this.profileImageSmall;
+    } else {
+      json[r'profileImageSmall'] = null;
     }
     if (this.pinImage != null) {
       json[r'pinImage'] = this.pinImage;
@@ -189,6 +205,7 @@ class GroupDto {
         link: mapValueOfType<String>(json, r'link'),
         lastUpdated: mapDateTime(json, r'lastUpdated', r''),
         profileImage: mapValueOfType<String>(json, r'profileImage'),
+        profileImageSmall: mapValueOfType<String>(json, r'profileImageSmall'),
         pinImage: mapValueOfType<String>(json, r'pinImage'),
       );
     }

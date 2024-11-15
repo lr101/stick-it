@@ -16,11 +16,6 @@ class MarkerWindowState extends _$MarkerWindowState {
   }
 
   void openPopup(LocalPinDto pin) {
-    if (state?.id == pin.id) {
-      state = null;
-      return;
-    }
-    ref.read(pinImageServiceProvider.notifier).addImage(pin.id);
     state = pin;
   }
 

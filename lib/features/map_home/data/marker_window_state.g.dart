@@ -6,7 +6,7 @@ part of 'marker_window_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$markerWindowStateHash() => r'6c14ece1d9af3dcd2b6e296a037b36c895b82045';
+String _$markerWindowStateHash() => r'c8e3a5a92d864922fa5301bb85431ddaff04b184';
 
 /// See also [MarkerWindowState].
 @ProviderFor(MarkerWindowState)

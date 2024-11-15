@@ -16,23 +16,20 @@ class UserImageService extends _$UserImageService {
 
   @override
   Future<Map<String, Uint8List?>> build() async {
-    final _data = ref.watch(globalDataServiceProvider);
-    final _usersApi = ref.watch(userApiProvider);
-    final profileImageUrl = await _usersApi.getUserProfileImage(_data.userId!);
-    if (profileImageUrl != null) {
-      final profileImage = await http.get(Uri.parse(profileImageUrl));
-      return {_data.userId!: profileImage.bodyBytes};
+    final global = ref.watch(globalDataServiceProvider);
+    final profileImage = await http.get(Uri.parse("${global.minioHost}/users/${global.userId}/profile.png"));
+    if (profileImage.statusCode == 200) {
+      return {global.userId!: profileImage.bodyBytes};
     } else {
-      return {_data.userId!: null};
+      return {global.userId!: null};
     }
   }
 
-  Future<String?> fetchUserImage(String userId) async {
+  Future<String?> fetchUserImage(String userId, {String? signedUrl}) async {
     try {
-      final _usersApi = ref.watch(userApiProvider);
-      final profileImageUrl = await _usersApi.getUserProfileImage(userId);
-      if (profileImageUrl != null) {
-        final profileImage = await http.get(Uri.parse(profileImageUrl));
+      final global = ref.watch(globalDataServiceProvider);
+      final profileImage = await http.get(Uri.parse(signedUrl != null ? signedUrl :"${global.minioHost}/users/${userId}/profile.png"));
+      if (profileImage.statusCode == 200) {
         state.value![userId] = profileImage.bodyBytes;
         ref.notifyListeners();
         return null;

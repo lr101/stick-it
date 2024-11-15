@@ -1,28 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'syncing_service_schedular.dart';
+part of 'group_image_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$syncingServiceSchedularHash() =>
-    r'9dbe0d4382e1b3a7aca44aac2051a043bebaf377';
+String _$groupImageRepositoryHash() =>
+    r'b9a796ad379eff4703858fda96b86c61fb70cc18';
 
-/// See also [SyncingServiceSchedular].
-@ProviderFor(SyncingServiceSchedular)
-final syncingServiceSchedularProvider = AutoDisposeNotifierProvider<
-    SyncingServiceSchedular, SyncingServiceSchedularState>.internal(
-  SyncingServiceSchedular.new,
-  name: r'syncingServiceSchedularProvider',
+/// See also [groupImageRepository].
+@ProviderFor(groupImageRepository)
+final groupImageRepositoryProvider =
+    AutoDisposeProvider<GroupImageRepository>.internal(
+  groupImageRepository,
+  name: r'groupImageRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$syncingServiceSchedularHash,
+      : _$groupImageRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SyncingServiceSchedular
-    = AutoDisposeNotifier<SyncingServiceSchedularState>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GroupImageRepositoryRef = AutoDisposeProviderRef<GroupImageRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

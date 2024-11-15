@@ -41,6 +41,8 @@ class GlobalDataRepository {
   static const String mapStyle = "mapStyle";
   static const String notice0 = "notice0";
   static const String cameraTorch = "cameraTorch";
+  static const String lastKnownLat = "lastKnownLat";
+  static const String lastKnownLong = "lastKnownLong";
 
   GlobalDataRepository({required this.ref}) {
     sharedPreferences = ref.watch(sharedPreferencesProvider);

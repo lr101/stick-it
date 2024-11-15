@@ -1,19 +1,13 @@
 import 'package:buff_lisa/data/entity/database.dart';
-import 'package:buff_lisa/data/repository/group_repository.dart';
-import 'package:buff_lisa/data/repository/pin_repository.dart';
-import 'package:buff_lisa/data/repository/user_repository.dart';
+import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
-import 'package:buff_lisa/data/service/offline_init_service.dart';
-import 'package:buff_lisa/data/service/online_init_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
-import 'package:buff_lisa/features/auth/presentation/auth.dart';
-import 'package:buff_lisa/features/auth/presentation/loading.dart';
+import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_password.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_profile_picture.dart';
@@ -25,10 +19,11 @@ import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
-import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../../../data/repository/global_data_repository.dart';
@@ -118,7 +113,7 @@ class _SettingsState extends ConsumerState<Settings> {
                         context,
                         ShowWebWidget(
                           route:
-                              "https://${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",
+                              "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",
                           title: "Privacy Policy",
                         ));
                   },
@@ -131,7 +126,7 @@ class _SettingsState extends ConsumerState<Settings> {
                         context,
                         ShowWebWidget(
                           route:
-                              "https://${ref.watch(globalDataServiceProvider).host}/public/agb",
+                              "${ref.watch(globalDataServiceProvider).host}/public/agb",
                           title: "Terms of Service",
                         ));
                   },
@@ -172,9 +167,9 @@ class _SettingsState extends ConsumerState<Settings> {
                             text2: "Logout",
                             text1: "Cancel",
                             onPressed: () async {
-                              await invalidateCache();
                               await ref.read(globalDataServiceProvider.notifier).logout();
-                              Routing.toAndDelete(context, Auth(), "/login");
+                              await invalidateCache();
+                              context.go("/deeplink/login");
                             },
                           ))),
             ])
@@ -189,29 +184,56 @@ class _SettingsState extends ConsumerState<Settings> {
         cancelText: "Cancel",
         child: Text(
             "Deleting the cache can fix wrong states of the app caused by outdated data. This does not log you out and an automatic refresh of all deleted data is performed. IMPORTANT: Posts that are not synced to the server will be lost forever.",
-            maxLines: 10), onPressed: () => invalidateCache()
+            maxLines: 10), onPressed: () async {
+          await invalidateCache();
+          Navigator.of(context).pop();
+        }
+    );
+  }
+
+  void showLoading() {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width - 40,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(height: 15),
+                const Text(
+                  "Please don't close this screen, this can take a few seconds",
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
   Future<void> invalidateCache() async {
-    showDialog(context: context, builder: (context) => SizedBox.square(dimension: MediaQuery.of(context).size.width - 40, child: Center(child: const CircularProgressIndicator())));
+    showLoading();
     await ref.watch(databaseProvider).deleteEverything();
     final mgmt = FMTCStore('tileStore').manage;
     await mgmt.reset();
-    ref.read(lastSeenProvider(GlobalDataRepository.lastSeenKey).notifier).clear();
     final sharedPreferences = ref.watch(sharedPreferencesProvider);
     await sharedPreferences.clear();
+    await DefaultCacheManager().emptyCache();
     ref.invalidate(lastSeenProvider);
     ref.invalidate(pinServiceProvider);
-    ref.invalidate(groupOrderServiceProvider);
     ref.invalidate(userImageServiceProvider);
+    ref.invalidate(userImageServiceSmallProvider);
     ref.invalidate(pinImageServiceProvider);
     ref.invalidate(memberServiceProvider);
     ref.invalidate(noUserGroupServiceProvider);
-    ref.invalidate(userGroupServiceProvider);
-    ref.invalidate(offlineInitServiceProvider);
-    ref.invalidate(onlineInitServiceProvider);
     ref.invalidate(likeServiceProvider);
-    Routing.toAndDelete(context, Loading(), "/home");
+    ref.invalidate(groupImageServiceProvider);
+    ref.invalidate(userGroupServiceProvider);
+    ref.invalidate(groupOrderServiceProvider);
   }
 }

@@ -69,7 +69,7 @@ class _GroupSearchState extends ConsumerState<GroupSearch> {
             ],
           ),
         ),
-        listBuilder: (context, item, index) => GroupTile(groupDto: item, onTap: () => Routing.to(context, NoUserGroupOverview(groupId: item.groupId)),),
+        listBuilder: (context, item, index) => GroupTile(groupDto: item, userCachedImage: true, onTap: () => Routing.to(context, NoUserGroupOverview(groupId: item.groupId)),),
         pagingController: _pagingController);
   }
 
@@ -87,7 +87,7 @@ class _GroupSearchState extends ConsumerState<GroupSearch> {
     }
     final groupDtos = <LocalGroupDto>[];
     for (var e in groups.items) {
-      groupDtos.add(await LocalGroupDto.fromDtoAsync(e));
+      groupDtos.add(await LocalGroupDto.fromDto(e));
     }
     if (groupDtos.length < _pageSize) {
       _pagingController.appendLastPage(groupDtos);

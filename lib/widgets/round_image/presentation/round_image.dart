@@ -21,40 +21,28 @@ class RoundImage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return _clickable(
           context: context,
-          child: imageCallback.when<Widget>(
-              data: (data) {
-                try {
-                  return CircleAvatar(
-                    backgroundImage: getImage(data, ref.watch(defaultErrorImageProvider)),
-                    radius: size,
-                    backgroundColor: Colors.transparent,
-                    child: child,
-                  );
-                } catch(e) {
-                  return CircleAvatar(
-                    backgroundImage: MemoryImage(ref.watch(defaultErrorImageProvider)),
-                    radius: size,
-                    backgroundColor: Colors.transparent,
-                    child: child,
-                  );
-                }
-              },
-              error: (_, __) => CircleAvatar(
-                radius: size,
-                backgroundColor: Colors.transparent,
-                child: CircleAvatar(
-                    backgroundImage: MemoryImage(ref.watch(defaultErrorImageProvider)),
-                    radius: size,
-                    backgroundColor: Colors.transparent,
-                    child: child,
-                )
+          child: SizedBox.square(
+              dimension: size != null ? size! * 2 : null,
+              child: Stack(children: [
+                ClipOval(
+                    child: FadeInImage(
+                    placeholder: MemoryImage(kTransparentImage),
+                    image: MemoryImage(imageCallback.when<Uint8List>(
+                        data: (data) => data ?? ref.watch(defaultErrorImageProvider),
+                        error: (_,__) => ref.watch(defaultErrorImageProvider),
+                        loading: () => kTransparentImage
+                    )),
+                    fit: BoxFit.cover,
+                    fadeInDuration: const Duration(milliseconds: 500),
+                    fadeOutDuration: const Duration(milliseconds: 1000),
+                    imageErrorBuilder: (_, __, ___) => Image.memory(
+                      ref.watch(defaultErrorImageProvider),
+                      fit: BoxFit.cover,
+                    )
+                ),
               ),
-              loading: () => Shimmer.fromColors(
-                  baseColor: Colors.grey.shade300,
-                  highlightColor: Colors.grey.shade100,
-                  enabled: true,
-                  child:CircleAvatar(radius: size, backgroundColor: Colors.grey ,child: child != null ? child! : SizedBox.shrink()
-              ))
+                if (child != null) child!
+              ],)
           )
         );
   }

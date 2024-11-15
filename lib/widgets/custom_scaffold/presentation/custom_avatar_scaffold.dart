@@ -17,6 +17,7 @@ class CustomAvatarScaffold extends ConsumerStatefulWidget {
       this.actions,
       this.floatingActionButton,
       this.profileQuickViewBoxes,
+      this.hasBackButton = true,
       required this.body});
 
   final AsyncValue<Uint8List?> avatar;
@@ -27,6 +28,7 @@ class CustomAvatarScaffold extends ConsumerStatefulWidget {
   final Widget? profileQuickViewBoxes;
   final List<Widget>? actions;
   final Widget? floatingActionButton;
+  final bool hasBackButton;
 
   @override
   ConsumerState<CustomAvatarScaffold> createState() =>
@@ -52,7 +54,7 @@ class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width * 0.8;
-    double leftPadding = Navigator.of(context).canPop() ? 66.0 : 16.0;
+    double leftPadding = widget.hasBackButton ? 66.0 : 16.0;
     return Scaffold(
       body: NestedScrollView(
         controller: controller,

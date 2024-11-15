@@ -1,3 +1,4 @@
+import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _RoundGroupCardState extends ConsumerState<RoundGroupCard>  {
     Widget num = const SizedBox.shrink();
     final isActive = ref.watch(groupByIdActivatedProvider(widget.groupId)).value ?? false;
 
-    return ref.watch(groupImageByIdProvider(widget.groupId)).when(
+    return ref.watch(groupProfilePictureByIdProvider(widget.groupId)).when(
         data: (data) {
           if (isActive) {
             color = Colors.transparent;
@@ -42,10 +43,13 @@ class _RoundGroupCardState extends ConsumerState<RoundGroupCard>  {
                     imageCallback: AsyncData(data),
                     child: Stack(
                       children: [
-                        CircleAvatar(
-                          radius: baseHeight / 2 + 1,
-                          backgroundColor: color,
-                        ),
+                        ClipOval(child:Container(
+                          height: baseHeight + 2,
+                          width: baseHeight + 2,
+                          decoration: BoxDecoration(
+                            color: color
+                          ),
+                        ),),
                         Align(
                             alignment: Alignment.topRight,
                             child: num

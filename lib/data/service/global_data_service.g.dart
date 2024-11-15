@@ -6,7 +6,24 @@ part of 'global_data_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$globalDataServiceHash() => r'e61ae8da082d7e24f6769f2b5e5f7027a0619b88';
+String _$lastKnownLocationHash() => r'a7747ffd98bed64169822ee672ea88adadc7fcf5';
+
+/// See also [lastKnownLocation].
+@ProviderFor(lastKnownLocation)
+final lastKnownLocationProvider = AutoDisposeProvider<LatLng>.internal(
+  lastKnownLocation,
+  name: r'lastKnownLocationProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$lastKnownLocationHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef LastKnownLocationRef = AutoDisposeProviderRef<LatLng>;
+String _$globalDataServiceHash() => r'8313e0c416b79b8667ec821ecd75e0f935647e62';
 
 /// See also [GlobalDataService].
 @ProviderFor(GlobalDataService)
@@ -37,7 +54,7 @@ final cameraTorchProvider =
 );
 
 typedef _$CameraTorch = AutoDisposeNotifier<bool>;
-String _$lastSeenHash() => r'38fc1f14c7c2aecf169bcad10b1d591b31e1fa59';
+String _$lastSeenHash() => r'2116a21cd5c291835d95e9b948f7cd80f579e40f';
 
 /// Copied from Dart SDK
 class _SystemHash {

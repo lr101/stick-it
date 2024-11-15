@@ -30,6 +30,7 @@ class UserProfile extends ConsumerWidget {
             onPressed: () => Routing.to(context, Settings()),
             icon: Icon(Icons.settings))
       ],
+      hasBackButton: false,
       profileQuickViewBoxes: GridView.builder(
           gridDelegate:
               SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),

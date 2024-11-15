@@ -73,6 +73,7 @@ Class | Method | HTTP request | Description
 *GroupsApi* | [**getGroupLink**](doc//GroupsApi.md#getgrouplink) | **GET** /api/v2/groups/{groupId}/link | Get link of group
 *GroupsApi* | [**getGroupPinImage**](doc//GroupsApi.md#getgrouppinimage) | **GET** /api/v2/groups/{groupId}/pin_image | Get pin image of group
 *GroupsApi* | [**getGroupProfileImage**](doc//GroupsApi.md#getgroupprofileimage) | **GET** /api/v2/groups/{groupId}/profile_image | Get profile of group
+*GroupsApi* | [**getGroupProfileImageSmall**](doc//GroupsApi.md#getgroupprofileimagesmall) | **GET** /api/v2/groups/{groupId}/profile_image_small | Get small profile image url of group
 *GroupsApi* | [**getGroupsByIds**](doc//GroupsApi.md#getgroupsbyids) | **GET** /api/v2/groups | Get groups by IDs
 *GroupsApi* | [**updateGroup**](doc//GroupsApi.md#updategroup) | **PUT** /api/v2/groups/{groupId} | Update a group by ID
 *LikesApi* | [**createOrUpdateLike**](doc//LikesApi.md#createorupdatelike) | **POST** /api/v2/likes/{pinId} | Create or update a like

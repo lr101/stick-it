@@ -1,6 +1,7 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/data/login_service.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/custom_image_picker.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
@@ -31,17 +32,7 @@ class ChangeProfilePicture extends ConsumerWidget {
                       size: MediaQuery.of(context).size.width * 0.25,
                     ),
                     SizedBox(height: 16.0),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () => _changeProfilePicture(ref, context),
-                        child: Text('Pick image'),
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                          textStyle: TextStyle(fontSize: 18.0),
-                        ),
-                      ),
-                    ),
+                    SubmitButton(onPressed: () async => await _changeProfilePicture(ref, context), text: "Change profile picture"),
                   ],
                 ))));
   }

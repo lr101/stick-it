@@ -3,6 +3,8 @@
 import 'package:buff_lisa/data/entity/database.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../dto/global_data_dto.dart';
@@ -64,9 +66,13 @@ class LastSeen extends _$LastSeen {
     ref.watch(sharedPreferencesProvider).setInt(key, state!.microsecondsSinceEpoch);
   }
 
-  void clear() {
-    state = null;
-    ref.watch(sharedPreferencesProvider).remove(key);
-  }
 
+}
+
+@riverpod
+LatLng lastKnownLocation(Ref ref) {
+  final lat = ref.watch(sharedPreferencesProvider).getDouble(GlobalDataRepository.lastKnownLat);
+  final lng = ref.watch(sharedPreferencesProvider).getDouble(GlobalDataRepository.lastKnownLong);
+  if (lat == null || lng == null) return LatLng(49.01105, 8.25190);
+  return LatLng(lat, lng);
 }

@@ -496,6 +496,61 @@ class GroupsApi {
     return null;
   }
 
+  /// Get small profile image url of group
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] groupId (required):
+  ///   group id
+  Future<Response> getGroupProfileImageSmallWithHttpInfo(String groupId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/v2/groups/{groupId}/profile_image_small'
+      .replaceAll('{groupId}', groupId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get small profile image url of group
+  ///
+  /// Parameters:
+  ///
+  /// * [String] groupId (required):
+  ///   group id
+  Future<String?> getGroupProfileImageSmall(String groupId,) async {
+    final response = await getGroupProfileImageSmallWithHttpInfo(groupId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'String',) as String;
+    
+    }
+    return null;
+  }
+
   /// Get groups by IDs
   ///
   /// Note: This method returns the HTTP [Response].

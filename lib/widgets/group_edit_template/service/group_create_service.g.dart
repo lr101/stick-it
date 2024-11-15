@@ -7,7 +7,7 @@ part of 'group_create_service.dart';
 // **************************************************************************
 
 String _$createGroupProfileImageHash() =>
-    r'd128ee9caa4e862491ac78d052a5ee0ed4741f80';
+    r'822f1e78afb6eae7561b85ab5ca2f287a646fc57';
 
 /// See also [createGroupProfileImage].
 @ProviderFor(createGroupProfileImage)
@@ -26,7 +26,7 @@ final createGroupProfileImageProvider =
 // ignore: unused_element
 typedef CreateGroupProfileImageRef = AutoDisposeProviderRef<Uint8List?>;
 String _$groupCreateServiceHash() =>
-    r'314653a6a208bf4ffa0882878abd4e0eddb13c49';
+    r'adb0e3be739d8531f7c742e18b5c8c42bd4581a0';
 
 /// See also [GroupCreateService].
 @ProviderFor(GroupCreateService)

@@ -21,12 +21,6 @@ class GroupEntity extends Table {
   // Description of the group (nullable)
   TextColumn get description => text().nullable()();
 
-  // Profile image as byte data (nullable)
-  BlobColumn get profileImage => blob()();
-
-  // Pin image as byte data (nullable)
-  BlobColumn get pinImage => blob()();
-
   // Is the group activated?
   BoolColumn get isActivated => boolean().withDefault(const Constant(false))();
 

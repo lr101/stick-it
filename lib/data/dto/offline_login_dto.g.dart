@@ -15,6 +15,9 @@ _$OfflineLoginDtoImpl _$$OfflineLoginDtoImplFromJson(
       numberOfLoadedPinGroups:
           (json['numberOfLoadedPinGroups'] as num?)?.toInt(),
       loadedUser: json['loadedUser'] as bool? ?? false,
+      numberOfSyncedPinGroups:
+          (json['numberOfSyncedPinGroups'] as num?)?.toInt(),
+      syncedPins: json['syncedPins'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$OfflineLoginDtoImplToJson(
@@ -25,4 +28,6 @@ Map<String, dynamic> _$$OfflineLoginDtoImplToJson(
       'loadedPins': instance.loadedPins,
       'numberOfLoadedPinGroups': instance.numberOfLoadedPinGroups,
       'loadedUser': instance.loadedUser,
+      'numberOfSyncedPinGroups': instance.numberOfSyncedPinGroups,
+      'syncedPins': instance.syncedPins,
     };

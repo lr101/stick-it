@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'group_create_service.g.dart';
@@ -17,10 +18,10 @@ class GroupCreateState {
   Uint8List? profileImage;
 
 
-  factory GroupCreateState.fromLocalGroupDto(LocalGroupDto localGroupDto) {
+  factory GroupCreateState.fromLocalGroupDto(LocalGroupDto localGroupDto, Uint8List? profileImage) {
     return GroupCreateState(
       visibility: localGroupDto.visibility,
-      profileImage: localGroupDto.profileImage
+      profileImage: profileImage
     );
   }
 
@@ -34,8 +35,8 @@ class GroupCreateService extends _$GroupCreateService {
   @override
   GroupCreateState build() =>  GroupCreateState();
 
-  void init(LocalGroupDto localGroupDto) {
-    state = GroupCreateState.fromLocalGroupDto(localGroupDto);
+  void init(LocalGroupDto localGroupDto, Uint8List? profileImage) {
+    state = GroupCreateState.fromLocalGroupDto(localGroupDto, profileImage);
   }
 
   void updateProfileImage(Uint8List profileImage) {
@@ -52,6 +53,6 @@ class GroupCreateService extends _$GroupCreateService {
 
 
 @riverpod
-Uint8List? createGroupProfileImage(CreateGroupProfileImageRef ref) {
+Uint8List? createGroupProfileImage(Ref ref) {
   return ref.watch(groupCreateServiceProvider.select((e) => e.profileImage));
 }

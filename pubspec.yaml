@@ -172,6 +172,8 @@ dependencies:
   flutter_dash: ^1.0.0
   exif: ^3.3.0
   like_button: ^2.0.5
+  go_router: ^14.4.1
+  cached_network_image: ^3.4.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

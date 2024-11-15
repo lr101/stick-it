@@ -1,6 +1,7 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/data/login_service.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -101,19 +102,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   validator: _validateConfirmPassword,
                 ),
                 SizedBox(height: 24.0),
-
-                // Submit Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _changePassword,
-                    child: Text('Change Password'),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      textStyle: TextStyle(fontSize: 18.0),
-                    ),
-                  ),
-                ),
+                SubmitButton(onPressed: _changePassword, text: 'Change Password'),
               ],
             ),
           ),
@@ -135,7 +124,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
       if (result == null) {
         Navigator.pop(context);
       } else {
-        CustomErrorSnackBar.message(message: result);
+        CustomErrorSnackBar.message(message: result, type: CustomErrorSnackBarType.error);
       }
     }
   }
