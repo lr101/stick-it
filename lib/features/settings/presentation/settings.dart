@@ -20,6 +20,7 @@ import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dar
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -222,6 +223,7 @@ class _SettingsState extends ConsumerState<Settings> {
     await mgmt.reset();
     final sharedPreferences = ref.watch(sharedPreferencesProvider);
     await sharedPreferences.clear();
+    await DefaultCacheManager().emptyCache();
     ref.invalidate(lastSeenProvider);
     ref.invalidate(pinServiceProvider);
     ref.invalidate(userImageServiceProvider);

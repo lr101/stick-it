@@ -122,9 +122,9 @@ class UserService extends _$UserService {
               image: profilePicture == null
                   ? null
                   : base64Encode(profilePicture)));
-      if (result != null) {
-        ref.read(userImageServiceSmallProvider.notifier).fetchUserImage(userId);
-        ref.read(userImageServiceProvider.notifier).fetchUserImage(userId);
+      if (result != null && result.profileImage != null && result.profileImageSmall != null) {
+        ref.read(userImageServiceSmallProvider.notifier).fetchUserImage(userId, signedUrl: result.profileImageSmall!);
+        ref.read(userImageServiceProvider.notifier).fetchUserImage(userId, signedUrl: result.profileImage!);
       }
       return null;
     } on ApiException catch (e) {

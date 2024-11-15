@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../dto/group_image_dto.dart';
 import '../entity/database.dart';
+import '../service/global_data_service.dart';
 
 part 'group_image_repository.g.dart';
 
@@ -38,24 +39,22 @@ class GroupImageRepository {
   // Fetch the image from the API and cache it
   Future<GroupImageDto> _fetchAndCacheImage(String groupId, bool userGroup) async {
     try {
-     final groupProfileUrl = await ref.watch(groupApiProvider).getGroupProfileImage(groupId);
-     final groupProfileSmallUrl = await ref.watch(groupApiProvider).getGroupProfileImageSmall(groupId);
-     final groupProfile = await http.get(Uri.parse(groupProfileUrl!));
-     final groupProfileSmall = await http.get(Uri.parse(groupProfileSmallUrl!));
-     final groupPinUrl = await ref.watch(groupApiProvider).getGroupPinImage(groupId);
-     final groupPin = await http.get(Uri.parse(groupPinUrl!));
+      final global = ref.watch(globalDataServiceProvider);
+      final profileImageSmall = await http.get(Uri.parse("${global.minioHost}/groups/${groupId}/group_profile_small.png"));
+      final profileImage = await http.get(Uri.parse("${global.minioHost}/groups/${groupId}/group_profile.png"));
+      final groupPin = await http.get(Uri.parse("${global.minioHost}/groups/${groupId}/group_pin.png"));
      if (userGroup) {
        _addImageToCache(GroupImageEntityCompanion( // run async
          groupId: Value(groupId),
-         profileImage: Value(groupProfile.bodyBytes),
+         profileImage: Value(profileImage.bodyBytes),
          pinImage: Value(groupPin.bodyBytes),
-         profileImageSmall: Value(groupProfileSmall.bodyBytes),
+         profileImageSmall: Value(profileImageSmall.bodyBytes),
        ));
      }
      return GroupImageDto(
-         profileImage: groupProfile.bodyBytes, 
+         profileImage: profileImage.bodyBytes,
          pinImage: groupPin.bodyBytes, 
-         profileImageSmall: groupProfileSmall.bodyBytes
+         profileImageSmall: profileImageSmall.bodyBytes
      );
     } catch (e) {
       throw e;

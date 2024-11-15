@@ -43,10 +43,13 @@ class _RoundGroupCardState extends ConsumerState<RoundGroupCard>  {
                     imageCallback: AsyncData(data),
                     child: Stack(
                       children: [
-                        CircleAvatar(
-                          radius: baseHeight / 2 + 1,
-                          backgroundColor: color,
-                        ),
+                        ClipOval(child:Container(
+                          height: baseHeight + 2,
+                          width: baseHeight + 2,
+                          decoration: BoxDecoration(
+                            color: color
+                          ),
+                        ),),
                         Align(
                             alignment: Alignment.topRight,
                             child: num
