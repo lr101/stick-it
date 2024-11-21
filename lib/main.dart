@@ -24,12 +24,15 @@ import 'features/navigation/data/navigation_provider.dart';
 /// binding Widgets before initialization is required by multiple packages
 /// initializes access to env variables
 /// checks if user is logged in on this device by checking device storage
-///
-///
-///
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
+  const bool isProduction = bool.fromEnvironment('dart.vm.product');
+  if (isProduction) {
+    await dotenv.load(fileName: ".env");
+  } else {
+    await dotenv.load(fileName: ".env.dev");
+  }
   try {
     await FMTCObjectBoxBackend().initialise();
     final mgmt = FMTCStore('tileStore').manage;
@@ -49,7 +52,7 @@ Future<void> main() async {
   final globalData = await GlobalDataRepository.get(sharedPreferences, storage);
   final defaultGroupImage =  (await rootBundle.load('assets/image/pin_border.png')).buffer.asUint8List();
   final defaultErrorImage =  (await rootBundle.load('assets/image/profile.jpg')).buffer.asUint8List();
-  await dotenv.load();
+
   runApp(
     ProviderScope(
         overrides: [

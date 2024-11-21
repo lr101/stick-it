@@ -191,6 +191,7 @@ flutter:
   assets:
     - assets/image/
     - .env
+    - .env.dev
   uses-material-design: true
 
 flutter_icons:

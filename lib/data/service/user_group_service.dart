@@ -45,9 +45,12 @@ class UserGroupService extends _$UserGroupService {
       final remoteGroups = await _groupsApi.getGroupsByIds(
           userId: _data.userId,
           withUser: true,
-          withImages: false,
+          withImages: true,
           updatedAfter: lastSeen);
       state = AsyncData(await _mergeGroups(state.value ?? [], remoteGroups!));
+      for (GroupDto group in remoteGroups.items) {
+        ref.read(groupImageServiceProvider.notifier).updateGroupImage(group.id, group);
+      }
       ref.read(lastSeenProvider(GlobalDataRepository.lastSeenKey).notifier).setLastSeenNow();
     } catch (e) {
       if (kDebugMode) print(e);

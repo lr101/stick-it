@@ -69,3 +69,4 @@ pubspec.lock
 /openapitools.json
 /old/
 /out/
+/.env.dev
