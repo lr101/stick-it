@@ -15,7 +15,7 @@ class UserInfoDto {
   UserInfoDto({
     required this.username,
     required this.userId,
-    this.profileImageSmall,
+    this.description,
   });
 
   String username;
@@ -28,32 +28,32 @@ class UserInfoDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  String? profileImageSmall;
+  String? description;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is UserInfoDto &&
     other.username == username &&
     other.userId == userId &&
-    other.profileImageSmall == profileImageSmall;
+    other.description == description;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (username.hashCode) +
     (userId.hashCode) +
-    (profileImageSmall == null ? 0 : profileImageSmall!.hashCode);
+    (description == null ? 0 : description!.hashCode);
 
   @override
-  String toString() => 'UserInfoDto[username=$username, userId=$userId, profileImageSmall=$profileImageSmall]';
+  String toString() => 'UserInfoDto[username=$username, userId=$userId, description=$description]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'username'] = this.username;
       json[r'userId'] = this.userId;
-    if (this.profileImageSmall != null) {
-      json[r'profileImageSmall'] = this.profileImageSmall;
+    if (this.description != null) {
+      json[r'description'] = this.description;
     } else {
-      json[r'profileImageSmall'] = null;
+      json[r'description'] = null;
     }
     return json;
   }
@@ -79,7 +79,7 @@ class UserInfoDto {
       return UserInfoDto(
         username: mapValueOfType<String>(json, r'username')!,
         userId: mapValueOfType<String>(json, r'userId')!,
-        profileImageSmall: mapValueOfType<String>(json, r'profileImageSmall'),
+        description: mapValueOfType<String>(json, r'description'),
       );
     }
     return null;

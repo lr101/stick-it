@@ -11,7 +11,7 @@
 part of openapi.api;
 
 class ApiClient {
-  ApiClient({this.basePath = 'https://app.lr-projects.de', this.authentication,});
+  ApiClient({this.basePath = 'https://stick-it.lr-projects.de', this.authentication,});
 
   final String basePath;
   final Authentication? authentication;
@@ -204,6 +204,8 @@ class ApiClient {
           return PinsSyncDto.fromJson(value);
         case 'RankingResponseDto':
           return RankingResponseDto.fromJson(value);
+        case 'RefreshTokenRequestDto':
+          return RefreshTokenRequestDto.fromJson(value);
         case 'ReportDto':
           return ReportDto.fromJson(value);
         case 'Status':

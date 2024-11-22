@@ -16,6 +16,8 @@ class UserUpdateResponseDto {
     this.userTokenDto,
     this.profileImageSmall,
     this.profileImage,
+    this.username,
+    this.description,
   });
 
   ///
@@ -42,21 +44,41 @@ class UserUpdateResponseDto {
   ///
   String? profileImage;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? username;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? description;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is UserUpdateResponseDto &&
     other.userTokenDto == userTokenDto &&
     other.profileImageSmall == profileImageSmall &&
-    other.profileImage == profileImage;
+    other.profileImage == profileImage &&
+    other.username == username &&
+    other.description == description;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (userTokenDto == null ? 0 : userTokenDto!.hashCode) +
     (profileImageSmall == null ? 0 : profileImageSmall!.hashCode) +
-    (profileImage == null ? 0 : profileImage!.hashCode);
+    (profileImage == null ? 0 : profileImage!.hashCode) +
+    (username == null ? 0 : username!.hashCode) +
+    (description == null ? 0 : description!.hashCode);
 
   @override
-  String toString() => 'UserUpdateResponseDto[userTokenDto=$userTokenDto, profileImageSmall=$profileImageSmall, profileImage=$profileImage]';
+  String toString() => 'UserUpdateResponseDto[userTokenDto=$userTokenDto, profileImageSmall=$profileImageSmall, profileImage=$profileImage, username=$username, description=$description]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -74,6 +96,16 @@ class UserUpdateResponseDto {
       json[r'profileImage'] = this.profileImage;
     } else {
       json[r'profileImage'] = null;
+    }
+    if (this.username != null) {
+      json[r'username'] = this.username;
+    } else {
+      json[r'username'] = null;
+    }
+    if (this.description != null) {
+      json[r'description'] = this.description;
+    } else {
+      json[r'description'] = null;
     }
     return json;
   }
@@ -100,6 +132,8 @@ class UserUpdateResponseDto {
         userTokenDto: TokenResponseDto.fromJson(json[r'userTokenDto']),
         profileImageSmall: mapValueOfType<String>(json, r'profileImageSmall'),
         profileImage: mapValueOfType<String>(json, r'profileImage'),
+        username: mapValueOfType<String>(json, r'username'),
+        description: mapValueOfType<String>(json, r'description'),
       );
     }
     return null;

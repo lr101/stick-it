@@ -15,30 +15,46 @@ class Status {
   Status({
     this.notifications = const [],
     required this.tokenValidity,
+    this.minioEndpoint,
   });
 
   List<String> notifications;
 
   DateTime tokenValidity;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? minioEndpoint;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is Status &&
     _deepEquality.equals(other.notifications, notifications) &&
-    other.tokenValidity == tokenValidity;
+    other.tokenValidity == tokenValidity &&
+    other.minioEndpoint == minioEndpoint;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (notifications.hashCode) +
-    (tokenValidity.hashCode);
+    (tokenValidity.hashCode) +
+    (minioEndpoint == null ? 0 : minioEndpoint!.hashCode);
 
   @override
-  String toString() => 'Status[notifications=$notifications, tokenValidity=$tokenValidity]';
+  String toString() => 'Status[notifications=$notifications, tokenValidity=$tokenValidity, minioEndpoint=$minioEndpoint]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'notifications'] = this.notifications;
       json[r'token-validity'] = this.tokenValidity.toUtc().toIso8601String();
+    if (this.minioEndpoint != null) {
+      json[r'minio-endpoint'] = this.minioEndpoint;
+    } else {
+      json[r'minio-endpoint'] = null;
+    }
     return json;
   }
 
@@ -65,6 +81,7 @@ class Status {
             ? (json[r'notifications'] as Iterable).cast<String>().toList(growable: false)
             : const [],
         tokenValidity: mapDateTime(json, r'token-validity', r'')!,
+        minioEndpoint: mapValueOfType<String>(json, r'minio-endpoint'),
       );
     }
     return null;

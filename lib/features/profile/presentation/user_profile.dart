@@ -20,6 +20,7 @@ class UserProfile extends ConsumerWidget {
     final userId = ref.watch(globalDataServiceProvider).userId!;
     final userPins = ref.watch(sortedUserPinsProvider);
     final userData = ref.watch(userByIdProvider(userId));
+    final currentUser = ref.watch(currentUserServiceProvider);
     return CustomAvatarScaffold(
       avatar: AsyncData(ref
           .watch(profilePictureByIdProvider(userId))
@@ -51,6 +52,16 @@ class UserProfile extends ConsumerWidget {
               );
             }},
               itemCount: 2),
+      boxes: [
+        if (currentUser.description != null) SliverToBoxAdapter(
+            child: ListTile(
+              title: Text("Description"),
+              subtitle:  Text(currentUser.description!,
+                softWrap: true,
+                maxLines: 10,
+                style: TextStyle(fontStyle: FontStyle.italic),
+              )))
+      ],
       body: ImageGrid(
         pinProvider: sortedUserPinsProvider,
         onTab: (index) => Routing.to(

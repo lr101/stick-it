@@ -35,6 +35,13 @@ class OtherUserProfile extends ConsumerWidget {
                   userPins.whenOrNull(data: (data) => data.length.toString()) ??
                       "---"),
             )),
+    if (userData.whenOrNull(data: (data) => data.description) != null) SliverToBoxAdapter(
+        child: ListTile(
+        title: Text("Description"),
+        subtitle:  Text(userData.value!.description!,
+        softWrap: true,
+        maxLines: 10,
+        style: TextStyle(fontStyle: FontStyle.italic),)))
       ],
       body: ImageGrid(
         pinProvider: otherUserPinProvider(userId),

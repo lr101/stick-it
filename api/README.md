@@ -54,7 +54,7 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://app.lr-projects.de*
+All URIs are relative to *https://stick-it.lr-projects.de*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -109,6 +109,7 @@ Class | Method | HTTP request | Description
  - [PinWithOptionalImageDto](doc//PinWithOptionalImageDto.md)
  - [PinsSyncDto](doc//PinsSyncDto.md)
  - [RankingResponseDto](doc//RankingResponseDto.md)
+ - [RefreshTokenRequestDto](doc//RefreshTokenRequestDto.md)
  - [ReportDto](doc//ReportDto.md)
  - [Status](doc//Status.md)
  - [TokenResponseDto](doc//TokenResponseDto.md)
@@ -122,7 +123,11 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Authorization
 
-Endpoints do not require authorization.
+
+Authentication schemes defined for the API:
+### token
+
+- **Type**: HTTP Bearer authentication
 
 
 ## Author

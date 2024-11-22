@@ -5,7 +5,7 @@
 import 'package:openapi/api.dart';
 ```
 
-All URIs are relative to *https://app.lr-projects.de*
+All URIs are relative to *https://stick-it.lr-projects.de*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -66,6 +66,12 @@ Generate delete code
 ### Example
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = AuthApi();
 final username = username_example; // String | userId
@@ -89,7 +95,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[token](../README.md#token)
 
 ### HTTP request headers
 
@@ -106,6 +112,12 @@ Gets the status of the server and user specific information
 ### Example
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = AuthApi();
 
@@ -126,7 +138,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[token](../README.md#token)
 
 ### HTTP request headers
 
@@ -136,7 +148,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **refreshToken**
-> TokenResponseDto refreshToken(body)
+> TokenResponseDto refreshToken(refreshTokenRequestDto)
 
 Request a new access token
 
@@ -147,10 +159,10 @@ Request a new access token with a refresh token
 import 'package:openapi/api.dart';
 
 final api_instance = AuthApi();
-final body = String(); // String | 
+final refreshTokenRequestDto = RefreshTokenRequestDto(); // RefreshTokenRequestDto | 
 
 try {
-    final result = api_instance.refreshToken(body);
+    final result = api_instance.refreshToken(refreshTokenRequestDto);
     print(result);
 } catch (e) {
     print('Exception when calling AuthApi->refreshToken: $e\n');
@@ -161,7 +173,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | **String**|  | [optional] 
+ **refreshTokenRequestDto** | [**RefreshTokenRequestDto**](RefreshTokenRequestDto.md)|  | [optional] 
 
 ### Return type
 

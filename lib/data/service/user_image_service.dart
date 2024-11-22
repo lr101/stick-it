@@ -1,14 +1,11 @@
 
 import 'dart:typed_data';
-
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'global_data_service.dart';
 import 'package:http/http.dart' as http;
-
 part 'user_image_service.g.dart';
 
 @Riverpod(keepAlive: true)
@@ -17,11 +14,17 @@ class UserImageService extends _$UserImageService {
   @override
   Future<Map<String, Uint8List?>> build() async {
     final global = ref.watch(globalDataServiceProvider);
-    final profileImage = await http.get(Uri.parse("${global.minioHost}/users/${global.userId}/profile.png"));
+    final currentUser = ref.read(currentUserServiceProvider);
+    if (currentUser.profileImage != null) {
+      state = AsyncValue.data({global.userId!: currentUser.profileImage});
+    }
+    final profileImageUrl = await ref.watch(userApiProvider).getUserProfileImage(global.userId!);
+    final profileImage = await http.get(Uri.parse(profileImageUrl!));
     if (profileImage.statusCode == 200) {
+      ref.read(currentUserServiceProvider.notifier).update(profileImage: profileImage.bodyBytes);
       return {global.userId!: profileImage.bodyBytes};
     } else {
-      return {global.userId!: null};
+      return {global.userId!: currentUser.profileImage};
     }
   }
 
@@ -44,6 +47,7 @@ class UserImageService extends _$UserImageService {
   void updateUserImage(String userId, Uint8List image) {
     state.value![userId] = image;
     ref.notifyListeners();
+    ref.read(currentUserServiceProvider.notifier).update(profileImage: image);
   }
 }
 

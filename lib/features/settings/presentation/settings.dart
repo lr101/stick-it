@@ -8,9 +8,10 @@ import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
+import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_password.dart';
-import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_profile_picture.dart';
+import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_profile.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/delete_account.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_posts.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_users.dart';
@@ -23,10 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
-
-import '../../../data/repository/global_data_repository.dart';
 import '../../../data/service/global_data_service.dart';
 import '../../../util/routing/routing.dart';
 import '../../web/presentation/show_web.dart';
@@ -72,8 +70,8 @@ class _SettingsState extends ConsumerState<Settings> {
               tiles: [
                 SettingsTile.navigation(
                   leading: const Icon(Icons.person),
-                  title: const Text('Edit profile picture'),
-                  onPressed: (context) => Routing.to(context, const ChangeProfilePicture()),
+                  title: const Text('Edit profile'),
+                  onPressed: (context) => Routing.to(context, const ChangeProfile()),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.password),
@@ -169,7 +167,7 @@ class _SettingsState extends ConsumerState<Settings> {
                             onPressed: () async {
                               await ref.read(globalDataServiceProvider.notifier).logout();
                               await invalidateCache();
-                              context.go("/deeplink/login");
+                              Routing.toAndDelete(context, Auth(), "/login");
                             },
                           ))),
             ])

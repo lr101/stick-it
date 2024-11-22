@@ -41,6 +41,23 @@ final globalDataOnceProvider = Provider<GlobalDataDto>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GlobalDataOnceRef = ProviderRef<GlobalDataDto>;
+String _$currentUserOnceHash() => r'6e4d8bf13ea35b7f3d7ab3c08a4dfeb35e59ed6f';
+
+/// See also [currentUserOnce].
+@ProviderFor(currentUserOnce)
+final currentUserOnceProvider = Provider<CurrentUserDto>.internal(
+  currentUserOnce,
+  name: r'currentUserOnceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$currentUserOnceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef CurrentUserOnceRef = ProviderRef<CurrentUserDto>;
 String _$flutterSecureStorageHash() =>
     r'4edd8f2d834ddb7fab25cf2e14cd3331d1d94d31';
 

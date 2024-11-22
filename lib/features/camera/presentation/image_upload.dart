@@ -71,7 +71,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
                             height: 22,
                             child: FittedBox(
                                 fit: BoxFit.fitHeight,
-                                child: Text(global.username!)),
+                                child: Text(ref.watch(currentUserServiceProvider).username!)),
                           ),
                           SizedBox(
                               height: 18,

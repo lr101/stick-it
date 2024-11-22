@@ -226,17 +226,17 @@ class _CameraState extends ConsumerState<Camera> {
   }
 
   Widget groupCard(LocalGroupDto group, int index) {
-    return Padding(
+    return Center(child: Padding(
         padding: const EdgeInsets.all(5),
         child: GestureDetector(
             onTap: () => takePicture(group, index),
             child:  RoundImage(
-              size: (MediaQuery.of(context).size.height) * 0.065,
+              size: (MediaQuery.of(context).size.height) * 0.06,
               imageCallback: ref.watch(groupProfilePictureByIdProvider(group.groupId)),
               clickable: false,
               child: Container(),
             )
-        )
+        ))
     );
   }
 

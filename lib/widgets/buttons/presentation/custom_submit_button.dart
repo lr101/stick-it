@@ -46,6 +46,7 @@ class _SubmitButtonState extends State<SubmitButton> {
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           textStyle: const TextStyle(fontSize: 18.0),
+          side: BorderSide(width: 2, color: Theme.of(context).colorScheme.primary),
         ),
         child: _isLoading
             ? const CircularProgressIndicator()

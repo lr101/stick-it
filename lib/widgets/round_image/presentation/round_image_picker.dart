@@ -13,8 +13,9 @@ class RoundImagePicker extends ConsumerWidget {
   final AsyncValue<Uint8List?> imageCallback;
   final Function(Uint8List) imageUpload;
   final double size;
+  final double? editSize;
 
-  RoundImagePicker({super.key, required this.imageCallback, required this.size, required this.imageUpload});
+  RoundImagePicker({super.key, required this.imageCallback, required this.size, required this.imageUpload, this.editSize});
 
 
   @override
@@ -34,7 +35,7 @@ class RoundImagePicker extends ConsumerWidget {
                       }
                     },
                     child: CircleAvatar(
-                      radius: size / 2.5,
+                      radius: editSize ?? size / 2.5,
                       child: const Icon(Icons.edit),
                     )
                 ),

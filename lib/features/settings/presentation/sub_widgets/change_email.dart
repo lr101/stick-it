@@ -47,7 +47,7 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
                   ),
                   validator: LoginService.emailValidatorWithErrorMessage,
                 ),
-                SizedBox(height: 24.0),
+                SizedBox(height: 50.0),
                 SubmitButton(onPressed: _changeEmail, text: 'Change Email'),
               ],
             ),
