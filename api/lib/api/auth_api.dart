@@ -167,13 +167,13 @@ class AuthApi {
   ///
   /// Parameters:
   ///
-  /// * [String] body:
-  Future<Response> refreshTokenWithHttpInfo({ String? body, }) async {
+  /// * [RefreshTokenRequestDto] refreshTokenRequestDto:
+  Future<Response> refreshTokenWithHttpInfo({ RefreshTokenRequestDto? refreshTokenRequestDto, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/v2/public/refresh';
 
     // ignore: prefer_final_locals
-    Object? postBody = body;
+    Object? postBody = refreshTokenRequestDto;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -199,9 +199,9 @@ class AuthApi {
   ///
   /// Parameters:
   ///
-  /// * [String] body:
-  Future<TokenResponseDto?> refreshToken({ String? body, }) async {
-    final response = await refreshTokenWithHttpInfo( body: body, );
+  /// * [RefreshTokenRequestDto] refreshTokenRequestDto:
+  Future<TokenResponseDto?> refreshToken({ RefreshTokenRequestDto? refreshTokenRequestDto, }) async {
+    final response = await refreshTokenWithHttpInfo( refreshTokenRequestDto: refreshTokenRequestDto, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

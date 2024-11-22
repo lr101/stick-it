@@ -5,7 +5,7 @@
 import 'package:openapi/api.dart';
 ```
 
-All URIs are relative to *https://app.lr-projects.de*
+All URIs are relative to *https://stick-it.lr-projects.de*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -24,6 +24,12 @@ Create a new pin
 ### Example
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = PinsApi();
 final pinRequestDto = PinRequestDto(); // PinRequestDto | 
@@ -48,7 +54,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[token](../README.md#token)
 
 ### HTTP request headers
 
@@ -65,6 +71,12 @@ Delete a pin by ID
 ### Example
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = PinsApi();
 final pinId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
@@ -88,7 +100,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[token](../README.md#token)
 
 ### HTTP request headers
 
@@ -105,6 +117,12 @@ Get pin information by ID
 ### Example
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = PinsApi();
 final pinId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
@@ -131,7 +149,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[token](../README.md#token)
 
 ### HTTP request headers
 
@@ -148,6 +166,12 @@ Get the image associated with a pin by ID
 ### Example
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = PinsApi();
 final pinId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
@@ -172,7 +196,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[token](../README.md#token)
 
 ### HTTP request headers
 
@@ -189,6 +213,12 @@ Get images by IDs
 ### Example
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = PinsApi();
 final ids = []; // List<String> | Comma-separated list of image IDs
@@ -229,7 +259,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[token](../README.md#token)
 
 ### HTTP request headers
 

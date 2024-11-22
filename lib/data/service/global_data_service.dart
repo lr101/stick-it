@@ -1,5 +1,9 @@
 
 
+import 'dart:typed_data';
+
+import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:buff_lisa/data/dto/current_user_dto.dart';
 import 'package:buff_lisa/data/entity/database.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
@@ -19,8 +23,8 @@ class GlobalDataService  extends _$GlobalDataService {
 
   Future<void> login(String username, String userId, String token) async {
     await ref.watch(globalDataRepositoryProvider).login(username, userId, token);
+    ref.read(currentUserServiceProvider.notifier).updateFromRemote(userId);
     state.refreshToken = token;
-    state.username = username;
     state.userId = userId;
     ref.notifyListeners();
   }
@@ -32,6 +36,30 @@ class GlobalDataService  extends _$GlobalDataService {
   }
 
 
+
+}
+
+
+@Riverpod(keepAlive: true)
+class CurrentUserService extends _$CurrentUserService {
+
+  @override
+  CurrentUserDto build() => ref.watch(currentUserOnceProvider);
+
+  Future<void> updateFromRemote(String userId) async {
+    final user = await ref.watch(userApiProvider).getUser(userId);
+    if (user == null) return;
+    await update(username: user.username, description: user.description);
+  }
+
+  Future<void> update({String? description, String? username, Uint8List? profileImage, Uint8List? profileImageSmall}) async {
+    state = CurrentUserDto(
+        username: username ?? state.username,
+        description: description ?? state.description,
+        profileImage: profileImage ?? state.profileImage,
+        profileImageSmall: profileImageSmall ?? state.profileImageSmall);
+    await ref.read(globalDataRepositoryProvider).updateCurrentUser(description: description, username: username, profileImage: profileImage, profileImageSmall: profileImageSmall);
+  }
 
 }
 

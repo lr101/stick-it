@@ -49,7 +49,8 @@ class OpenApiConfig extends _$OpenApiConfig {
       final data = ref.watch(globalDataServiceProvider);
       if (data.refreshToken != null && _lastCheck == null || DateTime.now().difference(_lastCheck!) > Duration(minutes: 1)) {
         final authApi = AuthApi(ApiClient(basePath: data.host));
-        final response = await authApi.refreshToken(body: data.refreshToken);
+        final refreshTokenDto = RefreshTokenRequestDto(refreshToken: data.refreshToken, userId: data.userId);
+        final response = await authApi.refreshToken(refreshTokenRequestDto: refreshTokenDto);
         if (response != null) {
           _accessToken = response.accessToken;
           _lastCheck = DateTime.now();

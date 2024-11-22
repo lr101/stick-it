@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/dto/user_dto.dart';
-import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:drift/drift.dart';
@@ -13,13 +11,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter/services.dart';
 import 'package:collection/collection.dart';
 import '../dto/global_data_dto.dart';
+import '../dto/local_user_dto.dart';
 import 'global_data_service.dart';
 
 part 'user_service.g.dart';
 
 @Riverpod(keepAlive: true)
 class UserService extends _$UserService {
-  late UserRepository _userRepository;
   late UsersApi _usersApi;
   late AuthApi _authApi;
   late ReportApi _reportApi;
@@ -27,26 +25,12 @@ class UserService extends _$UserService {
 
   @override
   Future<Map<String, LocalUserDto>> build() async {
-    _userRepository = ref.watch(userRepositoryProvider);
     _data = ref.watch(globalDataServiceProvider);
     _usersApi = ref.watch(userApiProvider);
     _authApi = ref.watch(authApiProvider);
     _reportApi = ref.watch(reportApiProvider);
     if (_data.userId == null) return {};
-
-    LocalUserDto? localUser = await _userRepository.getUserById(_data.userId!);
-    if (localUser != null) this.state = AsyncData({_data.userId!: localUser});
-
-    try {
-      localUser = LocalUserDto(
-          userId: _data.userId!,
-          username: _data.username!,
-      );
-      await _userRepository.createUser(localUser);
-    } catch(e) {
-      if (kDebugMode) print(e);
-    }
-    return {_data.userId!: localUser!};
+    return {_data.userId!: ref.watch(currentUserServiceProvider).toLocalUser(_data.userId!)};
   }
 
   Future<LocalUserDto> fetchUserById(String userId) async {
@@ -63,8 +47,7 @@ class UserService extends _$UserService {
 
   Future<String?> auth(String name, String password) async {
     try {
-      final response = await _authApi
-          .userLogin(UserLoginRequest(username: name, password: password));
+      final response = await _authApi.userLogin(UserLoginRequest(username: name, password: password));
       if (response != null) {
         await ref
             .read(globalDataServiceProvider.notifier)
@@ -73,7 +56,7 @@ class UserService extends _$UserService {
       }
       return "Something unexpected happened";
     } on ApiException catch (e) {
-      return e.message;
+      return e.message == null || e.message!.isEmpty ? "Something unexpected happened": e.message;
     }
   }
 
@@ -88,18 +71,12 @@ class UserService extends _$UserService {
   }
 
   Future<String?> signupNewUser(
-      String username, String hash, String email) async {
+      String username, String password, String email) async {
     try {
-      final request =
-          UserRequestDto(name: username, password: hash, email: email);
+      final request = UserRequestDto(name: username, password: password, email: email);
       final response = await _authApi.createUser(request);
       if (response != null) {
-        final userDto =
-            LocalUserDto(userId: response.userId, username: username);
-        await _userRepository.createUser(userDto);
-        await ref
-            .read(globalDataServiceProvider.notifier)
-            .login(username, response.userId, response.refreshToken);
+        await ref.read(globalDataServiceProvider.notifier).login(username, response.userId, response.refreshToken);
         return null;
       } else {
         return "Something unexpected happened";
@@ -110,7 +87,7 @@ class UserService extends _$UserService {
   }
 
   Future<String?> changeUser(
-      {String? password, String? email, Uint8List? profilePicture}) async {
+      {String? password, String? email, Uint8List? profilePicture, String? description, String? username}) async {
     try {
       final global = ref.watch(globalDataServiceProvider);
       final userId = global.userId!;
@@ -119,12 +96,15 @@ class UserService extends _$UserService {
           UserUpdateDto(
               password: password,
               email: email,
+              description: description,
+              username: username,
               image: profilePicture == null
                   ? null
                   : base64Encode(profilePicture)));
-      if (result != null && result.profileImage != null && result.profileImageSmall != null) {
-        ref.read(userImageServiceSmallProvider.notifier).fetchUserImage(userId, signedUrl: result.profileImageSmall!);
-        ref.read(userImageServiceProvider.notifier).fetchUserImage(userId, signedUrl: result.profileImage!);
+      if (result != null) {
+        ref.read(userImageServiceSmallProvider.notifier).fetchUserImage(userId, signedUrl: result.profileImageSmall);
+        ref.read(userImageServiceProvider.notifier).fetchUserImage(userId, signedUrl: result.profileImage);
+        ref.read(currentUserServiceProvider.notifier).update(username: result.username, description: result.description);
       }
       return null;
     } on ApiException catch (e) {
@@ -149,7 +129,7 @@ class UserService extends _$UserService {
 
   Future<String?> getDeleteCode() async {
     try {
-      await _authApi.generateDeleteCode(_data.username!);
+      await _authApi.generateDeleteCode(ref.watch(currentUserServiceProvider).username!);
       return null;
     } on ApiException catch (e) {
       return e.message;

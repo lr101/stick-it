@@ -101,7 +101,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   ),
                   validator: _validateConfirmPassword,
                 ),
-                SizedBox(height: 24.0),
+                SizedBox(height: 50.0),
                 SubmitButton(onPressed: _changePassword, text: 'Change Password'),
               ],
             ),

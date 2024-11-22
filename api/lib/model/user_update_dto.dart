@@ -16,6 +16,8 @@ class UserUpdateDto {
     this.email,
     this.password,
     this.image,
+    this.username,
+    this.description,
   });
 
   ///
@@ -42,21 +44,41 @@ class UserUpdateDto {
   ///
   String? image;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? username;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? description;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is UserUpdateDto &&
     other.email == email &&
     other.password == password &&
-    other.image == image;
+    other.image == image &&
+    other.username == username &&
+    other.description == description;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (email == null ? 0 : email!.hashCode) +
     (password == null ? 0 : password!.hashCode) +
-    (image == null ? 0 : image!.hashCode);
+    (image == null ? 0 : image!.hashCode) +
+    (username == null ? 0 : username!.hashCode) +
+    (description == null ? 0 : description!.hashCode);
 
   @override
-  String toString() => 'UserUpdateDto[email=$email, password=$password, image=$image]';
+  String toString() => 'UserUpdateDto[email=$email, password=$password, image=$image, username=$username, description=$description]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -74,6 +96,16 @@ class UserUpdateDto {
       json[r'image'] = this.image;
     } else {
       json[r'image'] = null;
+    }
+    if (this.username != null) {
+      json[r'username'] = this.username;
+    } else {
+      json[r'username'] = null;
+    }
+    if (this.description != null) {
+      json[r'description'] = this.description;
+    } else {
+      json[r'description'] = null;
     }
     return json;
   }
@@ -100,6 +132,8 @@ class UserUpdateDto {
         email: mapValueOfType<String>(json, r'email'),
         password: mapValueOfType<String>(json, r'password'),
         image: mapValueOfType<String>(json, r'image'),
+        username: mapValueOfType<String>(json, r'username'),
+        description: mapValueOfType<String>(json, r'description'),
       );
     }
     return null;

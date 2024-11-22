@@ -5,7 +5,7 @@
 import 'package:openapi/api.dart';
 ```
 
-All URIs are relative to *https://app.lr-projects.de*
+All URIs are relative to *https://stick-it.lr-projects.de*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

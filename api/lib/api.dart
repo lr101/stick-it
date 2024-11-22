@@ -48,6 +48,7 @@ part 'model/pin_request_dto.dart';
 part 'model/pin_with_optional_image_dto.dart';
 part 'model/pins_sync_dto.dart';
 part 'model/ranking_response_dto.dart';
+part 'model/refresh_token_request_dto.dart';
 part 'model/report_dto.dart';
 part 'model/status.dart';
 part 'model/token_response_dto.dart';

@@ -118,7 +118,7 @@ final likeApiProvider = Provider<LikesApi>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LikeApiRef = ProviderRef<LikesApi>;
-String _$openApiConfigHash() => r'46ae15774da44e0f50f6c33cd1e649d46bb8e7b6';
+String _$openApiConfigHash() => r'22f00836fe88c13275acea26874f9d17a99da80d';
 
 /// See also [OpenApiConfig].
 @ProviderFor(OpenApiConfig)

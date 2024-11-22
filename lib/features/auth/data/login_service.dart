@@ -1,9 +1,10 @@
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:string_validator/string_validator.dart';
 part 'login_service.g.dart';
@@ -15,7 +16,7 @@ class LoginService {
 
   /// Navigates to the NavBar Widget when authentication was successful
   void handleLoginComplete(BuildContext context) {
-    context.go("/deeplink");
+    Routing.toAndDelete(context, const Navigation(), "/home");
   }
 
   /// This method is called when the user tries to login with a username and password to an existing account
@@ -112,4 +113,4 @@ class LoginService {
 }
 
 @riverpod
-LoginService loginService(LoginServiceRef ref) => LoginService(ref: ref);
+LoginService loginService(Ref ref) => LoginService(ref: ref);

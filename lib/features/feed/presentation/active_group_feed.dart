@@ -12,7 +12,7 @@ class ActiveGroupFeed extends ConsumerStatefulWidget {
   ConsumerState<ActiveGroupFeed> createState() => _ActiveGroupFeedState();
 }
 
-class _ActiveGroupFeedState extends ConsumerState<ActiveGroupFeed> {
+class _ActiveGroupFeedState extends ConsumerState<ActiveGroupFeed> with AutomaticKeepAliveClientMixin {
   PagingController<int, LocalPinDto> _pagingController =
       PagingController(firstPageKey: 0, invisibleItemsThreshold: 2);
 
@@ -24,9 +24,13 @@ class _ActiveGroupFeedState extends ConsumerState<ActiveGroupFeed> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     ref.listen(sortedActivatedPinsProvider, (previous, next) => next.whenOrNull(data: (data) => _pagingController.refresh()));
     return Scaffold(
       body: CustomFeed(pinProvider: sortedActivatedPinsProvider, pagingController: _pagingController),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -5,7 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class GlobalDataDto {
 
   String? userId;
-  String? username;
   String? refreshToken;
   String host = dotenv.env['API_HOST']!;
   String minioHost = dotenv.env['MINIO_HOST']!;
@@ -13,7 +12,6 @@ class GlobalDataDto {
 
   GlobalDataDto({
     required this.userId,
-    required this.username,
     required this.refreshToken,
     required this. cameras
   });

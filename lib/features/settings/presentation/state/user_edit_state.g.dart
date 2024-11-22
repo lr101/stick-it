@@ -1,27 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_repository.dart';
+part of 'user_edit_state.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userRepositoryHash() => r'22d852f4460d5f808156186ed54959d300207d48';
+String _$userEditStateHash() => r'072bc343df40e17cfa0551e40988fb05590b928c';
 
-/// See also [userRepository].
-@ProviderFor(userRepository)
-final userRepositoryProvider = Provider<UserRepository>.internal(
-  userRepository,
-  name: r'userRepositoryProvider',
+/// See also [UserEditState].
+@ProviderFor(UserEditState)
+final userEditStateProvider =
+    AutoDisposeNotifierProvider<UserEditState, Uint8List?>.internal(
+  UserEditState.new,
+  name: r'userEditStateProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$userRepositoryHash,
+      : _$userEditStateHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserRepositoryRef = ProviderRef<UserRepository>;
+typedef _$UserEditState = AutoDisposeNotifier<Uint8List?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

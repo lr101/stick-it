@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:buff_lisa/data/dto/member_dto.dart';
-import 'package:buff_lisa/data/dto/user_dto.dart';
 import 'package:buff_lisa/data/entity/database.dart';
 import 'package:drift/drift.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';

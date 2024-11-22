@@ -1,7 +1,10 @@
 
 
+import 'dart:convert';
+import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:buff_lisa/data/dto/current_user_dto.dart';
 import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,6 +46,9 @@ class GlobalDataRepository {
   static const String cameraTorch = "cameraTorch";
   static const String lastKnownLat = "lastKnownLat";
   static const String lastKnownLong = "lastKnownLong";
+  static const String descriptionKey = "descriptionKey";
+  static const String profileImageKey = "profileImageKey";
+  static const String profileImageSmallKey = "profileImageSmallKey";
 
   GlobalDataRepository({required this.ref}) {
     sharedPreferences = ref.watch(sharedPreferencesProvider);
@@ -51,9 +57,19 @@ class GlobalDataRepository {
   static Future<GlobalDataDto> get(SharedPreferences sharedPreferences, FlutterSecureStorage storage) async{
     return GlobalDataDto(
         userId: await storage.read(key: userIdKey),
-        username: await storage.read(key: usernameKey),
         refreshToken: await storage.read(key: tokenKey),
         cameras: await availableCameras(),
+    );
+  }
+
+  static Future<CurrentUserDto> getUser(SharedPreferences sharedPreferences, FlutterSecureStorage storage) async{
+    final prImage = await sharedPreferences.getString(profileImageKey);
+    final prImageSmall = await sharedPreferences.getString(profileImageSmallKey);
+    return CurrentUserDto(
+      username: await storage.read(key: usernameKey),
+      description: await sharedPreferences.getString(descriptionKey),
+      profileImage: prImage != null ? base64Decode(prImage) : null,
+      profileImageSmall: prImageSmall != null ? base64Decode(prImageSmall) : null
     );
   }
 
@@ -69,6 +85,20 @@ class GlobalDataRepository {
     await storage.write(key: tokenKey, value: token);
   }
 
+  Future<void> updateCurrentUser({
+      String? username,
+      String? description,
+      Uint8List? profileImage,
+      Uint8List? profileImageSmall
+  }) async {
+    final sharedPrefs = ref.watch(sharedPreferencesProvider);
+    final storage = ref.watch(flutterSecureStorageProvider);
+    if (description != null) await sharedPrefs.setString(descriptionKey, description);
+    if (username != null) await storage.write(key: usernameKey, value: username);
+    if (profileImage != null) await sharedPrefs.setString(profileImageKey, base64Encode(profileImage));
+    if (profileImageSmall != null) await sharedPrefs.setString(profileImageSmallKey, base64Encode(profileImageSmall));
+  }
+
 }
 
 @Riverpod(keepAlive: true)
@@ -76,6 +106,9 @@ GlobalDataRepository globalDataRepository(Ref ref) => GlobalDataRepository(ref: 
 
 @Riverpod(keepAlive: true)
 GlobalDataDto globalDataOnce(Ref ref) => throw UnimplementedError();
+
+@Riverpod(keepAlive: true)
+CurrentUserDto currentUserOnce(Ref ref) => throw UnimplementedError();
 
 @Riverpod(keepAlive: true)
 FlutterSecureStorage flutterSecureStorage(Ref ref) => throw UnimplementedError();

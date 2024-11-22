@@ -1,6 +1,7 @@
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,16 +37,14 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
         appBar: AppBar(
           title: Text("Delete Account"),
         ),
-        body: Form(
+        body: Padding(padding: const EdgeInsets.all(16), child: Form(
           key: _formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(10),
-                child: Text("Type the Code from your email here:",
-                    textAlign: TextAlign.center),
-              ),
+              const Text("Are you sure you want to delete your account?", style: TextStyle(fontStyle: FontStyle.italic)),
+              const Text("This action cannot be undone, all data will be lost!!",style: TextStyle(fontStyle: FontStyle.italic)),
+              const SizedBox(height: 16,),
+              const Text("Type the Code from your email here:"),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
@@ -54,27 +53,19 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.number,
                   style: const TextStyle(fontSize: 20),
-                  decoration:
-                      const InputDecoration.collapsed(hintText: "6 digit code"),
+                  decoration: InputDecoration(
+                    labelText: '6 Digit Code',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (v) => v != null && v.length == 6 ? "Code must have 6 digits" : null,
                   maxLines: 1,
-                  validator: (v) => v != null && v.length == 6
-                      ? "Code must have 6 digits"
-                      : null,
                 ),
               ),
-              Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    onPressed: _submitDelete,
-                    child: Text('Delete Account'),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      textStyle: TextStyle(fontSize: 18.0),
-                    ),
-                  ))
+              SizedBox(height: 50,),
+              SubmitButton(onPressed: _submitDelete, text: "Delete Account")
             ],
           ),
-        ));
+        )));
   }
 
   Future<void> _submitDelete() async {

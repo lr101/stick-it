@@ -76,7 +76,7 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
                                             .toList()) ??
                                 [
                                   DropdownMenuItem<String>(
-                                      child: Text(global.username!),
+                                      child: Text(ref.watch(currentUserServiceProvider).username!),
                                       value: global.userId)
                                 ],
                             onChanged: (String? value) {
