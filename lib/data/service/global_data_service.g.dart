@@ -23,7 +23,7 @@ final lastKnownLocationProvider = AutoDisposeProvider<LatLng>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LastKnownLocationRef = AutoDisposeProviderRef<LatLng>;
-String _$globalDataServiceHash() => r'20a1c9ac17d0804b6ab3f6c06fa681a35f276411';
+String _$globalDataServiceHash() => r'b2eb1bf27af7c470b5b1f2e1f2d5f34cc2e818f7';
 
 /// See also [GlobalDataService].
 @ProviderFor(GlobalDataService)
@@ -40,7 +40,7 @@ final globalDataServiceProvider =
 
 typedef _$GlobalDataService = Notifier<GlobalDataDto>;
 String _$currentUserServiceHash() =>
-    r'95f81da3e47543f67e453316d2c2d96313ff30ae';
+    r'1fd87fc164553f53e7182784a3bc90a441fcf2c5';
 
 /// See also [CurrentUserService].
 @ProviderFor(CurrentUserService)

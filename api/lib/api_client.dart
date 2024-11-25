@@ -216,6 +216,8 @@ class ApiClient {
           return UpdateGroupDto.fromJson(value);
         case 'UserInfoDto':
           return UserInfoDto.fromJson(value);
+        case 'UserLikesDto':
+          return UserLikesDto.fromJson(value);
         case 'UserLoginRequest':
           return UserLoginRequest.fromJson(value);
         case 'UserRequestDto':

@@ -69,7 +69,7 @@ class _GroupSearchState extends ConsumerState<GroupSearch> {
             ],
           ),
         ),
-        listBuilder: (context, item, index) => GroupTile(groupDto: item, userCachedImage: true, onTap: () => Routing.to(context, NoUserGroupOverview(groupId: item.groupId)),),
+        listBuilder: (context, item, index) => GroupTile(groupDto: item, userCachedImage: true, onTap: () => Routing.to(context, NoUserGroupOverview(groupId: item.creatorId)),),
         pagingController: _pagingController);
   }
 

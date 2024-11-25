@@ -3,9 +3,11 @@ import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
+import 'package:buff_lisa/features/profile/presentation/user_like_icon.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,48 +21,69 @@ class UserProfile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(globalDataServiceProvider).userId!;
     final userPins = ref.watch(sortedUserPinsProvider);
-    final userData = ref.watch(userByIdProvider(userId));
     final currentUser = ref.watch(currentUserServiceProvider);
     return CustomAvatarScaffold(
       avatar: AsyncData(ref
           .watch(profilePictureByIdProvider(userId))
           .whenOrNull(data: (data) => data)),
-      title: userData.whenOrNull(data: (data) => data.username) ?? "...",
+      title: currentUser.username ?? "---",
       actions: [
         IconButton(
             onPressed: () => Routing.to(context, Settings()),
             icon: Icon(Icons.settings))
       ],
       hasBackButton: false,
-      profileQuickViewBoxes: GridView.builder(
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-              primary: false,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-            switch (index) { case 0: return ListTile(
-                    title: Text("Sticks"),
+      profileQuickViewBoxes: Column(
+          children: [
+            // First Row: Two Items
+            SizedBox(height: MediaQuery.of(context).size.width * 0.15, child:
+              Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: ListTile(
+                    title: Text("Sticks", maxLines: 1,),
                     subtitle: Text(userPins.whenOrNull(
                             data: (data) => data.length.toString()) ??
                         "---"),
-                  );
-              case 1: return ListTile(
-                title: Text("Groups"),
-                subtitle: Text(ref.watch(userGroupServiceProvider).whenOrNull(
-                    data: (data) => data.length.toString()) ??
-                    "---"),
-              );
-            }},
-              itemCount: 2),
+                  ),
+                ),
+                Flexible(
+                  child: ListTile(
+                    title: Text("Groups", maxLines: 1,),
+                    subtitle: Text(ref
+                            .watch(userGroupServiceProvider)
+                            .whenOrNull(
+                                data: (data) => data.length.toString()) ??
+                        "---"),
+                  ),
+                ),
+              ],
+            )),
+            SizedBox(height: MediaQuery.of(context).size.width * 0.15, child:Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+
+                UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeCount), icon: Icons.favorite),
+                UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeLocationCount), icon: CupertinoIcons.location_solid),
+                UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likePhotographyCount), icon: Icons.photo_camera),
+                UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeArtCount), icon: Icons.brush)
+
+              ],
+            )),
+          ],
+        ),
       boxes: [
-        if (currentUser.description != null) SliverToBoxAdapter(
-            child: ListTile(
-              title: Text("Description"),
-              subtitle:  Text(currentUser.description!,
-                softWrap: true,
-                maxLines: 10,
-                style: TextStyle(fontStyle: FontStyle.italic),
-              )))
+        if (currentUser.description != null)
+          SliverToBoxAdapter(
+              child: ListTile(
+                  title: Text("Description"),
+                  subtitle: Text(
+                    currentUser.description!,
+                    softWrap: true,
+                    maxLines: 10,
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  )))
       ],
       body: ImageGrid(
         pinProvider: sortedUserPinsProvider,

@@ -26,6 +26,7 @@ doc/Status.md
 doc/TokenResponseDto.md
 doc/UpdateGroupDto.md
 doc/UserInfoDto.md
+doc/UserLikesDto.md
 doc/UserLoginRequest.md
 doc/UserRequestDto.md
 doc/UserUpdateDto.md
@@ -66,8 +67,10 @@ lib/model/status.dart
 lib/model/token_response_dto.dart
 lib/model/update_group_dto.dart
 lib/model/user_info_dto.dart
+lib/model/user_likes_dto.dart
 lib/model/user_login_request.dart
 lib/model/user_request_dto.dart
 lib/model/user_update_dto.dart
 lib/model/user_update_response_dto.dart
 pubspec.yaml
+test/user_likes_dto_test.dart

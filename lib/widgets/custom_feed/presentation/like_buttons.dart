@@ -13,8 +13,9 @@ import 'like_button_animated.dart';
 class LikeButtons extends ConsumerWidget {
 
   final String pinId;
+  final String creatorId;
 
-  const LikeButtons({super.key, required this.pinId});
+  const LikeButtons({super.key, required this.pinId, required this.creatorId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,9 +38,9 @@ class LikeButtons extends ConsumerWidget {
               onTap: (isLiked) async {
                 try {
                   if (isLiked) {
-                    await ref.read(likeServiceProvider.notifier).addLike(pinId, CreateLikeDto(userId: userId, like: false));
+                    await ref.read(likeServiceProvider.notifier).addLike(pinId, creatorId, CreateLikeDto(userId: userId, like: false));
                   } else {
-                    await ref.read(likeServiceProvider.notifier).addLike(pinId, CreateLikeDto(userId: userId, like: true));
+                    await ref.read(likeServiceProvider.notifier).addLike(pinId, creatorId, CreateLikeDto(userId: userId, like: true));
                   }
                 } catch(e) {
                   return false;
@@ -63,9 +64,9 @@ class LikeButtons extends ConsumerWidget {
               onTap: (isLiked) async {
                 try {
                   if (isLiked) {
-                    await ref.read(likeServiceProvider.notifier).addLike(pinId, CreateLikeDto(userId: userId, likeLocation: false));
+                    await ref.read(likeServiceProvider.notifier).addLike(pinId, creatorId, CreateLikeDto(userId: userId, likeLocation: false));
                   } else {
-                    await ref.read(likeServiceProvider.notifier).addLike(pinId, CreateLikeDto(userId: userId, likeLocation: true));
+                    await ref.read(likeServiceProvider.notifier).addLike(pinId, creatorId, CreateLikeDto(userId: userId, likeLocation: true));
                   }
                 } catch(e) {
                   return false;
@@ -89,9 +90,9 @@ class LikeButtons extends ConsumerWidget {
               onTap: (isLiked) async {
                 try {
                   if (isLiked) {
-                    await ref.read(likeServiceProvider.notifier).addLike(pinId, CreateLikeDto(userId: userId, likePhotography: false));
+                    await ref.read(likeServiceProvider.notifier).addLike(pinId, creatorId, CreateLikeDto(userId: userId, likePhotography: false));
                   } else {
-                    await ref.read(likeServiceProvider.notifier).addLike(pinId, CreateLikeDto(userId: userId, likePhotography: true));
+                    await ref.read(likeServiceProvider.notifier).addLike(pinId, creatorId, CreateLikeDto(userId: userId, likePhotography: true));
                   }
                 } catch(e) {
                   return false;
@@ -106,7 +107,7 @@ class LikeButtons extends ConsumerWidget {
               postFrameCallback: (state) => addLikeState(state, pinLike.valueOrNull?.likedArtByUser ?? false),
               likeBuilder: (isLiked) {
                 return Icon(
-                  Icons.palette,
+                  Icons.brush,
                   color: isLiked ? Colors.red : Colors.grey,
                   size: 30,
                 );
@@ -115,9 +116,9 @@ class LikeButtons extends ConsumerWidget {
               onTap: (isLiked) async {
                 try {
                   if (isLiked) {
-                    await ref.read(likeServiceProvider.notifier).addLike(pinId, CreateLikeDto(userId: userId, likeArt: false));
+                    await ref.read(likeServiceProvider.notifier).addLike(pinId, creatorId, CreateLikeDto(userId: userId, likeArt: false));
                   } else {
-                    await ref.read(likeServiceProvider.notifier).addLike(pinId, CreateLikeDto(userId: userId, likeArt: true));
+                    await ref.read(likeServiceProvider.notifier).addLike(pinId, creatorId, CreateLikeDto(userId: userId, likeArt: true));
                   }
                 } catch(e) {
                   return false;

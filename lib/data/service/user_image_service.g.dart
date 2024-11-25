@@ -159,7 +159,7 @@ class _ProfilePictureByIdProviderElement
   String get userId => (origin as ProfilePictureByIdProvider).userId;
 }
 
-String _$userImageServiceHash() => r'16a2db6c769db11720fe164944fa3c234f04206a';
+String _$userImageServiceHash() => r'684ee3e7e78d33afe2961b15c503285477cac3bc';
 
 /// See also [UserImageService].
 @ProviderFor(UserImageService)
