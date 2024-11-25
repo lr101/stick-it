@@ -164,7 +164,7 @@ class _UserProfilePictureSmallByIdProviderElement
 }
 
 String _$userImageServiceSmallHash() =>
-    r'e8b96788130ea443843404e5ab3ded39732e8e23';
+    r'94d2d39f01dbc6d6333cd06a451dbb5c0537cd72';
 
 /// See also [UserImageServiceSmall].
 @ProviderFor(UserImageServiceSmall)

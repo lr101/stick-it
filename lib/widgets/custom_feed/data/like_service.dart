@@ -1,5 +1,6 @@
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,12 +25,13 @@ class LikeService extends _$LikeService {
     }
   }
 
-  Future<void> addLike(String pinId, CreateLikeDto createLikeDto) async {
+  Future<void> addLike(String pinId, String creatorId, CreateLikeDto createLikeDto) async {
     final likeApi = ref.watch(likeApiProvider);
     final like = await likeApi.createOrUpdateLike(pinId, createLikeDto);
     if (like != null) {
       state[pinId] = like;
       ref.notifyListeners();
+      ref.watch(userServiceProvider.notifier).updateLikeCount(creatorId, createLikeDto);
     }
   }
 }

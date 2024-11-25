@@ -2,6 +2,7 @@ import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/closest_pin_card.dart';
+import 'package:buff_lisa/features/map_home/presentation/map_panel.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:flutter/material.dart';
@@ -31,51 +32,32 @@ class MapHome extends ConsumerStatefulWidget {
 class _MapHomeState extends ConsumerState<MapHome>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   MapController _controller = MapController();
-  PanelController _panelController = PanelController();
-  PagingController<int, MapEntry<LocalPinDto, double>> _pagingController =
-      PagingController(firstPageKey: 0);
-
-  List<MapEntry<LocalPinDto, double>> _pins = [];
-  ValueNotifier<double> panelPosition = ValueNotifier<double>(0);
   late final animateController;
+  ValueNotifier<double> panelPosition = ValueNotifier<double>(0);
+  PanelController _panelController = PanelController();
   late final TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     animateController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
-    _tabController = TabController(length: 2, vsync: this);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      moveToCurrentPosition();
-      ref.watch(pinsSortedByDistanceProvider).whenData((data) {
-        _pins = data;
-        _pagingController.refresh();
-      });
-    });
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
   }
 
   @override
   void dispose() {
     animateController.dispose();
     _controller.dispose();
-    _pagingController.dispose();
+    _tabController = TabController(length: 2, vsync: this);
     super.dispose();
-
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final height = MediaQuery.of(context).size.height;
-    final windowsState = ref.watch(markerWindowStateProvider);
-    ref.listen(pinsSortedByDistanceProvider, (previous, next) {
-      _pins = next.valueOrNull ?? [];
-      _pagingController.refresh();
-    });
+
     final mapState = ref.watch(mapStatesProvider);
     return Scaffold(
       appBar: null,
@@ -136,51 +118,7 @@ class _MapHomeState extends ConsumerState<MapHome>
               ),
             ],
           ),
-          panel: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                height: 22,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)),
-                ),
-                child: Center(
-                    child: Container(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).hintColor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(2.5))))),
-              ),
-              TabBar(controller: _tabController, tabs: [
-                Tab(
-                  text: 'Closest Pins',
-                ),
-                Tab(
-                  text: 'Recently seen',
-                ),
-              ]),
-              Expanded(child:
-              TabBarView(controller: _tabController, children: [
-                PagedListView<int, MapEntry<LocalPinDto, double>>(
-                    pagingController: _pagingController,
-                    scrollDirection: Axis.horizontal,
-                    builderDelegate: PagedChildBuilderDelegate(
-                      itemBuilder: (context, item, index) => ClosestPinCard(
-                        item: item,
-                        moveToLatLng: setLocation,
-                      ),
-                    )),
-                windowsState == null
-                    ? Center(child: Text('Click on a pin to see details here'))
-                    : FeedCard(item: windowsState)
-              ]))
-            ],
-          ),
+          panel: MapPanel(moveToCurrentPosition: moveToCurrentPosition, tabController: _tabController, setLocation: setLocation)
         ),
       ),
       floatingActionButton: Align(
@@ -232,24 +170,7 @@ class _MapHomeState extends ConsumerState<MapHome>
     animateController.forward(from: 0.0);
   }
 
-  Future<void> _fetchPage(pageKey, {pageSize = 5}) async {
-    try {
-      int end;
-      if (pageKey + pageSize > _pins.length) {
-        end = _pins.length;
-      } else {
-        end = pageKey + pageSize;
-      }
-      final idList = _pins.getRange(pageKey, end).toList();
-      if (end == _pins.length) {
-        _pagingController.appendLastPage(idList);
-      } else {
-        _pagingController.appendPage(idList, pageKey + pageSize);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
-  }
+
 
   @override
   bool get wantKeepAlive => true;

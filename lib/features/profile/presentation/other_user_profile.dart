@@ -2,10 +2,12 @@ import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/profile/presentation/pop_up_menu_other_user.dart';
 import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
+import 'package:buff_lisa/features/profile/presentation/user_like_icon.dart';
 import 'package:buff_lisa/features/profile/service/other_user_pin_service.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,14 +21,26 @@ class OtherUserProfile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPins = ref.watch(otherUserPinServiceProvider(userId));
-    final userData = ref.watch(userByIdProvider(userId));
+    final username = ref.watch(userByIdProvider(userId).select((e) => e.value?.username ?? "---"));
+    final description = ref.watch(userByIdProvider(userId).select((e) => e.value?.description));
     final profileImage = ref.watch(profilePictureByIdProvider(userId));
     return CustomAvatarScaffold(
       avatar: AsyncData(profileImage.value),
-      title: userData.whenOrNull(data: (data) => data.username) ?? "...",
+      title: username,
       actions: [
         PopUpMenuOtherUser(userId: userId)
       ],
+      profileQuickViewBoxes: SizedBox(height: MediaQuery.of(context).size.width * 0.15, child:Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+
+          UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeCount), icon: Icons.favorite),
+          UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeLocationCount), icon: CupertinoIcons.location_solid),
+          UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likePhotographyCount), icon: Icons.photo_camera),
+          UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeArtCount), icon: Icons.brush)
+
+        ],
+      )),
       boxes: [
         SliverToBoxAdapter(
             child: ListTile(
@@ -35,13 +49,13 @@ class OtherUserProfile extends ConsumerWidget {
                   userPins.whenOrNull(data: (data) => data.length.toString()) ??
                       "---"),
             )),
-    if (userData.whenOrNull(data: (data) => data.description) != null) SliverToBoxAdapter(
+    if (description != null) SliverToBoxAdapter(
         child: ListTile(
         title: Text("Description"),
-        subtitle:  Text(userData.value!.description!,
-        softWrap: true,
-        maxLines: 10,
-        style: TextStyle(fontStyle: FontStyle.italic),)))
+        subtitle:  Text(description,
+          softWrap: true,
+          maxLines: 10,
+          style: TextStyle(fontStyle: FontStyle.italic),)))
       ],
       body: ImageGrid(
         pinProvider: otherUserPinProvider(userId),

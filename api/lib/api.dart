@@ -54,6 +54,7 @@ part 'model/status.dart';
 part 'model/token_response_dto.dart';
 part 'model/update_group_dto.dart';
 part 'model/user_info_dto.dart';
+part 'model/user_likes_dto.dart';
 part 'model/user_login_request.dart';
 part 'model/user_request_dto.dart';
 part 'model/user_update_dto.dart';

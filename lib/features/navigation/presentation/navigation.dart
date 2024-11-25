@@ -1,5 +1,6 @@
 import 'package:buff_lisa/features/camera/presentation/camera.dart';
 import 'package:buff_lisa/features/feed/presentation/active_group_feed.dart';
+import 'package:buff_lisa/features/navigation/presentation/like_counter.dart';
 import 'package:buff_lisa/features/profile/presentation/user_profile.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/custom_feed.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_home.dart';
@@ -59,7 +60,12 @@ class _NavigationState extends ConsumerState<Navigation> {
                 )
               ],
             ),
-            state == 2 || state == 3 ? groupSelector : const SizedBox.shrink()
+            if (state == 2 || state == 3)  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                groupSelector,
+                if (state == 2) LikeCounter()
+              ])
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

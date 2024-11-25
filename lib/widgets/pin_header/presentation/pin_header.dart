@@ -21,7 +21,7 @@ class PinHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(userByIdProvider(pinDto.creatorId));
+    final username = ref.watch(userByIdProvider(pinDto.creatorId).select((e) => e.whenOrNull(data: (data) => data.username) ?? "---"));
     return Column(
       children: [
         SizedBox(
@@ -47,11 +47,7 @@ class PinHeader extends ConsumerWidget {
                       height: 22,
                       child: FittedBox(
                         fit: BoxFit.fitHeight,
-                        child: data.whenOrNull(
-                                data: (d) => ClickableUser(
-                                    userId: d.userId, username: d.username)) ??
-                            Text("Loading..."),
-                      ),
+                        child:  ClickableUser(userId: pinDto.creatorId, username: username))
                     ),
                     SizedBox(
                         height: 18,
@@ -65,9 +61,7 @@ class PinHeader extends ConsumerWidget {
                                             textStyle: const TextStyle(
                                                 fontStyle: FontStyle.italic),
                                           )) ??
-                              Text("Loading...",
-                                  style: const TextStyle(
-                                      fontStyle: FontStyle.italic)),
+                              Text(" "),
                         ))
                   ],
                 ),

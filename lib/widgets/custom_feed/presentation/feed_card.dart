@@ -62,7 +62,7 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                     controller: _pageController,
                     children: [
                       GestureDetector(
-                          onDoubleTap: () => ref.read(likeServiceProvider.notifier).addLike(widget.item.id, CreateLikeDto(userId: userId, like: true)),
+                          onDoubleTap: () => ref.read(likeServiceProvider.notifier).addLike(widget.item.id, widget.item.creatorId, CreateLikeDto(userId: userId, like: true)),
                           child: FadeInImage(
                           fadeInDuration: Duration(milliseconds: 100),
                           fit: BoxFit.fitWidth,
@@ -89,7 +89,7 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                               ]),
                             ],
                           ),
-                              onDoubleTap: () => ref.read(likeServiceProvider.notifier).addLike(widget.item.id, CreateLikeDto(userId: userId, likeLocation: true)),
+                              onDoubleTap: () => ref.read(likeServiceProvider.notifier).addLike(widget.item.id, widget.item.creatorId, CreateLikeDto(userId: userId, likeLocation: true)),
                           ),
                           Align(
                               alignment: Alignment.bottomRight,
@@ -121,7 +121,7 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                   SizedBox(
                     height: 3,
                   ),
-                  SizedBox(height: 40, child: LikeButtons(pinId: widget.item.id))
+                  SizedBox(height: 40, child: LikeButtons(pinId: widget.item.id, creatorId: widget.item.creatorId,))
                 ]),
               );
             },

@@ -6,7 +6,7 @@ part of 'user_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userByIdHash() => r'90627490e686a31c27770298a42241a26d4d315c';
+String _$userByIdHash() => r'384d66e95fdbeec9a6bef74ad81eeef37e323a9e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -156,7 +156,138 @@ class _UserByIdProviderElement
   String get userId => (origin as UserByIdProvider).userId;
 }
 
-String _$userServiceHash() => r'72320857d35601751846a257367f440a2db8c8a3';
+String _$userLikesByIdHash() => r'c6195d7c3745ed154c96d37f86b1f169c036dda3';
+
+/// See also [userLikesById].
+@ProviderFor(userLikesById)
+const userLikesByIdProvider = UserLikesByIdFamily();
+
+/// See also [userLikesById].
+class UserLikesByIdFamily extends Family<AsyncValue<UserLikesDto>> {
+  /// See also [userLikesById].
+  const UserLikesByIdFamily();
+
+  /// See also [userLikesById].
+  UserLikesByIdProvider call(
+    String userId,
+  ) {
+    return UserLikesByIdProvider(
+      userId,
+    );
+  }
+
+  @override
+  UserLikesByIdProvider getProviderOverride(
+    covariant UserLikesByIdProvider provider,
+  ) {
+    return call(
+      provider.userId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'userLikesByIdProvider';
+}
+
+/// See also [userLikesById].
+class UserLikesByIdProvider extends AutoDisposeFutureProvider<UserLikesDto> {
+  /// See also [userLikesById].
+  UserLikesByIdProvider(
+    String userId,
+  ) : this._internal(
+          (ref) => userLikesById(
+            ref as UserLikesByIdRef,
+            userId,
+          ),
+          from: userLikesByIdProvider,
+          name: r'userLikesByIdProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$userLikesByIdHash,
+          dependencies: UserLikesByIdFamily._dependencies,
+          allTransitiveDependencies:
+              UserLikesByIdFamily._allTransitiveDependencies,
+          userId: userId,
+        );
+
+  UserLikesByIdProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+  }) : super.internal();
+
+  final String userId;
+
+  @override
+  Override overrideWith(
+    FutureOr<UserLikesDto> Function(UserLikesByIdRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UserLikesByIdProvider._internal(
+        (ref) => create(ref as UserLikesByIdRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<UserLikesDto> createElement() {
+    return _UserLikesByIdProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserLikesByIdProvider && other.userId == userId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UserLikesByIdRef on AutoDisposeFutureProviderRef<UserLikesDto> {
+  /// The parameter `userId` of this provider.
+  String get userId;
+}
+
+class _UserLikesByIdProviderElement
+    extends AutoDisposeFutureProviderElement<UserLikesDto>
+    with UserLikesByIdRef {
+  _UserLikesByIdProviderElement(super.provider);
+
+  @override
+  String get userId => (origin as UserLikesByIdProvider).userId;
+}
+
+String _$userServiceHash() => r'2b791811ba4103600a269049fdc4a0de759e4009';
 
 /// See also [UserService].
 @ProviderFor(UserService)

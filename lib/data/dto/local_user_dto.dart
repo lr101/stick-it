@@ -6,10 +6,15 @@ class LocalUserDto {
   final String username;
   final String userId;
   final String? description;
-  LocalUserDto({required this.username, required this.userId, required this.description});
+  final UserLikesDto? likes;
+  LocalUserDto({required this.username, required this.userId, required this.description, this.likes});
 
   factory LocalUserDto.fromInfoDto(UserInfoDto user) {
     return LocalUserDto(
         username: user.username, userId: user.userId, description: user.description);
+  }
+
+  LocalUserDto fromCurrentWithLikes(UserLikesDto likes) {
+    return LocalUserDto(username: username, userId: userId, description: description, likes: likes);
   }
 }
