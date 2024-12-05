@@ -8,6 +8,7 @@ import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_password.dart';
@@ -167,6 +168,7 @@ class _SettingsState extends ConsumerState<Settings> {
                             onPressed: () async {
                               await ref.read(globalDataServiceProvider.notifier).logout();
                               await invalidateCache();
+                              ref.invalidate(currentUserServiceProvider);
                               Routing.toAndDelete(context, Auth(), "/login");
                             },
                           ))),

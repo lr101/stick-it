@@ -69,11 +69,19 @@ class PinService extends _$PinService {
       for (int i = 0 ; i < unsynced.length; i++) {
         final pin = unsynced[i];
         if (pin.lastSynced == null) {
-          final newPin = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
-          state.value![i] = LocalPinDto.fromDtoWithImage(newPin!);
-          _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin), pin.id, base64Decode(newPin.image!));
-          ref.read(pinImageServiceProvider.notifier).addUint8ListImage(newPin.id, base64Decode(newPin.image!));
-          numSynced++;
+          try {
+            final newPin = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
+            state.value![i] = LocalPinDto.fromDtoWithImage(newPin!);
+            _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin), pin.id, base64Decode(newPin.image!));
+            ref.read(pinImageServiceProvider.notifier).addUint8ListImage(newPin.id, base64Decode(newPin.image!));
+            numSynced++;
+          } on ApiException catch (e) {
+            if (kDebugMode) print("Pin already synced -- remove from list");
+            if (e.code == 409) {
+              unsynced.remove(pin);
+              _pinRepository.deletePinFromGroup(pin.id);
+            }
+          }
         }
       }
       if (numSynced > 0) {

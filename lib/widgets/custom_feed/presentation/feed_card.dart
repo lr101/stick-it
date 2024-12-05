@@ -121,7 +121,10 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                   SizedBox(
                     height: 3,
                   ),
-                  SizedBox(height: 40, child: LikeButtons(pinId: widget.item.id, creatorId: widget.item.creatorId,))
+                  SizedBox(
+                      height: 40,
+                      child: widget.item.lastSynced != null ? LikeButtons(pinId: widget.item.id, creatorId: widget.item.creatorId,) : Center(child: Text("This pin is not synced"))
+                  )
                 ]),
               );
             },
