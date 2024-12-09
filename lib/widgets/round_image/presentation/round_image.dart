@@ -25,6 +25,11 @@ class RoundImage extends ConsumerWidget {
               dimension: size != null ? size! * 2 : null,
               child: Stack(children: [
                 ClipOval(
+                  child: Container(
+                    color: Colors.grey.withOpacity(0.4),
+                  ),
+                ),
+                ClipOval(
                     child: FadeInImage(
                     placeholder: MemoryImage(kTransparentImage),
                     image: MemoryImage(imageCallback.when<Uint8List>(

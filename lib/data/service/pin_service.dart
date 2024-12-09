@@ -61,7 +61,6 @@ class PinService extends _$PinService {
       final pinsApi = ref.watch(pinApiProvider);
       final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false, updatedAfter: lastSeen);
       final localPins = this.state.value ?? [];
-      state = AsyncData(await _mergeGroups(localPins, remotePins!));
       ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
       // sync local pins to server
       final unsynced = [...state.value!];
@@ -71,19 +70,20 @@ class PinService extends _$PinService {
         if (pin.lastSynced == null) {
           try {
             final newPin = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
-            state.value![i] = LocalPinDto.fromDtoWithImage(newPin!);
-            _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin), pin.id, base64Decode(newPin.image!));
+            localPins.remove(pin);
+            _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin!), pin.id, base64Decode(newPin.image!));
             ref.read(pinImageServiceProvider.notifier).addUint8ListImage(newPin.id, base64Decode(newPin.image!));
             numSynced++;
           } on ApiException catch (e) {
             if (kDebugMode) print("Pin already synced -- remove from list");
             if (e.code == 409) {
-              unsynced.remove(pin);
+              localPins.remove(pin);
               _pinRepository.deletePinFromGroup(pin.id);
             }
           }
         }
       }
+      state = AsyncData(await _mergeGroups(localPins, remotePins!));
       if (numSynced > 0) {
         CustomErrorSnackBar.message(message: "Your offline sticks have been uploaded");
       }
@@ -149,8 +149,11 @@ class PinService extends _$PinService {
 
   Future<String?> deletePinFromGroup(String pinId) async {
     try {
+      final pin = (state.value ?? []).firstWhere((pin) => pin.id == pinId);
+      if (pin.lastSynced != null) {
       final pinsApi = ref.watch(pinApiProvider);
       await pinsApi.deletePin(pinId);
+      }
       final currentState = state.value ?? [];
       currentState.removeWhere((pin) => pin.id == pinId);
       state = AsyncValue.data(currentState);

@@ -21,7 +21,7 @@ class OtherUserProfile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPins = ref.watch(otherUserPinServiceProvider(userId));
-    final username = ref.watch(userByIdProvider(userId).select((e) => e.value?.username ?? "---"));
+    final username = ref.watch(userByIdProvider(userId).select((e) => e.value?.username ?? ""));
     final description = ref.watch(userByIdProvider(userId).select((e) => e.value?.description));
     final profileImage = ref.watch(profilePictureByIdProvider(userId));
     return CustomAvatarScaffold(

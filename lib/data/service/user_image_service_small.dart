@@ -21,12 +21,17 @@ class UserImageServiceSmall extends _$UserImageServiceSmall {
     if (currentUser.profileImageSmall != null) {
       state = AsyncValue.data({global.userId!: currentUser.profileImageSmall});
     }
-    final profileImageUrl = await ref.watch(userApiProvider).getUserProfileImageSmall(global.userId!);
-    final profileImage = await http.get(Uri.parse(profileImageUrl!));
-    if (profileImage.statusCode == 200) {
-      ref.read(currentUserServiceProvider.notifier).update(profileImage: profileImage.bodyBytes);
-      return {global.userId!: profileImage.bodyBytes};
-    } else {
+    try {
+      final profileImageUrl = await ref.watch(userApiProvider).getUserProfileImageSmall(global.userId!);
+      final profileImage = await http.get(Uri.parse(profileImageUrl!));
+      if (profileImage.statusCode == 200) {
+        ref.read(currentUserServiceProvider.notifier).update(
+            profileImageSmall: profileImage.bodyBytes);
+        return {global.userId!: profileImage.bodyBytes};
+      } else {
+        return {global.userId!: currentUser.profileImage};
+      }
+    } catch(e) {
       return {global.userId!: currentUser.profileImage};
     }
   }

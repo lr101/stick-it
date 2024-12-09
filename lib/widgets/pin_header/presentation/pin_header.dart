@@ -21,7 +21,7 @@ class PinHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final username = ref.watch(userByIdProvider(pinDto.creatorId).select((e) => e.whenOrNull(data: (data) => data.username) ?? "---"));
+    final username = ref.watch(userByIdProvider(pinDto.creatorId).select((e) => e.value?.username ?? " "));
     return Column(
       children: [
         SizedBox(
@@ -112,7 +112,7 @@ class PinHeader extends ConsumerWidget {
                           }
                           return Text(near);
                         } else {
-                          return const Text("...");
+                          return const Text("");
                         }
                       },
                     ),

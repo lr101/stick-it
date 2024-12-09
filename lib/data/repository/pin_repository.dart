@@ -90,6 +90,6 @@ class PinRepository {
 }
 
 @Riverpod(keepAlive: true)
-PinRepository pinRepository(PinRepositoryRef ref) {
+PinRepository pinRepository(Ref ref) {
   return PinRepository(ref: ref);
 }

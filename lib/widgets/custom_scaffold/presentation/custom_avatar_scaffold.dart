@@ -38,7 +38,6 @@ class CustomAvatarScaffold extends ConsumerStatefulWidget {
 class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
     with TickerProviderStateMixin {
   ScrollController controller = ScrollController();
-  ValueNotifier<double> _scrollOffset = ValueNotifier(0);
 
   @override
   void initState() {

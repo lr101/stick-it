@@ -24,9 +24,8 @@ class UserProfile extends ConsumerWidget {
     final currentUser = ref.watch(currentUserServiceProvider);
     return CustomAvatarScaffold(
       avatar: AsyncData(ref
-          .watch(profilePictureByIdProvider(userId))
-          .whenOrNull(data: (data) => data)),
-      title: currentUser.username ?? "---",
+          .watch(profilePictureByIdProvider(userId)).value),
+      title: currentUser.username ?? "",
       actions: [
         IconButton(
             onPressed: () => Routing.to(context, Settings()),

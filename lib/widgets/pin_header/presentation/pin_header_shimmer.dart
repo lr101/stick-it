@@ -31,8 +31,14 @@ class PinHeaderShimmer  extends StatelessWidget {
                   crossAxisAlignment:
                   CrossAxisAlignment.start,
                   children: [
-                   Container(width: 50, height: 15, color: Colors.white),
-                   Container(width: 40, height: 10, color: Colors.white,)
+                   Container(width: 50, height: 15, decoration: BoxDecoration(
+                     color: Colors.white,
+                     borderRadius: BorderRadius.circular(5), // Adjust the radius as needed
+                   ),),
+                   Container(width: 40, height: 10, decoration: BoxDecoration(
+                     color: Colors.white,
+                     borderRadius: BorderRadius.circular(5), // Adjust the radius as needed
+                   ),)
                   ],
                 )
               ]),

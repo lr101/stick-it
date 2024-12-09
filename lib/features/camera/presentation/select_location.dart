@@ -2,6 +2,7 @@ import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
+import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                               flags: InteractiveFlag.pinchZoom |
                                   InteractiveFlag.drag),
                         ),
-                        children: [CurrentLocationLayer(), CustomTileLayer()],
+                        children: [CurrentLocationLayer(), CustomTileLayer(), OsmCopyright()],
                       ),
                       // Center Pin Icon
                       Center(
@@ -99,6 +100,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
               ],
             )),
         floatingActionButton: FloatingActionButton(
+          key: Key("selectUploadLocation"),
             child: Icon(Icons.done),
             onPressed: () => Routing.to(
                 context,
