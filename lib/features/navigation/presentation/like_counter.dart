@@ -9,72 +9,109 @@ class LikeCounter extends ConsumerStatefulWidget {
   ConsumerState<LikeCounter> createState() => _LikeCounterState();
 }
 
-class _LikeCounterState extends ConsumerState<LikeCounter>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _LikeCounterState extends ConsumerState<LikeCounter> {
+  // Level titles
+  final List<String> levelTitles = ["Newbie", "Beginner", "Intermediate", "Pro", "Expert", "Legend"];
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 2000),
-      vsync: this,
-    )..repeat(reverse: true); // Makes the animation loop
+  // Function to determine the level and next XP target
+  Map<String, dynamic> _getLevelDetails(int xp) {
+    int level = 0;
+    int nextLevelXp = 100;
+    while (xp >= nextLevelXp && level < levelTitles.length - 1) {
+      level++;
+      nextLevelXp += (level + 1) * 100; // Increment threshold for next levels
+    }
+    int prevLevelXp = nextLevelXp - (level + 1) * 100;
+    return {
+      "title": levelTitles[level],
+      "level": level,
+      "totalXp": xp,
+      "xpToNextLevel": nextLevelXp - xp,
+      "nextLevelXp": nextLevelXp,
+      "prevLevelXp": prevLevelXp
+    };
   }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
 
   @override
   Widget build(BuildContext context) {
-    final likes = ref.watch(
-        userLikesByIdProvider(ref.watch(globalDataServiceProvider).userId!));
-    final totalPoints = likes.whenOrNull(
-            data: (data) => (data.likeCount * 5 +
-                    data.likePhotographyCount * 7 +
-                    data.likeLocationCount * 6 +
-                    data.likeArtCount * 8)
-                .toString()) ??
-        "---";
+    final xp = AsyncData(1234);
+    final levelDetails = xp.whenOrNull(
+      data: (xp) => _getLevelDetails(xp),
+    ) ??
+        {
+          "title": "Newbie",
+          "level": 0,
+          "totalXp": 0,
+          "xpToNextLevel": 100,
+          "nextLevelXp": 100,
+        };
+
+    double progress = (levelDetails['totalXp'] - levelDetails['prevLevelXp']) / (levelDetails['nextLevelXp'] - levelDetails['prevLevelXp']);
+    print(progress);
+    final xpText = '${levelDetails['totalXp']}xp / ${levelDetails['nextLevelXp']}xp';
+
     return Padding(
-        padding: EdgeInsets.all(10),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          decoration: BoxDecoration(
-            color:  Colors.grey.withOpacity(0.4),
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ScaleTransition(
-                scale: Tween<double>(begin: 1.0, end: 1.2).animate(
-                  CurvedAnimation(
-                    parent: _controller,
-                    curve: Curves.easeInOut,
+      padding: EdgeInsets.all(10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.4),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              levelDetails['title'],
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: Colors.blueGrey.shade800,
+              ),
+            ),
+            const SizedBox(height: 8),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            // Measure the width of the text to constrain the progress bar
+            final textPainter = TextPainter(
+              text: TextSpan(
+                text: xpText,
+                style: TextStyle(
+                  fontSize: 8,
+                  color: Colors.blueGrey.shade600,
+                ),
+              ),
+              textDirection: TextDirection.ltr,
+            );
+            textPainter.layout();
+
+            final textWidth = textPainter.size.width;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: textWidth,
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    backgroundColor: Colors.grey.withOpacity(0.5),
+                    color: Colors.amber,
                   ),
                 ),
-                child: Icon(
-                  Icons.favorite,
-                  color: Colors.red,
-                  size: 24,
+                const SizedBox(height: 8),
+                Text(
+                  xpText,
+                  style: TextStyle(
+                    fontSize: 8,
+                    color: Colors.blueGrey.shade600,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                '$totalPoints',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueGrey.shade800,
-                ),
-              ),
-            ],
-          ),
-        ));
+              ],
+            );
+          },),
+          ],
+        ),
+      ),
+    );
   }
 }

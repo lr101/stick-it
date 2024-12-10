@@ -63,30 +63,29 @@ class PinService extends _$PinService {
       final localPins = this.state.value ?? [];
       ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
       // sync local pins to server
-      final unsynced = [...state.value!];
+      final storedState = [...state.value!];
       int numSynced = 0;
-      for (int i = 0 ; i < unsynced.length; i++) {
-        final pin = unsynced[i];
+      for (int i = 0 ; i < storedState.length; i++) {
+        final pin = storedState[i];
         if (pin.lastSynced == null) {
           try {
             final newPin = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
             localPins.remove(pin);
-            _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin!), pin.id, base64Decode(newPin.image!));
-            ref.read(pinImageServiceProvider.notifier).addUint8ListImage(newPin.id, base64Decode(newPin.image!));
+            _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin!), pin.id);
             numSynced++;
           } on ApiException catch (e) {
-            if (kDebugMode) print("Pin already synced -- remove from list");
             if (e.code == 409) {
+              if (kDebugMode) print("Pin already synced -- remove from list");
               localPins.remove(pin);
               _pinRepository.deletePinFromGroup(pin.id);
+            } else {
+              if (kDebugMode) print("Sync failed for pin ${pin.id} with message ${e.message}");
             }
           }
         }
       }
       state = AsyncData(await _mergeGroups(localPins, remotePins!));
-      if (numSynced > 0) {
-        CustomErrorSnackBar.message(message: "Your offline sticks have been uploaded");
-      }
+      if (numSynced > 0) CustomErrorSnackBar.message(message: "Synced ${numSynced} sticks to server", type: CustomErrorSnackBarType.success);
     } catch (e) {
       if (kDebugMode) print(e);
     } finally {
@@ -135,8 +134,7 @@ class PinService extends _$PinService {
       if (result != null) {
         final newPin = LocalPinDto.fromDto(result);
         updateSinglePin(newPin, oldPinId: pin.id);
-        final newImage = await http.get(Uri.parse(result.image!));
-        _pinRepository.updateToSynced(newPin, pin.id, newImage.bodyBytes);
+        _pinRepository.updateToSynced(newPin, pin.id);
         await ref.watch(pinImageServiceProvider.notifier).addImage(newPin.id, removeKeepAlive: true);
         return null;
       } else {

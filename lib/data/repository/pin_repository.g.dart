@@ -6,7 +6,7 @@ part of 'pin_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pinRepositoryHash() => r'43c821efc66301c5c5d9471c3aaee6abbf30b32f';
+String _$pinRepositoryHash() => r'95056c58b48e8c1e934315d51183de37d670cb64';
 
 /// See also [pinRepository].
 @ProviderFor(pinRepository)
