@@ -203,8 +203,6 @@ flutter_icons:
 flutter_native_splash:
   color: "#FFFFFF"
   color_dark: "#000000"
-  image: images/pinGui.png
+  image: assets/icon/logo.jpg
   android_12:
-    color: "#FFFFFF"
-    color_dark: "#000000"
-    image: images/pinGui12android.png
+    image: assets/icon/logoAndroid12.jpg

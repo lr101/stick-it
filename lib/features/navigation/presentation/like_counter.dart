@@ -91,7 +91,7 @@ class _LikeCounterState extends ConsumerState<LikeCounter> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: textWidth,
+                  width: textWidth + 10,
                   child: LinearProgressIndicator(
                     value: progress,
                     backgroundColor: Colors.grey.withOpacity(0.5),

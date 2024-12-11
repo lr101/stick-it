@@ -61,7 +61,7 @@ class PinService extends _$PinService {
       final pinsApi = ref.watch(pinApiProvider);
       final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false, updatedAfter: lastSeen);
       final localPins = this.state.value ?? [];
-      ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
+
       // sync local pins to server
       final storedState = [...state.value!];
       int numSynced = 0;
@@ -85,6 +85,7 @@ class PinService extends _$PinService {
         }
       }
       state = AsyncData(await _mergeGroups(localPins, remotePins!));
+      ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
       if (numSynced > 0) CustomErrorSnackBar.message(message: "Synced ${numSynced} sticks to server", type: CustomErrorSnackBarType.success);
     } catch (e) {
       if (kDebugMode) print(e);
