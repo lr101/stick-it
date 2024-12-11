@@ -4,51 +4,22 @@ import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../util/types/level.dart';
+
 class LikeCounter extends ConsumerStatefulWidget {
   @override
   ConsumerState<LikeCounter> createState() => _LikeCounterState();
 }
 
 class _LikeCounterState extends ConsumerState<LikeCounter> {
-  // Level titles
-  final List<String> levelTitles = ["Newbie", "Beginner", "Intermediate", "Pro", "Expert", "Legend"];
-
-  // Function to determine the level and next XP target
-  Map<String, dynamic> _getLevelDetails(int xp) {
-    int level = 0;
-    int nextLevelXp = 100;
-    while (xp >= nextLevelXp && level < levelTitles.length - 1) {
-      level++;
-      nextLevelXp += (level + 1) * 100; // Increment threshold for next levels
-    }
-    int prevLevelXp = nextLevelXp - (level + 1) * 100;
-    return {
-      "title": levelTitles[level],
-      "level": level,
-      "totalXp": xp,
-      "xpToNextLevel": nextLevelXp - xp,
-      "nextLevelXp": nextLevelXp,
-      "prevLevelXp": prevLevelXp
-    };
-  }
 
   @override
   Widget build(BuildContext context) {
-    final xp = AsyncData(1234);
-    final levelDetails = xp.whenOrNull(
-      data: (xp) => _getLevelDetails(xp),
-    ) ??
-        {
-          "title": "Newbie",
-          "level": 0,
-          "totalXp": 0,
-          "xpToNextLevel": 100,
-          "nextLevelXp": 100,
-        };
+    final levelDetails = ref.watch(xpProvider);
 
-    double progress = (levelDetails['totalXp'] - levelDetails['prevLevelXp']) / (levelDetails['nextLevelXp'] - levelDetails['prevLevelXp']);
+    double progress = (levelDetails.totalXp - levelDetails.currentLevelXp) / (levelDetails.nextLevelXp - levelDetails.currentLevelXp);
     print(progress);
-    final xpText = '${levelDetails['totalXp']}xp / ${levelDetails['nextLevelXp']}xp';
+    final xpText = '${levelDetails.totalXp}xp / ${levelDetails.nextLevelXp}xp';
 
     return Padding(
       padding: EdgeInsets.all(10),
@@ -62,7 +33,7 @@ class _LikeCounterState extends ConsumerState<LikeCounter> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              levelDetails['title'],
+              Level.getById(levelDetails.currentLevel).title,
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,

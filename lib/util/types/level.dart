@@ -5,4 +5,8 @@ enum Level {
 
   final int level;
   final String title;
+
+  static Level getById(int id) {
+    return Level.values.firstWhere((e) => e.level == id);
+  }
 }
