@@ -9,6 +9,7 @@ import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../dto/global_data_dto.dart';
@@ -23,7 +24,7 @@ class GlobalDataService  extends _$GlobalDataService {
 
   Future<void> login(String username, String userId, String token) async {
     await ref.watch(globalDataRepositoryProvider).login(username, userId, token);
-    ref.read(currentUserServiceProvider.notifier).updateFromRemote(userId);
+    ref.read(currentUserServiceProvider.notifier).updateFromRemote();
     state.refreshToken = token;
     state.userId = userId;
     ref.notifyListeners();
@@ -46,19 +47,37 @@ class CurrentUserService extends _$CurrentUserService {
   @override
   CurrentUserDto build() => ref.watch(currentUserOnceProvider);
 
-  Future<void> updateFromRemote(String userId) async {
+  Future<void> updateFromRemote() async {
+    final userId = ref.watch(globalDataServiceProvider).userId!;
     final user = await ref.watch(userApiProvider).getUser(userId);
     if (user == null) return;
     await update(username: user.username, description: user.description);
+    await runXpUpdate();
   }
 
-  Future<void> update({String? description, String? username, Uint8List? profileImage, Uint8List? profileImageSmall}) async {
+  Future<void> update({String? description, String? username, Uint8List? profileImage, Uint8List? profileImageSmall, int? selectedBatch}) async {
     state = CurrentUserDto(
         username: username ?? state.username,
         description: description ?? state.description,
         profileImage: profileImage ?? state.profileImage,
-        profileImageSmall: profileImageSmall ?? state.profileImageSmall);
-    await ref.read(globalDataRepositoryProvider).updateCurrentUser(description: description, username: username, profileImage: profileImage, profileImageSmall: profileImageSmall);
+        profileImageSmall: profileImageSmall ?? state.profileImageSmall,
+      selectedBatch: selectedBatch ?? state.selectedBatch,
+     xp: state.xp);
+    await ref.read(globalDataRepositoryProvider).updateCurrentUser(description: description, username: username, profileImage: profileImage, profileImageSmall: profileImageSmall, selectedBatch: selectedBatch);
+  }
+
+  Future<void> runXpUpdate() async {
+    final global = await ref.watch(globalDataServiceProvider);
+    final xp = await ref.watch(userApiProvider).getUserXp(global.userId!);
+    ref.read(globalDataRepositoryProvider).setXp(xp!);
+    state = CurrentUserDto(
+        username: state.username,
+        description: state.description,
+        profileImage: state.profileImage,
+        profileImageSmall: state.profileImageSmall,
+        selectedBatch: state.selectedBatch,
+        xp: xp
+    );
   }
 
 }
@@ -103,4 +122,9 @@ LatLng lastKnownLocation(Ref ref) {
   final lng = ref.watch(sharedPreferencesProvider).getDouble(GlobalDataRepository.lastKnownLong);
   if (lat == null || lng == null) return LatLng(49.01105, 8.25190);
   return LatLng(lat, lng);
+}
+
+@riverpod
+UserXpDto xp(Ref ref) {
+  return ref.watch(currentUserServiceProvider.select((e) => e.xp));
 }

@@ -18,6 +18,7 @@ class UserUpdateDto {
     this.image,
     this.username,
     this.description,
+    this.selectedBatch,
   });
 
   ///
@@ -60,13 +61,16 @@ class UserUpdateDto {
   ///
   String? description;
 
+  int? selectedBatch;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is UserUpdateDto &&
     other.email == email &&
     other.password == password &&
     other.image == image &&
     other.username == username &&
-    other.description == description;
+    other.description == description &&
+    other.selectedBatch == selectedBatch;
 
   @override
   int get hashCode =>
@@ -75,10 +79,11 @@ class UserUpdateDto {
     (password == null ? 0 : password!.hashCode) +
     (image == null ? 0 : image!.hashCode) +
     (username == null ? 0 : username!.hashCode) +
-    (description == null ? 0 : description!.hashCode);
+    (description == null ? 0 : description!.hashCode) +
+    (selectedBatch == null ? 0 : selectedBatch!.hashCode);
 
   @override
-  String toString() => 'UserUpdateDto[email=$email, password=$password, image=$image, username=$username, description=$description]';
+  String toString() => 'UserUpdateDto[email=$email, password=$password, image=$image, username=$username, description=$description, selectedBatch=$selectedBatch]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -107,6 +112,11 @@ class UserUpdateDto {
     } else {
       json[r'description'] = null;
     }
+    if (this.selectedBatch != null) {
+      json[r'selectedBatch'] = this.selectedBatch;
+    } else {
+      json[r'selectedBatch'] = null;
+    }
     return json;
   }
 
@@ -134,6 +144,7 @@ class UserUpdateDto {
         image: mapValueOfType<String>(json, r'image'),
         username: mapValueOfType<String>(json, r'username'),
         description: mapValueOfType<String>(json, r'description'),
+        selectedBatch: mapValueOfType<int>(json, r'selectedBatch'),
       );
     }
     return null;

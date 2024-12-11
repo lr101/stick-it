@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../widgets/tiles/presentation/batch.dart';
 import '../../settings/presentation/settings.dart';
 
 class OtherUserProfile extends ConsumerWidget {
@@ -23,6 +24,7 @@ class OtherUserProfile extends ConsumerWidget {
     final userPins = ref.watch(otherUserPinServiceProvider(userId));
     final username = ref.watch(userByIdProvider(userId).select((e) => e.value?.username ?? ""));
     final description = ref.watch(userByIdProvider(userId).select((e) => e.value?.description));
+    final selectedBatch = ref.watch(userByIdProvider(userId).select((e) => e.value?.selectedBatch));
     final profileImage = ref.watch(profilePictureByIdProvider(userId));
     return CustomAvatarScaffold(
       avatar: AsyncData(profileImage.value),
@@ -55,7 +57,12 @@ class OtherUserProfile extends ConsumerWidget {
         subtitle:  Text(description,
           softWrap: true,
           maxLines: 10,
-          style: TextStyle(fontStyle: FontStyle.italic),)))
+          style: TextStyle(fontStyle: FontStyle.italic),))),
+        if ( selectedBatch != null)
+          SliverToBoxAdapter(
+              child: ListTile(
+                  title: Text("Batch"),
+                  subtitle: Batch(batchId: selectedBatch)))
       ],
       body: ImageGrid(
         pinProvider: otherUserPinProvider(userId),

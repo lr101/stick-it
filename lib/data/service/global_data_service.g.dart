@@ -23,7 +23,23 @@ final lastKnownLocationProvider = AutoDisposeProvider<LatLng>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LastKnownLocationRef = AutoDisposeProviderRef<LatLng>;
-String _$globalDataServiceHash() => r'b2eb1bf27af7c470b5b1f2e1f2d5f34cc2e818f7';
+String _$xpHash() => r'375343c54646153bc3b7ef15ff57c4d5f7baed4c';
+
+/// See also [xp].
+@ProviderFor(xp)
+final xpProvider = AutoDisposeProvider<UserXpDto>.internal(
+  xp,
+  name: r'xpProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$xpHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef XpRef = AutoDisposeProviderRef<UserXpDto>;
+String _$globalDataServiceHash() => r'0913b005933dbc8b2237bc713bce6c8be590a584';
 
 /// See also [GlobalDataService].
 @ProviderFor(GlobalDataService)
@@ -40,7 +56,7 @@ final globalDataServiceProvider =
 
 typedef _$GlobalDataService = Notifier<GlobalDataDto>;
 String _$currentUserServiceHash() =>
-    r'1fd87fc164553f53e7182784a3bc90a441fcf2c5';
+    r'93f2a09f34ea2898894895ddccc1935a59a95a0d';
 
 /// See also [CurrentUserService].
 @ProviderFor(CurrentUserService)
