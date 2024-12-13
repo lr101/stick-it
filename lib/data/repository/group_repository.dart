@@ -96,6 +96,7 @@ class GroupRepository {
           member.map((e) => UserEntityCompanion(
             userId: Value(e.userId),
             username: Value(e.username),
+            selectedBatch: Value(e.selectedBatch)
           )))));
     });
   }
