@@ -1,4 +1,6 @@
+import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/achievement/data/achievement_provider.dart';
 import 'package:buff_lisa/util/types/achievement.dart';
 import 'package:flutter/cupertino.dart';
@@ -70,8 +72,6 @@ class AchievementsPage extends ConsumerWidget {
   }
 
   Future<void> setBatch(int batchId, WidgetRef ref) async {
-    ref.read(currentUserServiceProvider.notifier).update(
-      selectedBatch: batchId
-    );
+    await ref.read(userServiceProvider.notifier).changeUser(selectedBatch: batchId);
   }
 }
