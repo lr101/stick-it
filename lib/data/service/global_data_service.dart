@@ -31,9 +31,7 @@ class GlobalDataService  extends _$GlobalDataService {
   }
 
   Future<void> logout() async {
-    await ref.watch(sharedPreferencesProvider).clear();
     await ref.watch(flutterSecureStorageProvider).deleteAll();
-    await ref.watch(databaseProvider).deleteEverything();
   }
 
 
@@ -48,6 +46,7 @@ class CurrentUserService extends _$CurrentUserService {
   CurrentUserDto build() => ref.watch(currentUserOnceProvider);
 
   Future<void> updateFromRemote() async {
+    state = await  GlobalDataRepository.getUser(ref.watch(sharedPreferencesProvider), ref.watch(flutterSecureStorageProvider));
     final userId = ref.watch(globalDataServiceProvider).userId!;
     final user = await ref.watch(userApiProvider).getUser(userId);
     if (user == null) return;

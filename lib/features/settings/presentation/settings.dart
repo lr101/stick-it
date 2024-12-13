@@ -166,9 +166,8 @@ class _SettingsState extends ConsumerState<Settings> {
                             text2: "Logout",
                             text1: "Cancel",
                             onPressed: () async {
-                              await ref.read(globalDataServiceProvider.notifier).logout();
                               await invalidateCache();
-                              ref.invalidate(currentUserServiceProvider);
+                              await ref.read(globalDataServiceProvider.notifier).logout();
                               Routing.toAndDelete(context, Auth(), "/login");
                             },
                           ))),

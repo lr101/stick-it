@@ -39,7 +39,7 @@ final xpProvider = AutoDisposeProvider<UserXpDto>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef XpRef = AutoDisposeProviderRef<UserXpDto>;
-String _$globalDataServiceHash() => r'0913b005933dbc8b2237bc713bce6c8be590a584';
+String _$globalDataServiceHash() => r'b01237ea843eeab095de0171f6d581c3bdb90686';
 
 /// See also [GlobalDataService].
 @ProviderFor(GlobalDataService)
@@ -56,7 +56,7 @@ final globalDataServiceProvider =
 
 typedef _$GlobalDataService = Notifier<GlobalDataDto>;
 String _$currentUserServiceHash() =>
-    r'93f2a09f34ea2898894895ddccc1935a59a95a0d';
+    r'021947a2e0df39ca17e09d50afb8cb6fedb7f08b';
 
 /// See also [CurrentUserService].
 @ProviderFor(CurrentUserService)

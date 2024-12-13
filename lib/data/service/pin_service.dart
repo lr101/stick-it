@@ -198,8 +198,9 @@ Future<List<LocalPinDto>> sortedActivatedPins(Ref ref) async {
 }
 
 @riverpod
-Future<List<LocalPinDto>> sortedGroupPins(Ref ref, String groupId) async {
-  final pins = ref.watch(pinServiceProvider(groupId)).value ?? [];
+Future<List<LocalPinDto>?> sortedGroupPins(Ref ref, String groupId) async {
+  final pins = ref.watch(pinServiceProvider(groupId)).value;
+  if (pins == null) return null;
   pins.sort((a, b) => b.creationDate.compareTo(a.creationDate));
   return pins;
 }

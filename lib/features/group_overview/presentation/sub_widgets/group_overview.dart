@@ -121,7 +121,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
         await launchUrl(Uri.parse(widget.group.link!),
             mode: LaunchMode.externalApplication);
       } catch (e) {
-        CustomErrorSnackBar.message(message: "No app to open link in found", type: CustomErrorSnackBarType.error);
+        CustomErrorSnackBar.message(message: "No app to open link found", type: CustomErrorSnackBarType.error);
       }
     }
   }

@@ -65,7 +65,7 @@ final sortedActivatedPinsProvider =
 // ignore: unused_element
 typedef SortedActivatedPinsRef
     = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
-String _$sortedGroupPinsHash() => r'5da6f1627cc6ef0b1729da41531ebbbae2950387';
+String _$sortedGroupPinsHash() => r'3c280fe3d40dd8433f37d5ca7a1b22908e5be37d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -93,7 +93,7 @@ class _SystemHash {
 const sortedGroupPinsProvider = SortedGroupPinsFamily();
 
 /// See also [sortedGroupPins].
-class SortedGroupPinsFamily extends Family<AsyncValue<List<LocalPinDto>>> {
+class SortedGroupPinsFamily extends Family<AsyncValue<List<LocalPinDto>?>> {
   /// See also [sortedGroupPins].
   const SortedGroupPinsFamily();
 
@@ -132,7 +132,7 @@ class SortedGroupPinsFamily extends Family<AsyncValue<List<LocalPinDto>>> {
 
 /// See also [sortedGroupPins].
 class SortedGroupPinsProvider
-    extends AutoDisposeFutureProvider<List<LocalPinDto>> {
+    extends AutoDisposeFutureProvider<List<LocalPinDto>?> {
   /// See also [sortedGroupPins].
   SortedGroupPinsProvider(
     String groupId,
@@ -167,7 +167,7 @@ class SortedGroupPinsProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<LocalPinDto>> Function(SortedGroupPinsRef provider) create,
+    FutureOr<List<LocalPinDto>?> Function(SortedGroupPinsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -184,7 +184,7 @@ class SortedGroupPinsProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<LocalPinDto>> createElement() {
+  AutoDisposeFutureProviderElement<List<LocalPinDto>?> createElement() {
     return _SortedGroupPinsProviderElement(this);
   }
 
@@ -204,13 +204,13 @@ class SortedGroupPinsProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SortedGroupPinsRef on AutoDisposeFutureProviderRef<List<LocalPinDto>> {
+mixin SortedGroupPinsRef on AutoDisposeFutureProviderRef<List<LocalPinDto>?> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
 class _SortedGroupPinsProviderElement
-    extends AutoDisposeFutureProviderElement<List<LocalPinDto>>
+    extends AutoDisposeFutureProviderElement<List<LocalPinDto>?>
     with SortedGroupPinsRef {
   _SortedGroupPinsProviderElement(super.provider);
 

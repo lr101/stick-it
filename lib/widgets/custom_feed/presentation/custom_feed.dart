@@ -10,7 +10,7 @@ import 'feed_card.dart';
 class CustomFeed extends ConsumerStatefulWidget {
   CustomFeed({super.key, required this.pinProvider, this.index, required this.pagingController});
 
-    final AutoDisposeFutureProvider<List<LocalPinDto>> pinProvider;
+    final AutoDisposeFutureProvider<List<LocalPinDto>?> pinProvider;
   final PagingController<int, LocalPinDto> pagingController;
   final int? index;
 
@@ -35,7 +35,7 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
       _fetchPage(pageKey);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.watch(widget.pinProvider).whenData((data) => _pins = data);
+      ref.watch(widget.pinProvider).whenData((data) => _pins = data ?? []);
       if (widget.index != null) {
         final pos = MediaQuery.of(context).size.width * 1.334 + 80;
         scrollController.jumpTo(pos * widget.index!);
