@@ -48,7 +48,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
     return CustomAvatarScaffold(
         floatingActionButton: widget.floatingActionButton,
         avatar: ref.watch(groupProfilePictureByIdProvider(widget.group.groupId)),
-        title: widget.group.name,
+        title: Text(widget.group.name),
         actions: widget.actions,
         bottom: TabBar(controller: _tabController, tabs: const [
           Tab(icon: Icon(Icons.groups)),
@@ -121,7 +121,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
         await launchUrl(Uri.parse(widget.group.link!),
             mode: LaunchMode.externalApplication);
       } catch (e) {
-        CustomErrorSnackBar.message(message: "No app to open link in found", type: CustomErrorSnackBarType.error);
+        CustomErrorSnackBar.message(message: "No app to open link found", type: CustomErrorSnackBarType.error);
       }
     }
   }

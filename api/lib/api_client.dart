@@ -182,6 +182,8 @@ class ApiClient {
           return valueString == 'true' || valueString == '1';
         case 'DateTime':
           return value is DateTime ? value : DateTime.tryParse(value);
+        case 'AdminMailDto':
+          return AdminMailDto.fromJson(value);
         case 'CreateGroupDto':
           return CreateGroupDto.fromJson(value);
         case 'CreateLikeDto':
@@ -214,6 +216,8 @@ class ApiClient {
           return TokenResponseDto.fromJson(value);
         case 'UpdateGroupDto':
           return UpdateGroupDto.fromJson(value);
+        case 'UserAchievementsDtoInner':
+          return UserAchievementsDtoInner.fromJson(value);
         case 'UserInfoDto':
           return UserInfoDto.fromJson(value);
         case 'UserLikesDto':
@@ -226,6 +230,8 @@ class ApiClient {
           return UserUpdateDto.fromJson(value);
         case 'UserUpdateResponseDto':
           return UserUpdateResponseDto.fromJson(value);
+        case 'UserXpDto':
+          return UserXpDto.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

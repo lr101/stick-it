@@ -321,7 +321,7 @@ class _GroupByIdActivatedProviderElement
   String get groupId => (origin as GroupByIdActivatedProvider).groupId;
 }
 
-String _$userGroupServiceHash() => r'2874c0413e7b082361be43a927172282190fb9dc';
+String _$userGroupServiceHash() => r'fe71f6ffa90369cc9343b66b5855b0ddbe6b5d4a';
 
 /// See also [UserGroupService].
 @ProviderFor(UserGroupService)

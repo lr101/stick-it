@@ -28,6 +28,7 @@ part 'auth/oauth.dart';
 part 'auth/http_basic_auth.dart';
 part 'auth/http_bearer_auth.dart';
 
+part 'api/admin_api.dart';
 part 'api/auth_api.dart';
 part 'api/groups_api.dart';
 part 'api/likes_api.dart';
@@ -37,6 +38,7 @@ part 'api/public_api.dart';
 part 'api/report_api.dart';
 part 'api/users_api.dart';
 
+part 'model/admin_mail_dto.dart';
 part 'model/create_group_dto.dart';
 part 'model/create_like_dto.dart';
 part 'model/group_dto.dart';
@@ -53,12 +55,14 @@ part 'model/report_dto.dart';
 part 'model/status.dart';
 part 'model/token_response_dto.dart';
 part 'model/update_group_dto.dart';
+part 'model/user_achievements_dto_inner.dart';
 part 'model/user_info_dto.dart';
 part 'model/user_likes_dto.dart';
 part 'model/user_login_request.dart';
 part 'model/user_request_dto.dart';
 part 'model/user_update_dto.dart';
 part 'model/user_update_response_dto.dart';
+part 'model/user_xp_dto.dart';
 
 
 /// An [ApiClient] instance that uses the default values obtained from

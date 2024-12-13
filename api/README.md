@@ -39,15 +39,20 @@ Please follow the [installation procedure](#installation--usage) and then run th
 ```dart
 import 'package:openapi/api.dart';
 
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = AuthApi();
-final userRequestDto = UserRequestDto(); // UserRequestDto | 
+final api_instance = AdminApi();
+final adminMailDto = AdminMailDto(); // AdminMailDto | 
 
 try {
-    final result = api_instance.createUser(userRequestDto);
-    print(result);
+    api_instance.sendAdminMail(adminMailDto);
 } catch (e) {
-    print('Exception when calling AuthApi->createUser: $e\n');
+    print('Exception when calling AdminApi->sendAdminMail: $e\n');
 }
 
 ```
@@ -58,6 +63,7 @@ All URIs are relative to *https://stick-it.lr-projects.de*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*AdminApi* | [**sendAdminMail**](doc//AdminApi.md#sendadminmail) | **POST** /api/v2/admin/mail | Send an admin mail
 *AuthApi* | [**createUser**](doc//AuthApi.md#createuser) | **POST** /api/v2/public/signup | User registration
 *AuthApi* | [**generateDeleteCode**](doc//AuthApi.md#generatedeletecode) | **GET** /api/v2/public/delete-code/{username} | Generate delete code
 *AuthApi* | [**getStatus**](doc//AuthApi.md#getstatus) | **GET** /api/v2/status | Gets the status of the server and user specific information
@@ -90,15 +96,19 @@ Class | Method | HTTP request | Description
 *PinsApi* | [**getPinImagesByIds**](doc//PinsApi.md#getpinimagesbyids) | **GET** /api/v2/pins | Get images by IDs
 *PublicApi* | [**getServerInfo**](doc//PublicApi.md#getserverinfo) | **GET** /api/v2/public/infos | Get public server statistics
 *ReportApi* | [**createReport**](doc//ReportApi.md#createreport) | **POST** /api/v2/report | Report content
+*UsersApi* | [**claimUserAchievement**](doc//UsersApi.md#claimuserachievement) | **POST** /api/v2/users/{userId}/achievements/{achievementId} | Claim an achievement
 *UsersApi* | [**deleteUser**](doc//UsersApi.md#deleteuser) | **DELETE** /api/v2/users/{userId} | Delete a user by userId
 *UsersApi* | [**getUser**](doc//UsersApi.md#getuser) | **GET** /api/v2/users/{userId} | Get a user by userId
+*UsersApi* | [**getUserAchievements**](doc//UsersApi.md#getuserachievements) | **GET** /api/v2/users/{userId}/achievements | Get user's achievements
 *UsersApi* | [**getUserProfileImage**](doc//UsersApi.md#getuserprofileimage) | **GET** /api/v2/users/{userId}/profile_picture | Get the profile picture of a user by userId
 *UsersApi* | [**getUserProfileImageSmall**](doc//UsersApi.md#getuserprofileimagesmall) | **GET** /api/v2/users/{userId}/profile_picture_small | Get the small profile picture of a user by userId
+*UsersApi* | [**getUserXp**](doc//UsersApi.md#getuserxp) | **GET** /api/v2/users/{userId}/xp | Get user's xp
 *UsersApi* | [**updateUser**](doc//UsersApi.md#updateuser) | **PUT** /api/v2/users/{userId} | Update user information by userId
 
 
 ## Documentation For Models
 
+ - [AdminMailDto](doc//AdminMailDto.md)
  - [CreateGroupDto](doc//CreateGroupDto.md)
  - [CreateLikeDto](doc//CreateLikeDto.md)
  - [GroupDto](doc//GroupDto.md)
@@ -115,12 +125,14 @@ Class | Method | HTTP request | Description
  - [Status](doc//Status.md)
  - [TokenResponseDto](doc//TokenResponseDto.md)
  - [UpdateGroupDto](doc//UpdateGroupDto.md)
+ - [UserAchievementsDtoInner](doc//UserAchievementsDtoInner.md)
  - [UserInfoDto](doc//UserInfoDto.md)
  - [UserLikesDto](doc//UserLikesDto.md)
  - [UserLoginRequest](doc//UserLoginRequest.md)
  - [UserRequestDto](doc//UserRequestDto.md)
  - [UserUpdateDto](doc//UserUpdateDto.md)
  - [UserUpdateResponseDto](doc//UserUpdateResponseDto.md)
+ - [UserXpDto](doc//UserXpDto.md)
 
 
 ## Documentation For Authorization

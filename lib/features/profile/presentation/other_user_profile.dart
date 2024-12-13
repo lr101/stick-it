@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../widgets/tiles/presentation/batch.dart';
 import '../../settings/presentation/settings.dart';
 
 class OtherUserProfile extends ConsumerWidget {
@@ -21,12 +22,17 @@ class OtherUserProfile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPins = ref.watch(otherUserPinServiceProvider(userId));
-    final username = ref.watch(userByIdProvider(userId).select((e) => e.value?.username ?? "---"));
+    final username = ref.watch(userByIdProvider(userId).select((e) => e.value?.username ?? ""));
     final description = ref.watch(userByIdProvider(userId).select((e) => e.value?.description));
+    final selectedBatch = ref.watch(userByIdProvider(userId).select((e) => e.value?.selectedBatch));
     final profileImage = ref.watch(profilePictureByIdProvider(userId));
     return CustomAvatarScaffold(
       avatar: AsyncData(profileImage.value),
-      title: username,
+      title: Row(children: [
+          Text(username),
+          SizedBox(width: 10,),
+          if (selectedBatch != null) Batch(batchId: selectedBatch, fontSize: 10,)
+      ]),
       actions: [
         PopUpMenuOtherUser(userId: userId)
       ],
@@ -55,7 +61,7 @@ class OtherUserProfile extends ConsumerWidget {
         subtitle:  Text(description,
           softWrap: true,
           maxLines: 10,
-          style: TextStyle(fontStyle: FontStyle.italic),)))
+          style: TextStyle(fontStyle: FontStyle.italic),))),
       ],
       body: ImageGrid(
         pinProvider: otherUserPinProvider(userId),

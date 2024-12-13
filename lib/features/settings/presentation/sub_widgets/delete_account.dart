@@ -57,7 +57,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
                     labelText: '6 Digit Code',
                     border: OutlineInputBorder(),
                   ),
-                  validator: (v) => v != null && v.length == 6 ? "Code must have 6 digits" : null,
+                  validator: (v) => v != null && v.length == 6 ? null: "Code must have 6 digits",
                   maxLines: 1,
                 ),
               ),

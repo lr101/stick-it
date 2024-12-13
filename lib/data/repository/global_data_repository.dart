@@ -9,6 +9,7 @@ import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,6 +50,11 @@ class GlobalDataRepository {
   static const String descriptionKey = "descriptionKey";
   static const String profileImageKey = "profileImageKey";
   static const String profileImageSmallKey = "profileImageSmallKey";
+  static const String selectedBatchKey = "selectedBatchKey";
+  static const String xpKey = "xpKey";
+  static const String currentLevelKey = "currentLevelKey";
+  static const String currentLevelXpKey = "currentLevelXpKey";
+  static const String nextLevelXpKey = "nextLevelXpKey";
 
   GlobalDataRepository({required this.ref}) {
     sharedPreferences = ref.watch(sharedPreferencesProvider);
@@ -69,7 +75,14 @@ class GlobalDataRepository {
       username: await storage.read(key: usernameKey),
       description: await sharedPreferences.getString(descriptionKey),
       profileImage: prImage != null ? base64Decode(prImage) : null,
-      profileImageSmall: prImageSmall != null ? base64Decode(prImageSmall) : null
+      profileImageSmall: prImageSmall != null ? base64Decode(prImageSmall) : null,
+      selectedBatch: await sharedPreferences.getInt(selectedBatchKey),
+      xp: UserXpDto(
+        totalXp: await sharedPreferences.getInt(xpKey) ?? 0,
+        currentLevel: await sharedPreferences.getInt(currentLevelKey) ?? 0,
+        currentLevelXp: await sharedPreferences.getInt(currentLevelXpKey) ?? 0,
+        nextLevelXp: await sharedPreferences.getInt(nextLevelXpKey) ?? 0
+      )
     );
   }
 
@@ -89,7 +102,8 @@ class GlobalDataRepository {
       String? username,
       String? description,
       Uint8List? profileImage,
-      Uint8List? profileImageSmall
+      Uint8List? profileImageSmall,
+    int? selectedBatch
   }) async {
     final sharedPrefs = ref.watch(sharedPreferencesProvider);
     final storage = ref.watch(flutterSecureStorageProvider);
@@ -97,6 +111,15 @@ class GlobalDataRepository {
     if (username != null) await storage.write(key: usernameKey, value: username);
     if (profileImage != null) await sharedPrefs.setString(profileImageKey, base64Encode(profileImage));
     if (profileImageSmall != null) await sharedPrefs.setString(profileImageSmallKey, base64Encode(profileImageSmall));
+    if (selectedBatch != null) await sharedPrefs.setInt(selectedBatchKey, selectedBatch);
+  }
+
+  Future<void> setXp(UserXpDto xp) async {
+    final sharedPrefs = ref.watch(sharedPreferencesProvider);
+    await sharedPrefs.setInt(xpKey, xp.totalXp);
+    await sharedPrefs.setInt(currentLevelKey, xp.currentLevel);
+    await sharedPrefs.setInt(currentLevelXpKey, xp.currentLevelXp);
+    await sharedPrefs.setInt(nextLevelXpKey, xp.nextLevelXp);
   }
 
 }

@@ -73,6 +73,7 @@ class GroupRepository {
             userId: e.readTable(_db.userEntity).userId,
             groupId: groupId,
             username: e.readTable(_db.userEntity).username,
+            selectedBatch: e.readTable(_db.userEntity).selectedBatch,
             points: e.readTable(_db.memberEntity).ranking))
         .toList();
     members.sort((a,b) => b.points - a.points);
@@ -95,6 +96,7 @@ class GroupRepository {
           member.map((e) => UserEntityCompanion(
             userId: Value(e.userId),
             username: Value(e.username),
+            selectedBatch: Value(e.selectedBatch)
           )))));
     });
   }

@@ -12,7 +12,7 @@ import 'package:openapi/api.dart';
 class ImageGrid extends ConsumerStatefulWidget {
   const ImageGrid({super.key, required this.pinProvider, required this.onTab});
 
-  final AutoDisposeFutureProvider<List<LocalPinDto>> pinProvider;
+  final AutoDisposeFutureProvider<List<LocalPinDto>?> pinProvider;
   final Function(int index) onTab;
 
   @override
@@ -37,9 +37,11 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
     });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.watch(widget.pinProvider).whenData((data) {
-        _images = data;
-        isInitial = false;
-        _pagingController.refresh();
+        if (data != null) {
+          _images = data;
+          isInitial = false;
+          _pagingController.refresh();
+        }
       });
     });
   }

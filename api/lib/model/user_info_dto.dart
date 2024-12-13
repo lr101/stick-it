@@ -16,6 +16,7 @@ class UserInfoDto {
     required this.username,
     required this.userId,
     this.description,
+    this.selectedBatch,
   });
 
   String username;
@@ -30,21 +31,25 @@ class UserInfoDto {
   ///
   String? description;
 
+  int? selectedBatch;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is UserInfoDto &&
     other.username == username &&
     other.userId == userId &&
-    other.description == description;
+    other.description == description &&
+    other.selectedBatch == selectedBatch;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (username.hashCode) +
     (userId.hashCode) +
-    (description == null ? 0 : description!.hashCode);
+    (description == null ? 0 : description!.hashCode) +
+    (selectedBatch == null ? 0 : selectedBatch!.hashCode);
 
   @override
-  String toString() => 'UserInfoDto[username=$username, userId=$userId, description=$description]';
+  String toString() => 'UserInfoDto[username=$username, userId=$userId, description=$description, selectedBatch=$selectedBatch]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -54,6 +59,11 @@ class UserInfoDto {
       json[r'description'] = this.description;
     } else {
       json[r'description'] = null;
+    }
+    if (this.selectedBatch != null) {
+      json[r'selectedBatch'] = this.selectedBatch;
+    } else {
+      json[r'selectedBatch'] = null;
     }
     return json;
   }
@@ -80,6 +90,7 @@ class UserInfoDto {
         username: mapValueOfType<String>(json, r'username')!,
         userId: mapValueOfType<String>(json, r'userId')!,
         description: mapValueOfType<String>(json, r'description'),
+        selectedBatch: mapValueOfType<int>(json, r'selectedBatch'),
       );
     }
     return null;

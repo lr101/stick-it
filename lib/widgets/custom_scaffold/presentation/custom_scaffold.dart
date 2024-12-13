@@ -30,7 +30,9 @@ class CustomScaffold<T> extends ConsumerWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            pinned: true,
+            pinned: false,
+            floating: true,
+            snap: false,
             actions: actions,
             title: title,
             expandedHeight: headerHeight,

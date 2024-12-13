@@ -22,8 +22,14 @@ class $UserEntityTable extends UserEntity
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _selectedBatchMeta =
+      const VerificationMeta('selectedBatch');
   @override
-  List<GeneratedColumn> get $columns => [userId, username];
+  late final GeneratedColumn<int> selectedBatch = GeneratedColumn<int>(
+      'selected_batch', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [userId, username, selectedBatch];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -46,6 +52,12 @@ class $UserEntityTable extends UserEntity
     } else if (isInserting) {
       context.missing(_usernameMeta);
     }
+    if (data.containsKey('selected_batch')) {
+      context.handle(
+          _selectedBatchMeta,
+          selectedBatch.isAcceptableOrUnknown(
+              data['selected_batch']!, _selectedBatchMeta));
+    }
     return context;
   }
 
@@ -59,6 +71,8 @@ class $UserEntityTable extends UserEntity
           .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
       username: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}username'])!,
+      selectedBatch: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}selected_batch']),
     );
   }
 
@@ -71,12 +85,17 @@ class $UserEntityTable extends UserEntity
 class UserEntityData extends DataClass implements Insertable<UserEntityData> {
   final String userId;
   final String username;
-  const UserEntityData({required this.userId, required this.username});
+  final int? selectedBatch;
+  const UserEntityData(
+      {required this.userId, required this.username, this.selectedBatch});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['user_id'] = Variable<String>(userId);
     map['username'] = Variable<String>(username);
+    if (!nullToAbsent || selectedBatch != null) {
+      map['selected_batch'] = Variable<int>(selectedBatch);
+    }
     return map;
   }
 
@@ -84,6 +103,9 @@ class UserEntityData extends DataClass implements Insertable<UserEntityData> {
     return UserEntityCompanion(
       userId: Value(userId),
       username: Value(username),
+      selectedBatch: selectedBatch == null && nullToAbsent
+          ? const Value.absent()
+          : Value(selectedBatch),
     );
   }
 
@@ -93,6 +115,7 @@ class UserEntityData extends DataClass implements Insertable<UserEntityData> {
     return UserEntityData(
       userId: serializer.fromJson<String>(json['userId']),
       username: serializer.fromJson<String>(json['username']),
+      selectedBatch: serializer.fromJson<int?>(json['selectedBatch']),
     );
   }
   @override
@@ -101,17 +124,27 @@ class UserEntityData extends DataClass implements Insertable<UserEntityData> {
     return <String, dynamic>{
       'userId': serializer.toJson<String>(userId),
       'username': serializer.toJson<String>(username),
+      'selectedBatch': serializer.toJson<int?>(selectedBatch),
     };
   }
 
-  UserEntityData copyWith({String? userId, String? username}) => UserEntityData(
+  UserEntityData copyWith(
+          {String? userId,
+          String? username,
+          Value<int?> selectedBatch = const Value.absent()}) =>
+      UserEntityData(
         userId: userId ?? this.userId,
         username: username ?? this.username,
+        selectedBatch:
+            selectedBatch.present ? selectedBatch.value : this.selectedBatch,
       );
   UserEntityData copyWithCompanion(UserEntityCompanion data) {
     return UserEntityData(
       userId: data.userId.present ? data.userId.value : this.userId,
       username: data.username.present ? data.username.value : this.username,
+      selectedBatch: data.selectedBatch.present
+          ? data.selectedBatch.value
+          : this.selectedBatch,
     );
   }
 
@@ -119,53 +152,64 @@ class UserEntityData extends DataClass implements Insertable<UserEntityData> {
   String toString() {
     return (StringBuffer('UserEntityData(')
           ..write('userId: $userId, ')
-          ..write('username: $username')
+          ..write('username: $username, ')
+          ..write('selectedBatch: $selectedBatch')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(userId, username);
+  int get hashCode => Object.hash(userId, username, selectedBatch);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is UserEntityData &&
           other.userId == this.userId &&
-          other.username == this.username);
+          other.username == this.username &&
+          other.selectedBatch == this.selectedBatch);
 }
 
 class UserEntityCompanion extends UpdateCompanion<UserEntityData> {
   final Value<String> userId;
   final Value<String> username;
+  final Value<int?> selectedBatch;
   final Value<int> rowid;
   const UserEntityCompanion({
     this.userId = const Value.absent(),
     this.username = const Value.absent(),
+    this.selectedBatch = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   UserEntityCompanion.insert({
     required String userId,
     required String username,
+    this.selectedBatch = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : userId = Value(userId),
         username = Value(username);
   static Insertable<UserEntityData> custom({
     Expression<String>? userId,
     Expression<String>? username,
+    Expression<int>? selectedBatch,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (userId != null) 'user_id': userId,
       if (username != null) 'username': username,
+      if (selectedBatch != null) 'selected_batch': selectedBatch,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   UserEntityCompanion copyWith(
-      {Value<String>? userId, Value<String>? username, Value<int>? rowid}) {
+      {Value<String>? userId,
+      Value<String>? username,
+      Value<int?>? selectedBatch,
+      Value<int>? rowid}) {
     return UserEntityCompanion(
       userId: userId ?? this.userId,
       username: username ?? this.username,
+      selectedBatch: selectedBatch ?? this.selectedBatch,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -179,6 +223,9 @@ class UserEntityCompanion extends UpdateCompanion<UserEntityData> {
     if (username.present) {
       map['username'] = Variable<String>(username.value);
     }
+    if (selectedBatch.present) {
+      map['selected_batch'] = Variable<int>(selectedBatch.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -190,6 +237,7 @@ class UserEntityCompanion extends UpdateCompanion<UserEntityData> {
     return (StringBuffer('UserEntityCompanion(')
           ..write('userId: $userId, ')
           ..write('username: $username, ')
+          ..write('selectedBatch: $selectedBatch, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1994,11 +2042,13 @@ abstract class _$Database extends GeneratedDatabase {
 typedef $$UserEntityTableCreateCompanionBuilder = UserEntityCompanion Function({
   required String userId,
   required String username,
+  Value<int?> selectedBatch,
   Value<int> rowid,
 });
 typedef $$UserEntityTableUpdateCompanionBuilder = UserEntityCompanion Function({
   Value<String> userId,
   Value<String> username,
+  Value<int?> selectedBatch,
   Value<int> rowid,
 });
 
@@ -2051,6 +2101,9 @@ class $$UserEntityTableFilterComposer
 
   ColumnFilters<String> get username => $composableBuilder(
       column: $table.username, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get selectedBatch => $composableBuilder(
+      column: $table.selectedBatch, builder: (column) => ColumnFilters(column));
 
   Expression<bool> groupEntityRefs(
       Expression<bool> Function($$GroupEntityTableFilterComposer f) f) {
@@ -2109,6 +2162,10 @@ class $$UserEntityTableOrderingComposer
 
   ColumnOrderings<String> get username => $composableBuilder(
       column: $table.username, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get selectedBatch => $composableBuilder(
+      column: $table.selectedBatch,
+      builder: (column) => ColumnOrderings(column));
 }
 
 class $$UserEntityTableAnnotationComposer
@@ -2125,6 +2182,9 @@ class $$UserEntityTableAnnotationComposer
 
   GeneratedColumn<String> get username =>
       $composableBuilder(column: $table.username, builder: (column) => column);
+
+  GeneratedColumn<int> get selectedBatch => $composableBuilder(
+      column: $table.selectedBatch, builder: (column) => column);
 
   Expression<T> groupEntityRefs<T extends Object>(
       Expression<T> Function($$GroupEntityTableAnnotationComposer a) f) {
@@ -2194,21 +2254,25 @@ class $$UserEntityTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<String> userId = const Value.absent(),
             Value<String> username = const Value.absent(),
+            Value<int?> selectedBatch = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UserEntityCompanion(
             userId: userId,
             username: username,
+            selectedBatch: selectedBatch,
             rowid: rowid,
           ),
           createCompanionCallback: ({
             required String userId,
             required String username,
+            Value<int?> selectedBatch = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               UserEntityCompanion.insert(
             userId: userId,
             username: username,
+            selectedBatch: selectedBatch,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
@@ -2707,8 +2771,7 @@ final class $$PinEntityTableReferences
       db.userEntity.createAlias(
           $_aliasNameGenerator(db.pinEntity.creator, db.userEntity.userId));
 
-  $$UserEntityTableProcessedTableManager? get creator {
-    if ($_item.creator == null) return null;
+  $$UserEntityTableProcessedTableManager get creator {
     final manager = $$UserEntityTableTableManager($_db, $_db.userEntity)
         .filter((f) => f.userId($_item.creator!));
     final item = $_typedResult.readTableOrNull(_creatorTable($_db));
@@ -2721,8 +2784,7 @@ final class $$PinEntityTableReferences
       db.groupEntity.createAlias(
           $_aliasNameGenerator(db.pinEntity.group, db.groupEntity.groupId));
 
-  $$GroupEntityTableProcessedTableManager? get group {
-    if ($_item.group == null) return null;
+  $$GroupEntityTableProcessedTableManager get group {
     final manager = $$GroupEntityTableTableManager($_db, $_db.groupEntity)
         .filter((f) => f.groupId($_item.group!));
     final item = $_typedResult.readTableOrNull(_groupTable($_db));

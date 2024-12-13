@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/like_buttons.dart';
 import 'package:buff_lisa/widgets/custom_marker/presentation/custom_marker.dart';
@@ -84,9 +85,8 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                             ),
                             children: [
                               CustomTileLayer(),
-                              MarkerLayer(markers: [
-                                CustomMarkerWidget(pinDto: widget.item, ref: ref)
-                              ]),
+                              MarkerLayer(markers: [CustomMarkerWidget(pinDto: widget.item, ref: ref),]),
+                              OsmCopyright()
                             ],
                           ),
                               onDoubleTap: () => ref.read(likeServiceProvider.notifier).addLike(widget.item.id, widget.item.creatorId, CreateLikeDto(userId: userId, likeLocation: true)),
@@ -121,7 +121,10 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                   SizedBox(
                     height: 3,
                   ),
-                  SizedBox(height: 40, child: LikeButtons(pinId: widget.item.id, creatorId: widget.item.creatorId,))
+                  SizedBox(
+                      height: 40,
+                      child: widget.item.lastSynced != null ? LikeButtons(pinId: widget.item.id, creatorId: widget.item.creatorId,) : Center(child: Text("This pin is not synced"))
+                  )
                 ]),
               );
             },

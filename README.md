@@ -52,3 +52,7 @@ How the different pages interact with each can be found [here]().
   ```shell
   openapi-generator generate -i ../MonaServerApi/openapi.yaml -g dart -o ./api
   ```
+
+- PinguMap
+- StickJourney
+- StickSpot

@@ -2,11 +2,13 @@ import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
 import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
 import 'package:buff_lisa/features/profile/presentation/user_like_icon.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
+import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,9 +26,15 @@ class UserProfile extends ConsumerWidget {
     final currentUser = ref.watch(currentUserServiceProvider);
     return CustomAvatarScaffold(
       avatar: AsyncData(ref
-          .watch(profilePictureByIdProvider(userId))
-          .whenOrNull(data: (data) => data)),
-      title: currentUser.username ?? "---",
+          .watch(profilePictureByIdProvider(userId)).value),
+      title: Row(children: [
+        Text(currentUser.username ?? ""),
+        SizedBox(width: 10,),
+        if (currentUser.selectedBatch != null) GestureDetector(
+          child: Batch(batchId: currentUser.selectedBatch!, fontSize: 10,),
+          onTap: () => Routing.to(context, const AchievementsPage()),
+        )
+      ]),
       actions: [
         IconButton(
             onPressed: () => Routing.to(context, Settings()),
@@ -83,7 +91,7 @@ class UserProfile extends ConsumerWidget {
                     softWrap: true,
                     maxLines: 10,
                     style: TextStyle(fontStyle: FontStyle.italic),
-                  )))
+                  ))),
       ],
       body: ImageGrid(
         pinProvider: sortedUserPinsProvider,

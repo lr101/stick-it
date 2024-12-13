@@ -16,53 +16,51 @@ class RoundGroupCard extends ConsumerStatefulWidget {
   ConsumerState<RoundGroupCard> createState() => _RoundGroupCardState();
 }
 
-class _RoundGroupCardState extends ConsumerState<RoundGroupCard>  {
+class _RoundGroupCardState extends ConsumerState<RoundGroupCard> {
   @override
   Widget build(BuildContext context) {
-    double baseHeight =( MediaQuery.of(context).size.height * 0.09) - 15;
+    double baseHeight = (MediaQuery.of(context).size.height * 0.09) - 15;
     Color color = Colors.grey.withOpacity(0.8);
     Widget num = const SizedBox.shrink();
-    final isActive = ref.watch(groupByIdActivatedProvider(widget.groupId)).value ?? false;
+    final isActive =
+        ref.watch(groupByIdActivatedProvider(widget.groupId)).value ?? false;
 
     return ref.watch(groupProfilePictureByIdProvider(widget.groupId)).when(
         data: (data) {
-          if (isActive) {
-            color = Colors.transparent;
-            // num = getNumNewPosts(group, context);
-          }
           return Padding(
               key: ValueKey(widget.groupId),
               padding: const EdgeInsets.all(5),
               child: GestureDetector(
                   onTap: () => {
-                    ref.read(userGroupServiceProvider.notifier).setIsActive(widget.groupId, !isActive),
-                  },
-                  child: RoundImage(
-                    size: baseHeight / 2,
-                    clickable: false,
-                    imageCallback: AsyncData(data),
-                    child: Stack(
-                      children: [
-                        ClipOval(child:Container(
-                          height: baseHeight + 2,
-                          width: baseHeight + 2,
-                          decoration: BoxDecoration(
-                            color: color
-                          ),
-                        ),),
-                        Align(
-                            alignment: Alignment.topRight,
-                            child: num
-                        ),
-                      ],
+                        ref
+                            .read(userGroupServiceProvider.notifier)
+                            .setIsActive(widget.groupId, !isActive),
+                      },
+                  child: Stack(children: [
+                    ClipOval(
+                      child: Container(
+                        height: baseHeight,
+                        width: baseHeight,
+                        decoration: BoxDecoration(
+                            color: isActive ? color : Colors.transparent),
+                      ),
                     ),
-                  )
-              )
-          );
+                    RoundImage(
+                      size: baseHeight / 2,
+                      clickable: false,
+                      imageCallback: AsyncData(data),
+                      child: ClipOval(
+                        child: Container(
+                          height: baseHeight,
+                          width: baseHeight,
+                          decoration: BoxDecoration(
+                              color: isActive ? Colors.transparent : color),
+                        ),
+                      ),
+                    ),
+                  ])));
         },
-        error: (error, stackTrace) => Icon(Icons.error), loading: () => SizedBox.square(dimension: baseHeight + 10));
-
+        error: (error, stackTrace) => Icon(Icons.error),
+        loading: () => SizedBox.square(dimension: baseHeight + 10));
   }
-
-
 }

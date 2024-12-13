@@ -57,6 +57,7 @@ class UserGroupService extends _$UserGroupService {
     }finally {
       _mutex.release();
       if (kDebugMode) print("Groups synced");
+      ref.read(currentUserServiceProvider.notifier).updateFromRemote();
       for (LocalGroupDto group in state.value ?? []) {
         if (group.isActivated) {
           ref.read(pinServiceProvider(group.groupId));

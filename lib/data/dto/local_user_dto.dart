@@ -7,14 +7,15 @@ class LocalUserDto {
   final String userId;
   final String? description;
   final UserLikesDto? likes;
-  LocalUserDto({required this.username, required this.userId, required this.description, this.likes});
+  final int? selectedBatch;
+  LocalUserDto({required this.username, required this.userId, required this.description, this.likes, required this.selectedBatch});
 
   factory LocalUserDto.fromInfoDto(UserInfoDto user) {
     return LocalUserDto(
-        username: user.username, userId: user.userId, description: user.description);
+        username: user.username, userId: user.userId, description: user.description, selectedBatch: user.selectedBatch);
   }
 
   LocalUserDto fromCurrentWithLikes(UserLikesDto likes) {
-    return LocalUserDto(username: username, userId: userId, description: description, likes: likes);
+    return LocalUserDto(username: username, userId: userId, description: description, likes: likes, selectedBatch: selectedBatch);
   }
 }

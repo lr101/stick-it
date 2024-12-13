@@ -18,12 +18,18 @@ class UserImageService extends _$UserImageService {
     if (currentUser.profileImage != null) {
       state = AsyncValue.data({global.userId!: currentUser.profileImage});
     }
-    final profileImageUrl = await ref.watch(userApiProvider).getUserProfileImage(global.userId!);
-    final profileImage = await http.get(Uri.parse(profileImageUrl!));
-    if (profileImage.statusCode == 200) {
-      ref.read(currentUserServiceProvider.notifier).update(profileImage: profileImage.bodyBytes);
-      return {global.userId!: profileImage.bodyBytes};
-    } else {
+    try {
+      final profileImageUrl = await ref.watch(userApiProvider)
+          .getUserProfileImage(global.userId!);
+      final profileImage = await http.get(Uri.parse(profileImageUrl!));
+      if (profileImage.statusCode == 200) {
+        ref.read(currentUserServiceProvider.notifier).update(
+            profileImage: profileImage.bodyBytes);
+        return {global.userId!: profileImage.bodyBytes};
+      } else {
+        return {global.userId!: currentUser.profileImage};
+      }
+    } catch(e) {
       return {global.userId!: currentUser.profileImage};
     }
   }

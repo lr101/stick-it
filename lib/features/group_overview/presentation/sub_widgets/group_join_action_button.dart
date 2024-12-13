@@ -15,6 +15,7 @@ class GroupJoinActionButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
+      heroTag: this.key.toString(),
       onPressed: () async {
         if (groupDto.visibility == 0) {
           final result = await ref

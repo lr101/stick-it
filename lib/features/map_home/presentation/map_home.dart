@@ -3,6 +3,7 @@ import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/closest_pin_card.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_panel.dart';
+import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:flutter/material.dart';
@@ -56,77 +57,80 @@ class _MapHomeState extends ConsumerState<MapHome>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final height = MediaQuery.of(context).size.height;
-
     final mapState = ref.watch(mapStatesProvider);
-    return Scaffold(
+    return LayoutBuilder(builder: (context, constraints) => Scaffold(
       appBar: null,
-      body: SizedBox(
-        height: height,
-        width: MediaQuery.of(context).size.width,
-        child: SlidingUpPanel(
-          controller: _panelController,
-          color: Theme.of(context).scaffoldBackgroundColor,
-          backdropEnabled: false,
-          panelSnapping: false,
-          boxShadow: const [],
-          minHeight: 20,
-          maxHeight: height * 0.7,
-          border: Border.all(color: Colors.grey),
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-          onPanelSlide: (position) => panelPosition.value = position,
-          body: FlutterMap(
-            mapController: _controller,
-            options: MapOptions(
-              minZoom: 2,
-              maxZoom: 18,
-              initialZoom: 5,
-              keepAlive: true,
-              initialCenter: ref.watch(lastKnownLocationProvider),
-              interactionOptions: InteractionOptions(
-                  flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag),
+      body: SlidingUpPanel(
+            controller: _panelController,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            backdropEnabled: false,
+            panelSnapping: false,
+            boxShadow: const [],
+            minHeight: 20,
+            maxHeight: constraints.maxHeight * 0.7,
+            border: Border.all(color: Colors.grey),
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+            onPanelSlide: (position) => panelPosition.value = position,
+            body: Column(
+              children: [Container(
+                  height: constraints.maxHeight,
+                  child:
+                  FlutterMap(
+                    mapController: _controller,
+                    options: MapOptions(
+                      minZoom: 2,
+                      maxZoom: 18,
+                      initialZoom: 5,
+                      keepAlive: true,
+                      initialCenter: ref.watch(lastKnownLocationProvider),
+                      interactionOptions: InteractionOptions(
+                          flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag),
+                    ),
+                    children: [
+                      CustomTileLayer(),
+                      CurrentLocationLayer(),
+                      MarkerClusterLayerWidget(
+                        options: MarkerClusterLayerOptions(
+                          disableClusteringAtZoom: 17,
+                          maxClusterRadius: 45,
+                          size: const Size(40, 40),
+                          markers: mapState.markers,
+                          centerMarkerOnClick: true,
+                          polygonOptions: PolygonOptions(color: Colors.transparent),
+                          onMarkerTap: (marker) async {
+                            final m = marker as CustomMarkerProvider;
+                            ref
+                                .read(markerWindowStateProvider.notifier)
+                                .openPopup(m.pinDto);
+                            await _panelController.animatePanelToPosition(1.0, duration: const Duration(milliseconds: 200));
+                            _tabController.animateTo(1, duration: const Duration(milliseconds: 200));
+                          },
+                          builder: (context, markers) {
+                            return FloatingActionButton(
+                              heroTag: markers.first.key,
+                              key: markers.first.key,
+                              onPressed: null,
+                              child: Text(markers.length.toString()),
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(bottom: 20), child: OsmCopyright())
+                    ],
+                  )
+              ),],
             ),
-            children: [
-              CustomTileLayer(),
-              CurrentLocationLayer(),
-              MarkerClusterLayerWidget(
-                options: MarkerClusterLayerOptions(
-                  disableClusteringAtZoom: 17,
-                  maxClusterRadius: 45,
-                  size: const Size(40, 40),
-                  markers: mapState.markers,
-                  centerMarkerOnClick: true,
-                  polygonOptions: PolygonOptions(color: Colors.transparent),
-                  onMarkerTap: (marker) async {
-                    final m = marker as CustomMarkerProvider;
-                    ref
-                        .read(markerWindowStateProvider.notifier)
-                        .openPopup(m.pinDto);
-                    await _panelController.animatePanelToPosition(1.0, duration: const Duration(milliseconds: 200));
-                    _tabController.animateTo(1, duration: const Duration(milliseconds: 200));
-                  },
-                  builder: (context, markers) {
-                    return FloatingActionButton(
-                      heroTag: markers.first.key,
-                      key: markers.first.key,
-                      onPressed: null,
-                      child: Text(markers.length.toString()),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-          panel: MapPanel(moveToCurrentPosition: moveToCurrentPosition, tabController: _tabController, setLocation: setLocation)
+            panel: MapPanel(moveToCurrentPosition: moveToCurrentPosition, tabController: _tabController, setLocation: setLocation)
         ),
-      ),
       floatingActionButton: Align(
           alignment: Alignment.bottomRight,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               FloatingActionButton(
+                heroTag: "moveToCurrentLocation",
                 onPressed: moveToCurrentPosition,
                 child: const Icon(Icons.my_location),
               ),
@@ -134,13 +138,13 @@ class _MapHomeState extends ConsumerState<MapHome>
                 valueListenable: panelPosition,
                 builder: (context, double value, child) {
                   return SizedBox(
-                    height: value * height * 0.7 + 10,
+                    height: value * (constraints.maxHeight * 0.7 - 20) + 10,
                   );
                 },
               ),
             ],
           )),
-    );
+    ));
   }
 
   Future<void> moveToCurrentPosition() async {

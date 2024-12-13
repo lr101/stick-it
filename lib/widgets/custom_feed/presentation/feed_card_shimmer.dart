@@ -15,7 +15,9 @@ class FeedCardShimmer extends StatelessWidget {
       baseColor: Colors.grey.shade300,
       highlightColor: Colors.grey.shade100,
       enabled: true,
-      child: Column(
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+    child: Column(
         children: [
           PinHeaderShimmer(),
           SizedBox(
@@ -25,13 +27,16 @@ class FeedCardShimmer extends StatelessWidget {
             height: 40,
             child: Align(
                 alignment: Alignment.centerLeft,
-                child:Container(
+                child:Padding(padding: EdgeInsets.only(left: 10), child: Container(
                     height: 10,
                     width: 60,
-                    color:  Colors.white
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5), // Adjust the radius as needed
+                  ),
                 ),
             )
-          ),
+          )),
           SizedBox(
             height: 3,
           ),
@@ -42,6 +47,6 @@ class FeedCardShimmer extends StatelessWidget {
                   color: Colors.white))
         ],
       ),
-    );
+    ));
   }
 }

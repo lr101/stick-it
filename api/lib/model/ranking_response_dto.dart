@@ -17,6 +17,7 @@ class RankingResponseDto {
     required this.username,
     required this.ranking,
     this.profileImageSmall,
+    this.selectedBatch,
   });
 
   String userId;
@@ -33,12 +34,15 @@ class RankingResponseDto {
   ///
   String? profileImageSmall;
 
+  int? selectedBatch;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is RankingResponseDto &&
     other.userId == userId &&
     other.username == username &&
     other.ranking == ranking &&
-    other.profileImageSmall == profileImageSmall;
+    other.profileImageSmall == profileImageSmall &&
+    other.selectedBatch == selectedBatch;
 
   @override
   int get hashCode =>
@@ -46,10 +50,11 @@ class RankingResponseDto {
     (userId.hashCode) +
     (username.hashCode) +
     (ranking.hashCode) +
-    (profileImageSmall == null ? 0 : profileImageSmall!.hashCode);
+    (profileImageSmall == null ? 0 : profileImageSmall!.hashCode) +
+    (selectedBatch == null ? 0 : selectedBatch!.hashCode);
 
   @override
-  String toString() => 'RankingResponseDto[userId=$userId, username=$username, ranking=$ranking, profileImageSmall=$profileImageSmall]';
+  String toString() => 'RankingResponseDto[userId=$userId, username=$username, ranking=$ranking, profileImageSmall=$profileImageSmall, selectedBatch=$selectedBatch]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -60,6 +65,11 @@ class RankingResponseDto {
       json[r'profile_image_small'] = this.profileImageSmall;
     } else {
       json[r'profile_image_small'] = null;
+    }
+    if (this.selectedBatch != null) {
+      json[r'selectedBatch'] = this.selectedBatch;
+    } else {
+      json[r'selectedBatch'] = null;
     }
     return json;
   }
@@ -87,6 +97,7 @@ class RankingResponseDto {
         username: mapValueOfType<String>(json, r'username')!,
         ranking: mapValueOfType<int>(json, r'ranking')!,
         profileImageSmall: mapValueOfType<String>(json, r'profile_image_small'),
+        selectedBatch: mapValueOfType<int>(json, r'selectedBatch'),
       );
     }
     return null;

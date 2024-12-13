@@ -8,6 +8,8 @@ class UserEntity extends Table {
   // Unique username
   TextColumn get username => text().unique()();
 
+  IntColumn get selectedBatch => integer().nullable()();
+
   // Specify the primary key
   @override
   Set<Column> get primaryKey => {userId};

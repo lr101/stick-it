@@ -68,17 +68,11 @@ class PinRepository {
     });
   }
 
-  Future<void> updateToSynced(LocalPinDto pin, String oldPinId, Uint8List image) async {
+  Future<void> updateToSynced(LocalPinDto pin, String oldPinId) async {
     await _db.transaction(() async {
       await (_db.delete(_db.pinEntity)..where((tbl) => tbl.pinId.equals(oldPinId))).go();
       await (_db.delete(_db.pinImageEntity)..where((tbl) => tbl.pinId.equals(oldPinId))).go();
       await (_db.into(_db.pinEntity)).insert(pin.toEntityCompanion());
-      await (_db.into(_db.pinImageEntity)).insert(PinImageEntityCompanion(
-        pinId: Value(pin.id),
-        keepAlive: Value(false),
-        image: Value(image),
-        lastAccessed: Value(DateTime.now()),
-      ));
     });
   }
 
@@ -90,6 +84,6 @@ class PinRepository {
 }
 
 @Riverpod(keepAlive: true)
-PinRepository pinRepository(PinRepositoryRef ref) {
+PinRepository pinRepository(Ref ref) {
   return PinRepository(ref: ref);
 }
