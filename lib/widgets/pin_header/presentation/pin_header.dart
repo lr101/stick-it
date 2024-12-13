@@ -10,7 +10,9 @@ import 'package:buff_lisa/widgets/custom_feed/presentation/pop_up_menu_feed.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
+import '../../../data/service/global_data_service.dart';
 import '../../round_image/presentation/round_image.dart';
+import '../../tiles/presentation/batch.dart';
 
 class PinHeader extends ConsumerWidget {
   final LocalPinDto pinDto;
@@ -22,6 +24,13 @@ class PinHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final username = ref.watch(userByIdProvider(pinDto.creatorId).select((e) => e.value?.username ?? " "));
+    final isCurrentUser = pinDto.creatorId == ref.watch(globalDataServiceProvider).userId;
+    final int? batch;
+    if (isCurrentUser) {
+      batch = ref.watch(currentUserServiceProvider.select((e) => e.selectedBatch));
+    } else {
+      batch = ref.watch(userByIdProvider(pinDto.creatorId).select((e) => e.value?.selectedBatch));
+    }
     return Column(
       children: [
         SizedBox(
@@ -47,8 +56,14 @@ class PinHeader extends ConsumerWidget {
                       height: 22,
                       child: FittedBox(
                         fit: BoxFit.fitHeight,
-                        child:  ClickableUser(userId: pinDto.creatorId, username: username))
-                    ),
+                        child:  Row(
+                        children: [
+                          ClickableUser(userId: pinDto.creatorId, username: username),
+                          SizedBox(width: 5,),
+                          if (batch != null) Batch(batchId: batch, fontSize: 8),
+                        ],
+                        ),
+                    )),
                     SizedBox(
                         height: 18,
                         child: FittedBox(

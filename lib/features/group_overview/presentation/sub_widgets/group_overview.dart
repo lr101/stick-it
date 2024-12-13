@@ -48,7 +48,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
     return CustomAvatarScaffold(
         floatingActionButton: widget.floatingActionButton,
         avatar: ref.watch(groupProfilePictureByIdProvider(widget.group.groupId)),
-        title: widget.group.name,
+        title: Text(widget.group.name),
         actions: widget.actions,
         bottom: TabBar(controller: _tabController, tabs: const [
           Tab(icon: Icon(Icons.groups)),

@@ -24,7 +24,7 @@ class NoUserGroupOverview extends ConsumerWidget {
           return CustomAvatarScaffold(
               floatingActionButton: GroupJoinActionButton(groupDto: data, key: Key("no-user-group-join-${groupId}")),
               avatar: ref.watch(groupProfilePictureByIdProvider(groupId)),
-              title: data.name,
+              title: Text(data.name),
             body: Center(child: Icon(Icons.lock),),
           );
         }

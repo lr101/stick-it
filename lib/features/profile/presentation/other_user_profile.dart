@@ -28,7 +28,11 @@ class OtherUserProfile extends ConsumerWidget {
     final profileImage = ref.watch(profilePictureByIdProvider(userId));
     return CustomAvatarScaffold(
       avatar: AsyncData(profileImage.value),
-      title: username,
+      title: Row(children: [
+          Text(username),
+          SizedBox(width: 10,),
+          if (selectedBatch != null) Batch(batchId: selectedBatch, fontSize: 10,)
+      ]),
       actions: [
         PopUpMenuOtherUser(userId: userId)
       ],
@@ -58,11 +62,6 @@ class OtherUserProfile extends ConsumerWidget {
           softWrap: true,
           maxLines: 10,
           style: TextStyle(fontStyle: FontStyle.italic),))),
-        if ( selectedBatch != null)
-          SliverToBoxAdapter(
-              child: ListTile(
-                  title: Text("Batch"),
-                  subtitle: Batch(batchId: selectedBatch)))
       ],
       body: ImageGrid(
         pinProvider: otherUserPinProvider(userId),

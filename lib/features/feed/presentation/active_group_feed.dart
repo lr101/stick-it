@@ -14,7 +14,7 @@ class ActiveGroupFeed extends ConsumerStatefulWidget {
 
 class _ActiveGroupFeedState extends ConsumerState<ActiveGroupFeed> with AutomaticKeepAliveClientMixin {
   PagingController<int, LocalPinDto> _pagingController =
-      PagingController(firstPageKey: 0, invisibleItemsThreshold: 2);
+      PagingController(firstPageKey: 0, invisibleItemsThreshold: 5);
 
   @override
   void dispose() {

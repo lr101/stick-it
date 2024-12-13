@@ -24,10 +24,10 @@ class GlobalDataService  extends _$GlobalDataService {
 
   Future<void> login(String username, String userId, String token) async {
     await ref.watch(globalDataRepositoryProvider).login(username, userId, token);
-    ref.read(currentUserServiceProvider.notifier).updateFromRemote();
     state.refreshToken = token;
     state.userId = userId;
     ref.notifyListeners();
+    await ref.read(currentUserServiceProvider.notifier).updateFromRemote();
   }
 
   Future<void> logout() async {

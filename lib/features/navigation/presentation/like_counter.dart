@@ -1,9 +1,11 @@
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../util/routing/routing.dart';
 import '../../../util/types/level.dart';
 
 class LikeCounter extends ConsumerStatefulWidget {
@@ -17,13 +19,15 @@ class _LikeCounterState extends ConsumerState<LikeCounter> {
   Widget build(BuildContext context) {
     final levelDetails = ref.watch(xpProvider);
 
-    double progress = (levelDetails.totalXp - levelDetails.currentLevelXp) / (levelDetails.nextLevelXp - levelDetails.currentLevelXp);
+    double progress = (levelDetails.currentLevelXp == levelDetails.nextLevelXp) ? 1.0 : (levelDetails.totalXp - levelDetails.currentLevelXp) / (levelDetails.nextLevelXp - levelDetails.currentLevelXp);
     print(progress);
     final xpText = '${levelDetails.totalXp}xp / ${levelDetails.nextLevelXp}xp';
 
     return Padding(
       padding: EdgeInsets.all(10),
-      child: Container(
+      child: GestureDetector(
+          onTap: () => Routing.to(context, const AchievementsPage()),
+          child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.4),
@@ -82,7 +86,7 @@ class _LikeCounterState extends ConsumerState<LikeCounter> {
           },),
           ],
         ),
-      ),
+      )),
     );
   }
 }
