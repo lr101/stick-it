@@ -193,6 +193,7 @@ flutter:
   assets:
     - assets/image/
     - assets/achievements/
+    - assets/icon/
     - .env
     - .env.dev
   uses-material-design: true
