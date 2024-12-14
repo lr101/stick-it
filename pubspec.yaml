@@ -175,6 +175,7 @@ dependencies:
 
   cached_network_image: ^3.4.1
   connectivity_plus: ^6.1.0
+  social_media_buttons: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -191,6 +192,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/image/
+    - assets/achievements/
     - .env
     - .env.dev
   uses-material-design: true

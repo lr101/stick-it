@@ -6,7 +6,7 @@ part of 'achievement_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$achievementsHash() => r'1ccc7193d8daedece593e4ae641066de8ab1f44d';
+String _$achievementsHash() => r'906a912135295a36cccbc7a017da3e22422cd1d5';
 
 /// See also [Achievements].
 @ProviderFor(Achievements)

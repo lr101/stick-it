@@ -85,7 +85,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
           if (widget.group.link != null)
             SliverToBoxAdapter(
                     child: ListTile(
-                      onTap: clickedOnLink,
+                      onTap: () => Routing.clickedOnLink(widget.group.link),
                     title: Row( children: [Text("External Link"), Spacer(), Icon(Icons.open_in_new_rounded)]),
                     subtitle: Text(widget.group.link ?? "No link set", maxLines: 1, overflow: TextOverflow.ellipsis,))),
           if (widget.group.visibility != 0)
@@ -115,16 +115,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
         ]));
   }
 
-  Future<void> clickedOnLink() async {
-    if (widget.group.link != null) {
-      try {
-        await launchUrl(Uri.parse(widget.group.link!),
-            mode: LaunchMode.externalApplication);
-      } catch (e) {
-        CustomErrorSnackBar.message(message: "No app to open link found", type: CustomErrorSnackBarType.error);
-      }
-    }
-  }
+
 
   void clickedOnInviteCode() {
     if (widget.group.inviteUrl != null) {

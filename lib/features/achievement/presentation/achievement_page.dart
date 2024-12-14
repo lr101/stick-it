@@ -1,11 +1,17 @@
+import 'dart:math';
+
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/achievement/data/achievement_provider.dart';
+import 'package:buff_lisa/features/achievement/presentation/achievement_card.dart';
 import 'package:buff_lisa/util/types/achievement.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:openapi/api.dart';
+
+import '../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 
 
 class AchievementsPage extends ConsumerWidget {
@@ -20,58 +26,67 @@ class AchievementsPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Achievements'),
       ),
-      body: ListView.builder(
-        itemCount: Achievement.values.where((e) => e.id >= 0).length,
-        itemBuilder: (context, index) {
+      body: GridView.builder(
+          gridDelegate: (SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0)),
+          itemCount: Achievement.values.where((e) => e.id >= 0).length,
+          itemBuilder: (context, index) {
           final achievement = Achievement.getById(index);
           final userAchievement = achievementProgress.whenOrNull(data: (data) => data.firstWhere((e) => e.achievementId == index));
 
-          final progress = userAchievement != null ? userAchievement.currentValue / userAchievement.thresholdValue : 0.0;
-
-          return Card(
-            margin: const EdgeInsets.all(8.0),
-            child: ListTile(
-              leading: Icon(Icons.emoji_events, color: progress >= 1.0 ? Theme.of(context).colorScheme.primary : Colors.grey,),
-              title: Text(achievement.name),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          final progress = userAchievement != null ? min(1.0, userAchievement.currentValue / userAchievement.thresholdValue) : 0.0;
+          final color = userAchievement != null && userAchievement.claimed ? Theme.of(context).highlightColor : null;
+          return  GestureDetector(
+              onTap: () => onTab(ref, achievement.id, selectedBatch, userAchievement, progress),
+              child: AchievementCard(
+                progress: progress,
+                isSelected: selectedBatch == index,
+                claimedBorderColor: Theme.of(context).colorScheme.primary,
+                progressColor: Theme.of(context).highlightColor,
+                color: color,
+                margin: const EdgeInsets.all(8.0),
+                child: Padding(padding: EdgeInsets.all(10.0), child: Column(
                 children: [
-                  Text(achievement.description, style: const TextStyle(fontStyle: FontStyle.italic)),
-                  const SizedBox(height: 5),
-                  LinearProgressIndicator(
-                    value: progress > 1.0 ? 1.0 : progress,
-                    color: progress >= 1.0 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.tertiary,
-                    backgroundColor: Colors.grey[300],
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10), // Match the borderRadius of the decoration
+                    child: Image.asset(achievement.imagePath, height: 80, width: 80),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 5,),
+                  Text(achievement.name, style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+                  const SizedBox(height: 5,),
+                  Text(achievement.description, style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 8)),
+                  const SizedBox(height: 5,),
                   Text( userAchievement != null ?
-                    '${userAchievement.currentValue}/${userAchievement.thresholdValue}' : "---/---",
+                  '${userAchievement.currentValue}/${userAchievement.thresholdValue}' : "---/---",
                     style: const TextStyle(fontSize: 12),
                   ),
                 ],
-              ),
-              trailing: selectedBatch == index ?
-                  IconButton(onPressed: () => (), icon: Icon(Icons.check_circle, color:  Theme.of(context).colorScheme.primary), tooltip: "Already selected",)
-                  : userAchievement != null && userAchievement.claimed
-                  ? IconButton(onPressed: () => setBatch(index, ref), icon: Icon(Icons.person, color:  Theme.of(context).colorScheme.primary), tooltip: "Set as profile batch",)
-                  : progress >= 1.0
-                  ? IconButton(
-                    onPressed: () => claimAchievement(achievement.id, ref),
-                  tooltip: "Redeem achievement",
-                  icon: Icon(Icons.redeem, color: Theme.of(context).colorScheme.primary,),)
-                  : IconButton(onPressed: () => (), icon: const Icon(Icons.lock, color: Colors.grey,), tooltip: "Achievement not reached",),
-            ),
+              )),
+            )
           );
         },
       ),
     );
   }
 
+  Future<void> onTab(WidgetRef ref, int achievementId, int? selectedBatch, UserAchievementsDtoInner? achievement, double progress) async {
+    if(selectedBatch == achievementId) {
+      return;
+    } else if (achievement != null && achievement.claimed) {
+      setBatch(achievementId, ref);
+    } else if (progress > 1.0) {
+      claimAchievement(achievementId, ref);
+    }
+  }
+
   Future<void> claimAchievement(int achievementId, WidgetRef ref) async {
-    ref.read(achievementsProvider.notifier).claimAchievement(achievementId);
+    final result = await ref.read(achievementsProvider.notifier).claimAchievement(achievementId);
+    final message = result ?? "Claimed '${Achievement.getById(achievementId).name}' achievement";
+    CustomErrorSnackBar.message(message: message, type: result != null ? CustomErrorSnackBarType.error : CustomErrorSnackBarType.success);
   }
 
   Future<void> setBatch(int batchId, WidgetRef ref) async {
-    await ref.read(userServiceProvider.notifier).changeUser(selectedBatch: batchId);
+    final result = await ref.read(userServiceProvider.notifier).changeUser(selectedBatch: batchId);
+    final message = result ?? "Set '${Achievement.getById(batchId).name}' as profile batch";
+    CustomErrorSnackBar.message(message: message, type: result != null ? CustomErrorSnackBarType.error : CustomErrorSnackBarType.success);
   }
 }

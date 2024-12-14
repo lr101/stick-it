@@ -38,8 +38,8 @@ class RoundImage extends ConsumerWidget {
                         loading: () => kTransparentImage
                     )),
                     fit: BoxFit.cover,
-                    fadeInDuration: const Duration(milliseconds: 500),
-                    fadeOutDuration: const Duration(milliseconds: 1000),
+                    fadeInDuration: const Duration(milliseconds: 250),
+                    fadeOutDuration: const Duration(milliseconds: 250),
                     imageErrorBuilder: (_, __, ___) => Image.memory(
                       ref.watch(defaultErrorImageProvider),
                       fit: BoxFit.cover,

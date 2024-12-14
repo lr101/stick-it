@@ -42,7 +42,7 @@ class _FeedCardState extends ConsumerState<FeedCard> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    final data = ref.watch(getPinImageInfoProvider(widget.item.id));
+    final data = ref.watch(getPinImageInfoProvider(widget.item));
     final center = LatLng(widget.item.latitude, widget.item.longitude);
     final userId = ref.watch(globalDataServiceProvider).userId!;
     return SizedBox(

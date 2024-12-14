@@ -18,7 +18,7 @@ class ClosestPinCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     double screenWidth = MediaQuery.of(context).size.width;
-    final data = ref.watch(getPinImageInfoProvider(item.key.id));
+    final data = ref.watch(getPinImageInfoProvider(item.key));
     return SizedBox(
       height: screenWidth * 1.334 + 80,
       width: screenWidth * 0.75,

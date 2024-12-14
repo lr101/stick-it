@@ -23,9 +23,11 @@ import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.da
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:social_media_buttons/social_media_button.dart';
 import '../../../data/service/global_data_service.dart';
 import '../../../util/routing/routing.dart';
 import '../../web/presentation/show_web.dart';
@@ -142,6 +144,17 @@ class _SettingsState extends ConsumerState<Settings> {
                         ));
                   },
                 ),
+                SettingsTile(
+                  leading: Icon(Icons.share),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(onPressed: () => Routing.clickedOnLink(dotenv.env["DISCORD_INVITE"]), icon: Icon(Icons.discord), iconSize: 30, color: Theme.of(context).iconTheme.color),
+                      SocialMediaButton.instagram(onTap: () => Routing.clickedOnLink(dotenv.env["INSTAGRAM_URL"]), size: 30, color: Theme.of(context).iconTheme.color,) ,
+                      SocialMediaButton.github(onTap: () => Routing.clickedOnLink(dotenv.env["GITHUB_URL"]), size: 30, color: Theme.of(context).iconTheme.color),
+                    ],
+                  ),
+                )
               ],
             ),
             SettingsSection(title: const Text("Logout"), tiles: [
