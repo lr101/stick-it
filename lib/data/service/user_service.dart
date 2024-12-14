@@ -122,7 +122,7 @@ class UserService extends _$UserService {
       }
       return null;
     } on ApiException catch (e) {
-      return e.message!;
+      return e.message ?? "Something unexpected happened";
     }
   }
 

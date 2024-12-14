@@ -50,7 +50,7 @@ class _MapHomeState extends ConsumerState<MapHome>
   void dispose() {
     animateController.dispose();
     _controller.dispose();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController.dispose();
     super.dispose();
   }
 

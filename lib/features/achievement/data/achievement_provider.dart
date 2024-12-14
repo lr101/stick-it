@@ -19,7 +19,7 @@ class Achievements extends _$Achievements {
     return achievement!;
   }
 
-  Future<void> claimAchievement(int achievementId) async {
+  Future<String?> claimAchievement(int achievementId) async {
     final userId = ref.watch(globalDataServiceProvider).userId!;
     try {
       await ref.watch(userApiProvider).claimUserAchievement(userId, achievementId);
@@ -29,7 +29,8 @@ class Achievements extends _$Achievements {
         ref.notifyListeners();
       }
     } on ApiException catch (e) {
-      CustomErrorSnackBar.message(message: e.message ?? "Claim unsuccessful", type: CustomErrorSnackBarType.error);
+      return e.message ?? "Claim unsuccessful";
     }
+    return null;
   }
 }

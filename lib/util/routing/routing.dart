@@ -1,6 +1,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 class Routing {
 
   static Future<dynamic> to(BuildContext context, Widget to, [bool transition = true]) async {
@@ -39,6 +42,17 @@ class Routing {
         ),
         ModalRoute.withName(routeName)
     );
+  }
+
+  static Future<void> clickedOnLink(String? link) async {
+    if (link != null) {
+      try {
+        await launchUrl(Uri.parse(link),
+            mode: LaunchMode.externalApplication);
+      } catch (e) {
+        CustomErrorSnackBar.message(message: "No app to open link found", type: CustomErrorSnackBarType.error);
+      }
+    }
   }
 
 }

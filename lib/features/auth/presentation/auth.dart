@@ -23,7 +23,7 @@ class _AuthState extends ConsumerState<Auth> {
     final global = ref.watch(globalDataServiceProvider);
     final loginService = ref.watch(loginServiceProvider);
     return FlutterLogin(
-      title: 'Stick-It',
+      logo: AssetImage('assets/icon/logo-rounded-corners.png'),
       termsOfService: [
         TermOfService(id: "0", text: "Terms of Service", mandatory: true, linkUrl: "${global.host}/public/agb"),
         TermOfService(id: "1", text: "Privacy Policy", mandatory: true, linkUrl: "${global.host}/public/privacy-policy")
