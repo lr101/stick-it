@@ -85,7 +85,7 @@ class _FeedCardState extends ConsumerState<FeedCard> {
                             ),
                             children: [
                               CustomTileLayer(),
-                              MarkerLayer(markers: [CustomMarkerWidget(pinDto: widget.item, ref: ref),]),
+                              MarkerLayer(markers: [CustomMarkerWidget(pinDto: widget.item),]),
                               OsmCopyright()
                             ],
                           ),

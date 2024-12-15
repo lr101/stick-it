@@ -1,6 +1,7 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
+import 'package:buff_lisa/features/map_home/presentation/circle_with_indicator.dart';
 import 'package:buff_lisa/features/map_home/presentation/closest_pin_card.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_panel.dart';
 import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
@@ -18,8 +19,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../../data/dto/pin_dto.dart';
-import '../../../data/service/pin_image_service.dart';
-import '../../../data/service/user_group_service.dart';
 import '../data/marker_window_state.dart';
 import '../../../widgets/custom_marker/presentation/custom_marker.dart';
 
@@ -37,6 +36,7 @@ class _MapHomeState extends ConsumerState<MapHome>
   ValueNotifier<double> panelPosition = ValueNotifier<double>(0);
   PanelController _panelController = PanelController();
   late final TabController _tabController;
+  ValueNotifier<double> mapZoom = ValueNotifier<double>(5);
 
   @override
   void initState() {
@@ -58,6 +58,9 @@ class _MapHomeState extends ConsumerState<MapHome>
   Widget build(BuildContext context) {
     super.build(context);
     final mapState = ref.watch(mapStatesProvider);
+    final closestMarkers = ref.watch(pinsSortedByDistanceProvider
+        .select((e) => e.value?.where((s) => s.value < 800)
+        .toList()));
     return LayoutBuilder(builder: (context, constraints) => Scaffold(
       appBar: null,
       body: SlidingUpPanel(
@@ -84,22 +87,30 @@ class _MapHomeState extends ConsumerState<MapHome>
                       initialZoom: 5,
                       keepAlive: true,
                       initialCenter: ref.watch(lastKnownLocationProvider),
+                      onPositionChanged: (position, hasGesture) => mapZoom.value = position.zoom,
                       interactionOptions: InteractionOptions(
                           flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag),
                     ),
                     children: [
                       CustomTileLayer(),
+                      ValueListenableBuilder(
+                        valueListenable: mapZoom,
+                        builder: (context, double value, child) => value >= 16 ?
+                        PolylineLayer(
+                          polylines: mapZoom.value > 15 ? _getLinesToMarkers(closestMarkers): <Polyline>[]
+                        ) : SizedBox.shrink()
+                      ),
                       CurrentLocationLayer(),
                       MarkerClusterLayerWidget(
                         options: MarkerClusterLayerOptions(
-                          disableClusteringAtZoom: 17,
-                          maxClusterRadius: 45,
-                          size: const Size(40, 40),
+                          disableClusteringAtZoom: 16,
+                          maxClusterRadius: 80,
+                          size: const Size(80, 80),
                           markers: mapState.markers,
                           centerMarkerOnClick: true,
                           polygonOptions: PolygonOptions(color: Colors.transparent),
                           onMarkerTap: (marker) async {
-                            final m = marker as CustomMarkerProvider;
+                            final m = marker as CustomMarkerWidget;
                             ref
                                 .read(markerWindowStateProvider.notifier)
                                 .openPopup(m.pinDto);
@@ -107,12 +118,7 @@ class _MapHomeState extends ConsumerState<MapHome>
                             _tabController.animateTo(1, duration: const Duration(milliseconds: 200));
                           },
                           builder: (context, markers) {
-                            return FloatingActionButton(
-                              heroTag: markers.first.key,
-                              key: markers.first.key,
-                              onPressed: null,
-                              child: Text(markers.length.toString()),
-                            );
+                            return CircleWithIndicator(color: Theme.of(context).highlightColor, number: markers.length);
                           },
                         ),
                       ),
@@ -121,7 +127,11 @@ class _MapHomeState extends ConsumerState<MapHome>
                   )
               ),],
             ),
-            panel: MapPanel(moveToCurrentPosition: moveToCurrentPosition, tabController: _tabController, setLocation: setLocation)
+            panel: MapPanel(
+                moveToCurrentPosition: moveToCurrentPosition,
+                tabController: _tabController,
+                setLocation: setLocation
+            )
         ),
       floatingActionButton: Align(
           alignment: Alignment.bottomRight,
@@ -172,6 +182,26 @@ class _MapHomeState extends ConsumerState<MapHome>
     });
 
     animateController.forward(from: 0.0);
+  }
+
+  List<Polyline> _getLinesToMarkers(List<MapEntry<LocalPinDto, double>>? map) {
+    final userPosition = ref.watch(currentLocationProvider).value;
+    List<Polyline> lines = [];
+    if (userPosition == null) return lines;
+
+    for (MapEntry<LocalPinDto, double> marker in map ?? []) {
+      final line = Polyline(
+        points: [
+          LatLng(userPosition.latitude, userPosition.longitude),
+          LatLng(marker.key.latitude, marker.key.longitude)
+        ],
+        strokeWidth: 2,
+        pattern: StrokePattern.dotted(),
+        color: Colors.grey
+      );
+      lines.add(line);
+    }
+    return lines;
   }
 
 
