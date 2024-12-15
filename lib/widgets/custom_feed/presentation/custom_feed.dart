@@ -37,8 +37,14 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.watch(widget.pinProvider).whenData((data) => _pins = data ?? []);
       if (widget.index != null) {
-        final pos = MediaQuery.of(context).size.width * 1.334 + 80;
-        scrollController.jumpTo(pos * widget.index!);
+        double maxWidth = MediaQuery.of(context).size.width;
+        double maxHeight =MediaQuery.of(context).size.height;
+        if (maxWidth / maxHeight > 3 / 4) {
+          maxWidth = maxHeight * 3 / 4;
+        } else {
+          maxHeight = maxWidth * 4 / 3;
+        }
+        scrollController.jumpTo(maxHeight * widget.index!);
       } else {
         widget.pagingController.refresh();
       }
