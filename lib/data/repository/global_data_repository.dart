@@ -55,6 +55,7 @@ class GlobalDataRepository {
   static const String currentLevelKey = "currentLevelKey";
   static const String currentLevelXpKey = "currentLevelXpKey";
   static const String nextLevelXpKey = "nextLevelXpKey";
+  static const String lastReviewKey = "lastReviewKey";
 
   GlobalDataRepository({required this.ref}) {
     sharedPreferences = ref.watch(sharedPreferencesProvider);

@@ -26,6 +26,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:social_media_buttons/social_media_button.dart';
 import '../../../data/service/global_data_service.dart';
@@ -152,6 +153,7 @@ class _SettingsState extends ConsumerState<Settings> {
                       IconButton(onPressed: () => Routing.clickedOnLink(dotenv.env["DISCORD_INVITE"]), icon: Icon(Icons.discord), iconSize: 30, color: Theme.of(context).iconTheme.color),
                       SocialMediaButton.instagram(onTap: () => Routing.clickedOnLink(dotenv.env["INSTAGRAM_URL"]), size: 30, color: Theme.of(context).iconTheme.color,) ,
                       SocialMediaButton.github(onTap: () => Routing.clickedOnLink(dotenv.env["GITHUB_URL"]), size: 30, color: Theme.of(context).iconTheme.color),
+                      IconButton(onPressed: () => InAppReview.instance.openStoreListing(appStoreId: dotenv.env["APPSTORE_ID"]), icon: Icon(Icons.star_border), iconSize: 30, color: Theme.of(context).iconTheme.color)
                     ],
                   ),
                 )

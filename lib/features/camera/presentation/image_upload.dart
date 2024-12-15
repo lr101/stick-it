@@ -6,11 +6,13 @@ import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/features/camera/data/app_review_state.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
 import 'package:select_dialog/select_dialog.dart';
@@ -142,6 +144,15 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
                 message: "Successfully synced to server");
           }
         }));
+    if (ref.read(appReviewStateProvider)) {
+      Future(() async {
+        final InAppReview inAppReview = InAppReview.instance;
+        if (await inAppReview.isAvailable()) {
+          ref.read(appReviewStateProvider.notifier).updateLastReviewDate();
+          inAppReview.requestReview();
+        }
+      });
+    }
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
