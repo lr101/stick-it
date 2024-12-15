@@ -190,7 +190,6 @@ class UserService extends _$UserService {
       likePhotographyCount: user.likes!.likePhotographyCount + _likeUpdate(likeUpdate.likePhotography)
     );
     state.value![userId] = user.fromCurrentWithLikes(likes);
-    ref.notifyListeners();
   }
 
   int _likeUpdate(bool? like) {

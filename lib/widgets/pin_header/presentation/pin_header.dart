@@ -72,9 +72,9 @@ class PinHeader extends ConsumerWidget {
                                   .watch(groupByIdProvider(pinDto.groupId))
                                   .whenOrNull(
                                       data: (d) => ClickableGroup(
-                                            groupDto: d!,
-                                            textStyle: const TextStyle(
-                                                fontStyle: FontStyle.italic),
+                                            groupId: d!.groupId,
+                                            child: Text(d!.name, style: const TextStyle(
+                                                fontStyle: FontStyle.italic),)
                                           )) ??
                               Text(" "),
                         ))

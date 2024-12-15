@@ -15,7 +15,7 @@ class UserGroupOverview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(groupByIdProvider(groupId)).when(
-        data: (data) => GroupOverview(group: data!,actions: [PopUpMenuLeave(groupDto: data)],),
+        data: (data) => GroupOverview(groupId: groupId,actions: [PopUpMenuLeave(groupDto: data!)],),
         error: (error, stackTrace) => Icon(Icons.error),
         loading: () => Center(child: CircularProgressIndicator())
     );

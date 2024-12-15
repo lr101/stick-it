@@ -13,6 +13,7 @@ class Batch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double padding = fontSize != null && fontSize! < 8.0 ? 1 : 2;
     final achievement = Achievement.getById(batchId);
     return Container(
       decoration: BoxDecoration(
@@ -23,7 +24,7 @@ class Batch extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(5),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: padding),
       child: Text(achievement.name, style: TextStyle(color: Colors.white, fontSize: fontSize, fontStyle: FontStyle.italic),),
     );
   }

@@ -56,7 +56,19 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
       error: (e, s) => Image.memory(ref.read(defaultGroupPinImageProvider)),
       loading: () => Image.memory(ref.read(defaultGroupPinImageProvider)),
     );
-    if (widget.withAnimation == false || isInRange == null) return markerImage;
+    if (widget.withAnimation == false || isInRange == null) {
+     return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            child: markerImage,
+            height: 30,
+            width: 30,
+          ),
+          SizedBox.square(dimension: 30)
+        ],
+      );
+    }
 
     return Stack(
       alignment: Alignment.center,

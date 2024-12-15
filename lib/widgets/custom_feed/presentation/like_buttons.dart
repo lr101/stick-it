@@ -31,7 +31,7 @@ class LikeButtons extends ConsumerWidget {
                 return Icon(
                   Icons.favorite,
                   color: isLiked ? Colors.red : Colors.grey,
-                  size: 30,
+                  size: 25,
                 );
               },
               likeCount: pinLike.valueOrNull?.likeCount ?? 0,
@@ -57,7 +57,7 @@ class LikeButtons extends ConsumerWidget {
                 return Icon(
                   CupertinoIcons.location_solid,
                   color: isLiked ? Colors.red : Colors.grey,
-                  size: 30,
+                  size: 25,
                 );
               },
               likeCount: pinLike.valueOrNull?.likeLocationCount ?? 0,
@@ -83,7 +83,7 @@ class LikeButtons extends ConsumerWidget {
                 return Icon(
                   Icons.photo_camera,
                   color: isLiked ? Colors.red : Colors.grey,
-                  size: 30,
+                  size: 25,
                 );
               },
               likeCount: pinLike.valueOrNull?.likePhotographyCount ?? 0,
@@ -109,7 +109,7 @@ class LikeButtons extends ConsumerWidget {
                 return Icon(
                   Icons.brush,
                   color: isLiked ? Colors.red : Colors.grey,
-                  size: 30,
+                  size: 25,
                 );
               },
               likeCount: pinLike.valueOrNull?.likeArtCount ?? 0,

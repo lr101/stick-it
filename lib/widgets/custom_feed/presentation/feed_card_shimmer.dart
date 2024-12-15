@@ -10,43 +10,45 @@ class FeedCardShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     return Shimmer.fromColors(
       baseColor: Colors.grey.shade300,
       highlightColor: Colors.grey.shade100,
       enabled: true,
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-    child: Column(
-        children: [
-          PinHeaderShimmer(),
-          SizedBox(
-            height: 3,
-          ),
-          SizedBox(
-            height: 40,
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child:Padding(padding: EdgeInsets.only(left: 10), child: Container(
-                    height: 10,
-                    width: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5), // Adjust the radius as needed
-                  ),
-                ),
-            )
-          )),
-          SizedBox(
-            height: 3,
-          ),
-          Expanded(
-              child: Container(
-                  height: screenWidth * 1.334 + 80,
-                  width: screenWidth,
-                  color: Colors.white))
-        ],
-      ),
-    ));
+      child: SizedBox(
+        height: height,
+        width: width,
+        child:Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+            Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            width: width - 30 - 15 - 10 - 10,
+                            height: height - 55,
+                            color: Colors.white,
+                          )
+            ),]),
+            // Map
+            Positioned(
+                right: 0,
+                bottom: 0,
+                child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10), // Match the borderRadius of the decoration
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        color: Colors.white,
+                      )))
+          ],
+        ),
+        const Divider(),
+      ],
+    )));
   }
 }
