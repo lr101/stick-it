@@ -6,7 +6,7 @@ part of 'app_review_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appReviewStateHash() => r'c14853da2f6a93d6f75e0e6f1aa0542dc527b9bc';
+String _$appReviewStateHash() => r'7b01b802f5f4db2318a5f73a8cf26be9d110869e';
 
 /// See also [AppReviewState].
 @ProviderFor(AppReviewState)
