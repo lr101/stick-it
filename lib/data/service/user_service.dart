@@ -223,3 +223,9 @@ Future<UserLikesDto> userLikesById(Ref ref, String userId) async {
   }
 }
 
+@riverpod
+String? userByIdUsername(Ref ref, String userId) {
+  return ref.watch(userByIdProvider(userId).select((e) => e.value?.username));
+}
+
+

@@ -17,24 +17,17 @@ class UserTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userByIdProvider(userId));
-    return user.when(
-        data: (data) => ListTile(
+    final user = ref.watch(userByIdUsernameProvider(userId));
+    return ListTile(
           onTap: () => CustomDialog.show(context,
             acceptText: "Remove",
             title: "Remove hidden user",
             onPressed: () => ref.read(hiddenUserServiceProvider.notifier).removeHiddenUser(userId)),
-          title: Align(alignment: Alignment.centerLeft, child: Text(data.username)),
+          title: Align(alignment: Alignment.centerLeft, child: Text(user ?? "")),
           leading: RoundImage(
                 imageCallback: ref.watch(userProfilePictureSmallByIdProvider(userId)),
                 size: 20.0,
                 child: Container()),
-            ),
-        error: (error, loading) => ListTile(title: Text("Ups, something went wrong")),
-        loading: () => Shimmer.fromColors(
-            baseColor: Colors.grey.shade300,
-            highlightColor: Colors.grey.shade100,
-            enabled: true,
-            child: ListTile()));
+            );
   }
 }

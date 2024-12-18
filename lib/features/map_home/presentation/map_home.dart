@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/circle_with_indicator.dart';
-import 'package:buff_lisa/features/map_home/presentation/closest_pin_card.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_panel.dart';
 import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_geojson/flutter_map_geojson.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -58,9 +61,6 @@ class _MapHomeState extends ConsumerState<MapHome>
   Widget build(BuildContext context) {
     super.build(context);
     final mapState = ref.watch(mapStatesProvider);
-    final closestMarkers = ref.watch(pinsSortedByDistanceProvider
-        .select((e) => e.value?.where((s) => s.value < 800)
-        .toList()));
     return LayoutBuilder(builder: (context, constraints) => Scaffold(
       appBar: null,
       body: SlidingUpPanel(
@@ -93,13 +93,6 @@ class _MapHomeState extends ConsumerState<MapHome>
                     ),
                     children: [
                       CustomTileLayer(),
-                      ValueListenableBuilder(
-                        valueListenable: mapZoom,
-                        builder: (context, double value, child) => value >= 16 ?
-                        PolylineLayer(
-                          polylines: mapZoom.value > 15 ? _getLinesToMarkers(closestMarkers): <Polyline>[]
-                        ) : SizedBox.shrink()
-                      ),
                       CurrentLocationLayer(),
                       MarkerClusterLayerWidget(
                         options: MarkerClusterLayerOptions(
@@ -109,17 +102,8 @@ class _MapHomeState extends ConsumerState<MapHome>
                           markers: mapState.markers,
                           centerMarkerOnClick: true,
                           polygonOptions: PolygonOptions(color: Colors.transparent),
-                          onMarkerTap: (marker) async {
-                            final m = marker as CustomMarkerWidget;
-                            ref
-                                .read(markerWindowStateProvider.notifier)
-                                .openPopup(m.pinDto);
-                            await _panelController.animatePanelToPosition(1.0, duration: const Duration(milliseconds: 200));
-                            _tabController.animateTo(1, duration: const Duration(milliseconds: 200));
-                          },
-                          builder: (context, markers) {
-                            return CircleWithIndicator(color: Theme.of(context).highlightColor, number: markers.length);
-                          },
+                          onMarkerTap: onMarkerTab,
+                          builder: (context, markers) => CircleWithIndicator(color: Theme.of(context).highlightColor, number: markers.length)
                         ),
                       ),
                       Padding(padding: EdgeInsets.only(bottom: 20), child: OsmCopyright())
@@ -157,6 +141,13 @@ class _MapHomeState extends ConsumerState<MapHome>
     ));
   }
 
+  Future<void> onMarkerTab(Marker marker) async {
+    final m = marker as CustomMarkerWidget;
+    ref.read(markerWindowStateProvider.notifier).openPopup(m.pinDto);
+    await _panelController.animatePanelToPosition(1.0, duration: const Duration(milliseconds: 200));
+    _tabController.animateTo(1, duration: const Duration(milliseconds: 200));
+  }
+
   Future<void> moveToCurrentPosition() async {
     if ((await Geolocator.checkPermission()) == LocationPermission.denied) {
       await Geolocator.requestPermission();
@@ -183,27 +174,6 @@ class _MapHomeState extends ConsumerState<MapHome>
 
     animateController.forward(from: 0.0);
   }
-
-  List<Polyline> _getLinesToMarkers(List<MapEntry<LocalPinDto, double>>? map) {
-    final userPosition = ref.watch(currentLocationProvider).value;
-    List<Polyline> lines = [];
-    if (userPosition == null) return lines;
-
-    for (MapEntry<LocalPinDto, double> marker in map ?? []) {
-      final line = Polyline(
-        points: [
-          LatLng(userPosition.latitude, userPosition.longitude),
-          LatLng(marker.key.latitude, marker.key.longitude)
-        ],
-        strokeWidth: 2,
-        pattern: StrokePattern.dotted(),
-        color: Colors.grey
-      );
-      lines.add(line);
-    }
-    return lines;
-  }
-
 
 
   @override

@@ -177,6 +177,7 @@ dependencies:
   connectivity_plus: ^6.1.0
   social_media_buttons: ^1.0.0
   in_app_review: ^2.0.10
+  flutter_map_geojson: ^1.0.8
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -195,6 +196,7 @@ flutter:
     - assets/image/
     - assets/achievements/
     - assets/icon/
+    - assets/geojson/
     - .env
     - .env.dev
   uses-material-design: true

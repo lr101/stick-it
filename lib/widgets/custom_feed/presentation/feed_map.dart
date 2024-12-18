@@ -5,15 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:openapi/api.dart';
 
+import '../../../data/service/global_data_service.dart';
 import '../../../features/map_home/presentation/osm_copyright.dart';
 import '../../custom_map_setup/presentation/custom_tile_layer.dart';
 import '../../custom_marker/presentation/custom_marker.dart';
+import '../data/like_service.dart';
 
 class FeedMap extends ConsumerStatefulWidget {
 
-  FeedMap({Key? key, required this.item}) : super(key: key);
-  LocalPinDto item;
+  const FeedMap({Key? super.key, required this.item});
+  final LocalPinDto item;
 
   @override
   ConsumerState<FeedMap> createState() => FeedMapState();
@@ -39,7 +42,9 @@ class FeedMapState extends ConsumerState<FeedMap> {
     final isExpanded = !ref.watch(feedMapStateProvider(widget.item.id));
     return Stack(
       children: [
-        AbsorbPointer(child: FlutterMap(
+        GestureDetector(
+            onDoubleTap: (isExpanded) ? like : () => (),
+            child: AbsorbPointer(child: FlutterMap(
           mapController: _mapController,
           options: MapOptions(
             minZoom: 2,
@@ -55,7 +60,7 @@ class FeedMapState extends ConsumerState<FeedMap> {
             MarkerLayer(markers: [CustomMarkerWidget(pinDto: widget.item),]),
             if(isExpanded) OsmCopyright()
           ],
-        ),),
+        ),)),
         if(isExpanded) Align(
             alignment: Alignment.bottomLeft,
             child: Padding(
@@ -91,5 +96,10 @@ class FeedMapState extends ConsumerState<FeedMap> {
 
   void zoomOut(LatLng center) {
     _mapController.move(center, _mapController.camera.zoom - 1);
+  }
+
+  void like() {
+    final userId = ref.watch(globalDataServiceProvider).userId!;
+    ref.read(likeServiceProvider.notifier).addLike(widget.item.id, widget.item.creatorId, CreateLikeDto(userId: userId, likeLocation: true));
   }
 }

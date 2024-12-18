@@ -20,22 +20,19 @@ import '../data/feed_map_state.dart';
 import '../data/image_service.dart';
 import '../data/like_service.dart';
 
-class FeedCard extends ConsumerStatefulWidget {
+class FeedCardDistance extends ConsumerStatefulWidget {
 
   final LocalPinDto item;
+  final double distance;
+  final dynamic Function(LatLng location, double zoom) onTab;
 
-  const FeedCard({Key? key, required this.item}) : super(key: key);
-
+  const FeedCardDistance({super.key, required this.distance, required this.onTab, required this.item});
 
   @override
-  FeedCardState createState() => FeedCardState();
+  FeedCardDistanceState createState() => FeedCardDistanceState();
 }
 
-class FeedCardState extends ConsumerState<FeedCard> {
-
-
-
-
+class FeedCardDistanceState extends ConsumerState<FeedCardDistance> {
 
   @override
   Widget build(BuildContext context) {
@@ -50,16 +47,16 @@ class FeedCardState extends ConsumerState<FeedCard> {
         maxHeight = maxWidth * 4 / 3;
       }
       return SizedBox(
-        height: maxHeight + 2,
-        width: maxWidth,
+        height: maxHeight,
+        width: maxWidth + 2,
         child:  Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      child: Row(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FeedTimelineHeader(pinDto: widget.item, height: maxHeight),
-          const SizedBox(width: 16),
-          FeedCardImage(item: widget.item, maxHeight: maxHeight, maxWidth: maxWidth - 55)
+          FeedTimelineHeader(pinDto: widget.item, height: maxWidth, isRotated: true,),
+          const SizedBox(height: 16),
+          FeedCardImage(item: widget.item, maxHeight: maxHeight - 70, maxWidth: maxWidth - 20, rotateHeader: true, distance: widget.distance, onTab: widget.onTab,)
         ],
       ),
     ));});
