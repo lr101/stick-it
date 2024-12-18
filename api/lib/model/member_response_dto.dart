@@ -14,25 +14,63 @@ class MemberResponseDto {
   /// Returns a new [MemberResponseDto] instance.
   MemberResponseDto({
     required this.userId,
+    required this.username,
+    required this.ranking,
+    this.profileImageSmall,
+    required this.selectedBatch,
   });
 
   String userId;
 
+  String username;
+
+  int ranking;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? profileImageSmall;
+
+  int? selectedBatch;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is MemberResponseDto &&
-    other.userId == userId;
+    other.userId == userId &&
+    other.username == username &&
+    other.ranking == ranking &&
+    other.profileImageSmall == profileImageSmall &&
+    other.selectedBatch == selectedBatch;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (userId.hashCode);
+    (userId.hashCode) +
+    (username.hashCode) +
+    (ranking.hashCode) +
+    (profileImageSmall == null ? 0 : profileImageSmall!.hashCode) +
+    (selectedBatch == null ? 0 : selectedBatch!.hashCode);
 
   @override
-  String toString() => 'MemberResponseDto[userId=$userId]';
+  String toString() => 'MemberResponseDto[userId=$userId, username=$username, ranking=$ranking, profileImageSmall=$profileImageSmall, selectedBatch=$selectedBatch]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'userId'] = this.userId;
+      json[r'username'] = this.username;
+      json[r'ranking'] = this.ranking;
+    if (this.profileImageSmall != null) {
+      json[r'profile_image_small'] = this.profileImageSmall;
+    } else {
+      json[r'profile_image_small'] = null;
+    }
+    if (this.selectedBatch != null) {
+      json[r'selectedBatch'] = this.selectedBatch;
+    } else {
+      json[r'selectedBatch'] = null;
+    }
     return json;
   }
 
@@ -56,6 +94,10 @@ class MemberResponseDto {
 
       return MemberResponseDto(
         userId: mapValueOfType<String>(json, r'userId')!,
+        username: mapValueOfType<String>(json, r'username')!,
+        ranking: mapValueOfType<int>(json, r'ranking')!,
+        profileImageSmall: mapValueOfType<String>(json, r'profile_image_small'),
+        selectedBatch: mapValueOfType<int>(json, r'selectedBatch'),
       );
     }
     return null;
@@ -104,6 +146,9 @@ class MemberResponseDto {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'userId',
+    'username',
+    'ranking',
+    'selectedBatch',
   };
 }
 

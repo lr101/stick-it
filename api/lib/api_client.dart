@@ -190,10 +190,14 @@ class ApiClient {
           return CreateLikeDto.fromJson(value);
         case 'GroupDto':
           return GroupDto.fromJson(value);
+        case 'GroupRankingDtoInner':
+          return GroupRankingDtoInner.fromJson(value);
         case 'GroupsSyncDto':
           return GroupsSyncDto.fromJson(value);
         case 'InfoDto':
           return InfoDto.fromJson(value);
+        case 'MapInfoDto':
+          return MapInfoDto.fromJson(value);
         case 'MemberResponseDto':
           return MemberResponseDto.fromJson(value);
         case 'PinLikeDto':
@@ -204,8 +208,6 @@ class ApiClient {
           return PinWithOptionalImageDto.fromJson(value);
         case 'PinsSyncDto':
           return PinsSyncDto.fromJson(value);
-        case 'RankingResponseDto':
-          return RankingResponseDto.fromJson(value);
         case 'RefreshTokenRequestDto':
           return RefreshTokenRequestDto.fromJson(value);
         case 'ReportDto':
@@ -224,6 +226,8 @@ class ApiClient {
           return UserLikesDto.fromJson(value);
         case 'UserLoginRequest':
           return UserLoginRequest.fromJson(value);
+        case 'UserRankingDtoInner':
+          return UserRankingDtoInner.fromJson(value);
         case 'UserRequestDto':
           return UserRequestDto.fromJson(value);
         case 'UserUpdateDto':
