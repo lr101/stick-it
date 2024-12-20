@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/ranking_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
+import 'package:buff_lisa/features/ranking/presentation/ranking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
@@ -11,12 +12,12 @@ import 'package:shimmer/shimmer.dart';
 import '../../../util/routing/routing.dart';
 import '../../../util/types/level.dart';
 
-class LikeCounter extends ConsumerStatefulWidget {
+class TopGroupsPreview extends ConsumerStatefulWidget {
   @override
-  ConsumerState<LikeCounter> createState() => _LikeCounterState();
+  ConsumerState<TopGroupsPreview> createState() => _TopGroupPreviewState();
 }
 
-class _LikeCounterState extends ConsumerState<LikeCounter> {
+class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
   @override
   Widget build(BuildContext context) {
     final district = ref.watch(districtServiceProvider);
@@ -25,7 +26,7 @@ class _LikeCounterState extends ConsumerState<LikeCounter> {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: GestureDetector(
-        onTap: () => Routing.to(context, const AchievementsPage()),
+        onTap: () => Routing.to(context, const Ranking()),
         child: Container(
           width: MediaQuery.of(context).size.width * 0.4, // Explicitly set the width
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),

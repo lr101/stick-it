@@ -178,6 +178,7 @@ dependencies:
   social_media_buttons: ^1.0.0
   in_app_review: ^2.0.10
   flutter_map_geojson: ^1.0.8
+  choice: ^2.3.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

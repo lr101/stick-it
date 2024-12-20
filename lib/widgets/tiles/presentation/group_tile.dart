@@ -13,12 +13,14 @@ class GroupTile extends ConsumerWidget {
   final LocalGroupDto groupDto;
   final VoidCallback? onTap;
   final bool userCachedImage;
+  final Widget? tailing;
 
-  GroupTile({super.key, required this.groupDto, this.onTap, this.userCachedImage = false});
+  GroupTile({super.key, required this.groupDto, this.onTap, this.userCachedImage = false, this.tailing});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final listTile = ListTile(
+      trailing: tailing,
       title: Column(
         children: [
           Align(alignment: Alignment.centerLeft,child: Text(groupDto.name)),
