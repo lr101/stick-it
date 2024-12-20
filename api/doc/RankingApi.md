@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 
 # **getGeoJson**
-> Object getGeoJson(gid2)
+> List<String> getGeoJson(gid2)
 
 
 
@@ -51,7 +51,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Object**](Object.md)
+**List<String>**
 
 ### Authorization
 

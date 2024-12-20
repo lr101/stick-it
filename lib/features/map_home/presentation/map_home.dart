@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:buff_lisa/data/service/geojson_service.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
@@ -82,6 +83,7 @@ class _MapHomeState extends ConsumerState<MapHome>
                   FlutterMap(
                     mapController: _controller,
                     options: MapOptions(
+                      onLongPress: onMapEvent,
                       minZoom: 2,
                       maxZoom: 18,
                       initialZoom: 5,
@@ -93,6 +95,7 @@ class _MapHomeState extends ConsumerState<MapHome>
                     ),
                     children: [
                       CustomTileLayer(),
+                      PolygonLayer(polygons: ref.watch(geojsonServiceProvider).whenOrNull(data: (data) => data) ?? <Polygon>[]),
                       CurrentLocationLayer(),
                       MarkerClusterLayerWidget(
                         options: MarkerClusterLayerOptions(
@@ -171,8 +174,17 @@ class _MapHomeState extends ConsumerState<MapHome>
           LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
           zoomTween.evaluate(animation));
     });
+    animateController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        ref.read(districtServiceProvider.notifier).updateLatLong(latTween.evaluate(animation), lngTween.evaluate(animation));
+      }
+    });
 
     animateController.forward(from: 0.0);
+  }
+
+  void onMapEvent(TapPosition event, LatLng pos) {
+    ref.read(districtServiceProvider.notifier).updateLatLong(pos.latitude, pos.longitude);
   }
 
 

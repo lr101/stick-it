@@ -59,7 +59,7 @@ class RankingApi {
   ///
   /// * [String] gid2:
   ///   County ID. Only one allowed
-  Future<Object?> getGeoJson({ String? gid2, }) async {
+  Future<List<String>?> getGeoJson({ String? gid2, }) async {
     final response = await getGeoJsonWithHttpInfo( gid2: gid2, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -68,8 +68,11 @@ class RankingApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Object',) as Object;
-    
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<String>') as List)
+        .cast<String>()
+        .toList(growable: false);
+
     }
     return null;
   }
