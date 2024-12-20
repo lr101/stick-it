@@ -9,8 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../data/service/group_image_service.dart';
 import '../../../util/routing/routing.dart';
 import '../../../util/types/level.dart';
+import '../../../widgets/round_image/presentation/round_image.dart';
 
 class TopGroupsPreview extends ConsumerStatefulWidget {
   @override
@@ -63,6 +65,8 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
                       children: [
                         const Icon(Icons.emoji_events, color: Colors.yellowAccent, size: 20,),
                         const SizedBox(width: 5,),
+                        RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(data[0].groupInfoDto!.id)), size: 7.5),
+                        const SizedBox(width: 5,),
                         Expanded(
                           child: Text(
                             "${data[0].groupInfoDto!.name}",
@@ -78,6 +82,8 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
                       children: [
                         const Icon(Icons.emoji_events, color: Colors.blueGrey, size: 20,),
                         const SizedBox(width: 5,),
+                        RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(data[1].groupInfoDto!.id)), size: 7.5),
+                        const SizedBox(width: 5,),
                         Expanded(
                           child: Text(
                             data[1].groupInfoDto!.name,
@@ -92,6 +98,8 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
                     Row(
                       children: [
                         const Icon(Icons.emoji_events, color: Colors.brown, size: 20,),
+                        const SizedBox(width: 5,),
+                        RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(data[2].groupInfoDto!.id)), size: 7.5),
                         const SizedBox(width: 5,),
                         Expanded(
                           child: Text(
