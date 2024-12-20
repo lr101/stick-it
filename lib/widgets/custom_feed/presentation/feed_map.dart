@@ -40,10 +40,12 @@ class FeedMapState extends ConsumerState<FeedMap> {
   @override
   Widget build(BuildContext context) {
     final isExpanded = !ref.watch(feedMapStateProvider(widget.item.id));
+    final switchFun = ref.read(feedMapStateProvider(widget.item.id).notifier).update;
     return Stack(
       children: [
         GestureDetector(
-            onDoubleTap: (isExpanded) ? like : () => (),
+            onTap: isExpanded ? null : switchFun,
+            onDoubleTap: (isExpanded) ? like : null,
             child: AbsorbPointer(child: FlutterMap(
           mapController: _mapController,
           options: MapOptions(

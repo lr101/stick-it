@@ -17,7 +17,7 @@ class MemberResponseDto {
     required this.username,
     required this.ranking,
     this.profileImageSmall,
-    required this.selectedBatch,
+    this.selectedBatch,
   });
 
   String userId;
@@ -148,7 +148,6 @@ class MemberResponseDto {
     'userId',
     'username',
     'ranking',
-    'selectedBatch',
   };
 }
 

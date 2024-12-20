@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **username** | **String** |  | 
 **ranking** | **int** |  | 
 **profileImageSmall** | **String** |  | [optional] 
-**selectedBatch** | **int** |  | 
+**selectedBatch** | **int** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

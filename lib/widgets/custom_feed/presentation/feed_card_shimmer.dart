@@ -1,4 +1,3 @@
-import 'package:buff_lisa/widgets/pin_header/presentation/pin_header_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 

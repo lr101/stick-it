@@ -93,9 +93,13 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                             child: Row(
                               children: [
                                 const SizedBox(width: 5,),
-                                RoundImage(imageCallback: ref.watch(
-                                    userProfilePictureSmallByIdProvider(
-                                        widget.item.creatorId)), size: 15,),
+                                ClickableUser(
+                                  userId: widget.item.creatorId,
+                                  child: RoundImage(
+                                    imageCallback: ref.watch(
+                                      userProfilePictureSmallByIdProvider(
+                                          widget.item.creatorId)), size: 15,),
+                                ),
                                 const SizedBox(width: 5,),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -105,13 +109,13 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                                       children: [
                                         ClickableUser(
                                             userId: widget.item.creatorId,
-                                            username: username ?? "",
-                                            textStyle: TextStyle(
+                                            child: Text(username ?? "",
+                                            style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
                                               fontSize: selectedBatch != null
                                                   ? 12
-                                                  : 14,)),
+                                                  : 14,))),
                                         if (widget.distance !=
                                             null) getDistance(selectedBatch),
                                         if (widget.distance ==
@@ -138,15 +142,10 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               // Match the borderRadius of the decoration
-                              child: GestureDetector(
-                                onTap: () => ref.read(
-                                    feedMapStateProvider(widget.item.id)
-                                        .notifier).update(),
-                                child:
-                                ref.watch(feedMapStateProvider(widget.item.id))
+                              child: ref.watch(feedMapStateProvider(widget.item.id))
                                     ? feedMap
                                     : getImage(imageData),
-                              ),)))
+                              ),))
                   ],
                 ),
               ],
@@ -157,12 +156,12 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
   }
 
   Widget getImage(PinImageInfo image) {
+    final switchFun = ref.read(feedMapStateProvider(widget.item.id).notifier).update;
     final isBig = ref.watch(feedMapStateProvider(widget.item.id));
     return GestureDetector(
-        onDoubleTap: () => isBig ? likeImage(widget.item.creatorId) : () => (),
-        onTap: () =>
-        isBig && widget.onTab != null ? widget.onTab!(
-            LatLng(widget.item.latitude, widget.item.longitude), 18) : () => (),
+        onDoubleTap: isBig ? () => likeImage(widget.item.creatorId) : null,
+        onTap: isBig && widget.onTab != null ? () => widget.onTab!(
+            LatLng(widget.item.latitude, widget.item.longitude), 18) : !isBig ? switchFun : null ,
         child: FadeInImage(
           fadeInDuration: const Duration(milliseconds: 100),
           fit: BoxFit.cover,

@@ -27,13 +27,16 @@ class FeedTimelineHeader extends ConsumerWidget {
               height: 100,
               color: Colors.grey,
             ),
-            RotatedBox(quarterTurns: isRotated ? 1 : 0, child: ClickableGroup(groupId: pinDto.groupId, child: RoundImage(
-                size: 15,
-                imageCallback: ref.watch(groupProfilePictureByIdProvider(pinDto.groupId))
+            RotatedBox(
+                quarterTurns: isRotated ? 1 : 0,
+                child: ClickableGroup(
+                  groupId: pinDto.groupId, child: RoundImage(
+                    size: 15,
+                    imageCallback: ref.watch(groupProfilePictureByIdProvider(pinDto.groupId))
             ),)),
             Container(
               width: 2,
-              height: height  - 130 + 2,
+              height: height  - 130,
               color: Colors.grey,
             ),
           ],
@@ -51,10 +54,16 @@ class FeedTimelineHeader extends ConsumerWidget {
                     )
                 ),
                 SizedBox(height: 40,),
-                Align(
+                  Align(
                     alignment: Alignment.topLeft,
-                    child: RotatedBox(quarterTurns: 1, child: Text(ref.watch(groupByIdProvider(pinDto.groupId).select((e) => e.value?.name)) ?? "", style: TextStyle(color: Colors.grey, fontSize: 12),),)
-                )
+                    child: ClickableGroup(
+                      groupId: pinDto.groupId,
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: Text(ref.watch(groupByIdProvider(pinDto.groupId).select((e) => e.value?.name)) ?? "",
+                          style: TextStyle(color: Colors.grey, fontSize: 12),),
+                      )
+                ))
               ],
             )
           ],
