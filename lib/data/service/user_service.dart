@@ -190,7 +190,6 @@ class UserService extends _$UserService {
       likePhotographyCount: user.likes!.likePhotographyCount + _likeUpdate(likeUpdate.likePhotography)
     );
     state.value![userId] = user.fromCurrentWithLikes(likes);
-    ref.notifyListeners();
   }
 
   int _likeUpdate(bool? like) {
@@ -223,4 +222,10 @@ Future<UserLikesDto> userLikesById(Ref ref, String userId) async {
     return await ref.read(userServiceProvider.notifier).fetchUserLikes(userId);
   }
 }
+
+@riverpod
+String? userByIdUsername(Ref ref, String userId) {
+  return ref.watch(userByIdProvider(userId).select((e) => e.value?.username));
+}
+
 

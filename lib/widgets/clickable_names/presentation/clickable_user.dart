@@ -1,22 +1,24 @@
 
 import 'package:buff_lisa/features/profile/presentation/other_user_profile.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/service/global_data_service.dart';
 import '../../../util/routing/routing.dart';
 
-class ClickableUser extends StatelessWidget {
+class ClickableUser extends ConsumerWidget {
 
   final String userId;
-  final String username;
-  final TextStyle? textStyle;
+  final Widget child;
 
-  const ClickableUser({super.key, required this.userId, required this.username, this.textStyle});
+  const ClickableUser({super.key, required this.userId, required this.child});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isCurrentUser = ref.watch(globalDataServiceProvider.select((e) => e.userId == userId));
     return GestureDetector(
-      onTap: () => Routing.to(context, OtherUserProfile(userId: userId)),
-      child: Text(username, style: textStyle,),
+      onTap: () => isCurrentUser ? null : Routing.to(context, OtherUserProfile(userId: userId)),
+      child: child,
     );
   }
 

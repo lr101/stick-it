@@ -37,8 +37,11 @@ class UserProfile extends ConsumerWidget {
       ]),
       actions: [
         IconButton(
+            onPressed: () => Routing.to(context, AchievementsPage()),
+            icon: Icon(Icons.emoji_events)),
+        IconButton(
             onPressed: () => Routing.to(context, Settings()),
-            icon: Icon(Icons.settings))
+            icon: Icon(Icons.settings)),
       ],
       hasBackButton: false,
       profileQuickViewBoxes: Column(

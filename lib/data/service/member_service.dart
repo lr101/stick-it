@@ -23,7 +23,7 @@ class MemberService extends _$MemberService {
       this.state = AsyncData(localMembers);
     }
     final memberApi = ref.watch(memberApiProvider);
-    final members = await memberApi.getGroupRanking(groupId);
+    final members = await memberApi.getGroupMembers(groupId);
     if (isUserGroup) {
       ref.watch(groupRepositoryProvider).overrideMember(members!, groupId);
     }

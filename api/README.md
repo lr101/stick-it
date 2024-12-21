@@ -87,7 +87,6 @@ Class | Method | HTTP request | Description
 *LikesApi* | [**getUserLikes**](doc//LikesApi.md#getuserlikes) | **GET** /api/v2/users/{userId}/likes | Get user's likes
 *MembersApi* | [**deleteMemberFromGroup**](doc//MembersApi.md#deletememberfromgroup) | **DELETE** /api/v2/groups/{groupId}/members | leave group or delete group when the user is the last group member
 *MembersApi* | [**getGroupMembers**](doc//MembersApi.md#getgroupmembers) | **GET** /api/v2/groups/{groupId}/members | Get members of a group by ID
-*MembersApi* | [**getGroupRanking**](doc//MembersApi.md#getgroupranking) | **GET** /api/v2/groups/{groupId}/members/ranking | Get ranking of a group by ID
 *MembersApi* | [**joinGroup**](doc//MembersApi.md#joingroup) | **POST** /api/v2/groups/{groupId}/members | Add a member to a group by ID
 *PinsApi* | [**createPin**](doc//PinsApi.md#createpin) | **POST** /api/v2/pins | Create a new pin
 *PinsApi* | [**deletePin**](doc//PinsApi.md#deletepin) | **DELETE** /api/v2/pins/{pinId} | Delete a pin by ID
@@ -95,6 +94,10 @@ Class | Method | HTTP request | Description
 *PinsApi* | [**getPinImage**](doc//PinsApi.md#getpinimage) | **GET** /api/v2/pins/{pinId}/image | Get the image associated with a pin by ID
 *PinsApi* | [**getPinImagesByIds**](doc//PinsApi.md#getpinimagesbyids) | **GET** /api/v2/pins | Get images by IDs
 *PublicApi* | [**getServerInfo**](doc//PublicApi.md#getserverinfo) | **GET** /api/v2/public/infos | Get public server statistics
+*RankingApi* | [**getGeoJson**](doc//RankingApi.md#getgeojson) | **GET** /api/v2/map/geojson | 
+*RankingApi* | [**getMapInfo**](doc//RankingApi.md#getmapinfo) | **GET** /api/v2/map | 
+*RankingApi* | [**groupRanking**](doc//RankingApi.md#groupranking) | **GET** /api/v2/ranking/group | 
+*RankingApi* | [**userRanking**](doc//RankingApi.md#userranking) | **GET** /api/v2/ranking/user | 
 *ReportApi* | [**createReport**](doc//ReportApi.md#createreport) | **POST** /api/v2/report | Report content
 *UsersApi* | [**claimUserAchievement**](doc//UsersApi.md#claimuserachievement) | **POST** /api/v2/users/{userId}/achievements/{achievementId} | Claim an achievement
 *UsersApi* | [**deleteUser**](doc//UsersApi.md#deleteuser) | **DELETE** /api/v2/users/{userId} | Delete a user by userId
@@ -112,14 +115,15 @@ Class | Method | HTTP request | Description
  - [CreateGroupDto](doc//CreateGroupDto.md)
  - [CreateLikeDto](doc//CreateLikeDto.md)
  - [GroupDto](doc//GroupDto.md)
+ - [GroupRankingDtoInner](doc//GroupRankingDtoInner.md)
  - [GroupsSyncDto](doc//GroupsSyncDto.md)
  - [InfoDto](doc//InfoDto.md)
+ - [MapInfoDto](doc//MapInfoDto.md)
  - [MemberResponseDto](doc//MemberResponseDto.md)
  - [PinLikeDto](doc//PinLikeDto.md)
  - [PinRequestDto](doc//PinRequestDto.md)
  - [PinWithOptionalImageDto](doc//PinWithOptionalImageDto.md)
  - [PinsSyncDto](doc//PinsSyncDto.md)
- - [RankingResponseDto](doc//RankingResponseDto.md)
  - [RefreshTokenRequestDto](doc//RefreshTokenRequestDto.md)
  - [ReportDto](doc//ReportDto.md)
  - [Status](doc//Status.md)
@@ -129,6 +133,7 @@ Class | Method | HTTP request | Description
  - [UserInfoDto](doc//UserInfoDto.md)
  - [UserLikesDto](doc//UserLikesDto.md)
  - [UserLoginRequest](doc//UserLoginRequest.md)
+ - [UserRankingDtoInner](doc//UserRankingDtoInner.md)
  - [UserRequestDto](doc//UserRequestDto.md)
  - [UserUpdateDto](doc//UserUpdateDto.md)
  - [UserUpdateResponseDto](doc//UserUpdateResponseDto.md)

@@ -118,6 +118,22 @@ final likeApiProvider = Provider<LikesApi>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LikeApiRef = ProviderRef<LikesApi>;
+String _$rankingApiHash() => r'275731b01ad88a4c8263f0a74cdc0f67effe9b40';
+
+/// See also [rankingApi].
+@ProviderFor(rankingApi)
+final rankingApiProvider = Provider<RankingApi>.internal(
+  rankingApi,
+  name: r'rankingApiProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$rankingApiHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef RankingApiRef = ProviderRef<RankingApi>;
 String _$openApiConfigHash() => r'22f00836fe88c13275acea26874f9d17a99da80d';
 
 /// See also [OpenApiConfig].

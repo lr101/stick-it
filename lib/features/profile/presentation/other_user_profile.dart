@@ -22,14 +22,14 @@ class OtherUserProfile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userPins = ref.watch(otherUserPinServiceProvider(userId));
-    final username = ref.watch(userByIdProvider(userId).select((e) => e.value?.username ?? ""));
+    final username = ref.watch(userByIdUsernameProvider(userId));
     final description = ref.watch(userByIdProvider(userId).select((e) => e.value?.description));
     final selectedBatch = ref.watch(userByIdProvider(userId).select((e) => e.value?.selectedBatch));
     final profileImage = ref.watch(profilePictureByIdProvider(userId));
     return CustomAvatarScaffold(
       avatar: AsyncData(profileImage.value),
       title: Row(children: [
-          Text(username),
+          Text(username ?? ""),
           SizedBox(width: 10,),
           if (selectedBatch != null) Batch(batchId: selectedBatch, fontSize: 10,)
       ]),

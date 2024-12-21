@@ -81,7 +81,7 @@ class GroupRepository {
   }
 
   Future<void> overrideMember(
-      List<RankingResponseDto> member, String groupId) async {
+      List<MemberResponseDto> member, String groupId) async {
     await _db.transaction(() async {
       await (_db.delete(_db.memberEntity)..where((d) => d.groupId.equals(groupId))).go();
       await (_db.batch((batch) => batch.insertAll(

@@ -1,13 +1,18 @@
+import 'dart:convert';
+
+import 'package:buff_lisa/data/service/geojson_service.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
-import 'package:buff_lisa/features/map_home/presentation/closest_pin_card.dart';
+import 'package:buff_lisa/features/map_home/presentation/circle_with_indicator.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_panel.dart';
 import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_geojson/flutter_map_geojson.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,8 +23,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../../data/dto/pin_dto.dart';
-import '../../../data/service/pin_image_service.dart';
-import '../../../data/service/user_group_service.dart';
 import '../data/marker_window_state.dart';
 import '../../../widgets/custom_marker/presentation/custom_marker.dart';
 
@@ -37,6 +40,7 @@ class _MapHomeState extends ConsumerState<MapHome>
   ValueNotifier<double> panelPosition = ValueNotifier<double>(0);
   PanelController _panelController = PanelController();
   late final TabController _tabController;
+  ValueNotifier<double> mapZoom = ValueNotifier<double>(5);
 
   @override
   void initState() {
@@ -79,41 +83,30 @@ class _MapHomeState extends ConsumerState<MapHome>
                   FlutterMap(
                     mapController: _controller,
                     options: MapOptions(
+                      onLongPress: onMapEvent,
                       minZoom: 2,
                       maxZoom: 18,
                       initialZoom: 5,
                       keepAlive: true,
                       initialCenter: ref.watch(lastKnownLocationProvider),
+                      onPositionChanged: (position, hasGesture) => mapZoom.value = position.zoom,
                       interactionOptions: InteractionOptions(
                           flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag),
                     ),
                     children: [
                       CustomTileLayer(),
+                      PolygonLayer(polygons: ref.watch(geojsonServiceProvider).whenOrNull(data: (data) => data) ?? <Polygon>[]),
                       CurrentLocationLayer(),
                       MarkerClusterLayerWidget(
                         options: MarkerClusterLayerOptions(
-                          disableClusteringAtZoom: 17,
-                          maxClusterRadius: 45,
-                          size: const Size(40, 40),
+                          disableClusteringAtZoom: 16,
+                          maxClusterRadius: 80,
+                          size: const Size(80, 80),
                           markers: mapState.markers,
                           centerMarkerOnClick: true,
                           polygonOptions: PolygonOptions(color: Colors.transparent),
-                          onMarkerTap: (marker) async {
-                            final m = marker as CustomMarkerProvider;
-                            ref
-                                .read(markerWindowStateProvider.notifier)
-                                .openPopup(m.pinDto);
-                            await _panelController.animatePanelToPosition(1.0, duration: const Duration(milliseconds: 200));
-                            _tabController.animateTo(1, duration: const Duration(milliseconds: 200));
-                          },
-                          builder: (context, markers) {
-                            return FloatingActionButton(
-                              heroTag: markers.first.key,
-                              key: markers.first.key,
-                              onPressed: null,
-                              child: Text(markers.length.toString()),
-                            );
-                          },
+                          onMarkerTap: onMarkerTab,
+                          builder: (context, markers) => CircleWithIndicator(color: Theme.of(context).highlightColor, number: markers.length)
                         ),
                       ),
                       Padding(padding: EdgeInsets.only(bottom: 20), child: OsmCopyright())
@@ -121,7 +114,11 @@ class _MapHomeState extends ConsumerState<MapHome>
                   )
               ),],
             ),
-            panel: MapPanel(moveToCurrentPosition: moveToCurrentPosition, tabController: _tabController, setLocation: setLocation)
+            panel: MapPanel(
+                moveToCurrentPosition: moveToCurrentPosition,
+                tabController: _tabController,
+                setLocation: setLocation
+            )
         ),
       floatingActionButton: Align(
           alignment: Alignment.bottomRight,
@@ -147,6 +144,13 @@ class _MapHomeState extends ConsumerState<MapHome>
     ));
   }
 
+  Future<void> onMarkerTab(Marker marker) async {
+    final m = marker as CustomMarkerWidget;
+    ref.read(markerWindowStateProvider.notifier).openPopup(m.pinDto);
+    await _panelController.animatePanelToPosition(1.0, duration: const Duration(milliseconds: 200));
+    _tabController.animateTo(1, duration: const Duration(milliseconds: 200));
+  }
+
   Future<void> moveToCurrentPosition() async {
     if ((await Geolocator.checkPermission()) == LocationPermission.denied) {
       await Geolocator.requestPermission();
@@ -170,10 +174,18 @@ class _MapHomeState extends ConsumerState<MapHome>
           LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
           zoomTween.evaluate(animation));
     });
+    animateController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        ref.read(districtServiceProvider.notifier).updateLatLong(latTween.evaluate(animation), lngTween.evaluate(animation));
+      }
+    });
 
     animateController.forward(from: 0.0);
   }
 
+  void onMapEvent(TapPosition event, LatLng pos) {
+    ref.read(districtServiceProvider.notifier).updateLatLong(pos.latitude, pos.longitude);
+  }
 
 
   @override

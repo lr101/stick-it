@@ -145,10 +145,10 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
           }
         }));
     if (ref.read(appReviewStateProvider)) {
+      ref.read(appReviewStateProvider.notifier).updateLastReviewDate();
       Future(() async {
         final InAppReview inAppReview = InAppReview.instance;
         if (await inAppReview.isAvailable()) {
-          ref.read(appReviewStateProvider.notifier).updateLastReviewDate();
           inAppReview.requestReview();
         }
       });

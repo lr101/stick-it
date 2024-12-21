@@ -19,7 +19,7 @@ class NoUserGroupOverview extends ConsumerWidget {
     return groupAsync.when(
       data: (data) {
         if (data.visibility == 0) {
-          return GroupOverview(group: data, floatingActionButton: GroupJoinActionButton(groupDto: data, key: Key("group-join-${groupId}"),));
+          return GroupOverview(groupId: data.groupId, floatingActionButton: GroupJoinActionButton(groupDto: data, key: Key("group-join-${groupId}"),));
         } else {
           return CustomAvatarScaffold(
               floatingActionButton: GroupJoinActionButton(groupDto: data, key: Key("no-user-group-join-${groupId}")),
