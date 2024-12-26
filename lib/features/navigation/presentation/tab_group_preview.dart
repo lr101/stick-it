@@ -38,7 +38,7 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
           ),
           child: groupRanking.whenOrNull(
             data: (data) {
-              if (data == null) return const SizedBox.shrink();
+              if (data == null) return null;
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
