@@ -1,4 +1,5 @@
 
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_distance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +11,6 @@ import '../../../data/dto/pin_dto.dart';
 import '../../../data/service/pin_service.dart';
 import '../../../widgets/custom_feed/presentation/feed_card.dart';
 import '../data/marker_window_state.dart';
-import 'closest_pin_card.dart';
 
 class MapPanel extends ConsumerStatefulWidget {
   const MapPanel({super.key, required this.moveToCurrentPosition, required this.tabController, required this.setLocation});
@@ -89,9 +89,10 @@ class _MapPanelState extends ConsumerState<MapPanel> {
               pagingController: _pagingController,
               scrollDirection: Axis.horizontal,
               builderDelegate: PagedChildBuilderDelegate(
-                itemBuilder: (context, item, index) => ClosestPinCard(
-                  item: item,
-                  moveToLatLng: widget.setLocation,
+                itemBuilder: (context, item, index) => FeedCardDistance(
+                  item: item.key,
+                  distance: item.value,
+                  onTab: widget.setLocation,
                 ),
               )),
           windowsState == null

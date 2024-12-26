@@ -34,13 +34,14 @@ class ShowWebWidgetState extends ConsumerState<ShowWebWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("WebView"),),
+      appBar: AppBar(title: Text(widget.title),),
         body: Column(children: [
           Expanded(child: WebViewWidget(controller: ini())),
         ]),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(10),
         child: FloatingActionButton(
+          heroTag: widget.key.toString(),
             onPressed: copyToClip, child: const Icon(Icons.copy)),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,

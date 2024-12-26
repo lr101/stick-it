@@ -19,12 +19,12 @@ class NoUserGroupOverview extends ConsumerWidget {
     return groupAsync.when(
       data: (data) {
         if (data.visibility == 0) {
-          return GroupOverview(group: data, floatingActionButton: GroupJoinActionButton(groupDto: data));
+          return GroupOverview(groupId: data.groupId, floatingActionButton: GroupJoinActionButton(groupDto: data, key: Key("group-join-${groupId}"),));
         } else {
           return CustomAvatarScaffold(
-              floatingActionButton: GroupJoinActionButton(groupDto: data),
+              floatingActionButton: GroupJoinActionButton(groupDto: data, key: Key("no-user-group-join-${groupId}")),
               avatar: ref.watch(groupProfilePictureByIdProvider(groupId)),
-              title: data.name,
+              title: Text(data.name),
             body: Center(child: Icon(Icons.lock),),
           );
         }

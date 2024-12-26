@@ -182,16 +182,22 @@ class ApiClient {
           return valueString == 'true' || valueString == '1';
         case 'DateTime':
           return value is DateTime ? value : DateTime.tryParse(value);
+        case 'AdminMailDto':
+          return AdminMailDto.fromJson(value);
         case 'CreateGroupDto':
           return CreateGroupDto.fromJson(value);
         case 'CreateLikeDto':
           return CreateLikeDto.fromJson(value);
         case 'GroupDto':
           return GroupDto.fromJson(value);
+        case 'GroupRankingDtoInner':
+          return GroupRankingDtoInner.fromJson(value);
         case 'GroupsSyncDto':
           return GroupsSyncDto.fromJson(value);
         case 'InfoDto':
           return InfoDto.fromJson(value);
+        case 'MapInfoDto':
+          return MapInfoDto.fromJson(value);
         case 'MemberResponseDto':
           return MemberResponseDto.fromJson(value);
         case 'PinLikeDto':
@@ -202,8 +208,6 @@ class ApiClient {
           return PinWithOptionalImageDto.fromJson(value);
         case 'PinsSyncDto':
           return PinsSyncDto.fromJson(value);
-        case 'RankingResponseDto':
-          return RankingResponseDto.fromJson(value);
         case 'RefreshTokenRequestDto':
           return RefreshTokenRequestDto.fromJson(value);
         case 'ReportDto':
@@ -214,18 +218,24 @@ class ApiClient {
           return TokenResponseDto.fromJson(value);
         case 'UpdateGroupDto':
           return UpdateGroupDto.fromJson(value);
+        case 'UserAchievementsDtoInner':
+          return UserAchievementsDtoInner.fromJson(value);
         case 'UserInfoDto':
           return UserInfoDto.fromJson(value);
         case 'UserLikesDto':
           return UserLikesDto.fromJson(value);
         case 'UserLoginRequest':
           return UserLoginRequest.fromJson(value);
+        case 'UserRankingDtoInner':
+          return UserRankingDtoInner.fromJson(value);
         case 'UserRequestDto':
           return UserRequestDto.fromJson(value);
         case 'UserUpdateDto':
           return UserUpdateDto.fromJson(value);
         case 'UserUpdateResponseDto':
           return UserUpdateResponseDto.fromJson(value);
+        case 'UserXpDto':
+          return UserXpDto.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

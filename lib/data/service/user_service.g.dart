@@ -287,7 +287,137 @@ class _UserLikesByIdProviderElement
   String get userId => (origin as UserLikesByIdProvider).userId;
 }
 
-String _$userServiceHash() => r'2b791811ba4103600a269049fdc4a0de759e4009';
+String _$userByIdUsernameHash() => r'08980e0ba2c1456fe9dda1d6821d37bdf8ad1567';
+
+/// See also [userByIdUsername].
+@ProviderFor(userByIdUsername)
+const userByIdUsernameProvider = UserByIdUsernameFamily();
+
+/// See also [userByIdUsername].
+class UserByIdUsernameFamily extends Family<String?> {
+  /// See also [userByIdUsername].
+  const UserByIdUsernameFamily();
+
+  /// See also [userByIdUsername].
+  UserByIdUsernameProvider call(
+    String userId,
+  ) {
+    return UserByIdUsernameProvider(
+      userId,
+    );
+  }
+
+  @override
+  UserByIdUsernameProvider getProviderOverride(
+    covariant UserByIdUsernameProvider provider,
+  ) {
+    return call(
+      provider.userId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'userByIdUsernameProvider';
+}
+
+/// See also [userByIdUsername].
+class UserByIdUsernameProvider extends AutoDisposeProvider<String?> {
+  /// See also [userByIdUsername].
+  UserByIdUsernameProvider(
+    String userId,
+  ) : this._internal(
+          (ref) => userByIdUsername(
+            ref as UserByIdUsernameRef,
+            userId,
+          ),
+          from: userByIdUsernameProvider,
+          name: r'userByIdUsernameProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$userByIdUsernameHash,
+          dependencies: UserByIdUsernameFamily._dependencies,
+          allTransitiveDependencies:
+              UserByIdUsernameFamily._allTransitiveDependencies,
+          userId: userId,
+        );
+
+  UserByIdUsernameProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+  }) : super.internal();
+
+  final String userId;
+
+  @override
+  Override overrideWith(
+    String? Function(UserByIdUsernameRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UserByIdUsernameProvider._internal(
+        (ref) => create(ref as UserByIdUsernameRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeProviderElement<String?> createElement() {
+    return _UserByIdUsernameProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserByIdUsernameProvider && other.userId == userId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UserByIdUsernameRef on AutoDisposeProviderRef<String?> {
+  /// The parameter `userId` of this provider.
+  String get userId;
+}
+
+class _UserByIdUsernameProviderElement
+    extends AutoDisposeProviderElement<String?> with UserByIdUsernameRef {
+  _UserByIdUsernameProviderElement(super.provider);
+
+  @override
+  String get userId => (origin as UserByIdUsernameProvider).userId;
+}
+
+String _$userServiceHash() => r'56439f60361a75e2356e9aab8ffa45e5358aebd6';
 
 /// See also [UserService].
 @ProviderFor(UserService)

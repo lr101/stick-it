@@ -26,7 +26,7 @@ class GroupImageFeed extends ConsumerWidget {
                   pagingController: PagingController.fromValue(
                       PagingState<int, LocalPinDto>(
                           nextPageKey: index + 1,
-                          itemList: data.getRange(0, index + 1).toList()),
+                          itemList: data?.getRange(0, index + 1).toList()),
                       firstPageKey: 0)),
               error: (error, stackTrace) => Icon(Icons.error),
               loading: () => Center(child: CircularProgressIndicator()),

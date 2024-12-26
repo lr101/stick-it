@@ -16,9 +16,9 @@ import 'group_image_feed.dart';
 
 class GroupOverview extends ConsumerStatefulWidget {
   const GroupOverview(
-      {super.key, required this.group, this.floatingActionButton, this.actions});
+      {super.key, required this.groupId, this.floatingActionButton, this.actions});
 
-  final LocalGroupDto group;
+  final String groupId;
   final Widget? floatingActionButton;
   final List<Widget>? actions;
 
@@ -44,11 +44,12 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
 
   @override
   Widget build(BuildContext context) {
-    final members = ref.watch(memberServiceProvider(widget.group.groupId));
+    final members = ref.watch(memberServiceProvider(widget.groupId));
+    final group = ref.watch(groupByIdProvider(widget.groupId)).value;
     return CustomAvatarScaffold(
         floatingActionButton: widget.floatingActionButton,
-        avatar: ref.watch(groupProfilePictureByIdProvider(widget.group.groupId)),
-        title: widget.group.name,
+        avatar: ref.watch(groupProfilePictureByIdProvider(widget.groupId)),
+        title: Text(group?.name ?? ""),
         actions: widget.actions,
         bottom: TabBar(controller: _tabController, tabs: const [
           Tab(icon: Icon(Icons.groups)),
@@ -73,28 +74,28 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
           SliverToBoxAdapter(
               child: ListTile(
             title: Text("Description"),
-            subtitle: widget.group.description != null
+            subtitle: group?.description != null
                 ? Text(
-                    widget.group.description!,
+                    group!.description!,
                     softWrap: true,
                     maxLines: 10,
                     style: TextStyle(fontStyle: FontStyle.italic),
                   )
                 : Icon(Icons.lock),
           )),
-          if (widget.group.link != null)
+          if (group?.link != null)
             SliverToBoxAdapter(
                     child: ListTile(
-                      onTap: clickedOnLink,
+                      onTap: () => Routing.clickedOnLink(group!.link),
                     title: Row( children: [Text("External Link"), Spacer(), Icon(Icons.open_in_new_rounded)]),
-                    subtitle: Text(widget.group.link ?? "No link set", maxLines: 1, overflow: TextOverflow.ellipsis,))),
-          if (widget.group.visibility != 0)
+                    subtitle: Text(group!.link ?? "No link set", maxLines: 1, overflow: TextOverflow.ellipsis,))),
+          if (group != null && group.visibility != 0)
             SliverToBoxAdapter(
               child: ListTile(
-                onTap: clickedOnInviteCode,
+                onTap: ()  => clickedOnInviteCode(group),
                 title: Text("Invite code"),
                 subtitle:
-                    Text(widget.group.inviteUrl ?? "Ups something went wrong"),
+                    Text(group.inviteUrl ?? "Ups something went wrong"),
               ),
             )
         ],
@@ -102,33 +103,24 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
           members.when(
               data: (data) => ListView.builder(
                     itemBuilder: (context, index) =>
-                        MemberTile(memberDto: data[index], adminId: widget.group.groupAdmin ?? "", ),
+                        MemberTile(memberDto: data[index], adminId: group?.groupAdmin ?? "", ),
                     itemCount: data.length,
                   ),
               error: (err, __) => Center(child: Text("Ups something went wrong")),
               loading: () => const Center(child: CircularProgressIndicator())),
           ImageGrid(
-            pinProvider: sortedGroupPinsProvider(widget.group.groupId),
+            pinProvider: sortedGroupPinsProvider(widget.groupId),
             onTab: (index) => Routing.to(context,
-                GroupImageFeed(index: index, groupId: widget.group.groupId)),
+                GroupImageFeed(index: index, groupId: widget.groupId)),
           ),
         ]));
   }
 
-  Future<void> clickedOnLink() async {
-    if (widget.group.link != null) {
-      try {
-        await launchUrl(Uri.parse(widget.group.link!),
-            mode: LaunchMode.externalApplication);
-      } catch (e) {
-        CustomErrorSnackBar.message(message: "No app to open link in found", type: CustomErrorSnackBarType.error);
-      }
-    }
-  }
 
-  void clickedOnInviteCode() {
-    if (widget.group.inviteUrl != null) {
-      Clipboard.setData(ClipboardData(text: widget.group.inviteUrl!));
+
+  void clickedOnInviteCode(LocalGroupDto? group) {
+    if (group?.inviteUrl != null) {
+      Clipboard.setData(ClipboardData(text: group!.inviteUrl!));
     }
   }
 }

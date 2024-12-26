@@ -5,6 +5,7 @@ import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
+import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/reachability_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
@@ -61,24 +62,32 @@ class PinService extends _$PinService {
       final pinsApi = ref.watch(pinApiProvider);
       final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false, updatedAfter: lastSeen);
       final localPins = this.state.value ?? [];
-      state = AsyncData(await _mergeGroups(localPins, remotePins!));
-      ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
+
       // sync local pins to server
-      final unsynced = [...state.value!];
+      final storedState = [...state.value!];
       int numSynced = 0;
-      for (int i = 0 ; i < unsynced.length; i++) {
-        final pin = unsynced[i];
+      for (int i = 0 ; i < storedState.length; i++) {
+        final pin = storedState[i];
         if (pin.lastSynced == null) {
-          final newPin = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
-          state.value![i] = LocalPinDto.fromDtoWithImage(newPin!);
-          _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin), pin.id, base64Decode(newPin.image!));
-          ref.read(pinImageServiceProvider.notifier).addUint8ListImage(newPin.id, base64Decode(newPin.image!));
-          numSynced++;
+          try {
+            final newPin = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
+            localPins.remove(pin);
+            _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin!), pin.id);
+            numSynced++;
+          } on ApiException catch (e) {
+            if (e.code == 409) {
+              if (kDebugMode) print("Pin already synced -- remove from list");
+              localPins.remove(pin);
+              _pinRepository.deletePinFromGroup(pin.id);
+            } else {
+              if (kDebugMode) print("Sync failed for pin ${pin.id} with message ${e.message}");
+            }
+          }
         }
       }
-      if (numSynced > 0) {
-        CustomErrorSnackBar.message(message: "Your offline sticks have been uploaded");
-      }
+      state = AsyncData(await _mergeGroups(localPins, remotePins!));
+      ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
+      if (numSynced > 0) CustomErrorSnackBar.message(message: "Synced ${numSynced} sticks to server", type: CustomErrorSnackBarType.success);
     } catch (e) {
       if (kDebugMode) print(e);
     } finally {
@@ -127,8 +136,7 @@ class PinService extends _$PinService {
       if (result != null) {
         final newPin = LocalPinDto.fromDto(result);
         updateSinglePin(newPin, oldPinId: pin.id);
-        final newImage = await http.get(Uri.parse(result.image!));
-        _pinRepository.updateToSynced(newPin, pin.id, newImage.bodyBytes);
+        _pinRepository.updateToSynced(newPin, pin.id);
         await ref.watch(pinImageServiceProvider.notifier).addImage(newPin.id, removeKeepAlive: true);
         return null;
       } else {
@@ -141,8 +149,11 @@ class PinService extends _$PinService {
 
   Future<String?> deletePinFromGroup(String pinId) async {
     try {
+      final pin = (state.value ?? []).firstWhere((pin) => pin.id == pinId);
+      if (pin.lastSynced != null) {
       final pinsApi = ref.watch(pinApiProvider);
       await pinsApi.deletePin(pinId);
+      }
       final currentState = state.value ?? [];
       currentState.removeWhere((pin) => pin.id == pinId);
       state = AsyncValue.data(currentState);
@@ -187,8 +198,9 @@ Future<List<LocalPinDto>> sortedActivatedPins(Ref ref) async {
 }
 
 @riverpod
-Future<List<LocalPinDto>> sortedGroupPins(Ref ref, String groupId) async {
-  final pins = ref.watch(pinServiceProvider(groupId)).value ?? [];
+Future<List<LocalPinDto>?> sortedGroupPins(Ref ref, String groupId) async {
+  final pins = ref.watch(pinServiceProvider(groupId)).value;
+  if (pins == null) return null;
   pins.sort((a, b) => b.creationDate.compareTo(a.creationDate));
   return pins;
 }

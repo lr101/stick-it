@@ -9,24 +9,24 @@ import '../../../util/routing/routing.dart';
 
 class ClickableGroup extends ConsumerWidget {
 
-  final LocalGroupDto groupDto;
-  final TextStyle? textStyle;
+  final String groupId;
+  final Widget child;
 
-  const ClickableGroup({super.key, required this.groupDto, this.textStyle});
+  const ClickableGroup({super.key, required this.groupId, required this.child});
 
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isMember = ref.watch(userGroupServiceProvider.select((e) => e.value!.any((a) => a.groupId == groupDto.groupId)));
+    final isMember = ref.watch(userGroupServiceProvider.select((e) => e.value!.any((a) => a.groupId == groupId)));
     if (isMember) {
       return GestureDetector(
-        onTap: () => Routing.to(context, UserGroupOverview(groupId: groupDto.groupId)),
-        child: Text(groupDto.name, style: textStyle,),
+        onTap: () => Routing.to(context, UserGroupOverview(groupId: groupId)),
+        child: child
       );
     } else {
       return GestureDetector(
-        onTap: () => Routing.to(context, GroupOverview(group: groupDto)),
-        child: Text(groupDto.name, style: textStyle,),
+        onTap: () => Routing.to(context, GroupOverview(groupId: groupId)),
+        child: child
       );
     }
   }

@@ -23,10 +23,10 @@ class _AuthState extends ConsumerState<Auth> {
     final global = ref.watch(globalDataServiceProvider);
     final loginService = ref.watch(loginServiceProvider);
     return FlutterLogin(
-      title: 'Stick-It',
+      logo: AssetImage('assets/icon/logo-rounded-corners.png'),
       termsOfService: [
-        TermOfService(id: "0", text: "Terms of Service", mandatory: true, linkUrl: "https://${global.host}/public/agb"),
-        TermOfService(id: "1", text: "Privacy Policy", mandatory: true, linkUrl: "https://${global.host}/public/privacy-policy")
+        TermOfService(id: "0", text: "Terms of Service", mandatory: true, linkUrl: "${global.host}/public/agb"),
+        TermOfService(id: "1", text: "Privacy Policy", mandatory: true, linkUrl: "${global.host}/public/privacy-policy")
       ],
       onLogin: loginService.authUser,
       onSignup: loginService.signupUser,
@@ -78,7 +78,7 @@ class _AuthState extends ConsumerState<Auth> {
               ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      Routing.to(context, ShowWebWidget(route: "https://${ref.watch(globalDataServiceProvider).host}/public/agb",title: "Terms of Service",));
+                      Routing.to(context, ShowWebWidget(route: "${ref.watch(globalDataServiceProvider).host}/public/agb",title: "Terms of Service",));
                     }
               ),
               TextSpan(
@@ -95,7 +95,7 @@ class _AuthState extends ConsumerState<Auth> {
                     ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Routing.to(context, ShowWebWidget(route: "https://${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",title: "Privacy Policy",));
+                            Routing.to(context, ShowWebWidget(route: "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",title: "Privacy Policy",));
                           }
                     )
                   ]

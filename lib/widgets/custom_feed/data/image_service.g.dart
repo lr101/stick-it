@@ -6,7 +6,7 @@ part of 'image_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getPinImageInfoHash() => r'2f1ba6336822163a35852ff70fe69e06f3906763';
+String _$getPinImageInfoHash() => r'ceb7b5e8fa2947f29e8fe672ef550cf215df542e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -40,10 +40,10 @@ class GetPinImageInfoFamily extends Family<AsyncValue<PinImageInfo?>> {
 
   /// See also [getPinImageInfo].
   GetPinImageInfoProvider call(
-    String pinId,
+    LocalPinDto pinDto,
   ) {
     return GetPinImageInfoProvider(
-      pinId,
+      pinDto,
     );
   }
 
@@ -52,7 +52,7 @@ class GetPinImageInfoFamily extends Family<AsyncValue<PinImageInfo?>> {
     covariant GetPinImageInfoProvider provider,
   ) {
     return call(
-      provider.pinId,
+      provider.pinDto,
     );
   }
 
@@ -75,11 +75,11 @@ class GetPinImageInfoFamily extends Family<AsyncValue<PinImageInfo?>> {
 class GetPinImageInfoProvider extends AutoDisposeFutureProvider<PinImageInfo?> {
   /// See also [getPinImageInfo].
   GetPinImageInfoProvider(
-    String pinId,
+    LocalPinDto pinDto,
   ) : this._internal(
           (ref) => getPinImageInfo(
             ref as GetPinImageInfoRef,
-            pinId,
+            pinDto,
           ),
           from: getPinImageInfoProvider,
           name: r'getPinImageInfoProvider',
@@ -90,7 +90,7 @@ class GetPinImageInfoProvider extends AutoDisposeFutureProvider<PinImageInfo?> {
           dependencies: GetPinImageInfoFamily._dependencies,
           allTransitiveDependencies:
               GetPinImageInfoFamily._allTransitiveDependencies,
-          pinId: pinId,
+          pinDto: pinDto,
         );
 
   GetPinImageInfoProvider._internal(
@@ -100,10 +100,10 @@ class GetPinImageInfoProvider extends AutoDisposeFutureProvider<PinImageInfo?> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.pinId,
+    required this.pinDto,
   }) : super.internal();
 
-  final String pinId;
+  final LocalPinDto pinDto;
 
   @override
   Override overrideWith(
@@ -118,7 +118,7 @@ class GetPinImageInfoProvider extends AutoDisposeFutureProvider<PinImageInfo?> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        pinId: pinId,
+        pinDto: pinDto,
       ),
     );
   }
@@ -130,13 +130,13 @@ class GetPinImageInfoProvider extends AutoDisposeFutureProvider<PinImageInfo?> {
 
   @override
   bool operator ==(Object other) {
-    return other is GetPinImageInfoProvider && other.pinId == pinId;
+    return other is GetPinImageInfoProvider && other.pinDto == pinDto;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, pinId.hashCode);
+    hash = _SystemHash.combine(hash, pinDto.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -145,8 +145,8 @@ class GetPinImageInfoProvider extends AutoDisposeFutureProvider<PinImageInfo?> {
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin GetPinImageInfoRef on AutoDisposeFutureProviderRef<PinImageInfo?> {
-  /// The parameter `pinId` of this provider.
-  String get pinId;
+  /// The parameter `pinDto` of this provider.
+  LocalPinDto get pinDto;
 }
 
 class _GetPinImageInfoProviderElement
@@ -155,7 +155,7 @@ class _GetPinImageInfoProviderElement
   _GetPinImageInfoProviderElement(super.provider);
 
   @override
-  String get pinId => (origin as GetPinImageInfoProvider).pinId;
+  LocalPinDto get pinDto => (origin as GetPinImageInfoProvider).pinDto;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

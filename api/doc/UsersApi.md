@@ -9,12 +9,63 @@ All URIs are relative to *https://stick-it.lr-projects.de*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**claimUserAchievement**](UsersApi.md#claimuserachievement) | **POST** /api/v2/users/{userId}/achievements/{achievementId} | Claim an achievement
 [**deleteUser**](UsersApi.md#deleteuser) | **DELETE** /api/v2/users/{userId} | Delete a user by userId
 [**getUser**](UsersApi.md#getuser) | **GET** /api/v2/users/{userId} | Get a user by userId
+[**getUserAchievements**](UsersApi.md#getuserachievements) | **GET** /api/v2/users/{userId}/achievements | Get user's achievements
 [**getUserProfileImage**](UsersApi.md#getuserprofileimage) | **GET** /api/v2/users/{userId}/profile_picture | Get the profile picture of a user by userId
 [**getUserProfileImageSmall**](UsersApi.md#getuserprofileimagesmall) | **GET** /api/v2/users/{userId}/profile_picture_small | Get the small profile picture of a user by userId
+[**getUserXp**](UsersApi.md#getuserxp) | **GET** /api/v2/users/{userId}/xp | Get user's xp
 [**updateUser**](UsersApi.md#updateuser) | **PUT** /api/v2/users/{userId} | Update user information by userId
 
+
+# **claimUserAchievement**
+> claimUserAchievement(userId, achievementId)
+
+Claim an achievement
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = UsersApi();
+final userId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
+final achievementId = 56; // int | 
+
+try {
+    api_instance.claimUserAchievement(userId, achievementId);
+} catch (e) {
+    print('Exception when calling UsersApi->claimUserAchievement: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userId** | **String**|  | 
+ **achievementId** | **int**|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[token](../README.md#token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **deleteUser**
 > deleteUser(userId, body)
@@ -111,6 +162,53 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **getUserAchievements**
+> List<UserAchievementsDtoInner> getUserAchievements(userId)
+
+Get user's achievements
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = UsersApi();
+final userId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
+
+try {
+    final result = api_instance.getUserAchievements(userId);
+    print(result);
+} catch (e) {
+    print('Exception when calling UsersApi->getUserAchievements: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userId** | **String**|  | 
+
+### Return type
+
+[**List<UserAchievementsDtoInner>**](UserAchievementsDtoInner.md)
+
+### Authorization
+
+[token](../README.md#token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **getUserProfileImage**
 > String getUserProfileImage(userId)
 
@@ -202,6 +300,53 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: Not defined
  - **Accept**: image/*, text/plain; charset=utf-8
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getUserXp**
+> UserXpDto getUserXp(userId)
+
+Get user's xp
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = UsersApi();
+final userId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
+
+try {
+    final result = api_instance.getUserXp(userId);
+    print(result);
+} catch (e) {
+    print('Exception when calling UsersApi->getUserXp: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userId** | **String**|  | 
+
+### Return type
+
+[**UserXpDto**](UserXpDto.md)
+
+### Authorization
+
+[token](../README.md#token)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

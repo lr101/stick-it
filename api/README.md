@@ -39,15 +39,20 @@ Please follow the [installation procedure](#installation--usage) and then run th
 ```dart
 import 'package:openapi/api.dart';
 
+// TODO Configure HTTP Bearer authorization: token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('token').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = AuthApi();
-final userRequestDto = UserRequestDto(); // UserRequestDto | 
+final api_instance = AdminApi();
+final adminMailDto = AdminMailDto(); // AdminMailDto | 
 
 try {
-    final result = api_instance.createUser(userRequestDto);
-    print(result);
+    api_instance.sendAdminMail(adminMailDto);
 } catch (e) {
-    print('Exception when calling AuthApi->createUser: $e\n');
+    print('Exception when calling AdminApi->sendAdminMail: $e\n');
 }
 
 ```
@@ -58,6 +63,7 @@ All URIs are relative to *https://stick-it.lr-projects.de*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*AdminApi* | [**sendAdminMail**](doc//AdminApi.md#sendadminmail) | **POST** /api/v2/admin/mail | Send an admin mail
 *AuthApi* | [**createUser**](doc//AuthApi.md#createuser) | **POST** /api/v2/public/signup | User registration
 *AuthApi* | [**generateDeleteCode**](doc//AuthApi.md#generatedeletecode) | **GET** /api/v2/public/delete-code/{username} | Generate delete code
 *AuthApi* | [**getStatus**](doc//AuthApi.md#getstatus) | **GET** /api/v2/status | Gets the status of the server and user specific information
@@ -81,7 +87,6 @@ Class | Method | HTTP request | Description
 *LikesApi* | [**getUserLikes**](doc//LikesApi.md#getuserlikes) | **GET** /api/v2/users/{userId}/likes | Get user's likes
 *MembersApi* | [**deleteMemberFromGroup**](doc//MembersApi.md#deletememberfromgroup) | **DELETE** /api/v2/groups/{groupId}/members | leave group or delete group when the user is the last group member
 *MembersApi* | [**getGroupMembers**](doc//MembersApi.md#getgroupmembers) | **GET** /api/v2/groups/{groupId}/members | Get members of a group by ID
-*MembersApi* | [**getGroupRanking**](doc//MembersApi.md#getgroupranking) | **GET** /api/v2/groups/{groupId}/members/ranking | Get ranking of a group by ID
 *MembersApi* | [**joinGroup**](doc//MembersApi.md#joingroup) | **POST** /api/v2/groups/{groupId}/members | Add a member to a group by ID
 *PinsApi* | [**createPin**](doc//PinsApi.md#createpin) | **POST** /api/v2/pins | Create a new pin
 *PinsApi* | [**deletePin**](doc//PinsApi.md#deletepin) | **DELETE** /api/v2/pins/{pinId} | Delete a pin by ID
@@ -89,38 +94,50 @@ Class | Method | HTTP request | Description
 *PinsApi* | [**getPinImage**](doc//PinsApi.md#getpinimage) | **GET** /api/v2/pins/{pinId}/image | Get the image associated with a pin by ID
 *PinsApi* | [**getPinImagesByIds**](doc//PinsApi.md#getpinimagesbyids) | **GET** /api/v2/pins | Get images by IDs
 *PublicApi* | [**getServerInfo**](doc//PublicApi.md#getserverinfo) | **GET** /api/v2/public/infos | Get public server statistics
+*RankingApi* | [**getGeoJson**](doc//RankingApi.md#getgeojson) | **GET** /api/v2/map/geojson | 
+*RankingApi* | [**getMapInfo**](doc//RankingApi.md#getmapinfo) | **GET** /api/v2/map | 
+*RankingApi* | [**groupRanking**](doc//RankingApi.md#groupranking) | **GET** /api/v2/ranking/group | 
+*RankingApi* | [**userRanking**](doc//RankingApi.md#userranking) | **GET** /api/v2/ranking/user | 
 *ReportApi* | [**createReport**](doc//ReportApi.md#createreport) | **POST** /api/v2/report | Report content
+*UsersApi* | [**claimUserAchievement**](doc//UsersApi.md#claimuserachievement) | **POST** /api/v2/users/{userId}/achievements/{achievementId} | Claim an achievement
 *UsersApi* | [**deleteUser**](doc//UsersApi.md#deleteuser) | **DELETE** /api/v2/users/{userId} | Delete a user by userId
 *UsersApi* | [**getUser**](doc//UsersApi.md#getuser) | **GET** /api/v2/users/{userId} | Get a user by userId
+*UsersApi* | [**getUserAchievements**](doc//UsersApi.md#getuserachievements) | **GET** /api/v2/users/{userId}/achievements | Get user's achievements
 *UsersApi* | [**getUserProfileImage**](doc//UsersApi.md#getuserprofileimage) | **GET** /api/v2/users/{userId}/profile_picture | Get the profile picture of a user by userId
 *UsersApi* | [**getUserProfileImageSmall**](doc//UsersApi.md#getuserprofileimagesmall) | **GET** /api/v2/users/{userId}/profile_picture_small | Get the small profile picture of a user by userId
+*UsersApi* | [**getUserXp**](doc//UsersApi.md#getuserxp) | **GET** /api/v2/users/{userId}/xp | Get user's xp
 *UsersApi* | [**updateUser**](doc//UsersApi.md#updateuser) | **PUT** /api/v2/users/{userId} | Update user information by userId
 
 
 ## Documentation For Models
 
+ - [AdminMailDto](doc//AdminMailDto.md)
  - [CreateGroupDto](doc//CreateGroupDto.md)
  - [CreateLikeDto](doc//CreateLikeDto.md)
  - [GroupDto](doc//GroupDto.md)
+ - [GroupRankingDtoInner](doc//GroupRankingDtoInner.md)
  - [GroupsSyncDto](doc//GroupsSyncDto.md)
  - [InfoDto](doc//InfoDto.md)
+ - [MapInfoDto](doc//MapInfoDto.md)
  - [MemberResponseDto](doc//MemberResponseDto.md)
  - [PinLikeDto](doc//PinLikeDto.md)
  - [PinRequestDto](doc//PinRequestDto.md)
  - [PinWithOptionalImageDto](doc//PinWithOptionalImageDto.md)
  - [PinsSyncDto](doc//PinsSyncDto.md)
- - [RankingResponseDto](doc//RankingResponseDto.md)
  - [RefreshTokenRequestDto](doc//RefreshTokenRequestDto.md)
  - [ReportDto](doc//ReportDto.md)
  - [Status](doc//Status.md)
  - [TokenResponseDto](doc//TokenResponseDto.md)
  - [UpdateGroupDto](doc//UpdateGroupDto.md)
+ - [UserAchievementsDtoInner](doc//UserAchievementsDtoInner.md)
  - [UserInfoDto](doc//UserInfoDto.md)
  - [UserLikesDto](doc//UserLikesDto.md)
  - [UserLoginRequest](doc//UserLoginRequest.md)
+ - [UserRankingDtoInner](doc//UserRankingDtoInner.md)
  - [UserRequestDto](doc//UserRequestDto.md)
  - [UserUpdateDto](doc//UserUpdateDto.md)
  - [UserUpdateResponseDto](doc//UserUpdateResponseDto.md)
+ - [UserXpDto](doc//UserXpDto.md)
 
 
 ## Documentation For Authorization

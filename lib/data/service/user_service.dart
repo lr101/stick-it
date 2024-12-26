@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
@@ -96,7 +97,7 @@ class UserService extends _$UserService {
   }
 
   Future<String?> changeUser(
-      {String? password, String? email, Uint8List? profilePicture, String? description, String? username}) async {
+      {String? password, String? email, Uint8List? profilePicture, String? description, String? username, int? selectedBatch}) async {
     try {
       final global = ref.watch(globalDataServiceProvider);
       final userId = global.userId!;
@@ -107,6 +108,7 @@ class UserService extends _$UserService {
               email: email,
               description: description,
               username: username,
+              selectedBatch: selectedBatch,
               image: profilePicture == null
                   ? null
                   : base64Encode(profilePicture)));
@@ -116,11 +118,11 @@ class UserService extends _$UserService {
         ref.read(userImageServiceProvider.notifier).fetchUserImage(
             userId, signedUrl: result.profileImage);
         ref.read(currentUserServiceProvider.notifier).update(
-            username: result.username, description: result.description);
+            username: result.username, description: result.description, selectedBatch: selectedBatch);
       }
       return null;
     } on ApiException catch (e) {
-      return e.message!;
+      return e.message ?? "Something unexpected happened";
     }
   }
 
@@ -188,7 +190,6 @@ class UserService extends _$UserService {
       likePhotographyCount: user.likes!.likePhotographyCount + _likeUpdate(likeUpdate.likePhotography)
     );
     state.value![userId] = user.fromCurrentWithLikes(likes);
-    ref.notifyListeners();
   }
 
   int _likeUpdate(bool? like) {
@@ -221,4 +222,10 @@ Future<UserLikesDto> userLikesById(Ref ref, String userId) async {
     return await ref.read(userServiceProvider.notifier).fetchUserLikes(userId);
   }
 }
+
+@riverpod
+String? userByIdUsername(Ref ref, String userId) {
+  return ref.watch(userByIdProvider(userId).select((e) => e.value?.username));
+}
+
 

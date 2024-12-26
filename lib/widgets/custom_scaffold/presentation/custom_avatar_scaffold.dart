@@ -21,7 +21,7 @@ class CustomAvatarScaffold extends ConsumerStatefulWidget {
       required this.body});
 
   final AsyncValue<Uint8List?> avatar;
-  final String title;
+  final Widget title;
   final List<SliverToBoxAdapter>? boxes;
   final Widget body;
   final PreferredSizeWidget? bottom;
@@ -38,7 +38,6 @@ class CustomAvatarScaffold extends ConsumerStatefulWidget {
 class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
     with TickerProviderStateMixin {
   ScrollController controller = ScrollController();
-  ValueNotifier<double> _scrollOffset = ValueNotifier(0);
 
   @override
   void initState() {
@@ -60,11 +59,13 @@ class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
         controller: controller,
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
-              pinned: true,
+              pinned: false,
+              floating: true,
+              snap: false,
               actions: widget.actions,
               expandedHeight: (width / 2) + kToolbarHeight + 20,
               centerTitle: false,
-              title: Text(widget.title),
+              title: widget.title,
               flexibleSpace: FlexibleSpaceBar(
                 background: SafeArea(
                     child: Padding(

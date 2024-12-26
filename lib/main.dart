@@ -85,7 +85,7 @@ class MyApp extends ConsumerWidget {
       title: 'Mona App',
       themeMode: ref.watch(themeStateProvider),
       darkTheme: theme.dark(),
-      theme: theme.lightHighContrast(),
+      theme: theme.light(),
       initialRoute: ref.watch(globalDataServiceProvider).userId != null ? '/home' : '/login',
       routes: {
         '/login': (context) => Auth(),

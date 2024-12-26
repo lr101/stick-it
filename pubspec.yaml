@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.11+62
+version: 3.0.7+63
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -174,12 +174,17 @@ dependencies:
   like_button: ^2.0.5
 
   cached_network_image: ^3.4.1
+  connectivity_plus: ^6.1.0
+  social_media_buttons: ^1.0.0
+  in_app_review: ^2.0.10
+  flutter_map_geojson: ^1.0.8
+  choice: ^2.3.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.4.12
   riverpod_generator: ^2.3.3
-  custom_lint: ^0.6.5
+  custom_lint: ^0.7.0
   riverpod_lint: ^2.2.13
   easy_localization: ^3.0.7
   drift_dev: ^2.20.1
@@ -190,6 +195,8 @@ dev_dependencies:
 flutter:
   assets:
     - assets/image/
+    - assets/achievements/
+    - assets/icon/
     - .env
     - .env.dev
   uses-material-design: true
@@ -203,8 +210,6 @@ flutter_icons:
 flutter_native_splash:
   color: "#FFFFFF"
   color_dark: "#000000"
-  image: images/pinGui.png
+  image: assets/icon/logo.jpg
   android_12:
-    color: "#FFFFFF"
-    color_dark: "#000000"
-    image: images/pinGui12android.png
+    image: assets/icon/logoAndroid12.jpg

@@ -25,6 +25,11 @@ class RoundImage extends ConsumerWidget {
               dimension: size != null ? size! * 2 : null,
               child: Stack(children: [
                 ClipOval(
+                  child: Container(
+                    color: Colors.grey.withOpacity(0.4),
+                  ),
+                ),
+                ClipOval(
                     child: FadeInImage(
                     placeholder: MemoryImage(kTransparentImage),
                     image: MemoryImage(imageCallback.when<Uint8List>(
@@ -33,8 +38,8 @@ class RoundImage extends ConsumerWidget {
                         loading: () => kTransparentImage
                     )),
                     fit: BoxFit.cover,
-                    fadeInDuration: const Duration(milliseconds: 500),
-                    fadeOutDuration: const Duration(milliseconds: 1000),
+                    fadeInDuration: const Duration(milliseconds: 250),
+                    fadeOutDuration: const Duration(milliseconds: 250),
                     imageErrorBuilder: (_, __, ___) => Image.memory(
                       ref.watch(defaultErrorImageProvider),
                       fit: BoxFit.cover,
