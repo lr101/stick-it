@@ -50,7 +50,7 @@ Stream<Position> currentLocation(Ref ref) async* {
     final positionStream = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: 100, // Emit position updates when moved by 10 meters
+        distanceFilter: 100,
       ),
     );
     positionStream.first.then((v) {

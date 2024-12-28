@@ -77,6 +77,7 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
         end = pageKey + pageSize;
       }
       final idList = _pins.getRange(pageKey, end).toList();
+      idList.forEach((pin) => ref.watch(getPinImageAndFetchProvider(pin.id)));
       if (end == _pins.length) {
         widget.pagingController.appendLastPage(idList);
       } else {

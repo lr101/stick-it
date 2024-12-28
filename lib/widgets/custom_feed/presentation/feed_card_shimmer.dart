@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class FeedCardShimmer extends StatelessWidget {
-  final double height;
-  final double width;
 
-  const FeedCardShimmer({super.key, required this.height, required this.width});
+  const FeedCardShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +13,9 @@ class FeedCardShimmer extends StatelessWidget {
       enabled: true,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.white.withOpacity(0.5),
           borderRadius: BorderRadius.circular(10),
         ),
-        height: height,
-        width: width
       ),
     );
   }

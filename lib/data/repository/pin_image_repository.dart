@@ -7,6 +7,7 @@ import 'package:buff_lisa/data/entity/pin_image_entity.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:mutex/mutex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -19,6 +20,7 @@ class PinImageRepository {
   final Ref ref;
   final int maxCacheSize;
   late Database _db;
+  final Map<String, Mutex> _mutexMap = {};
 
   PinImageRepository({required this.ref, required this.maxCacheSize}) {
     _db = ref.watch(databaseProvider);
@@ -26,15 +28,19 @@ class PinImageRepository {
 
   // Fetch image, either from cache or from API
   Future<Uint8List> fetchImage(String pinId, {bool removeKeepAlive = false}) async {
+    final mutex = _mutexMap.putIfAbsent(pinId, () => Mutex());
     // Check if the image is already in the cache
-    final cachedImage = await (_db.select(_db.pinImageEntity)..where((tbl) => tbl.pinId.equals(pinId))).getSingleOrNull();
-    if (cachedImage != null) {
-      _updateHitCount(cachedImage, removeKeepAlive);
-      return cachedImage.image;
-    }
+    return await mutex.protect(() async {
+      final cachedImage = await (_db.select(_db.pinImageEntity)
+        ..where((tbl) => tbl.pinId.equals(pinId))).getSingleOrNull();
+      if (cachedImage != null) {
+        _updateHitCount(cachedImage, removeKeepAlive);
+        return cachedImage.image;
+      }
 
-    // If not in cache, fetch from API and cache it
-    return await _fetchAndCacheImage(pinId);
+      // If not in cache, fetch from API and cache it
+      return await _fetchAndCacheImage(pinId);
+    });
   }
 
   Future<Map<String, Uint8List>> fetchAllCashedImages() async {
