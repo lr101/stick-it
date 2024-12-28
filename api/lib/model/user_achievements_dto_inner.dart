@@ -17,6 +17,7 @@ class UserAchievementsDtoInner {
     required this.claimed,
     required this.thresholdValue,
     required this.currentValue,
+    required this.thresholdUp,
   });
 
   int achievementId;
@@ -27,12 +28,15 @@ class UserAchievementsDtoInner {
 
   int currentValue;
 
+  bool thresholdUp;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is UserAchievementsDtoInner &&
     other.achievementId == achievementId &&
     other.claimed == claimed &&
     other.thresholdValue == thresholdValue &&
-    other.currentValue == currentValue;
+    other.currentValue == currentValue &&
+    other.thresholdUp == thresholdUp;
 
   @override
   int get hashCode =>
@@ -40,10 +44,11 @@ class UserAchievementsDtoInner {
     (achievementId.hashCode) +
     (claimed.hashCode) +
     (thresholdValue.hashCode) +
-    (currentValue.hashCode);
+    (currentValue.hashCode) +
+    (thresholdUp.hashCode);
 
   @override
-  String toString() => 'UserAchievementsDtoInner[achievementId=$achievementId, claimed=$claimed, thresholdValue=$thresholdValue, currentValue=$currentValue]';
+  String toString() => 'UserAchievementsDtoInner[achievementId=$achievementId, claimed=$claimed, thresholdValue=$thresholdValue, currentValue=$currentValue, thresholdUp=$thresholdUp]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -51,6 +56,7 @@ class UserAchievementsDtoInner {
       json[r'claimed'] = this.claimed;
       json[r'thresholdValue'] = this.thresholdValue;
       json[r'currentValue'] = this.currentValue;
+      json[r'thresholdUp'] = this.thresholdUp;
     return json;
   }
 
@@ -77,6 +83,7 @@ class UserAchievementsDtoInner {
         claimed: mapValueOfType<bool>(json, r'claimed')!,
         thresholdValue: mapValueOfType<int>(json, r'thresholdValue')!,
         currentValue: mapValueOfType<int>(json, r'currentValue')!,
+        thresholdUp: mapValueOfType<bool>(json, r'thresholdUp')!,
       );
     }
     return null;
@@ -128,6 +135,7 @@ class UserAchievementsDtoInner {
     'claimed',
     'thresholdValue',
     'currentValue',
+    'thresholdUp',
   };
 }
 
