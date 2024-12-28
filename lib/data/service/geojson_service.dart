@@ -11,7 +11,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'geojson_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class GeojsonService extends _$GeojsonService {
 
 
@@ -34,7 +34,7 @@ class GeojsonService extends _$GeojsonService {
 }
 
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DistrictService extends _$DistrictService {
   
   double? _lat = null;

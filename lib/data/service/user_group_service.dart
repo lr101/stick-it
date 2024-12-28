@@ -188,7 +188,6 @@ class UserGroupService extends _$UserGroupService {
 
   Future<String?> leaveGroup(String groupId, VoidCallback afterSuccess) async {
     try {
-      await ref.watch(memberApiProvider).deleteMemberFromGroup(groupId, _data.userId!);
       await _membersApi.deleteMemberFromGroup(groupId, _data.userId!);
       afterSuccess();
       await _groupRepository.leaveGroup(groupId);
@@ -197,6 +196,9 @@ class UserGroupService extends _$UserGroupService {
       ref.read(groupImageServiceProvider.notifier).deleteGroupImage(groupId);
       return null;
     } on ApiException catch (e) {
+      if (e.code == 409) {
+        return "Cannot leave group as admin, designate a new one first";
+      }
       return e.message;
     }
   }

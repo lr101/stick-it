@@ -7,7 +7,7 @@ import '../config/openapi_config.dart';
 
 part 'ranking_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Top3GroupService extends _$Top3GroupService {
 
   @override
