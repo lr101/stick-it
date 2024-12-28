@@ -114,7 +114,7 @@ class LikeButtonAnimated extends ConsumerStatefulWidget {
   /// call back of first frame with LikeButtonState
   final Function(LikeButtonAnimatedState state)? postFrameCallback;
 
-  final ProviderListenable<bool> isLikedProvider;
+  final ProviderListenable<bool?> isLikedProvider;
 
   @override
   ConsumerState<LikeButtonAnimated> createState() => LikeButtonAnimatedState();
@@ -198,8 +198,8 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(widget.isLikedProvider, (_, next) {
-      _handleIsLikeChanged(next);
+    ref.listen(widget.isLikedProvider, (prev, next) {
+      _handleIsLikeChanged(prev, next);
     });
     Widget likeCountWidget = _getLikeCountWidget();
     if (widget.countDecoration != null) {
@@ -431,11 +431,11 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
       // animation triggered by on tab provider change
       widget.onTap!(_isLiked ?? true);
     } else {
-      _handleIsLikeChanged(!(_isLiked ?? true));
+      _handleIsLikeChanged(_isLiked, !(_isLiked ?? true));
     }
   }
 
-  void _handleIsLikeChanged(bool? isLiked) {
+  void _handleIsLikeChanged(bool? preIsLiked, bool? isLiked) {
     if (_isLiked == null) {
       if (_likeCount != null) {
         _preLikeCount = _likeCount;
@@ -443,10 +443,8 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
       }
       if (mounted) {
         setState(() {
-          _controller!.reset();
-          _controller!.forward();
 
-          if (widget.likeCountAnimationType != LikeCountAnimationType.none) {
+          if (widget.likeCountAnimationType != LikeCountAnimationType.none && preIsLiked != null) {
             _likeCountController!.reset();
             _likeCountController!.forward();
           }
@@ -472,7 +470,7 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
             _controller!.reset();
             _controller!.forward();
           }
-          if (widget.likeCountAnimationType != LikeCountAnimationType.none) {
+          if (widget.likeCountAnimationType != LikeCountAnimationType.none && preIsLiked != null) {
             _likeCountController!.reset();
             _likeCountController!.forward();
           }

@@ -122,13 +122,13 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(height: 14, width: MediaQuery.of(context).size.width * 0.2,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.grey, )),
+                Container(height: 14, width: MediaQuery.of(context).size.width * 0.2,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.white.withOpacity(0.5), )),
                 const SizedBox(height: 3,),
-                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey,) ),
+                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white.withOpacity(0.5),) ),
                 const SizedBox(height: 3,),
-                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.grey, ),),
+                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white.withOpacity(0.5), ),),
                 const SizedBox(height: 3,),
-                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.grey, ),),
+                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.white.withOpacity(0.5), ),),
               ],
               )
             ))
