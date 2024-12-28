@@ -1,58 +1,63 @@
-# Flutter App: *Stick-It*
+
+
+# [<img src="/assets/icon/logo-rounded-corners.png" width="23" />](https://lr-projects.de) Stick-It: *Map & Stickers*
+ 
+[![Codemagic build status](https://api.codemagic.io/apps/63413ae4c15332316120753f/63413ae4c15332316120753e/status_badge.svg)](https://codemagic.io/app/63413ae4c15332316120753f/63413ae4c15332316120753e/latest_build)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/lr101/stick-it/issues)
+[![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white&style=flat)](https://discord.gg/ReMZ8j6S8X)
+[![Play Store](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white&style=flat)](https://play.google.com/store/apps/details?id=com.TheGermanApps.buff_lisa)
+[![App Store](https://img.shields.io/badge/App_Store-0D96F6?style=for-the-badge&logo=app-store&logoColor=white&style=flat)](https://apps.apple.com/de/app/stick-it-geomap/id6446781455)
 
 ## Description
 
-Introducing our new photo-sharing app, **Stick-It**! **Stick-It** is a social media platform that is similar to Instagram, but with a unique twist - all images uploaded on **Stick-It** are tagged with the location where they were taken and assigned to a group.
+Experience sticker sharing like never before! Welcome to Stick-It, the app to record where in the world your stickers can be found📍🎉
 
-**Stick-It** makes it easy for you to organize and share your photos by assigning them to groups. Your fellow group members profit from your discoveries and can find them there themselves. **Stick-It** is perfect for sharing unique places. A very popular content are images and locations of stickers. The app is perfect for keeping track of all the locations and taking images is easy and very fast.
+Upload pictures, share them with your groups and tag them right where you took them. Even better: explore new spots and cool content posted by others on an interactive map! 🌍📸
 
-One of the standout features of **Stick-It** is its interactive map view. When you open the app, you'll see a map with pins that represent the different groups you've created. Tapping on a pin will reveal the photo taken at that exact location and was assigned to the group, allowing you to explore different places and memories.
+What makes Stick-It so special?  
+🌟 Groups & Community: Share your best shots with groups and discover what your friends and other adventurers have posted. Whether it's street art, stickers or insider tips - Stick-It captures them all!
 
-**Stick-It** also allows you to create and delete groups, making it easy to manage your content. Additionally, you can view all your photos and groups in a feed like overview. The shown groups can always be activated or deactivated by a single button press at the top of the screen.
+🗺️ Interactive map view: See all your uploaded stickers and groups directly on the map. Tap on a location to see the local ranking. Oh yes - Ranking - Become the biggest in your region, country or the world and collect Achievements
 
-Whether you're a casual photographer or a seasoned traveler, **Stick-It** is the perfect app to capture and share your experiences. So what are you waiting for? Download **Stick-It** today on [Android](https://play.google.com/store/apps/details?id=com.TheGermanApps.buff_lisa) and iOS and start sharing your world!
+⚡ Quick & Easy: Take photos, upload, share - all in seconds!
+
+📖 Overview feed: Keep track of all your groups and photos - activate or deactivate groups with just one click.
+
+🚀 Ready to Stick-It?  
+What are you waiting for? Get Stick-It now for Android and iOS and discover the world in a whole new way. Your adventures are waiting! 🌟
 
 ## How does it work?
 
-### Flutter
-
-The app is programmed in the language dart using the framework flutter. Flutter is an open-source UI software development kit created by Google. It is used to develop cross-platform applications for Android, iOS, Linux, macOS, Windows, Google Fuchsia, and the web from a single codebase. [source](https://en.wikipedia.org/wiki/Flutter_(software))
-
-Therefore, the App can be easily compiled to Android, iOS and Web. In addition to the compilable code base of the widget, android and iOS require to add multiple actions like permission, app image and native ads to be added in their respected native build structure. Everything related to android can be found in the [android folder](/android) and to iOS in the [iOS folder](/ios)
+The Stick-It app is built using the **Flutter** framework, which allows for cross-platform development on Android, iOS, and web platforms. Here's a high-level overview of how the app works:
 
 ### Structure
 
-How the different pages interact with each can be found [here]().
+The app is structured as follows:
+ - **data**: contains data models, repositories, and services. Repositories handles and provides database operations. Services provide business logic for the app, including holding global state values and making api calls.
+ - **features**: contains the app's features (mostly widgets where a route leads to), such as the main screen, group screen, and profile screen. Each directory is split into representation (UI) and data (screen specific logic and states).
+ - **util**: contains utility classes, such as the app's theme, routing, and error handling.
+ - **widgets**: contains reusable widgets that are used across the app. Each directory is split into representation (UI) and data (screen specific logic and states).
 
-## Helpful commands
+### Development setup
+- Install & setup [Flutter](https://flutter.dev/docs/get-started/install)
+- Clone api repository  ```git clone git@github.com:lr101/MonaServerApi.git ../MonaServerApi```
+- Run pub get to install dependencies ```flutter pub get```
+- Run build runner to generate database and riverpod code: ```dart run build_runner build```
+
+## Developer references
 
 ### Set new icon
 1. change asset path in pubspec.yaml
 2. run: ```flutter packages pub run flutter_launcher_icons:main```
 
 ### Build android apk
-- run: ```flutter build apk```
+1. run: ```flutter build apk```
 
-### Build app bundle release (android)
+### Release app
 
-- run: ```flutter build appbundle```
+The app release in Google Play Store and App Store is managed via Codemagic. The pipeline is triggered when a new commit is pushed to the main branch.
 
-### Build ios release
-
-- run ```flutter build ipa```
-- run ```xcrun altool --upload-app --type ios -f build/ios/ipa/*.ipa --apiKey B4589LDTP6 --apiIssuer 085ec48f-332a-4138-b4dd-c64be661fa63``` 
-- or ```xcrun altool --upload-app --type ios -f build/ios/ipa/*.ipa --apiKey 5QT3Y74Q5L --apiIssuer 085ec48f-332a-4138-b4dd-c64be661fa63```
-
-### Openapi
-1. Activate openapi-generator:
-  ```shell
-  flutter pub global activate openapi_generator_cli
-  ```
-2. Run generator:
-  ```shell
-  openapi-generator generate -i ../MonaServerApi/openapi.yaml -g dart -o ./api
-  ```
-
-- PinguMap
-- StickJourney
-- StickSpot
+### Generate API
+1.
+2. Activate openapi-generator: `flutter pub global activate openapi_generator_cli`
+3. Run generator: `openapi-generator generate -i ../MonaServerApi/openapi.yaml -g dart -o ./api`
