@@ -25,7 +25,13 @@ class Achievements extends _$Achievements {
       await ref.watch(userApiProvider).claimUserAchievement(userId, achievementId);
       if (state.hasValue) {
         final index = state.value!.indexWhere((element) => element.achievementId == achievementId);
-        state.value![index] = UserAchievementsDtoInner(achievementId: achievementId, claimed: true, thresholdValue: state.value![index].thresholdValue, currentValue: state.value![index].currentValue);
+        state.value![index] = UserAchievementsDtoInner(
+            achievementId: achievementId,
+            claimed: true,
+            thresholdValue: state.value![index].thresholdValue,
+            currentValue: state.value![index].currentValue,
+            thresholdUp: state.value![index].thresholdUp
+        );
         ref.notifyListeners();
       }
     } on ApiException catch (e) {
