@@ -17,7 +17,7 @@ enum Achievement {
   PHOTOGRAPHER(8, "Photographer", "Earn 1000 photography likes!", "assets/achievements/photography.jpeg", Colors.redAccent),
   YOU_ARE_AMAZING(9, "Certified Awesome", "Amazing! Add 500 sticks!", "assets/achievements/amazing.jpeg", Colors.tealAccent),
   REGIONAL_MASTER(10, "Regional Master", "Add 100 sticks in one state!", "assets/achievements/regional-master.jpeg", Colors.pink),
-  COUNTRY_MASTER(11, "Country Master", "Add 100 sticks in one country!", "assets/achievements/country-master.jpeg", Colors.pink),
+  COUNTRY_MASTER(11, "Country Master", "Add 250 sticks in one country!", "assets/achievements/country-master.jpeg", Colors.pink),
   LOCAL_HERO(12, "Local Hero", "Reach the top 3 ranking in a city!", "assets/achievements/local-hero.jpeg", Colors.orange),
   REGIONAL_HERO(13, "Regional Hero", "Reach the top 3 ranking in a state!", "assets/achievements/regional-hero.jpeg", Colors.orange),
   COUNTRY_HERO(14, "Country Hero", "Reach the top 3 ranking in a country!", "assets/achievements/country-hero.jpeg", Colors.orange),
