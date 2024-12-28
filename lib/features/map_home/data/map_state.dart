@@ -44,8 +44,9 @@ Stream<Position> currentLocation(Ref ref) async* {
   if (permission == LocationPermission.denied) {
     await Geolocator.requestPermission();
   }
-  if (permission != LocationPermission.denied &&
-      permission != LocationPermission.deniedForever) {
+  final rePermission  = await Geolocator.checkPermission();
+  if (rePermission != LocationPermission &&
+      rePermission != LocationPermission.deniedForever) {
     final positionStream = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
