@@ -11,8 +11,9 @@ import '../../clickable_names/presentation/clickable_group.dart';
 import '../../round_image/presentation/round_image.dart';
 
 class FeedTimelineHeader extends ConsumerWidget {
-  const FeedTimelineHeader({super.key, required this.pinDto, required this.height, this.isRotated = false});
-  final LocalPinDto pinDto;
+  const FeedTimelineHeader({super.key, required this.groupId, required this.creationDate, required this.height, this.isRotated = false});
+  final String groupId;
+  final DateTime creationDate;
   final double height;
   final bool isRotated;
 
@@ -30,9 +31,9 @@ class FeedTimelineHeader extends ConsumerWidget {
             RotatedBox(
                 quarterTurns: isRotated ? 1 : 0,
                 child: ClickableGroup(
-                  groupId: pinDto.groupId, child: RoundImage(
+                  groupId: groupId, child: RoundImage(
                     size: 15,
-                    imageCallback: ref.watch(groupProfilePictureByIdProvider(pinDto.groupId))
+                    imageCallback: ref.watch(groupProfilePictureByIdProvider(groupId))
             ),)),
             Container(
               width: 2,
@@ -57,10 +58,10 @@ class FeedTimelineHeader extends ConsumerWidget {
                   Align(
                     alignment: Alignment.topLeft,
                     child: ClickableGroup(
-                      groupId: pinDto.groupId,
+                      groupId: groupId,
                       child: RotatedBox(
                         quarterTurns: 1,
-                        child: Text(ref.watch(groupByIdProvider(pinDto.groupId).select((e) => e.value?.name)) ?? "",
+                        child: Text(ref.watch(groupByIdProvider(groupId).select((e) => e.value?.name)) ?? "",
                           style: TextStyle(color: Colors.grey, fontSize: 12),),
                       )
                 ))
@@ -74,7 +75,7 @@ class FeedTimelineHeader extends ConsumerWidget {
 
   String formatTime() {
     DateTime now = DateTime.now().toUtc();
-    DateTime time = pinDto.creationDate.toUtc();
+    DateTime time = creationDate.toUtc();
     final difference = now.difference(time);
     if (difference.inDays >= 365) {
       return "${difference.inDays ~/ 365} years ago";
