@@ -26,14 +26,38 @@ class LikeService extends _$LikeService {
   }
 
   Future<void> addLike(String pinId, String creatorId, CreateLikeDto createLikeDto) async {
-    final likeApi = ref.watch(likeApiProvider);
-    final like = await likeApi.createOrUpdateLike(pinId, createLikeDto);
-    if (like != null) {
-      state[pinId] = like;
-      ref.notifyListeners();
+    final currentLikes = state[pinId];
+    state[pinId] = PinLikeDto(
+      likePhotographyCount: _likeUpdate(createLikeDto.likePhotography, state[pinId]?.likePhotographyCount ?? 0),
+      likeArtCount: _likeUpdate(createLikeDto.likeArt, state[pinId]?.likeArtCount ?? 0),
+      likeLocationCount: _likeUpdate(createLikeDto.likeLocation, state[pinId]?.likeLocationCount ?? 0),
+      likeCount: _likeUpdate(createLikeDto.like, state[pinId]?.likeCount ?? 0),
+      likedArtByUser: createLikeDto.likeArt ?? state[pinId]?.likedArtByUser ?? false,
+      likedPhotographyByUser: createLikeDto.likePhotography ?? state[pinId]?.likedPhotographyByUser ?? false,
+      likedLocationByUser: createLikeDto.likeLocation ?? state[pinId]?.likedLocationByUser ?? false,
+      likedByUser: createLikeDto.like ?? state[pinId]?.likedByUser ?? false
+    );
+    ref.notifyListeners();
+    try {
+      final likeApi = ref.watch(likeApiProvider);
+      await likeApi.createOrUpdateLike(pinId, createLikeDto);
       ref.watch(userServiceProvider.notifier).updateLikeCount(creatorId, createLikeDto);
+    } on ApiException catch (_) {
+      state[pinId] = currentLikes ?? PinLikeDto();
+      ref.notifyListeners();
     }
   }
+
+  int _likeUpdate(bool? like, int current) {
+    if (like == true) {
+      return current + 1;
+    } else if (like == false) {
+      return current -1;
+    } else {
+      return current;
+    }
+  }
+
 }
 
 @riverpod

@@ -57,7 +57,7 @@ class FeedCardState extends ConsumerState<FeedCard> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FeedTimelineHeader(pinDto: widget.item, height: maxHeight),
+          FeedTimelineHeader(groupId: widget.item.groupId, creationDate: widget.item.creationDate, height: maxHeight),
           const SizedBox(width: 16),
           FeedCardImage(item: widget.item, maxHeight: maxHeight, maxWidth: maxWidth - 55)
         ],

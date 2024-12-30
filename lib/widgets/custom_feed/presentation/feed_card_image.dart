@@ -8,6 +8,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../../../data/service/global_data_service.dart';
 import '../../../data/service/user_image_service_small.dart';
 import '../../../data/service/user_service.dart';
 import '../../clickable_names/presentation/clickable_user.dart';
@@ -159,7 +160,7 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
     final switchFun = ref.read(feedMapStateProvider(widget.item.id).notifier).update;
     final isBig = ref.watch(feedMapStateProvider(widget.item.id));
     return GestureDetector(
-        onDoubleTap: isBig ? () => likeImage(widget.item.creatorId) : null,
+        onDoubleTap: isBig ? () => likeImage() : null,
         onTap: isBig && widget.onTab != null ? () => widget.onTab!(
             LatLng(widget.item.latitude, widget.item.longitude), 18) : !isBig ? switchFun : null ,
         child: FadeInImage(
@@ -172,7 +173,8 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
     );
   }
 
-  void likeImage(String userId) {
+  void likeImage() {
+    final userId = ref.watch(globalDataServiceProvider).userId!;
     ref.read(likeServiceProvider.notifier).addLike(
         widget.item.id, widget.item.creatorId,
         CreateLikeDto(userId: userId, like: true));

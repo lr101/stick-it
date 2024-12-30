@@ -54,7 +54,7 @@ class FeedCardDistanceState extends ConsumerState<FeedCardDistance> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FeedTimelineHeader(pinDto: widget.item, height: maxWidth, isRotated: true,),
+          FeedTimelineHeader(groupId: widget.item.groupId, creationDate: widget.item.creationDate, height: maxWidth, isRotated: true,),
           const SizedBox(height: 16),
           FeedCardImage(item: widget.item, maxHeight: maxHeight - 70, maxWidth: maxWidth - 20, rotateHeader: true, distance: widget.distance, onTab: widget.onTab,)
         ],

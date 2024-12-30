@@ -9,11 +9,13 @@ import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/camera/presentation/select_location.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+import 'package:buff_lisa/widgets/round_image/presentation/custom_image_picker.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
@@ -192,22 +194,17 @@ class _CameraState extends ConsumerState<Camera> {
   }
 
   Future<void> uploadFileImage() async {
-    final picker = ImagePicker();
-    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    final LostDataResponse response = await picker.retrieveLostData();
-    if (response.file != null) {
-      pickedFile = response.file;
-    }
+    final pickedFile = await CustomImagePicker.pick(context: context);
 
     if (pickedFile != null) {
       try {
+        final croppedImage = await CustomImagePicker.crop(res: pickedFile, minHeight: 500, minWidth: 500, context: context, initAspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4));
         final exif = await Exif.fromPath(pickedFile.path);
         final coord = await exif.getLatLong();
-        final bytes = await pickedFile.readAsBytes();
 
-        Routing.to(context, SelectLocation(image: bytes, center:  coord != null ? LatLng(coord.latitude, coord.longitude) : null,));
+        Routing.to(context, SelectLocation(image: croppedImage!, center:  coord != null ? LatLng(coord.latitude, coord.longitude) : null,));
       } catch (e) {
-        CustomErrorSnackBar.message(message: "Could not load image data");
+        CustomErrorSnackBar.message(message: "Could not load or crop image");
         debugPrint(e.toString());
       }
     }
