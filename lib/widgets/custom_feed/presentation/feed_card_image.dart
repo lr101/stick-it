@@ -8,6 +8,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../../../data/service/global_data_service.dart';
 import '../../../data/service/user_image_service_small.dart';
 import '../../../data/service/user_service.dart';
 import '../../clickable_names/presentation/clickable_user.dart';
@@ -55,10 +56,7 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
         userByIdProvider(widget.item.creatorId).select((e) => e.value
             ?.username));
     return Expanded(
-      child: data.whenOrNull(
-          data: (imageData) {
-            if (imageData == null) return null;
-            return Padding(padding: EdgeInsets.symmetric(horizontal: widget.rotateHeader ? 5 : 0, vertical: widget.rotateHeader ? 0 : 5), child: Column(
+            child: Padding(padding: EdgeInsets.symmetric(horizontal: widget.rotateHeader ? 5 : 0, vertical: widget.rotateHeader ? 0 : 5), child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
@@ -70,12 +68,15 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                           SizedBox(
                               width: widget.maxWidth - 20,
                               height: widget.maxHeight - 50,
-                              child: ClipRRect(
+                              child: data.whenOrNull(
+                                data: (imageData) {
+                            if (imageData == null) return null;
+                              return ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: ref.watch(
                                       feedMapStateProvider(widget.item.id))
                                       ? getImage(imageData)
-                                      : feedMap)),
+                                      : feedMap);}) ?? FeedCardShimmer()),
                           SizedBox(height: 5,),
                           LikeButtons(pinId: widget.item.id,
                               creatorId: widget.item.creatorId),
@@ -83,7 +84,7 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                     ),
                     SizedBox(
                         width: widget.maxWidth - 50,
-                        height: 60,
+                        height: 65,
                         child: Padding(
                             padding: const EdgeInsets.all(10), child: Container(
                             decoration: BoxDecoration(
@@ -113,17 +114,16 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
-                                              fontSize: selectedBatch != null
-                                                  ? 12
-                                                  : 14,))),
-                                        if (widget.distance !=
-                                            null) getDistance(selectedBatch),
-                                        if (widget.distance ==
-                                            null) getPinLocation(selectedBatch)
+                                              fontSize: 13))),
+                                        const SizedBox(width: 5,),
+                                        if (selectedBatch != null) Batch(
+                                          batchId: selectedBatch, fontSize: 7)
                                       ],
                                     ),
-                                    if (selectedBatch != null) Batch(
-                                      batchId: selectedBatch, fontSize: 7,)
+                                    if (widget.distance !=
+                                        null) getDistance(selectedBatch),
+                                    if (widget.distance ==
+                                        null) getPinLocation(selectedBatch)
                                   ],
                                 ),
                                 Expanded(child: Align(
@@ -144,14 +144,15 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                               // Match the borderRadius of the decoration
                               child: ref.watch(feedMapStateProvider(widget.item.id))
                                     ? feedMap
-                                    : getImage(imageData),
+                                    : data.whenOrNull(
+                                      data: (imageData) {
+                                      if (imageData == null) return null;
+                                      return getImage(imageData);}) ?? FeedCardShimmer(),
                               ),))
                   ],
                 ),
               ],
-            ));
-          }) ??
-          FeedCardShimmer(height: widget.maxHeight - 50, width: widget.maxWidth - 20),
+            ))
     );
   }
 
@@ -159,7 +160,7 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
     final switchFun = ref.read(feedMapStateProvider(widget.item.id).notifier).update;
     final isBig = ref.watch(feedMapStateProvider(widget.item.id));
     return GestureDetector(
-        onDoubleTap: isBig ? () => likeImage(widget.item.creatorId) : null,
+        onDoubleTap: isBig ? () => likeImage() : null,
         onTap: isBig && widget.onTab != null ? () => widget.onTab!(
             LatLng(widget.item.latitude, widget.item.longitude), 18) : !isBig ? switchFun : null ,
         child: FadeInImage(
@@ -172,18 +173,19 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
     );
   }
 
-  void likeImage(String userId) {
+  void likeImage() {
+    final userId = ref.watch(globalDataServiceProvider).userId!;
     ref.read(likeServiceProvider.notifier).addLike(
         widget.item.id, widget.item.creatorId,
         CreateLikeDto(userId: userId, like: true));
   }
 
   Widget getDistance(int? selectedBatch) {
-    final text = " ~${widget.distance! >= 1000 ? "${(widget.distance! ~/ 1000)
-        .toInt()}km" : "${widget.distance!.toInt()}m"}";
+    final text = "~ ${widget.distance! >= 1000 ? "${(widget.distance! ~/ 1000)
+        .toInt()}km near you" : "${widget.distance!.toInt()}m near you"}";
     return Text(text, style: TextStyle(fontStyle: FontStyle.italic,
         color: Colors.white,
-        fontSize: selectedBatch != null ? 12 : 14),
+        fontSize: 10),
     );
   }
 
@@ -203,10 +205,10 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
             } else if (first.country != null) {
               near += first.country!;
             }
-            return Text(" - " + near, style: TextStyle(
+            return Text(near, style: TextStyle(
                 fontStyle: FontStyle.italic,
                 color: Colors.white,
-                fontSize: selectedBatch != null ? 12 : 14),);
+                fontSize: 10));
           } else {
             return const Text("");
           }

@@ -3,3 +3,13 @@ workflows:
     name: Flutter IOS Build
     max_build_duration: 120
     instance_type: mac_mini_m2
+    scripts:
+      - name: Create local .env file
+        script: |
+          echo "API_HOST=$API_HOST" > .env
+          echo "MINIO_HOST=$MINIO_HOST" >> .env
+          echo "DISCORD_INVITE=$DISCORD_INVITE" >> .env
+          echo "INSTAGRAM_URL=$INSTAGRAM_URL" >> .env
+          echo "GITHUB_URL=$GITHUB_URL" >> .env
+          echo "APPSTORE_ID=$DISCORD_INVITE" >> .env
+

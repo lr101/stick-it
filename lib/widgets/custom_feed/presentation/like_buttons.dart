@@ -24,9 +24,8 @@ class LikeButtons extends ConsumerWidget {
     return Row(
           children: [
             LikeButtonAnimated(
-              isLikedProvider: pinLikeProvider(pinId).select((e) => e.valueOrNull?.likedByUser ?? false),
+              isLikedProvider: pinLikeProvider(pinId).select((e) => e.valueOrNull?.likedByUser),
               isLiked: pinLike.valueOrNull?.likedByUser ?? false,
-              postFrameCallback: (state) => addLikeState(state, pinLike.valueOrNull?.likedByUser ?? false),
               likeBuilder: (isLiked) {
                 return Icon(
                   Icons.favorite,
@@ -50,9 +49,8 @@ class LikeButtons extends ConsumerWidget {
             ),
             SizedBox(width: 10),
             LikeButtonAnimated(
-              isLikedProvider: pinLikeProvider(pinId).select((e) => e.valueOrNull?.likedLocationByUser ?? false),
+              isLikedProvider: pinLikeProvider(pinId).select((e) => e.valueOrNull?.likedLocationByUser),
               isLiked: pinLike.valueOrNull?.likedLocationByUser ?? false,
-              postFrameCallback: (state) => addLikeState(state, pinLike.valueOrNull?.likedLocationByUser ?? false),
               likeBuilder: (isLiked) {
                 return Icon(
                   CupertinoIcons.location_solid,
@@ -76,9 +74,8 @@ class LikeButtons extends ConsumerWidget {
             ),
             SizedBox(width: 10),
             LikeButtonAnimated(
-              isLikedProvider: pinLikeProvider(pinId).select((e) => e.valueOrNull?.likedPhotographyByUser ?? false),
+              isLikedProvider: pinLikeProvider(pinId).select((e) => e.valueOrNull?.likedPhotographyByUser),
               isLiked: pinLike.valueOrNull?.likedPhotographyByUser ?? false,
-              postFrameCallback: (state) => addLikeState(state, pinLike.valueOrNull?.likedPhotographyByUser ?? false),
               likeBuilder: (isLiked) {
                 return Icon(
                   Icons.photo_camera,
@@ -102,9 +99,8 @@ class LikeButtons extends ConsumerWidget {
             ),
             SizedBox(width: 10),
             LikeButtonAnimated(
-              isLikedProvider: pinLikeProvider(pinId).select((e) => e.valueOrNull?.likedArtByUser ?? false),
+              isLikedProvider: pinLikeProvider(pinId).select((e) => e.valueOrNull?.likedArtByUser),
               isLiked: pinLike.valueOrNull?.likedArtByUser ?? false,
-              postFrameCallback: (state) => addLikeState(state, pinLike.valueOrNull?.likedArtByUser ?? false),
               likeBuilder: (isLiked) {
                 return Icon(
                   Icons.brush,
@@ -128,13 +124,6 @@ class LikeButtons extends ConsumerWidget {
             )
           ],
         );
-  }
-
-  void addLikeState(LikeButtonAnimatedState state, bool isLiked) {
-    if (isLiked) {
-      state.controller!.reset();
-      state.controller!.forward();
-    }
   }
 
 }

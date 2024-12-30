@@ -16,7 +16,13 @@ class CustomImagePicker {
       if (!(await Permission.accessMediaLocation.isGranted)) {
         await Permission.accessMediaLocation.request();
       }
-      return await ImagePicker().pickMedia(imageQuality: 25, requestFullMetadata: true);
+      final picker = ImagePicker();
+      XFile? pickedFile = await picker.pickMedia(imageQuality: 25, requestFullMetadata: true);
+      final LostDataResponse response = await picker.retrieveLostData();
+      if (response.file != null) {
+        pickedFile = response.file;
+      }
+      return pickedFile;
     } catch (e) {
       CustomErrorSnackBar.message(message: e.toString());
     }
@@ -26,27 +32,43 @@ class CustomImagePicker {
   /// opens the input picker for selecting an image from the gallery
   /// after selecting an image it is opened in an image cropper
   /// check if 100 < width, height and image is square
-  static Future<Uint8List?> pickAndCrop({required int minHeight, required int minWidth,required BuildContext context}) async {
+  static Future<Uint8List?> pickAndCrop({required int minHeight, required int minWidth,required BuildContext context, CropAspectRatio? initAspectRatio}) async {
     try {
       final XFile? res =  await CustomImagePicker.pick(context: context);
+      return crop(res: res, minHeight: minHeight, minWidth: minWidth, context: context, initAspectRatio: initAspectRatio);
+    } catch (e) {
+      CustomErrorSnackBar.message(message: e.toString());
+    }
+    return null;
+  }
+
+  /// opens the input picker for selecting an image from the gallery
+  /// after selecting an image it is opened in an image cropper
+  /// check if 100 < width, height and image is square
+  static Future<Uint8List?> crop({
+    required XFile? res,
+    required int minHeight,
+    required int minWidth,
+    required BuildContext context,
+    CropAspectRatio? initAspectRatio
+  }) async {
       if (res != null && context.mounted) {
         CroppedFile? croppedFile = await ImageCropper().cropImage(
           compressFormat: ImageCompressFormat.jpg,
           sourcePath: res.path,
-          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+          aspectRatio: initAspectRatio ?? const CropAspectRatio(ratioX: 1, ratioY: 1),
           uiSettings: [
             AndroidUiSettings(
-                toolbarTitle: 'Cropper',
-                toolbarWidgetColor: Colors.white,
-                toolbarColor: Theme.of(context).primaryColor,
-                initAspectRatio: CropAspectRatioPreset.square,
-                lockAspectRatio: true,
+              toolbarTitle: 'Cropper',
+              toolbarWidgetColor: Colors.white,
+              toolbarColor: Theme.of(context).primaryColor,
+              lockAspectRatio: true,
             ),
             IOSUiSettings(
-               title: 'Cropper',
-               aspectRatioLockEnabled: true,
-               aspectRatioLockDimensionSwapEnabled: false,
-               aspectRatioPickerButtonHidden: true,
+              title: 'Cropper',
+              aspectRatioLockEnabled: true,
+              aspectRatioLockDimensionSwapEnabled: false,
+              aspectRatioPickerButtonHidden: true,
               resetAspectRatioEnabled: false,
             ),
             WebUiSettings(
@@ -62,9 +84,6 @@ class CustomImagePicker {
         }
         return image;
       }
-    } catch (e) {
-      CustomErrorSnackBar.message(message: e.toString());
-    }
-    return null;
+      return null;
   }
 }

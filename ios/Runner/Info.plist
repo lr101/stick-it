@@ -36,9 +36,11 @@
 		<key>NSCameraUsageDescription</key>
 		<string>Stick-It needs access to the camera to post pictures you have taken. It is only used and accessed on the camera page</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>Stick-It needs access to your location, when in use to, show the users current location on the map and to create a post linked to your location</string>
+		<string>Stick-It needs access to your location, when in use, to show the users current location on the map and to create a post linked to your location</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Stick-It needs access to the gallery so that profile and group images can be picked</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+        <string>Stick-It needs access to your location, to show the users current location live on the map</string>
 		<key>SKAdNetworkItems</key>
 		<array>
 			<dict>

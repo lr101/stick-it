@@ -8,6 +8,8 @@ import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/camera/data/app_review_state.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +20,7 @@ import 'package:mutex/mutex.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:uuid/uuid.dart';
 import '../../../data/dto/group_dto.dart';
+import '../../../widgets/custom_feed/presentation/feed_timeline_header.dart';
 import '../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import '../../../widgets/tiles/presentation/group_tile.dart';
 
@@ -35,93 +38,49 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   final TransformationController controller = TransformationController();
 
   Mutex _m = Mutex();
+  late final groupIndexWhenOpened;
+
+  @override
+  void initState() {
+    super.initState();
+    groupIndexWhenOpened = ref.read(cameraGroupIndexProvider);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final global = ref.watch(globalDataServiceProvider);
-    final userImage = ref.watch(userProfilePictureSmallByIdProvider(global.userId!));
-    return Scaffold(
+    final groups = ref.watch(userGroupServiceProvider).value ?? [];
+        return Scaffold(
         appBar: AppBar(
           title: Text("Approve"),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        body: SingleChildScrollView(child:Padding(padding: EdgeInsets.all(10), child:  Column(
+              children: [
+                FeedTimelineHeader(groupId: groups[ref.watch(cameraGroupIndexProvider)].groupId, creationDate: DateTime.now(), height: MediaQuery.of(context).size.width - 20, isRotated: true,),
+                const SizedBox(height: 10,),
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: InteractiveViewer(
+                        panEnabled: false,
+                        transformationController: controller,
+                        boundaryMargin: const EdgeInsets.all(0),
+                        onInteractionEnd: (ScaleEndDetails endDetails) {
+                          controller.value = Matrix4.identity();
+                        },
+                        minScale: 1,
+                        maxScale: 4,
+                        child: Image.memory(widget.image))),
+              ],))
+
+          ),
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(
-                height: 40,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                      Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: RoundImage(
-                          size: 16,
-                          imageCallback: userImage,
-                          child: Container(),
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 22,
-                            child: FittedBox(
-                                fit: BoxFit.fitHeight,
-                                child: Text(ref.watch(currentUserServiceProvider).username!)),
-                          ),
-                          SizedBox(
-                              height: 18,
-                              child: FittedBox(
-                                  fit: BoxFit.fitHeight,
-                                  child: Text(
-                                    ref.watch(cameraSelectedGroupProvider).name,
-                                    style: const TextStyle(
-                                        fontStyle: FontStyle.italic),
-                                  )))
-                        ],
-                      )
-                    ]),
-                  ],
-                ),
-              ),
-              Expanded(
-                  child: InteractiveViewer(
-                      panEnabled: false,
-                      transformationController: controller,
-                      boundaryMargin: const EdgeInsets.all(0),
-                      onInteractionEnd: (ScaleEndDetails endDetails) {
-                        controller.value = Matrix4.identity();
-                      },
-                      minScale: 1,
-                      maxScale: 4,
-                      child: Image.memory(widget.image))),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FloatingActionButton(
-                    heroTag: "editCameraImage",
-                    onPressed: handleEdit,
-                    child: const Icon(Icons.edit),
-                  ),
-                  FloatingActionButton(
-                    heroTag: "uploadCameraImage",
-                    onPressed: handleApprove,
-                    child: const Icon(Icons.check),
-                  )
-                ],
-              )
+              FloatingActionButton(onPressed: handleEdit, child: Icon(Icons.edit), heroTag: "editHero",),
+              const SizedBox(height: 10,),
+              FloatingActionButton(onPressed: handleApprove, child: Icon(Icons.check), heroTag: "approveHero",),
             ],
           ),
-        ));
+    );
   }
 
   Future<void> handleApprove() async {
@@ -153,6 +112,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         }
       });
     }
+    ref.read(cameraGroupIndexProvider.notifier).updateIndex(groupIndexWhenOpened);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
@@ -161,7 +121,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
     await SelectDialog.showModal<LocalGroupDto>(
       context,
       showSearchBox: false,
-      label: "Change Group",
+      label: Text("Change Group"),
       selectedValue: groups[ref.watch(cameraGroupIndexProvider)],
       itemBuilder: (context, group, b) => GroupTile(groupDto: group),
       items: groups,

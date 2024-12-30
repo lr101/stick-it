@@ -50,8 +50,7 @@ class CurrentUserService extends _$CurrentUserService {
     final userId = ref.watch(globalDataServiceProvider).userId!;
     final user = await ref.watch(userApiProvider).getUser(userId);
     if (user == null) return;
-    await update(username: user.username, description: user.description);
-    await runXpUpdate();
+    await update(username: user.username, description: user.description, selectedBatch: user.selectedBatch);
   }
 
   Future<void> update({String? description, String? username, Uint8List? profileImage, Uint8List? profileImageSmall, int? selectedBatch}) async {

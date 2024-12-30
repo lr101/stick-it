@@ -33,13 +33,14 @@ class AchievementsPage extends ConsumerWidget {
           final achievement = Achievement.getById(index);
           final userAchievement = achievementProgress.whenOrNull(data: (data) => data.firstWhere((e) => e.achievementId == index));
 
-          final progress = userAchievement != null ? min(1.0, userAchievement.currentValue / userAchievement.thresholdValue) : 0.0;
+          final progress = calculateProgress(userAchievement);
           final color = userAchievement != null && userAchievement.claimed ? Theme.of(context).highlightColor : null;
           return  GestureDetector(
               onTap: () => onTab(ref, achievement.id, selectedBatch, userAchievement, progress),
               child: AchievementCard(
                 progress: progress,
                 isSelected: selectedBatch == index,
+                borderWidth: 2.0,
                 claimedBorderColor: Theme.of(context).colorScheme.primary,
                 progressColor: Theme.of(context).highlightColor,
                 color: color,
@@ -68,12 +69,18 @@ class AchievementsPage extends ConsumerWidget {
     );
   }
 
+  double calculateProgress(UserAchievementsDtoInner? ach) {
+    if (ach == null) return 0.0;
+    if (ach.thresholdUp) return min(1.0, ach.currentValue / ach.thresholdValue);
+    return min(1.0, ach.thresholdValue  / ach.currentValue);
+  }
+
   Future<void> onTab(WidgetRef ref, int achievementId, int? selectedBatch, UserAchievementsDtoInner? achievement, double progress) async {
     if(selectedBatch == achievementId) {
       return;
     } else if (achievement != null && achievement.claimed) {
       setBatch(achievementId, ref);
-    } else if (progress > 1.0) {
+    } else if (progress >= 1.0) {
       claimAchievement(achievementId, ref);
     }
   }

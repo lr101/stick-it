@@ -8,10 +8,10 @@ class MaterialTheme {
   static ColorScheme lightMediumContrastScheme() {
     return const ColorScheme(
       brightness: Brightness.light,
-      primary: Color(4284496640),
-      surfaceTint: Color(4286731539),
+      primary: Color(0xFFE88F1D),
+      surfaceTint: Color(0xFFE88F1D),
       onPrimary: Color(4294967295),
-      primaryContainer: Color(4288375592),
+      primaryContainer: Color(0xFFC07200),
       onPrimaryContainer: Color(4294967295),
       secondary: Color(4283645735),
       onSecondary: Color(4294967295),
@@ -34,7 +34,7 @@ class MaterialTheme {
       scrim: Color(4278190080),
       inverseSurface: Color(4281806631),
       inversePrimary: Color(4294490993),
-      primaryFixed: Color(4288375592),
+      primaryFixed: Color(0xFFB67212),
       onPrimaryFixed: Color(4294967295),
       primaryFixedDim: Color(4286534160),
       onPrimaryFixedVariant: Color(4294967295),
