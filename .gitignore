@@ -71,3 +71,4 @@ pubspec.lock
 /out/
 /.env.dev
 /build.sh
+.vscode/
