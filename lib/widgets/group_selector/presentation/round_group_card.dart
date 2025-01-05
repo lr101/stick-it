@@ -6,11 +6,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../round_image/presentation/round_image.dart';
+import '../service/group_order_service.dart';
 
 class RoundGroupCard extends ConsumerStatefulWidget {
-  const RoundGroupCard({super.key, required this.groupId});
-
-  final String groupId;
+  const RoundGroupCard({super.key});
 
   @override
   ConsumerState<RoundGroupCard> createState() => _RoundGroupCardState();
@@ -21,20 +20,16 @@ class _RoundGroupCardState extends ConsumerState<RoundGroupCard> {
   Widget build(BuildContext context) {
     double baseHeight = (MediaQuery.of(context).size.height * 0.09) - 15;
     Color color = Colors.grey.withOpacity(0.8);
-    Widget num = const SizedBox.shrink();
-    final isActive =
-        ref.watch(groupByIdActivatedProvider(widget.groupId)).value ?? false;
+    final groupId = ref.watch(roundGroupIdProvider);
+    final isActive = ref.watch(groupByIdActivatedProvider(groupId)).value ?? false;
 
-    return ref.watch(groupProfilePictureByIdProvider(widget.groupId)).when(
-        data: (data) {
-          return Padding(
-              key: ValueKey(widget.groupId),
+    return Padding(
               padding: const EdgeInsets.all(5),
               child: GestureDetector(
                   onTap: () => {
                         ref
-                            .read(userGroupServiceProvider.notifier)
-                            .setIsActive(widget.groupId, !isActive),
+                            .watch(userGroupServiceProvider.notifier)
+                            .setIsActive(groupId, !isActive),
                       },
                   child: Stack(children: [
                     ClipOval(
@@ -48,7 +43,7 @@ class _RoundGroupCardState extends ConsumerState<RoundGroupCard> {
                     RoundImage(
                       size: baseHeight / 2,
                       clickable: false,
-                      imageCallback: AsyncData(data),
+                      imageCallback: AsyncData(ref.watch(groupProfilePictureByIdProvider(groupId)).value),
                       child: ClipOval(
                         child: Container(
                           height: baseHeight,
@@ -59,8 +54,6 @@ class _RoundGroupCardState extends ConsumerState<RoundGroupCard> {
                       ),
                     ),
                   ])));
-        },
-        error: (error, stackTrace) => Icon(Icons.error),
-        loading: () => SizedBox.square(dimension: baseHeight + 10));
+
   }
 }

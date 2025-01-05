@@ -35,7 +35,7 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
       _fetchPage(pageKey);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.watch(widget.pinProvider).whenData((data) => _pins = data ?? []);
+      ref.read(widget.pinProvider).whenData((data) => _pins = data ?? []);
       if (widget.index != null) {
         double maxWidth = MediaQuery.of(context).size.width;
         double maxHeight =MediaQuery.of(context).size.height;
@@ -63,7 +63,9 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
       scrollController: scrollController,
       builderDelegate: PagedChildBuilderDelegate<LocalPinDto>(
         animateTransitions: true,
-        itemBuilder: (context, item, index) => FeedCard(item: item),
+        itemBuilder: (context, item, index) => ProviderScope(
+            child: FeedCard(item: item)
+        ),
       ),
     );
   }

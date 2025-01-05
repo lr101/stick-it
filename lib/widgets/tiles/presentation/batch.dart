@@ -18,14 +18,10 @@ class Batch extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: achievement.color.withOpacity(0.5),
-        border: Border.all(
-          width: 1,
-          color: achievement.color
-        ),
         borderRadius: BorderRadius.circular(5),
       ),
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: padding),
-      child: Text(achievement.name, style: TextStyle(color: Colors.white, fontSize: fontSize, fontStyle: FontStyle.italic),),
+      child: Text(achievement.name, style: TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color, fontSize: fontSize, fontStyle: FontStyle.italic),),
     );
   }
 }

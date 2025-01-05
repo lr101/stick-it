@@ -204,28 +204,27 @@ class UserService extends _$UserService {
 }
 
 @riverpod
-Future<LocalUserDto> userById(Ref ref, String userId) async {
+LocalUserDto? userById(Ref ref, String userId) {
   final user = ref.watch(userServiceProvider.select((u) => u.whenOrNull(data: (e) => e.containsKey(userId) ? e[userId] : null)));
   if (user != null) {
     return user;
-  } else {
-    return await ref.read(userServiceProvider.notifier).fetchUserById(userId);
-  }
+  } ref.read(userServiceProvider.notifier).fetchUserById(userId);
+  return null;
 }
 
 @riverpod
-Future<UserLikesDto> userLikesById(Ref ref, String userId) async {
-  final user = await ref.watch(userByIdProvider(userId).future);
-  if (user.likes != null) {
-    return user.likes!;
-  } else {
-    return await ref.read(userServiceProvider.notifier).fetchUserLikes(userId);
+UserLikesDto? userLikesById(Ref ref, String userId) {
+  final likes = ref.watch(userByIdProvider(userId).select((e) => e?.likes));
+  if (likes != null) {
+    return likes;
   }
+  ref.read(userServiceProvider.notifier).fetchUserLikes(userId);
+  return null;
 }
 
 @riverpod
 String? userByIdUsername(Ref ref, String userId) {
-  return ref.watch(userByIdProvider(userId).select((e) => e.value?.username));
+  return ref.watch(userByIdProvider(userId).select((e) => e?.username));
 }
 
 
