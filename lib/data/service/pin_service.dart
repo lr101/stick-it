@@ -128,16 +128,17 @@ class PinService extends _$PinService {
   Future<String?> addPinToGroup(LocalPinDto pin, Uint8List image) async {
     try {
       await _pinRepository.createOrUpdate(pin);
-      await ref.watch(pinImageServiceProvider.notifier).addOfflineImage(pin.id, image);
+      await ref.read(pinImageServiceProvider.notifier).addOfflineImage(pin.id, image);
       updateSinglePin(pin);
-      ref.watch(groupRepositoryProvider).addPoint(pin.creatorId, pin.groupId);
-      final pinsApi = ref.watch(pinApiProvider);
+      ref.read(groupRepositoryProvider).addPoint(pin.creatorId, pin.groupId);
+      ref.read(userGroupServiceProvider.notifier).setIsActive(groupId, true);
+      final pinsApi = ref.read(pinApiProvider);
       final result = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(image)));
       if (result != null) {
         final newPin = LocalPinDto.fromDto(result);
         updateSinglePin(newPin, oldPinId: pin.id);
         _pinRepository.updateToSynced(newPin, pin.id);
-        await ref.watch(pinImageServiceProvider.notifier).addImage(newPin.id, removeKeepAlive: true);
+        await ref.read(pinImageServiceProvider.notifier).addImage(newPin.id, removeKeepAlive: true);
         return null;
       } else {
         return 'Failed to add pin to group';
