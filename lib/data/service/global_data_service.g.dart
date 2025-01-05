@@ -6,6 +6,22 @@ part of 'global_data_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$userIdHash() => r'f2c97313ee210fb250e363e4fcf6288210cac59b';
+
+/// See also [userId].
+@ProviderFor(userId)
+final userIdProvider = AutoDisposeProvider<String>.internal(
+  userId,
+  name: r'userIdProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$userIdHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef UserIdRef = AutoDisposeProviderRef<String>;
 String _$lastKnownLocationHash() => r'a7747ffd98bed64169822ee672ea88adadc7fcf5';
 
 /// See also [lastKnownLocation].
@@ -39,7 +55,7 @@ final xpProvider = AutoDisposeProvider<UserXpDto>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef XpRef = AutoDisposeProviderRef<UserXpDto>;
-String _$globalDataServiceHash() => r'b01237ea843eeab095de0171f6d581c3bdb90686';
+String _$globalDataServiceHash() => r'686c0c129e37824f5a21ef8e4c80ad41ff277116';
 
 /// See also [GlobalDataService].
 @ProviderFor(GlobalDataService)
@@ -56,7 +72,7 @@ final globalDataServiceProvider =
 
 typedef _$GlobalDataService = Notifier<GlobalDataDto>;
 String _$currentUserServiceHash() =>
-    r'021947a2e0df39ca17e09d50afb8cb6fedb7f08b';
+    r'941922d2695d2e59a595ec29fa2044b552f1ff92';
 
 /// See also [CurrentUserService].
 @ProviderFor(CurrentUserService)

@@ -23,6 +23,7 @@ class GroupRankingTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isUserGroups = ref.watch(userGroupServiceProvider.select((e) => e.value?.where((i) => i.groupId == groupDto.groupInfoDto!.id).isNotEmpty));
     return ListTile(
+      minTileHeight: 60,
       onTap: () =>  isUserGroups == true
           ? Routing.to(context, UserGroupOverview(groupId: groupDto.groupInfoDto!.id))
           : Routing.to(context, NoUserGroupOverview(groupId: groupDto.groupInfoDto!.id)),
@@ -38,7 +39,7 @@ class GroupRankingTile extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           groupDto.rankNr! <= 3 ? Icon(Icons.emoji_events, color: groupDto.rankNr == 1 ? Colors.yellow : groupDto.rankNr == 2 ? Colors.grey : Colors.brown,) : Text("${groupDto.rankNr}.",),
-          RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(groupDto.groupInfoDto!.id)), size: 20.0),
+          RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(groupDto.groupInfoDto!.id)), size: 25.0),
         ],
       ))
     );

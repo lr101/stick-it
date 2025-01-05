@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../../data/service/global_data_service.dart';
@@ -50,11 +51,9 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
   Widget build(BuildContext context) {
     final data = ref.watch(getPinImageInfoProvider(widget.item));
     final selectedBatch = ref.watch(
-        userByIdProvider(widget.item.creatorId).select((e) => e.value
-            ?.selectedBatch));
+        userByIdProvider(widget.item.creatorId).select((e) => e?.selectedBatch));
     final username = ref.watch(
-        userByIdProvider(widget.item.creatorId).select((e) => e.value
-            ?.username));
+        userByIdProvider(widget.item.creatorId).select((e) => e?.username));
     return Expanded(
             child: Padding(padding: EdgeInsets.symmetric(horizontal: widget.rotateHeader ? 5 : 0, vertical: widget.rotateHeader ? 0 : 5), child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,22 +67,16 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                           SizedBox(
                               width: widget.maxWidth - 20,
                               height: widget.maxHeight - 50,
-                              child: data.whenOrNull(
-                                data: (imageData) {
-                            if (imageData == null) return null;
-                              return ClipRRect(
+                              child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: ref.watch(
-                                      feedMapStateProvider(widget.item.id))
-                                      ? getImage(imageData)
-                                      : feedMap);}) ?? FeedCardShimmer()),
+                                  child: ref.watch(feedMapStateProvider(widget.item.id)) ? getImage(data.value) : feedMap)),
                           SizedBox(height: 5,),
                           LikeButtons(pinId: widget.item.id,
                               creatorId: widget.item.creatorId),
                         ]
                     ),
                     SizedBox(
-                        width: widget.maxWidth - 50,
+                        width: widget.maxWidth - 20,
                         height: 65,
                         child: Padding(
                             padding: const EdgeInsets.all(10), child: Container(
@@ -142,12 +135,7 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               // Match the borderRadius of the decoration
-                              child: ref.watch(feedMapStateProvider(widget.item.id))
-                                    ? feedMap
-                                    : data.whenOrNull(
-                                      data: (imageData) {
-                                      if (imageData == null) return null;
-                                      return getImage(imageData);}) ?? FeedCardShimmer(),
+                              child: ref.watch(feedMapStateProvider(widget.item.id)) ? feedMap : getImage(data.value)
                               ),))
                   ],
                 ),
@@ -156,20 +144,22 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
     );
   }
 
-  Widget getImage(PinImageInfo image) {
+  Widget getImage(PinImageInfo? image) {
     final switchFun = ref.read(feedMapStateProvider(widget.item.id).notifier).update;
     final isBig = ref.watch(feedMapStateProvider(widget.item.id));
     return GestureDetector(
         onDoubleTap: isBig ? () => likeImage() : null,
         onTap: isBig && widget.onTab != null ? () => widget.onTab!(
             LatLng(widget.item.latitude, widget.item.longitude), 18) : !isBig ? switchFun : null ,
-        child: FadeInImage(
+        child: Container(
+         color: Colors.grey.withOpacity(0.5),
+          child: image != null ? FadeInImage(
           fadeInDuration: const Duration(milliseconds: 100),
           fit: BoxFit.cover,
           placeholder: MemoryImage(kTransparentImage),
-          image: MemoryImage(image.image),
+          image:  MemoryImage(image.image),
           width: double.infinity,
-        )
+        ) : FeedCardShimmer())
     );
   }
 

@@ -24,6 +24,7 @@ class UserProfile extends ConsumerWidget {
     final userId = ref.watch(globalDataServiceProvider).userId!;
     final userPins = ref.watch(sortedUserPinsProvider);
     final currentUser = ref.watch(currentUserServiceProvider);
+    final likes = ref.watch(userLikesByIdProvider(userId));
     return CustomAvatarScaffold(
       avatar: AsyncData(ref
           .watch(profilePictureByIdProvider(userId)).value),
@@ -75,10 +76,10 @@ class UserProfile extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
 
-                UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeCount), icon: Icons.favorite),
-                UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeLocationCount), icon: CupertinoIcons.location_solid),
-                UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likePhotographyCount), icon: Icons.photo_camera),
-                UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeArtCount), icon: Icons.brush)
+                UserLikeIcon(likeCount: likes?.likeCount, icon: Icons.favorite),
+                UserLikeIcon(likeCount: likes?.likeLocationCount, icon: CupertinoIcons.location_solid),
+                UserLikeIcon(likeCount: likes?.likePhotographyCount, icon: Icons.photo_camera),
+                UserLikeIcon(likeCount: likes?.likeArtCount, icon: Icons.brush)
 
               ],
             )),

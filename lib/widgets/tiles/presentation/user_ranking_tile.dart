@@ -32,6 +32,7 @@ class UserRankingTile extends ConsumerWidget {
        batch = user.userInfoDto!.selectedBatch;
     }
       final listTile = ListTile(
+        minTileHeight: 60,
       tileColor: userId == user.userInfoDto!.userId ? Theme.of(context).highlightColor: null,
       title: Text(user.userInfoDto!.username),
       subtitle: batch != null ? Row(children: [Batch(batchId: batch, fontSize: 8,)]) : null,
@@ -41,7 +42,7 @@ class UserRankingTile extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             user.rankNr! <= 3 ? Icon(Icons.emoji_events, color: user.rankNr == 1 ? Colors.yellow : user.rankNr == 2 ? Colors.grey : Colors.brown,) : Text("${user.rankNr}.",),
-            RoundImage(imageCallback: ref.watch(userProfilePictureSmallByIdProvider(user.userInfoDto!.userId)), size: 20.0),
+            RoundImage(imageCallback: ref.watch(userProfilePictureSmallByIdProvider(user.userInfoDto!.userId)), size: 25.0),
           ],
         ),
       ),

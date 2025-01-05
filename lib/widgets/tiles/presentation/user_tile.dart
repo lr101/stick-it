@@ -19,6 +19,7 @@ class UserTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userByIdUsernameProvider(userId));
     return ListTile(
+      minTileHeight: 60,
           onTap: () => CustomDialog.show(context,
             acceptText: "Remove",
             title: "Remove hidden user",
@@ -26,7 +27,7 @@ class UserTile extends ConsumerWidget {
           title: Align(alignment: Alignment.centerLeft, child: Text(user ?? "")),
           leading: RoundImage(
                 imageCallback: ref.watch(userProfilePictureSmallByIdProvider(userId)),
-                size: 20.0,
+                size: 25.0,
                 child: Container()),
             );
   }

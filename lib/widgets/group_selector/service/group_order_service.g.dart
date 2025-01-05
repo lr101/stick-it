@@ -6,7 +6,23 @@ part of 'group_order_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupOrderServiceHash() => r'da33d6278933de3d852273dee33df29941c7638a';
+String _$roundGroupIdHash() => r'dd926cf843566b1db3f10083769172177a6cd74e';
+
+/// See also [roundGroupId].
+@ProviderFor(roundGroupId)
+final roundGroupIdProvider = AutoDisposeProvider<String>.internal(
+  roundGroupId,
+  name: r'roundGroupIdProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$roundGroupIdHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef RoundGroupIdRef = AutoDisposeProviderRef<String>;
+String _$groupOrderServiceHash() => r'd735560810958bccb872bb120fb62bc73e887951';
 
 /// See also [GroupOrderService].
 @ProviderFor(GroupOrderService)
