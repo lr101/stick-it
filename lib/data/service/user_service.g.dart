@@ -6,7 +6,7 @@ part of 'user_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userByIdHash() => r'384d66e95fdbeec9a6bef74ad81eeef37e323a9e';
+String _$userByIdHash() => r'7e5b6a9e9120c5d8a711c0872e87980dbfe007ea';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const userByIdProvider = UserByIdFamily();
 
 /// See also [userById].
-class UserByIdFamily extends Family<AsyncValue<LocalUserDto>> {
+class UserByIdFamily extends Family<LocalUserDto?> {
   /// See also [userById].
   const UserByIdFamily();
 
@@ -72,7 +72,7 @@ class UserByIdFamily extends Family<AsyncValue<LocalUserDto>> {
 }
 
 /// See also [userById].
-class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto> {
+class UserByIdProvider extends AutoDisposeProvider<LocalUserDto?> {
   /// See also [userById].
   UserByIdProvider(
     String userId,
@@ -106,7 +106,7 @@ class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto> {
 
   @override
   Override overrideWith(
-    FutureOr<LocalUserDto> Function(UserByIdRef provider) create,
+    LocalUserDto? Function(UserByIdRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -123,7 +123,7 @@ class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<LocalUserDto> createElement() {
+  AutoDisposeProviderElement<LocalUserDto?> createElement() {
     return _UserByIdProviderElement(this);
   }
 
@@ -143,27 +143,27 @@ class UserByIdProvider extends AutoDisposeFutureProvider<LocalUserDto> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin UserByIdRef on AutoDisposeFutureProviderRef<LocalUserDto> {
+mixin UserByIdRef on AutoDisposeProviderRef<LocalUserDto?> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
-class _UserByIdProviderElement
-    extends AutoDisposeFutureProviderElement<LocalUserDto> with UserByIdRef {
+class _UserByIdProviderElement extends AutoDisposeProviderElement<LocalUserDto?>
+    with UserByIdRef {
   _UserByIdProviderElement(super.provider);
 
   @override
   String get userId => (origin as UserByIdProvider).userId;
 }
 
-String _$userLikesByIdHash() => r'c6195d7c3745ed154c96d37f86b1f169c036dda3';
+String _$userLikesByIdHash() => r'02f070cfb4b373665d8dcec24111d0769188c908';
 
 /// See also [userLikesById].
 @ProviderFor(userLikesById)
 const userLikesByIdProvider = UserLikesByIdFamily();
 
 /// See also [userLikesById].
-class UserLikesByIdFamily extends Family<AsyncValue<UserLikesDto>> {
+class UserLikesByIdFamily extends Family<UserLikesDto?> {
   /// See also [userLikesById].
   const UserLikesByIdFamily();
 
@@ -201,7 +201,7 @@ class UserLikesByIdFamily extends Family<AsyncValue<UserLikesDto>> {
 }
 
 /// See also [userLikesById].
-class UserLikesByIdProvider extends AutoDisposeFutureProvider<UserLikesDto> {
+class UserLikesByIdProvider extends AutoDisposeProvider<UserLikesDto?> {
   /// See also [userLikesById].
   UserLikesByIdProvider(
     String userId,
@@ -236,7 +236,7 @@ class UserLikesByIdProvider extends AutoDisposeFutureProvider<UserLikesDto> {
 
   @override
   Override overrideWith(
-    FutureOr<UserLikesDto> Function(UserLikesByIdRef provider) create,
+    UserLikesDto? Function(UserLikesByIdRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -253,7 +253,7 @@ class UserLikesByIdProvider extends AutoDisposeFutureProvider<UserLikesDto> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<UserLikesDto> createElement() {
+  AutoDisposeProviderElement<UserLikesDto?> createElement() {
     return _UserLikesByIdProviderElement(this);
   }
 
@@ -273,21 +273,20 @@ class UserLikesByIdProvider extends AutoDisposeFutureProvider<UserLikesDto> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin UserLikesByIdRef on AutoDisposeFutureProviderRef<UserLikesDto> {
+mixin UserLikesByIdRef on AutoDisposeProviderRef<UserLikesDto?> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
 class _UserLikesByIdProviderElement
-    extends AutoDisposeFutureProviderElement<UserLikesDto>
-    with UserLikesByIdRef {
+    extends AutoDisposeProviderElement<UserLikesDto?> with UserLikesByIdRef {
   _UserLikesByIdProviderElement(super.provider);
 
   @override
   String get userId => (origin as UserLikesByIdProvider).userId;
 }
 
-String _$userByIdUsernameHash() => r'08980e0ba2c1456fe9dda1d6821d37bdf8ad1567';
+String _$userByIdUsernameHash() => r'2df7dff0e4d211464106771978d47b137c579202';
 
 /// See also [userByIdUsername].
 @ProviderFor(userByIdUsername)

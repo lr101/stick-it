@@ -32,6 +32,7 @@ class MemberTile extends ConsumerWidget {
        batch = memberDto.selectedBatch;
     }
       final listTile = ListTile(
+        minTileHeight: 60,
       tileColor: userId == memberDto.userId ? Theme.of(context).highlightColor: null,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,13 +40,13 @@ class MemberTile extends ConsumerWidget {
         children: [
           Text(memberDto.username),
           Row(children: [
-            if (memberDto.userId == adminId) Batch(batchId: Achievement.ADMIN.id, fontSize: 8,),
+            if (memberDto.userId == adminId) Batch(batchId: Achievement.ADMIN.id, fontSize: 10,),
             if (memberDto.userId == adminId) SizedBox(width: 5,),
-            if (batch != null) Batch(batchId: batch, fontSize: 8,)
+            if (batch != null) Batch(batchId: batch, fontSize: 10,)
           ],)
         ],
       ),
-      leading: RoundImage(imageCallback: ref.watch(userProfilePictureSmallByIdProvider(memberDto.userId)), size: 20.0, child: Container()),
+      leading: RoundImage(imageCallback: ref.watch(userProfilePictureSmallByIdProvider(memberDto.userId)), size: 25.0),
       trailing: Text(memberDto.points.toString() + " sticks"),
     );
     if (isCurrentUser) {

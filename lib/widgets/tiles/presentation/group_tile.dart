@@ -21,6 +21,7 @@ class GroupTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final listTile = ListTile(
       trailing: tailing,
+      minTileHeight: 60,
       title: Column(
         children: [
           Align(alignment: Alignment.centerLeft,child: Text(groupDto.name)),
@@ -30,8 +31,8 @@ class GroupTile extends ConsumerWidget {
           )
         ],
       ),
-      leading: !this.userCachedImage ? RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(groupDto.groupId)), size: 20.0, child: Container()) :
-        RoundCachedImage(url: "${ref.watch(globalDataServiceProvider).minioHost}/groups/${groupDto.groupId}/group_profile_small.png", size: 20.0)
+      leading: !this.userCachedImage ? RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(groupDto.groupId)), size: 25.0, child: Container()) :
+        RoundCachedImage(url: "${ref.watch(globalDataServiceProvider).minioHost}/groups/${groupDto.groupId}/group_profile_small.png", size: 25.0)
     );
     if (onTap == null) {
       return listTile;

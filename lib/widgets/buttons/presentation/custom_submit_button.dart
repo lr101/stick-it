@@ -4,11 +4,15 @@ import 'package:mutex/mutex.dart';
 class SubmitButton extends StatefulWidget {
   final Future<void> Function() onPressed;
   final String text;
+  final double height;
+  final IconData icon;
 
   const SubmitButton({
     Key? key,
     required this.onPressed,
     this.text = 'Submit',
+    this.height = 50,
+    this.icon = Icons.arrow_forward
   }) : super(key: key);
 
   @override
@@ -39,8 +43,9 @@ class _SubmitButtonState extends State<SubmitButton> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
+
+    return  Align(
+      alignment: Alignment.bottomRight,
       child: ElevatedButton(
         onPressed: _isLoading ? null : _handlePress,
         style: ElevatedButton.styleFrom(
@@ -48,9 +53,20 @@ class _SubmitButtonState extends State<SubmitButton> {
           textStyle: const TextStyle(fontSize: 18.0),
           side: BorderSide(width: 2, color: Theme.of(context).colorScheme.primary),
         ),
-        child: _isLoading
-            ? const CircularProgressIndicator()
-            : Text(widget.text),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : Text(widget.text),
+              const SizedBox(width: 5),
+              Icon(widget.icon),
+            ],
+          ),
+        ),
       ),
     );
   }

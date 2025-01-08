@@ -156,7 +156,7 @@ class _GroupByIdProviderElement
   String get groupId => (origin as GroupByIdProvider).groupId;
 }
 
-String _$activeGroupsHash() => r'a77af0293d026ef6f7ce675f8e4ca370847dcbbf';
+String _$activeGroupsHash() => r'c7c3fd034baba1f433d87e91fadb1f8cff1b798c';
 
 /// See also [activeGroups].
 @ProviderFor(activeGroups)
@@ -172,7 +172,7 @@ final activeGroupsProvider = FutureProvider<List<LocalGroupDto>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ActiveGroupsRef = FutureProviderRef<List<LocalGroupDto>>;
-String _$orderedGroupsHash() => r'bd7a246e5153635ad9fc15610f713687e6e06a33';
+String _$orderedGroupsHash() => r'48c9eee30ca02e5cf0f76eadfe50bc450461c945';
 
 /// See also [orderedGroups].
 @ProviderFor(orderedGroups)
@@ -191,7 +191,7 @@ final orderedGroupsProvider =
 // ignore: unused_element
 typedef OrderedGroupsRef = AutoDisposeFutureProviderRef<List<LocalGroupDto>>;
 String _$groupByIdActivatedHash() =>
-    r'3ec24fb3d7be5d6966f9eb8c4b89f6f3bdb3ff32';
+    r'da2fe9a4e5d68bed683918b0c3e9836fcaa0342a';
 
 /// See also [groupByIdActivated].
 @ProviderFor(groupByIdActivated)
@@ -321,7 +321,7 @@ class _GroupByIdActivatedProviderElement
   String get groupId => (origin as GroupByIdActivatedProvider).groupId;
 }
 
-String _$userGroupServiceHash() => r'41a06743d185471f4c2e1b3dca54aae1afc48c0f';
+String _$userGroupServiceHash() => r'41b93cf2ef65b1227997ab41fb40d1a3cda9dceb';
 
 /// See also [UserGroupService].
 @ProviderFor(UserGroupService)

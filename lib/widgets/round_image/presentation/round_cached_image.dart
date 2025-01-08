@@ -16,7 +16,7 @@ class RoundCachedImage extends StatelessWidget {
     return SizedBox.square(
       dimension: size * 2,
       child: ClipOval(
-        child: CachedNetworkImage(imageUrl: this.url),
+        child: CachedNetworkImage(imageUrl: this.url, fit: BoxFit.cover,),
       ),
     );
   }

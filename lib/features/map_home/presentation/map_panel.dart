@@ -97,7 +97,7 @@ class _MapPanelState extends ConsumerState<MapPanel> {
               )),
           windowsState == null
               ? Center(child: Text('Click on a pin to see details here'))
-              : FeedCard(item: windowsState)
+              : SingleChildScrollView(child: FeedCard(item: windowsState))
         ]))
       ],
     );

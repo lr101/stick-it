@@ -762,6 +762,12 @@ class $PinEntityTable extends PinEntity
   late final GeneratedColumn<DateTime> creationDate = GeneratedColumn<DateTime>(
       'creation_date', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _creatorMeta =
       const VerificationMeta('creator');
   @override
@@ -801,6 +807,7 @@ class $PinEntityTable extends PinEntity
         latitude,
         longitude,
         creationDate,
+        description,
         creator,
         group,
         isHidden,
@@ -842,6 +849,12 @@ class $PinEntityTable extends PinEntity
     } else if (isInserting) {
       context.missing(_creationDateMeta);
     }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    }
     if (data.containsKey('creator')) {
       context.handle(_creatorMeta,
           creator.isAcceptableOrUnknown(data['creator']!, _creatorMeta));
@@ -881,6 +894,8 @@ class $PinEntityTable extends PinEntity
           .read(DriftSqlType.double, data['${effectivePrefix}longitude'])!,
       creationDate: attachedDatabase.typeMapping.read(
           DriftSqlType.dateTime, data['${effectivePrefix}creation_date'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description']),
       creator: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}creator'])!,
       group: attachedDatabase.typeMapping
@@ -903,6 +918,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
   final double latitude;
   final double longitude;
   final DateTime creationDate;
+  final String? description;
   final String creator;
   final String group;
   final bool isHidden;
@@ -912,6 +928,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       required this.latitude,
       required this.longitude,
       required this.creationDate,
+      this.description,
       required this.creator,
       required this.group,
       required this.isHidden,
@@ -923,6 +940,9 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
     map['latitude'] = Variable<double>(latitude);
     map['longitude'] = Variable<double>(longitude);
     map['creation_date'] = Variable<DateTime>(creationDate);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
     map['creator'] = Variable<String>(creator);
     map['group'] = Variable<String>(group);
     map['is_hidden'] = Variable<bool>(isHidden);
@@ -938,6 +958,9 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       latitude: Value(latitude),
       longitude: Value(longitude),
       creationDate: Value(creationDate),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
       creator: Value(creator),
       group: Value(group),
       isHidden: Value(isHidden),
@@ -955,6 +978,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       latitude: serializer.fromJson<double>(json['latitude']),
       longitude: serializer.fromJson<double>(json['longitude']),
       creationDate: serializer.fromJson<DateTime>(json['creationDate']),
+      description: serializer.fromJson<String?>(json['description']),
       creator: serializer.fromJson<String>(json['creator']),
       group: serializer.fromJson<String>(json['group']),
       isHidden: serializer.fromJson<bool>(json['isHidden']),
@@ -969,6 +993,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       'latitude': serializer.toJson<double>(latitude),
       'longitude': serializer.toJson<double>(longitude),
       'creationDate': serializer.toJson<DateTime>(creationDate),
+      'description': serializer.toJson<String?>(description),
       'creator': serializer.toJson<String>(creator),
       'group': serializer.toJson<String>(group),
       'isHidden': serializer.toJson<bool>(isHidden),
@@ -981,6 +1006,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
           double? latitude,
           double? longitude,
           DateTime? creationDate,
+          Value<String?> description = const Value.absent(),
           String? creator,
           String? group,
           bool? isHidden,
@@ -990,6 +1016,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
         latitude: latitude ?? this.latitude,
         longitude: longitude ?? this.longitude,
         creationDate: creationDate ?? this.creationDate,
+        description: description.present ? description.value : this.description,
         creator: creator ?? this.creator,
         group: group ?? this.group,
         isHidden: isHidden ?? this.isHidden,
@@ -1003,6 +1030,8 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
       creationDate: data.creationDate.present
           ? data.creationDate.value
           : this.creationDate,
+      description:
+          data.description.present ? data.description.value : this.description,
       creator: data.creator.present ? data.creator.value : this.creator,
       group: data.group.present ? data.group.value : this.group,
       isHidden: data.isHidden.present ? data.isHidden.value : this.isHidden,
@@ -1018,6 +1047,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude, ')
           ..write('creationDate: $creationDate, ')
+          ..write('description: $description, ')
           ..write('creator: $creator, ')
           ..write('group: $group, ')
           ..write('isHidden: $isHidden, ')
@@ -1028,7 +1058,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
 
   @override
   int get hashCode => Object.hash(pinId, latitude, longitude, creationDate,
-      creator, group, isHidden, lastSynced);
+      description, creator, group, isHidden, lastSynced);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1037,6 +1067,7 @@ class PinEntityData extends DataClass implements Insertable<PinEntityData> {
           other.latitude == this.latitude &&
           other.longitude == this.longitude &&
           other.creationDate == this.creationDate &&
+          other.description == this.description &&
           other.creator == this.creator &&
           other.group == this.group &&
           other.isHidden == this.isHidden &&
@@ -1048,6 +1079,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
   final Value<double> latitude;
   final Value<double> longitude;
   final Value<DateTime> creationDate;
+  final Value<String?> description;
   final Value<String> creator;
   final Value<String> group;
   final Value<bool> isHidden;
@@ -1058,6 +1090,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     this.latitude = const Value.absent(),
     this.longitude = const Value.absent(),
     this.creationDate = const Value.absent(),
+    this.description = const Value.absent(),
     this.creator = const Value.absent(),
     this.group = const Value.absent(),
     this.isHidden = const Value.absent(),
@@ -1069,6 +1102,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     required double latitude,
     required double longitude,
     required DateTime creationDate,
+    this.description = const Value.absent(),
     required String creator,
     required String group,
     this.isHidden = const Value.absent(),
@@ -1085,6 +1119,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     Expression<double>? latitude,
     Expression<double>? longitude,
     Expression<DateTime>? creationDate,
+    Expression<String>? description,
     Expression<String>? creator,
     Expression<String>? group,
     Expression<bool>? isHidden,
@@ -1096,6 +1131,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
       if (latitude != null) 'latitude': latitude,
       if (longitude != null) 'longitude': longitude,
       if (creationDate != null) 'creation_date': creationDate,
+      if (description != null) 'description': description,
       if (creator != null) 'creator': creator,
       if (group != null) 'group': group,
       if (isHidden != null) 'is_hidden': isHidden,
@@ -1109,6 +1145,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
       Value<double>? latitude,
       Value<double>? longitude,
       Value<DateTime>? creationDate,
+      Value<String?>? description,
       Value<String>? creator,
       Value<String>? group,
       Value<bool>? isHidden,
@@ -1119,6 +1156,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       creationDate: creationDate ?? this.creationDate,
+      description: description ?? this.description,
       creator: creator ?? this.creator,
       group: group ?? this.group,
       isHidden: isHidden ?? this.isHidden,
@@ -1141,6 +1179,9 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
     }
     if (creationDate.present) {
       map['creation_date'] = Variable<DateTime>(creationDate.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
     }
     if (creator.present) {
       map['creator'] = Variable<String>(creator.value);
@@ -1167,6 +1208,7 @@ class PinEntityCompanion extends UpdateCompanion<PinEntityData> {
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude, ')
           ..write('creationDate: $creationDate, ')
+          ..write('description: $description, ')
           ..write('creator: $creator, ')
           ..write('group: $group, ')
           ..write('isHidden: $isHidden, ')
@@ -2745,6 +2787,7 @@ typedef $$PinEntityTableCreateCompanionBuilder = PinEntityCompanion Function({
   required double latitude,
   required double longitude,
   required DateTime creationDate,
+  Value<String?> description,
   required String creator,
   required String group,
   Value<bool> isHidden,
@@ -2756,6 +2799,7 @@ typedef $$PinEntityTableUpdateCompanionBuilder = PinEntityCompanion Function({
   Value<double> latitude,
   Value<double> longitude,
   Value<DateTime> creationDate,
+  Value<String?> description,
   Value<String> creator,
   Value<String> group,
   Value<bool> isHidden,
@@ -2814,6 +2858,9 @@ class $$PinEntityTableFilterComposer
 
   ColumnFilters<DateTime> get creationDate => $composableBuilder(
       column: $table.creationDate, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<bool> get isHidden => $composableBuilder(
       column: $table.isHidden, builder: (column) => ColumnFilters(column));
@@ -2884,6 +2931,9 @@ class $$PinEntityTableOrderingComposer
       column: $table.creationDate,
       builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<bool> get isHidden => $composableBuilder(
       column: $table.isHidden, builder: (column) => ColumnOrderings(column));
 
@@ -2951,6 +3001,9 @@ class $$PinEntityTableAnnotationComposer
 
   GeneratedColumn<DateTime> get creationDate => $composableBuilder(
       column: $table.creationDate, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => column);
 
   GeneratedColumn<bool> get isHidden =>
       $composableBuilder(column: $table.isHidden, builder: (column) => column);
@@ -3026,6 +3079,7 @@ class $$PinEntityTableTableManager extends RootTableManager<
             Value<double> latitude = const Value.absent(),
             Value<double> longitude = const Value.absent(),
             Value<DateTime> creationDate = const Value.absent(),
+            Value<String?> description = const Value.absent(),
             Value<String> creator = const Value.absent(),
             Value<String> group = const Value.absent(),
             Value<bool> isHidden = const Value.absent(),
@@ -3037,6 +3091,7 @@ class $$PinEntityTableTableManager extends RootTableManager<
             latitude: latitude,
             longitude: longitude,
             creationDate: creationDate,
+            description: description,
             creator: creator,
             group: group,
             isHidden: isHidden,
@@ -3048,6 +3103,7 @@ class $$PinEntityTableTableManager extends RootTableManager<
             required double latitude,
             required double longitude,
             required DateTime creationDate,
+            Value<String?> description = const Value.absent(),
             required String creator,
             required String group,
             Value<bool> isHidden = const Value.absent(),
@@ -3059,6 +3115,7 @@ class $$PinEntityTableTableManager extends RootTableManager<
             latitude: latitude,
             longitude: longitude,
             creationDate: creationDate,
+            description: description,
             creator: creator,
             group: group,
             isHidden: isHidden,
@@ -3631,7 +3688,7 @@ class $DatabaseManager {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$databaseHash() => r'b75e890cd139885a1a0cc0aed2268e451201765d';
+String _$databaseHash() => r'7a028266ff6f736c30cbf03d3151c1d32fd383a0';
 
 /// See also [database].
 @ProviderFor(database)

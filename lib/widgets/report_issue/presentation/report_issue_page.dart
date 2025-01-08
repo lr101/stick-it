@@ -1,4 +1,5 @@
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -107,17 +108,8 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
                 SizedBox(height: 24.0),
 
                 // Submit Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _submitReport,
-                    child: sending ? CircularProgressIndicator() : Text('Send Message'),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      textStyle: TextStyle(fontSize: 18.0),
-                    ),
-                  ),
-                ),
+                SubmitButton(onPressed: _submitReport, text: 'Submit', icon: Icons.send),
+
               ],
             ),
           ),

@@ -156,7 +156,7 @@ class _PinLikeProviderElement
   String get pinId => (origin as PinLikeProvider).pinId;
 }
 
-String _$likeServiceHash() => r'ed456e478f671637fbd563abeaf20bac7d118e44';
+String _$likeServiceHash() => r'c69944724607f3e922b49aa70509bf99e6e1cb5c';
 
 /// See also [LikeService].
 @ProviderFor(LikeService)

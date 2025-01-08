@@ -35,7 +35,7 @@ class ImageUpload extends ConsumerStatefulWidget {
 }
 
 class _ImageUploadState extends ConsumerState<ImageUpload> {
-  final TransformationController controller = TransformationController();
+  final _controller = TextEditingController();
 
   Mutex _m = Mutex();
   late final groupIndexWhenOpened;
@@ -47,41 +47,71 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final groups = ref.watch(userGroupServiceProvider).value ?? [];
-        return Scaffold(
-        appBar: AppBar(
-          title: Text("Approve"),
-        ),
-        body: SingleChildScrollView(child:Padding(padding: EdgeInsets.all(10), child:  Column(
-              children: [
-                FeedTimelineHeader(groupId: groups[ref.watch(cameraGroupIndexProvider)].groupId, creationDate: DateTime.now(), height: MediaQuery.of(context).size.width - 20, isRotated: true,),
-                const SizedBox(height: 10,),
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: InteractiveViewer(
-                        panEnabled: false,
-                        transformationController: controller,
-                        boundaryMargin: const EdgeInsets.all(0),
-                        onInteractionEnd: (ScaleEndDetails endDetails) {
-                          controller.value = Matrix4.identity();
-                        },
-                        minScale: 1,
-                        maxScale: 4,
-                        child: Image.memory(widget.image))),
-              ],))
-
+    final group = groups[ref.watch(cameraGroupIndexProvider)];
+    bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Approve"),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Card(
+                      clipBehavior: Clip.antiAlias,
+                      child: Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.33,
+                        alignment: Alignment.center,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.memory(
+                            widget.image,
+                            height: MediaQuery.of(context).size.height * 0.33,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Card(child: GroupTile(groupDto: group, onTap: handleEdit)),
+                    Card(
+                      child: TextFormField(
+                        controller: _controller,
+                        minLines: 1,
+                        maxLines: 10,
+                        textInputAction: TextInputAction.newline,
+                        decoration: InputDecoration(
+                          hintText: 'Add a description ...',
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.multiline,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-          floatingActionButton: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(onPressed: handleEdit, child: Icon(Icons.edit), heroTag: "editHero",),
-              const SizedBox(height: 10,),
-              FloatingActionButton(onPressed: handleApprove, child: Icon(Icons.check), heroTag: "approveHero",),
-            ],
-          ),
+            Visibility(
+            visible: !isKeyboardVisible,
+            child:Padding(padding: EdgeInsets.all(10), child:SubmitButton(onPressed: handleApprove, text: "Upload"))),
+        ],
+      ),
     );
   }
+
 
   Future<void> handleApprove() async {
     if (_m.isLocked) return;
@@ -91,6 +121,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         latitude: widget.position.latitude,
         longitude: widget.position.longitude,
         creationDate: DateTime.now(),
+        description: _controller.text.isEmpty ? null : _controller.text,
         creatorId: ref.watch(globalDataServiceProvider).userId!,
         groupId: ref.watch(cameraSelectedGroupProvider).groupId,
         isHidden: false);

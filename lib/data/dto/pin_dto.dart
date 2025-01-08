@@ -15,6 +15,7 @@ class LocalPinDto {
   final bool isHidden;
   final DateTime? lastSynced;
   final PinLikeDto? likes;
+  final String? description;
 
   LocalPinDto({
     required this.id,
@@ -24,6 +25,7 @@ class LocalPinDto {
     required this.creatorId,
     required this.groupId,
     required this.isHidden,
+    required this.description,
     this.lastSynced,
     this.likes
   });
@@ -36,6 +38,7 @@ class LocalPinDto {
       creationDate: entityData.creationDate,
       creatorId: entityData.creator,
       groupId: entityData.group,
+      description: entityData.description,
       lastSynced: entityData.lastSynced,
       isHidden: entityData.isHidden,
     );
@@ -50,6 +53,7 @@ class LocalPinDto {
       creator: Value(creatorId),
       group: Value(groupId),
       isHidden: Value(isHidden),
+      description: Value(description),
       lastSynced: Value(lastSynced)
     );
   }
@@ -62,8 +66,9 @@ class LocalPinDto {
       creatorId : pinDto.creationUser,
       creationDate : pinDto.creationDate,
       groupId: pinDto.groupId,
+      description: pinDto.description,
       isHidden: false,
-      lastSynced: pinDto.creationDate, // TODO update to last updatedd
+      lastSynced: pinDto.creationDate,
     );
   }
 
@@ -75,8 +80,9 @@ class LocalPinDto {
       creatorId : pinDto.creationUser,
       creationDate : pinDto.creationDate,
       groupId: pinDto.groupId,
+      description: pinDto.description,
       isHidden: false,
-      lastSynced: pinDto.creationDate, // TODO update to last updated
+      lastSynced: pinDto.creationDate,
     );
   }
 
@@ -87,6 +93,7 @@ class LocalPinDto {
       groupId: groupId,
       creationDate: creationDate,
       image: image,
+      description: description,
       userId: creatorId
     );
   }

@@ -23,9 +23,10 @@ class OtherUserProfile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userPins = ref.watch(otherUserPinServiceProvider(userId));
     final username = ref.watch(userByIdUsernameProvider(userId));
-    final description = ref.watch(userByIdProvider(userId).select((e) => e.value?.description));
-    final selectedBatch = ref.watch(userByIdProvider(userId).select((e) => e.value?.selectedBatch));
+    final description = ref.watch(userByIdProvider(userId).select((e) => e?.description));
+    final selectedBatch = ref.watch(userByIdProvider(userId).select((e) => e?.selectedBatch));
     final profileImage = ref.watch(profilePictureByIdProvider(userId));
+    final likes = ref.watch(userLikesByIdProvider(userId));
     return CustomAvatarScaffold(
       avatar: AsyncData(profileImage.value),
       title: Row(children: [
@@ -40,10 +41,10 @@ class OtherUserProfile extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
 
-          UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeCount), icon: Icons.favorite),
-          UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeLocationCount), icon: CupertinoIcons.location_solid),
-          UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likePhotographyCount), icon: Icons.photo_camera),
-          UserLikeIcon(likeCount: ref.watch(userLikesByIdProvider(userId)).whenOrNull(data: (data) =>data.likeArtCount), icon: Icons.brush)
+          UserLikeIcon(likeCount: likes?.likeCount, icon: Icons.favorite),
+          UserLikeIcon(likeCount: likes?.likeLocationCount, icon: CupertinoIcons.location_solid),
+          UserLikeIcon(likeCount: likes?.likePhotographyCount, icon: Icons.photo_camera),
+          UserLikeIcon(likeCount: likes?.likeArtCount, icon: Icons.brush)
 
         ],
       )),

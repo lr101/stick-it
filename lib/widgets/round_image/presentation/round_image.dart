@@ -24,13 +24,18 @@ class RoundImage extends ConsumerWidget {
           child: SizedBox.square(
               dimension: size != null ? size! * 2 : null,
               child: Stack(children: [
-                ClipOval(
-                  child: Container(
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
                     color: Colors.grey.withOpacity(0.4),
+                  )
+
                   ),
-                ),
+
                 ClipOval(
                     child: FadeInImage(
+                      height: size != null ? size! * 2 : null,
+                      width: size != null ? size! * 2 : null,
                     placeholder: MemoryImage(kTransparentImage),
                     image: MemoryImage(imageCallback.when<Uint8List>(
                         data: (data) => data ?? ref.watch(defaultErrorImageProvider),
@@ -50,17 +55,6 @@ class RoundImage extends ConsumerWidget {
               ],)
           )
         );
-  }
-
-  ImageProvider<Object> getImage(Uint8List? data, Uint8List defaultImage) {
-    if (data != null) {
-      try {
-        return MemoryImage(data);
-      } catch (err) {
-        if (kDebugMode) print(err);
-      }
-    }
-    return MemoryImage(defaultImage);
   }
 
   Widget _clickable({required Widget child, required BuildContext context}) {

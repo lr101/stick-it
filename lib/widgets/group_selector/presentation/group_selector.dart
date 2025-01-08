@@ -29,6 +29,7 @@ class _GroupSelectorState extends ConsumerState<GroupSelector>  with AutomaticKe
   Widget build(BuildContext context) {
     super.build(context);
     final groups = ref.watch(groupOrderServiceProvider);
+    final groupsLength = ref.watch(groupOrderServiceProvider.select((e) => e.length));
 
     return Container(
         color: Colors.transparent,
@@ -59,19 +60,27 @@ class _GroupSelectorState extends ConsumerState<GroupSelector>  with AutomaticKe
                               Radius.circular(widget.height / 2)),
                           color: Colors.transparent
                       ),
-                      child: ReorderableListView(
+                      child: ReorderableListView.builder(
                                 onReorder: (int start, int current) => _onReorder(start, current, groups),
                               scrollDirection: Axis.horizontal,
                              proxyDecorator: _proxyDecorator,
-                             children: [
-                               ...groups.map((e) => RoundGroupCard(key: ValueKey(e), groupId: e)).toList(), 
-                               RoundDottedGroupCard(key: ValueKey('search'), icon: Icons.search, onTab: () => Routing.to(context, const GroupSearch())),
-                               RoundDottedGroupCard(key: ValueKey('new'), icon: Icons.add, onTab: () => Routing.to(context, const GroupCreate()))
-                             ],
+                             itemBuilder: (context, index) {
+                                  if (index < groups.length) {
+                                    return ProviderScope(
+                                      key: ValueKey('reorder_${groups[index]}'),
+                                        overrides: [roundGroupIdProvider.overrideWithValue(groups[index])],
+                                        child: const RoundGroupCard()
+                                    );
+                               } else if (index == groups.length) {
+                                    return RoundDottedGroupCard(key: ValueKey('search'), icon: Icons.search, onTab: () => Routing.to(context, const GroupSearch()));
+                               } else {
+                                  return RoundDottedGroupCard(key: ValueKey('new'), icon: Icons.add, onTab: () => Routing.to(context, const GroupCreate()));
+                               }
+                             }, itemCount: groupsLength + 2,
                           )
+                      )
                   )
               )
-          )
           //editColumn()
           ],
         )

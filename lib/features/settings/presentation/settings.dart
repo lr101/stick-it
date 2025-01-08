@@ -10,6 +10,7 @@ import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
+import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_password.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_profile.dart';
@@ -181,8 +182,8 @@ class _SettingsState extends ConsumerState<Settings> {
                             text2: "Logout",
                             text1: "Cancel",
                             onPressed: () async {
-                              await invalidateCache();
                               await ref.read(globalDataServiceProvider.notifier).logout();
+                              await invalidateCache();
                               Routing.toAndDelete(context, Auth(), "/login");
                             },
                           ))),
@@ -207,7 +208,7 @@ class _SettingsState extends ConsumerState<Settings> {
 
   void showLoading() {
     showDialog(
-      context: context,
+      context: NavigationService.navigatorKey.currentContext!,
       builder: (context) => Dialog(
         child: SizedBox(
           width: MediaQuery.of(context).size.width - 40,

@@ -1,5 +1,6 @@
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/feed_description.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_shimmer.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_map.dart';
@@ -49,20 +50,17 @@ class FeedCardState extends ConsumerState<FeedCard> {
       } else {
         maxHeight = maxWidth * 4 / 3;
       }
-      return SizedBox(
-        height: maxHeight + 2,
-        width: maxWidth,
-        child:  Padding(
+      return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FeedTimelineHeader(groupId: widget.item.groupId, creationDate: widget.item.creationDate, height: maxHeight),
+          FeedTimelineHeader(groupId: widget.item.groupId, creationDate: widget.item.creationDate, height: maxHeight + ref.watch(feedDescriptionHeightProvider(widget.item))),
           const SizedBox(width: 16),
-          FeedCardImage(item: widget.item, maxHeight: maxHeight, maxWidth: maxWidth - 55)
+          FeedCardImage(item: widget.item, maxHeight: maxHeight, maxWidth: maxWidth - 55, )
         ],
       ),
-    ));});
+    );});
   }
 
 

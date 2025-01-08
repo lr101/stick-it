@@ -1,5 +1,6 @@
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'group_order_service.g.dart';
@@ -8,7 +9,9 @@ part 'group_order_service.g.dart';
 class GroupOrderService extends _$GroupOrderService {
   @override
   List<String> build() {
-    final userGroupList = ref.watch(userGroupServiceProvider.select((e) => e.value?.map((e) => e.groupId).toList() ?? []));
+    final userGroupList = ref.watch(
+      userGroupServiceProvider.select((e) => e.value?.map((e) => e.groupId).toList() ?? [],),
+    );
     if (userGroupList.isEmpty) {
       return [];
     } else {
@@ -30,6 +33,8 @@ class GroupOrderService extends _$GroupOrderService {
     final sharedPrefs = ref.watch(sharedPreferencesProvider);
     sharedPrefs.setStringList('groupOrder', groupIds);
     state = groupIds;
-    ref.notifyListeners();
   }
 }
+
+@riverpod
+String roundGroupId(Ref ref) => throw UnimplementedError();

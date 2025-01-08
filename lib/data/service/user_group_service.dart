@@ -55,9 +55,9 @@ class UserGroupService extends _$UserGroupService {
     } catch (e) {
       if (kDebugMode) print(e);
     }finally {
-      _mutex.release();
       if (kDebugMode) print("Groups synced");
       ref.read(currentUserServiceProvider.notifier).updateFromRemote();
+      _mutex.release();
       for (LocalGroupDto group in state.value ?? []) {
         if (group.isActivated) {
           ref.read(pinServiceProvider(group.groupId));
@@ -216,19 +216,19 @@ Future<LocalGroupDto?> groupById(Ref ref, String groupId) async {
 
 @Riverpod(keepAlive: true)
 Future<List<LocalGroupDto>> activeGroups(Ref ref) async {
-  return ref.watch(userGroupServiceProvider.selectAsync(
+  return await ref.watch(userGroupServiceProvider.selectAsync(
       (groups) => groups.where((t) => t.isActivated == true).toList()));
 }
 
 @riverpod
 Future<List<LocalGroupDto>> orderedGroups(Ref ref) async {
   final groupOrder = ref.watch(groupOrderServiceProvider);
-  final groups = ref.watch(userGroupServiceProvider).value ?? [];
+  final groups = await ref.watch(userGroupServiceProvider.future);
   groups.sort((a,b) => groupOrder.indexOf(a.groupId) - groupOrder.indexOf(b.groupId));
   return groups;
 }
 
 @riverpod
 Future<bool> groupByIdActivated(Ref ref, String groupId) async {
-  return ref.watch(groupByIdProvider(groupId).selectAsync((group) => group!.isActivated));
+  return await ref.watch(groupByIdProvider(groupId).selectAsync((group) => group!.isActivated));
 }
