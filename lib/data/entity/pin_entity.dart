@@ -16,6 +16,9 @@ class PinEntity extends Table {
   // Date of creation of the pin
   DateTimeColumn get creationDate => dateTime()();
 
+  // Pin description
+  TextColumn get description => text().nullable()();
+
   // Username of the creator
   TextColumn get creator => text().references(UserEntity, #userId)();
 

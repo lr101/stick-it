@@ -1,5 +1,6 @@
 import 'package:buff_lisa/data/entity/pin_image_entity.dart';
 import 'package:drift/drift.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:drift_flutter/drift_flutter.dart' as connect;
 import 'package:path_provider/path_provider.dart';
@@ -19,7 +20,7 @@ class Database extends _$Database {
   Database() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   static QueryExecutor _openConnection() {
     return connect.driftDatabase(name: 'local_pin_data');
@@ -43,12 +44,14 @@ class Database extends _$Database {
         await m.createTable(pinImageEntity);
       } else if (from == 2) {
         await m.addColumn(memberEntity, memberEntity.ranking);
+      } else if (from == 3) {
+        await m.addColumn(pinEntity, pinEntity.description);
       }
     },
   );
 }
 
 @Riverpod(keepAlive: true)
-Database database(DatabaseRef ref) {
+Database database(Ref ref) {
   return Database();
 }

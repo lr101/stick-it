@@ -35,7 +35,7 @@ class ImageUpload extends ConsumerStatefulWidget {
 }
 
 class _ImageUploadState extends ConsumerState<ImageUpload> {
-  final TransformationController controller = TransformationController();
+  final _controller = TextEditingController();
 
   Mutex _m = Mutex();
   late final groupIndexWhenOpened;
@@ -44,6 +44,12 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   void initState() {
     super.initState();
     groupIndexWhenOpened = ref.read(cameraGroupIndexProvider);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -82,12 +88,12 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
                     Card(child: GroupTile(groupDto: group, onTap: handleEdit)),
                     Card(
                       child: TextFormField(
-                        controller: TextEditingController(),  // Add your controller here
+                        controller: _controller,
                         minLines: 1,
                         maxLines: 10,
                         textInputAction: TextInputAction.newline,
                         decoration: InputDecoration(
-                          hintText: 'Coming soon...',
+                          hintText: 'Add a description ...',
                           border: OutlineInputBorder(),
                         ),
                         keyboardType: TextInputType.multiline,
@@ -115,6 +121,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         latitude: widget.position.latitude,
         longitude: widget.position.longitude,
         creationDate: DateTime.now(),
+        description: _controller.text.isEmpty ? null : _controller.text,
         creatorId: ref.watch(globalDataServiceProvider).userId!,
         groupId: ref.watch(cameraSelectedGroupProvider).groupId,
         isHidden: false);

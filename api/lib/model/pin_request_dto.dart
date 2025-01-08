@@ -19,6 +19,7 @@ class PinRequestDto {
     required this.userId,
     required this.groupId,
     this.creationDate,
+    required this.description,
   });
 
   String image;
@@ -43,6 +44,8 @@ class PinRequestDto {
   ///
   DateTime? creationDate;
 
+  String? description;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is PinRequestDto &&
     other.image == image &&
@@ -50,7 +53,8 @@ class PinRequestDto {
     other.longitude == longitude &&
     other.userId == userId &&
     other.groupId == groupId &&
-    other.creationDate == creationDate;
+    other.creationDate == creationDate &&
+    other.description == description;
 
   @override
   int get hashCode =>
@@ -60,10 +64,11 @@ class PinRequestDto {
     (longitude.hashCode) +
     (userId.hashCode) +
     (groupId.hashCode) +
-    (creationDate == null ? 0 : creationDate!.hashCode);
+    (creationDate == null ? 0 : creationDate!.hashCode) +
+    (description == null ? 0 : description!.hashCode);
 
   @override
-  String toString() => 'PinRequestDto[image=$image, latitude=$latitude, longitude=$longitude, userId=$userId, groupId=$groupId, creationDate=$creationDate]';
+  String toString() => 'PinRequestDto[image=$image, latitude=$latitude, longitude=$longitude, userId=$userId, groupId=$groupId, creationDate=$creationDate, description=$description]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -76,6 +81,11 @@ class PinRequestDto {
       json[r'creationDate'] = this.creationDate!.toUtc().toIso8601String();
     } else {
       json[r'creationDate'] = null;
+    }
+    if (this.description != null) {
+      json[r'description'] = this.description;
+    } else {
+      json[r'description'] = null;
     }
     return json;
   }
@@ -105,6 +115,7 @@ class PinRequestDto {
         userId: mapValueOfType<String>(json, r'userId')!,
         groupId: mapValueOfType<String>(json, r'groupId')!,
         creationDate: mapDateTime(json, r'creationDate', r''),
+        description: mapValueOfType<String>(json, r'description'),
       );
     }
     return null;
@@ -157,6 +168,7 @@ class PinRequestDto {
     'longitude',
     'userId',
     'groupId',
+    'description',
   };
 }
 
