@@ -20,7 +20,7 @@ class PinWithOptionalImageDto {
     required this.creationUser,
     this.image,
     required this.groupId,
-    required this.description,
+    this.description,
   });
 
   String id;
@@ -176,7 +176,6 @@ class PinWithOptionalImageDto {
     'longitude',
     'creationUser',
     'groupId',
-    'description',
   };
 }
 

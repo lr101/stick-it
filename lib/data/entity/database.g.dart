@@ -3688,7 +3688,7 @@ class $DatabaseManager {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$databaseHash() => r'b75e890cd139885a1a0cc0aed2268e451201765d';
+String _$databaseHash() => r'7a028266ff6f736c30cbf03d3151c1d32fd383a0';
 
 /// See also [database].
 @ProviderFor(database)

@@ -9,6 +9,7 @@ import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/camera/presentation/select_location.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/custom_image_picker.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:camera/camera.dart';
@@ -58,7 +59,7 @@ class _CameraState extends ConsumerState<Camera> {
     final cameraIndex = ref.watch(cameraIndexProvider);
     final cameras = ref.watch(globalDataServiceProvider.select((t) => t.cameras));
     final cameraFlashMode = ref.watch(cameraTorchProvider);
-    final groups = ref.watch(userGroupServiceProvider).value ?? [];
+    final groupIds = ref.watch(groupOrderServiceProvider);
     return Scaffold(appBar: null,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -158,7 +159,7 @@ class _CameraState extends ConsumerState<Camera> {
                   child: SnappingPageScroll(
                     controller: pageController,
                     onPageChanged: onPageChange,
-                    children: List.generate(groups.length, (index) => groupCard(groups[index], index)),
+                    children: List.generate(groupIds.length, (index) => groupCard(groupIds[index], index)),
                     ),
                   ),
                 Center(child: IgnorePointer(
@@ -222,14 +223,14 @@ class _CameraState extends ConsumerState<Camera> {
     ref.read(cameraGroupIndexProvider.notifier).updateIndex(index);
   }
 
-  Widget groupCard(LocalGroupDto group, int index) {
+  Widget groupCard(String groupId, int index) {
     return Center(child: Padding(
         padding: const EdgeInsets.all(5),
         child: GestureDetector(
-            onTap: () => takePicture(group, index),
+            onTap: () => takePicture(groupId, index),
             child:  RoundImage(
               size: (MediaQuery.of(context).size.height) * 0.06,
-              imageCallback: ref.watch(groupProfilePictureByIdProvider(group.groupId)),
+              imageCallback: ref.watch(groupProfilePictureByIdProvider(groupId)),
               clickable: false,
               child: Container(),
             )
@@ -237,8 +238,8 @@ class _CameraState extends ConsumerState<Camera> {
     );
   }
 
-  Future<void> takePicture(LocalGroupDto group, int index) async {
-    if(group.groupId != ref.read(cameraSelectedGroupProvider).groupId) {
+  Future<void> takePicture(String groupId, int index) async {
+    if(groupId != ref.read(cameraSelectedGroupProvider).groupId) {
       pageController.animateToPage(index, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
       return;
     }
