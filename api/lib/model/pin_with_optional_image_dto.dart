@@ -20,6 +20,7 @@ class PinWithOptionalImageDto {
     required this.creationUser,
     this.image,
     required this.groupId,
+    required this.description,
   });
 
   String id;
@@ -46,6 +47,8 @@ class PinWithOptionalImageDto {
 
   String groupId;
 
+  String? description;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is PinWithOptionalImageDto &&
     other.id == id &&
@@ -54,7 +57,8 @@ class PinWithOptionalImageDto {
     other.longitude == longitude &&
     other.creationUser == creationUser &&
     other.image == image &&
-    other.groupId == groupId;
+    other.groupId == groupId &&
+    other.description == description;
 
   @override
   int get hashCode =>
@@ -65,10 +69,11 @@ class PinWithOptionalImageDto {
     (longitude.hashCode) +
     (creationUser.hashCode) +
     (image == null ? 0 : image!.hashCode) +
-    (groupId.hashCode);
+    (groupId.hashCode) +
+    (description == null ? 0 : description!.hashCode);
 
   @override
-  String toString() => 'PinWithOptionalImageDto[id=$id, creationDate=$creationDate, latitude=$latitude, longitude=$longitude, creationUser=$creationUser, image=$image, groupId=$groupId]';
+  String toString() => 'PinWithOptionalImageDto[id=$id, creationDate=$creationDate, latitude=$latitude, longitude=$longitude, creationUser=$creationUser, image=$image, groupId=$groupId, description=$description]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -83,6 +88,11 @@ class PinWithOptionalImageDto {
       json[r'image'] = null;
     }
       json[r'groupId'] = this.groupId;
+    if (this.description != null) {
+      json[r'description'] = this.description;
+    } else {
+      json[r'description'] = null;
+    }
     return json;
   }
 
@@ -112,6 +122,7 @@ class PinWithOptionalImageDto {
         creationUser: mapValueOfType<String>(json, r'creationUser')!,
         image: mapValueOfType<String>(json, r'image'),
         groupId: mapValueOfType<String>(json, r'groupId')!,
+        description: mapValueOfType<String>(json, r'description'),
       );
     }
     return null;
@@ -165,6 +176,7 @@ class PinWithOptionalImageDto {
     'longitude',
     'creationUser',
     'groupId',
+    'description',
   };
 }
 
