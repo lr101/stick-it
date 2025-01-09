@@ -22,6 +22,7 @@ import 'package:uuid/uuid.dart';
 import '../../../data/dto/group_dto.dart';
 import '../../../widgets/custom_feed/presentation/feed_timeline_header.dart';
 import '../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+import '../../../widgets/group_selector/service/group_order_service.dart';
 import '../../../widgets/tiles/presentation/group_tile.dart';
 
 class ImageUpload extends ConsumerStatefulWidget {
@@ -55,7 +56,8 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   @override
   Widget build(BuildContext context) {
     final groups = ref.watch(userGroupServiceProvider).value ?? [];
-    final group = groups[ref.watch(cameraGroupIndexProvider)];
+    final groupIds = ref.watch(groupOrderServiceProvider);
+    final group = groups.firstWhere((e) => e.groupId == groupIds[ref.watch(cameraGroupIndexProvider)]);
     bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return Scaffold(
       appBar: AppBar(
