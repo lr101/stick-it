@@ -22,6 +22,7 @@ import 'package:uuid/uuid.dart';
 import '../../../data/dto/group_dto.dart';
 import '../../../widgets/custom_feed/presentation/feed_timeline_header.dart';
 import '../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+import '../../../widgets/group_selector/service/group_order_service.dart';
 import '../../../widgets/tiles/presentation/group_tile.dart';
 
 class ImageUpload extends ConsumerStatefulWidget {
@@ -54,8 +55,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
 
   @override
   Widget build(BuildContext context) {
-    final groups = ref.watch(userGroupServiceProvider).value ?? [];
-    final group = groups[ref.watch(cameraGroupIndexProvider)];
+    final group = ref.watch(cameraSelectedGroupProvider);
     bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return Scaffold(
       appBar: AppBar(
@@ -148,13 +148,13 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   }
 
   Future<void> handleEdit() async {
-    final groups = ref.watch(userGroupServiceProvider).value ?? [];
-    await SelectDialog.showModal<LocalGroupDto>(
+    final groups = await ref.read(groupOrderServiceProvider);
+    await SelectDialog.showModal<String>(
       context,
       showSearchBox: false,
       label: Text("Change Group"),
       selectedValue: groups[ref.watch(cameraGroupIndexProvider)],
-      itemBuilder: (context, group, b) => GroupTile(groupDto: group),
+      itemBuilder: (context, group, b) => GroupTile(groupDto: ref.read(userGroupServiceProvider).value!.firstWhere((e) => e.groupId == group),),
       items: groups,
       onChange: (group) {
         ref.read(cameraGroupIndexProvider.notifier).updateIndex(groups.indexOf(group));

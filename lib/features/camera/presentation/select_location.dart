@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../util/routing/routing.dart';
 import '../../../widgets/custom_marker/data/default_group_image.dart';
+import '../../../widgets/group_selector/service/group_order_service.dart';
 import '../data/camera_state.dart';
 
 class SelectLocation extends ConsumerStatefulWidget {
@@ -27,7 +28,7 @@ class SelectLocation extends ConsumerStatefulWidget {
 
 class _SelectLocationState extends ConsumerState<SelectLocation> {
   final _mapController = MapController();
-  final _zoom = 13.0;
+  final _zoom = 10.0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +39,8 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
         centerPosition = LatLng(pos.latitude, pos.longitude);
       }
     }
+    final groupIndex = ref.watch(cameraIndexProvider);
+    final groupIds = ref.watch(groupOrderServiceProvider);
 
     return Scaffold(
         appBar: AppBar(
@@ -64,7 +67,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                           initialCenter: centerPosition,
                           minZoom: 2,
                           maxZoom: 18,
-                          initialZoom: 5,
+                          initialZoom: _zoom,
                           keepAlive: true,
                           interactionOptions: InteractionOptions(
                               flags: InteractiveFlag.pinchZoom |
@@ -80,9 +83,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                         child: Column(
                           children: [
                             ref
-                                .watch(groupPinImageByIdProvider(ref
-                                    .watch(cameraSelectedGroupProvider)
-                                    .groupId))
+                                .watch(groupPinImageByIdProvider(groupIds[groupIndex]))
                                 .when(
                                   data: (data) => Image.memory(data ?? ref.read(defaultGroupPinImageProvider)),
                                   error: (e, s) => Image.memory(
