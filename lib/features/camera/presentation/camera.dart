@@ -239,7 +239,8 @@ class _CameraState extends ConsumerState<Camera> {
   }
 
   Future<void> takePicture(String groupId, int index) async {
-    if(groupId != ref.read(cameraSelectedGroupProvider).groupId) {
+    final indexProvider = ref.read(cameraGroupIndexProvider);
+    if(index != indexProvider) {
       pageController.animateToPage(index, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
       return;
     }

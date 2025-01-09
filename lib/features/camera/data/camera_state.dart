@@ -4,7 +4,10 @@ import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../../widgets/group_selector/service/group_order_service.dart';
 
 part 'camera_state.g.dart';
 
@@ -77,9 +80,10 @@ class CameraGroupIndex extends _$CameraGroupIndex {
 }
 
 @Riverpod(keepAlive: true)
-LocalGroupDto cameraSelectedGroup(CameraSelectedGroupRef ref) {
-  final index = ref.watch(cameraGroupIndexProvider);
-  return ref.watch(userGroupServiceProvider).value![index];
+LocalGroupDto cameraSelectedGroup(Ref ref) {
+  final groups = ref.watch(userGroupServiceProvider).value ?? [];
+  final groupIds = ref.watch(groupOrderServiceProvider);
+  return groups.firstWhere((e) => e.groupId == groupIds[ref.watch(cameraGroupIndexProvider)]);
 }
 
 @riverpod
