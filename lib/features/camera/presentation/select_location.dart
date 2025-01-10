@@ -39,6 +39,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
         centerPosition = LatLng(pos.latitude, pos.longitude);
       }
     }
+    
     final groupIndex = ref.watch(cameraGroupIndexProvider);
     final groupIds = ref.watch(groupOrderServiceProvider);
 
