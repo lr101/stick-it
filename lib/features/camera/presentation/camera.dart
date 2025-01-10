@@ -10,6 +10,7 @@ import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dar
 import 'package:buff_lisa/widgets/round_image/presentation/custom_image_picker.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -249,7 +250,7 @@ class _CameraState extends ConsumerState<Camera> {
         final pos = LatLng(position.latitude, position.longitude);
         Routing.to(context, ImageUpload(image: bytes, position: pos));
       } catch (e) {
-        print(e);
+        if(kDebugMode) print(e);
       } finally {
         _m.release();
         ref.read(cameraCapturingProvider.notifier).setCapturing(false);

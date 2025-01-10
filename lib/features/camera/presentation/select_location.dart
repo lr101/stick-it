@@ -2,6 +2,7 @@ import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,7 +39,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
         centerPosition = LatLng(pos.latitude, pos.longitude);
       }
     }
-    final groupIndex = ref.watch(cameraIndexProvider);
+    final groupIndex = ref.watch(cameraGroupIndexProvider);
     final groupIds = ref.watch(groupOrderServiceProvider);
 
     return Scaffold(
@@ -49,18 +50,21 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                ListTile(
+                Card(child: ListTile(
                   title: Text("How to"),
                   subtitle: Text(
                       "Select the sticker location by moving the map around until the marker in the center appropriately matches where your picture was taken."),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 20,
-                  height: MediaQuery.of(context).size.width - 20,
-                  child: Stack(
+                )),
+                Expanded(child: Card(
+                    semanticContainer: true,
+                    child:
+
+                  Stack(
                     children: [
                       // Flutter Map widget
-                      FlutterMap(
+                ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                  child: FlutterMap(
                         mapController: _mapController,
                         options: MapOptions(
                           initialCenter: centerPosition,
@@ -73,7 +77,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                                   InteractiveFlag.drag),
                         ),
                         children: [CurrentLocationLayer(), CustomTileLayer(), OsmCopyright()],
-                      ),
+                      )),
                       // Center Pin Icon
                       Center(
                           child: SizedBox(
@@ -95,17 +99,16 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                         ),
                       ))
                     ],
-                  ),
-                )
+                  ))),
+
+                Padding(padding: EdgeInsets.symmetric(vertical: 10), child: SubmitButton(
+                    text: "Next",
+                    onPressed: () =>  Routing.to(
+                    context,
+                    ImageUpload(
+                        image: widget.image,
+                        position: _mapController.camera.center))))
               ],
-            )),
-        floatingActionButton: FloatingActionButton(
-          key: Key("selectUploadLocation"),
-            child: Icon(Icons.done),
-            onPressed: () => Routing.to(
-                context,
-                ImageUpload(
-                    image: widget.image,
-                    position: _mapController.camera.center))));
+            )));
   }
 }
