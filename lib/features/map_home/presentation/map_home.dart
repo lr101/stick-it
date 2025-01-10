@@ -26,10 +26,10 @@ class MapHome extends ConsumerStatefulWidget {
 
 class _MapHomeState extends ConsumerState<MapHome>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  MapController _controller = MapController();
+  final MapController _controller = MapController();
   late final animateController;
   ValueNotifier<double> panelPosition = ValueNotifier<double>(0);
-  PanelController _panelController = PanelController();
+  final PanelController _panelController = PanelController();
   late final TabController _tabController;
   ValueNotifier<double> mapZoom = ValueNotifier<double>(5);
 
@@ -68,7 +68,7 @@ class _MapHomeState extends ConsumerState<MapHome>
                 topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
             onPanelSlide: (position) => panelPosition.value = position,
             body: Column(
-              children: [Container(
+              children: [SizedBox(
                   height: constraints.maxHeight,
                   child:
                   FlutterMap(

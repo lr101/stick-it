@@ -191,8 +191,9 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
             String near = "";
             if (first.locality != null) {
               near += first.locality!;
-              if (first.isoCountryCode != null)
+              if (first.isoCountryCode != null) {
                 near += " (${first.isoCountryCode})";
+              }
             } else if (first.country != null) {
               near += first.country!;
             }

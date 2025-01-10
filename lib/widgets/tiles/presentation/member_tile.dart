@@ -19,7 +19,7 @@ class MemberTile extends ConsumerWidget {
   final MemberDto memberDto;
   final String adminId;
 
-  MemberTile({super.key, required this.memberDto, required this.adminId});
+  const MemberTile({super.key, required this.memberDto, required this.adminId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,7 +47,7 @@ class MemberTile extends ConsumerWidget {
         ],
       ),
       leading: RoundImage(imageCallback: ref.watch(userProfilePictureSmallByIdProvider(memberDto.userId)), size: 25.0),
-      trailing: Text(memberDto.points.toString() + " sticks"),
+      trailing: Text("${memberDto.points} sticks"),
     );
     if (isCurrentUser) {
       return listTile;

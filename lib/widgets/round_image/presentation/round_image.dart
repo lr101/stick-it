@@ -12,7 +12,7 @@ class RoundImage extends ConsumerWidget {
   final Widget? child;
   final VoidCallback? handleOpenImage;
 
-  RoundImage({super.key, required this.imageCallback, this.clickable = false, this.size, this.child, this.handleOpenImage}) : assert (clickable && handleOpenImage != null || !clickable);
+  const RoundImage({super.key, required this.imageCallback, this.clickable = false, this.size, this.child, this.handleOpenImage}) : assert (clickable && handleOpenImage != null || !clickable);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

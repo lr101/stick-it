@@ -24,7 +24,7 @@ class MapPanel extends ConsumerStatefulWidget {
 class _MapPanelState extends ConsumerState<MapPanel> {
 
 
-  PagingController<int, MapEntry<LocalPinDto, double>> _pagingController =
+  final PagingController<int, MapEntry<LocalPinDto, double>> _pagingController =
   PagingController(firstPageKey: 0);
 
   List<MapEntry<LocalPinDto, double>> _pins = [];

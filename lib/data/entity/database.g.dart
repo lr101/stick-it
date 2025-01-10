@@ -2817,7 +2817,7 @@ final class $$PinEntityTableReferences
 
   $$UserEntityTableProcessedTableManager get creator {
     final manager = $$UserEntityTableTableManager($_db, $_db.userEntity)
-        .filter((f) => f.userId($_item.creator!));
+        .filter((f) => f.userId($_item.creator));
     final item = $_typedResult.readTableOrNull(_creatorTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
@@ -2830,7 +2830,7 @@ final class $$PinEntityTableReferences
 
   $$GroupEntityTableProcessedTableManager get group {
     final manager = $$GroupEntityTableTableManager($_db, $_db.groupEntity)
-        .filter((f) => f.groupId($_item.group!));
+        .filter((f) => f.groupId($_item.group));
     final item = $_typedResult.readTableOrNull(_groupTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(

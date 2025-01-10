@@ -32,7 +32,7 @@ class ImageUpload extends ConsumerStatefulWidget {
 class _ImageUploadState extends ConsumerState<ImageUpload> {
   final _controller = TextEditingController();
 
-  Mutex _m = Mutex();
+  final Mutex _m = Mutex();
   late final groupIndexWhenOpened;
 
   @override
@@ -142,7 +142,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   }
 
   Future<void> handleEdit() async {
-    final groups = await ref.read(groupOrderServiceProvider);
+    final groups = ref.read(groupOrderServiceProvider);
     await SelectDialog.showModal<String>(
       context,
       showSearchBox: false,

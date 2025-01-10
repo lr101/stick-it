@@ -6,7 +6,7 @@ class LikeItem extends StatelessWidget {
   final int count;
   final bool liked;
 
-  LikeItem({required this.iconLiked, required this.iconNotLiked, required this.count, required this.liked});
+  const LikeItem({super.key, required this.iconLiked, required this.iconNotLiked, required this.count, required this.liked});
 
   @override
   Widget build(BuildContext context) {

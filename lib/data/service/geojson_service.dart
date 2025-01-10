@@ -34,8 +34,8 @@ class GeojsonService extends _$GeojsonService {
 @Riverpod(keepAlive: true)
 class DistrictService extends _$DistrictService {
   
-  double? _lat = null;
-  double? _long = null;
+  double? _lat;
+  double? _long;
   
   @override
   MapInfoDto? build()  {

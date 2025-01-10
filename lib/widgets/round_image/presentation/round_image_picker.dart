@@ -14,7 +14,7 @@ class RoundImagePicker extends ConsumerWidget {
   final double size;
   final double? editSize;
 
-  RoundImagePicker({super.key, required this.imageCallback, required this.size, required this.imageUpload, this.editSize});
+  const RoundImagePicker({super.key, required this.imageCallback, required this.size, required this.imageUpload, this.editSize});
 
 
   @override

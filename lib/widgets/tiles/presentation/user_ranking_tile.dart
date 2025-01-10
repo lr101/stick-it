@@ -13,7 +13,7 @@ class UserRankingTile extends ConsumerWidget {
 
   final UserRankingDtoInner user;
 
-  UserRankingTile({super.key, required this.user});
+  const UserRankingTile({super.key, required this.user});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,7 +40,7 @@ class UserRankingTile extends ConsumerWidget {
           ],
         ),
       ),
-      trailing: Text(user.points.toString() +"p"),
+      trailing: Text("${user.points}p"),
     );
     if (isCurrentUser) {
       return listTile;

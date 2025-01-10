@@ -58,7 +58,7 @@ class PinImageRepository {
      ));
      return decodedImage;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

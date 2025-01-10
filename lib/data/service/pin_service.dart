@@ -24,7 +24,7 @@ part 'pin_service.g.dart';
 @Riverpod(keepAlive: true)
 class PinService extends _$PinService {
   late PinRepository _pinRepository;
-  Mutex _mutex = Mutex();
+  final Mutex _mutex = Mutex();
 
   @override
   Future<List<LocalPinDto>> build(String groupId) async {
@@ -55,7 +55,7 @@ class PinService extends _$PinService {
       // sync updated and deleted pins from server
       final pinsApi = ref.watch(pinApiProvider);
       final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false, updatedAfter: lastSeen);
-      final localPins = this.state.value ?? [];
+      final localPins = state.value ?? [];
 
       // sync local pins to server
       final storedState = [...state.value!];
@@ -81,12 +81,12 @@ class PinService extends _$PinService {
       }
       state = AsyncData(await _mergeGroups(localPins, remotePins!));
       ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
-      if (numSynced > 0) CustomErrorSnackBar.message(message: "Synced ${numSynced} sticks to server", type: CustomErrorSnackBarType.success);
+      if (numSynced > 0) CustomErrorSnackBar.message(message: "Synced $numSynced sticks to server", type: CustomErrorSnackBarType.success);
     } catch (e) {
       if (kDebugMode) print(e);
     } finally {
       _mutex.release();
-      if (kDebugMode) print("synced ${state.value!.length} pins of group ${groupId}");
+      if (kDebugMode) print("synced ${state.value!.length} pins of group $groupId");
     }
   }
 

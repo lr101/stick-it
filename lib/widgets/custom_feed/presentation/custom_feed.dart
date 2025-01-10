@@ -7,7 +7,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'feed_card.dart';
 
 class CustomFeed extends ConsumerStatefulWidget {
-  CustomFeed({super.key, required this.pinProvider, this.index, required this.pagingController});
+  const CustomFeed({super.key, required this.pinProvider, this.index, required this.pagingController});
 
     final AutoDisposeFutureProvider<List<LocalPinDto>?> pinProvider;
   final PagingController<int, LocalPinDto> pagingController;
@@ -78,7 +78,9 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
         end = pageKey + pageSize;
       }
       final idList = _pins.getRange(pageKey, end).toList();
-      idList.forEach((pin) => ref.watch(getPinImageAndFetchProvider(pin.id)));
+      for (var pin in idList) {
+        ref.watch(getPinImageAndFetchProvider(pin.id));
+      }
       if (end == _pins.length) {
         widget.pagingController.appendLastPage(idList);
       } else {

@@ -10,7 +10,7 @@ import '../../round_image/presentation/round_image.dart';
 class UserTile extends ConsumerWidget {
   final String userId;
 
-  UserTile({super.key, required this.userId});
+  const UserTile({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

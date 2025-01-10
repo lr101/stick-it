@@ -67,7 +67,7 @@ class CurrentUserService extends _$CurrentUserService {
   }
 
   Future<void> runXpUpdate() async {
-    final global = await ref.watch(globalDataServiceProvider);
+    final global = ref.watch(globalDataServiceProvider);
     final xp = await ref.watch(userApiProvider).getUserXp(global.userId!);
     ref.read(globalDataRepositoryProvider).setXp(xp!);
     state = CurrentUserDto(

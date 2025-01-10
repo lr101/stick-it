@@ -10,7 +10,7 @@ class FeedCard extends ConsumerStatefulWidget {
 
   final LocalPinDto item;
 
-  const FeedCard({Key? key, required this.item}) : super(key: key);
+  const FeedCard({super.key, required this.item});
 
 
   @override

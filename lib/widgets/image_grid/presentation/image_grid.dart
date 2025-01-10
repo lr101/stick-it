@@ -15,7 +15,7 @@ class ImageGrid extends ConsumerStatefulWidget {
 }
 
 class _ImageGridState extends ConsumerState<ImageGrid> {
-  PagingController<int, LocalPinDto> _pagingController =
+  final PagingController<int, LocalPinDto> _pagingController =
       PagingController(firstPageKey: 0, invisibleItemsThreshold: 4);
 
   final int _pageSize = 18;

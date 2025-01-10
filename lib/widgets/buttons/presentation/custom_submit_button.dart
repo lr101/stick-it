@@ -8,12 +8,12 @@ class SubmitButton extends StatefulWidget {
   final IconData icon;
 
   const SubmitButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     this.text = 'Submit',
     this.height = 50,
     this.icon = Icons.arrow_forward
-  }) : super(key: key);
+  });
 
   @override
   _SubmitButtonState createState() => _SubmitButtonState();
@@ -22,7 +22,7 @@ class SubmitButton extends StatefulWidget {
 class _SubmitButtonState extends State<SubmitButton> {
   bool _isLoading = false;
 
-  Mutex _m = Mutex();
+  final Mutex _m = Mutex();
 
   Future<void> _handlePress() async {
     if (_isLoading || _m.isLocked) return;

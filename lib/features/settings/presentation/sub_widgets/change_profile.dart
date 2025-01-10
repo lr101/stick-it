@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChangeProfile extends ConsumerStatefulWidget {
 
-  const ChangeProfile({Key? key}) : super(key: key);
+  const ChangeProfile({super.key});
 
   @override
   ConsumerState<ChangeProfile> createState() => _ChangeProfileState();
