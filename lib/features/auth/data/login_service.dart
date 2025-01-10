@@ -7,6 +7,7 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:string_validator/string_validator.dart';
+
 part 'login_service.g.dart';
 
 class LoginService {

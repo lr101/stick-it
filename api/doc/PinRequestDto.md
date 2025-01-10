@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **userId** | **String** |  | 
 **groupId** | **String** |  | 
 **creationDate** | [**DateTime**](DateTime.md) |  | [optional] 
-**description** | **String** |  | 
+**description** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

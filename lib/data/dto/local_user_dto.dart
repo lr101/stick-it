@@ -1,5 +1,4 @@
 
-import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:openapi/api.dart';
 
 class LocalUserDto {

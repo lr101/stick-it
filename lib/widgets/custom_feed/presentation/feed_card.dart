@@ -1,25 +1,10 @@
-import 'package:buff_lisa/data/service/user_image_service_small.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_description.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image.dart';
-import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_shimmer.dart';
-import 'package:buff_lisa/widgets/custom_feed/presentation/feed_map.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_timeline_header.dart';
-import 'package:buff_lisa/widgets/custom_feed/presentation/pop_up_menu_feed.dart';
-import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
-import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:openapi/api.dart';
-import 'package:transparent_image/transparent_image.dart';
+
 import '../../../data/dto/pin_dto.dart';
-import '../../../widgets/custom_feed/presentation/like_buttons.dart';
-import '../../clickable_names/presentation/clickable_user.dart';
-import '../data/feed_map_state.dart';
-import '../data/image_service.dart';
-import '../data/like_service.dart';
 
 class FeedCard extends ConsumerStatefulWidget {
 

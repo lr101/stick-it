@@ -1,12 +1,10 @@
 import 'dart:math';
 
-import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/achievement/data/achievement_provider.dart';
 import 'package:buff_lisa/features/achievement/presentation/achievement_card.dart';
 import 'package:buff_lisa/util/types/achievement.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';

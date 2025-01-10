@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
@@ -9,11 +8,11 @@ import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
-import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_group_service.g.dart';

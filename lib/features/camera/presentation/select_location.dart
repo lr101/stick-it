@@ -1,16 +1,15 @@
 import 'package:buff_lisa/data/service/group_image_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+
 import '../../../util/routing/routing.dart';
 import '../../../widgets/custom_marker/data/default_group_image.dart';
 import '../../../widgets/group_selector/service/group_order_service.dart';

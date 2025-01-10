@@ -1,15 +1,12 @@
 import 'package:buff_lisa/features/camera/presentation/camera.dart';
 import 'package:buff_lisa/features/feed/presentation/active_group_feed.dart';
-import 'package:buff_lisa/features/navigation/presentation/tab_group_preview.dart';
-import 'package:buff_lisa/features/profile/presentation/user_profile.dart';
-import 'package:buff_lisa/widgets/custom_feed/presentation/custom_feed.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_home.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
+import 'package:buff_lisa/features/navigation/presentation/tab_group_preview.dart';
+import 'package:buff_lisa/features/profile/presentation/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:latlong2/latlong.dart';
 
-import '../../../data/service/pin_service.dart';
 import '../../../widgets/group_selector/presentation/group_selector.dart';
 import '../../group_user_list/presentation/user_groups.dart';
 

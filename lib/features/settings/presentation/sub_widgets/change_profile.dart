@@ -4,13 +4,9 @@ import 'package:buff_lisa/features/auth/data/login_service.dart';
 import 'package:buff_lisa/features/settings/presentation/state/user_edit_state.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
-import 'package:buff_lisa/widgets/round_image/presentation/custom_image_picker.dart';
-import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../data/service/user_image_service.dart';
 
 class ChangeProfile extends ConsumerStatefulWidget {
 

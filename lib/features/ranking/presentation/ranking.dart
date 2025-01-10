@@ -5,11 +5,11 @@ import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.d
 import 'package:buff_lisa/widgets/tiles/presentation/group_ranking_tile.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/user_ranking_tile.dart';
 import 'package:choice/choice.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:openapi/api.dart';
+
 import '../../../data/service/geojson_service.dart';
 
 

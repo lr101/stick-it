@@ -1,9 +1,5 @@
-import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/geojson_service.dart';
-import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/ranking_service.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
-import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
 import 'package:buff_lisa/features/ranking/presentation/ranking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +7,6 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../data/service/group_image_service.dart';
 import '../../../util/routing/routing.dart';
-import '../../../util/types/level.dart';
 import '../../../widgets/round_image/presentation/round_image.dart';
 
 class TopGroupsPreview extends ConsumerStatefulWidget {

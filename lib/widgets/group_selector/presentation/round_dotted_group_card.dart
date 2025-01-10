@@ -1,8 +1,5 @@
-import 'package:buff_lisa/features/group_create/presentation/group_create.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
-import '../../../util/routing/routing.dart';
 import '../helper/dotted_border_painter.dart';
 
 class RoundDottedGroupCard extends StatelessWidget {

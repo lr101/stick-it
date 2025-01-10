@@ -1,7 +1,6 @@
 ///
 ///  create by zmtzawqlp on 2019/5/27
 ///
-import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:like_button/src/painter/bubbles_painter.dart';

@@ -17,7 +17,7 @@ class CustomImagePicker {
         await Permission.accessMediaLocation.request();
       }
       final picker = ImagePicker();
-      XFile? pickedFile = await picker.pickMedia(imageQuality: 25, requestFullMetadata: true);
+      XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 25, requestFullMetadata: true);
       final LostDataResponse response = await picker.retrieveLostData();
       if (response.file != null) {
         pickedFile = response.file;
@@ -35,7 +35,8 @@ class CustomImagePicker {
   static Future<Uint8List?> pickAndCrop({required int minHeight, required int minWidth,required BuildContext context, CropAspectRatio? initAspectRatio}) async {
     try {
       final XFile? res =  await CustomImagePicker.pick(context: context);
-      return crop(res: res, minHeight: minHeight, minWidth: minWidth, context: context, initAspectRatio: initAspectRatio);
+      if (!context.mounted) return null;
+      return await crop(res: res, minHeight: minHeight, minWidth: minWidth, context: context, initAspectRatio: initAspectRatio);
     } catch (e) {
       CustomErrorSnackBar.message(message: e.toString());
     }

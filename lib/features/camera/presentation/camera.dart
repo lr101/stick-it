@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/group_image_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
 import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/camera/presentation/select_location.dart';
@@ -17,13 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:snapping_page_scroll/snapping_page_scroll.dart';
-import 'package:super_tooltip/super_tooltip.dart';
-import 'package:exif/exif.dart';
+
 import '../../../data/service/global_data_service.dart';
 
 class Camera extends ConsumerStatefulWidget {
