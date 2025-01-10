@@ -1,6 +1,5 @@
 import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/user_tile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

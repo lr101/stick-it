@@ -1,11 +1,9 @@
 
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_distance.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../../data/dto/pin_dto.dart';
 import '../../../data/service/pin_service.dart';

@@ -19,7 +19,7 @@ class PinRequestDto {
     required this.userId,
     required this.groupId,
     this.creationDate,
-    required this.description,
+    this.description,
   });
 
   String image;
@@ -168,7 +168,6 @@ class PinRequestDto {
     'longitude',
     'userId',
     'groupId',
-    'description',
   };
 }
 

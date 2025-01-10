@@ -1,13 +1,10 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
-import 'package:buff_lisa/widgets/custom_feed/data/feed_description.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/pop_up_menu_feed.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../../data/service/global_data_service.dart';

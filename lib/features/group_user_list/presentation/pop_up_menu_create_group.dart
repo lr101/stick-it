@@ -1,5 +1,4 @@
 import 'package:buff_lisa/features/group_search/presentation/group_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../util/routing/routing.dart';

@@ -8,7 +8,6 @@ import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
@@ -19,9 +18,9 @@ import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_users.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
-import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,6 +29,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:social_media_buttons/social_media_button.dart';
+
 import '../../../data/service/global_data_service.dart';
 import '../../../util/routing/routing.dart';
 import '../../web/presentation/show_web.dart';

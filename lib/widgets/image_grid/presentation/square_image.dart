@@ -1,10 +1,7 @@
 import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:transparent_image/transparent_image.dart';
-
-import '../../../util/routing/routing.dart';
 
 class SquareImage extends ConsumerWidget {
   final String pinId;

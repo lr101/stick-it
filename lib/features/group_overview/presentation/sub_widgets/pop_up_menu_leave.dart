@@ -2,10 +2,8 @@ import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
-import 'package:buff_lisa/features/group_create/presentation/group_create.dart';
 import 'package:buff_lisa/features/group_edit/presentation/group_edit.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

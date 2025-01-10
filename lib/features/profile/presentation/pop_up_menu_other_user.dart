@@ -1,15 +1,10 @@
 
-import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
-import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/pin_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../util/routing/routing.dart';
-import '../../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 
 class PopUpMenuOtherUser extends ConsumerWidget {
 

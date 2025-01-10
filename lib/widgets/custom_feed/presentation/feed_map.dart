@@ -1,6 +1,5 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_map_state.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

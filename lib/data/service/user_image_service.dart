@@ -1,11 +1,14 @@
 
 import 'dart:typed_data';
+
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import 'global_data_service.dart';
-import 'package:http/http.dart' as http;
+
 part 'user_image_service.g.dart';
 
 @Riverpod(keepAlive: true)
