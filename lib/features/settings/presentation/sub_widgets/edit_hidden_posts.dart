@@ -1,9 +1,6 @@
-import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
-import 'package:buff_lisa/widgets/tiles/presentation/user_tile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:transparent_image/transparent_image.dart';

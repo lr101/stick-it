@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/current_user_dto.dart';
-import 'package:buff_lisa/data/entity/database.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

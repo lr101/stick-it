@@ -1,5 +1,4 @@
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'filter_service.g.dart';

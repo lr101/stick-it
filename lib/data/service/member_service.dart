@@ -1,11 +1,9 @@
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../dto/member_dto.dart';
-import 'global_data_service.dart';
 
 part 'member_service.g.dart';
 

@@ -1,4 +1,3 @@
-import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/data/login_service.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';

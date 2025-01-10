@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../widgets/tiles/presentation/batch.dart';
-import '../../settings/presentation/settings.dart';
 
 class OtherUserProfile extends ConsumerWidget {
   const OtherUserProfile({super.key, required this.userId});

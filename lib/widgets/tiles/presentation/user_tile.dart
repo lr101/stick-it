@@ -1,11 +1,8 @@
-import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../custom_interaction/presentation/custom_dialog.dart';
 import '../../round_image/presentation/round_image.dart';

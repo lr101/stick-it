@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mutex/mutex.dart';
 
-import '../../../widgets/round_image/presentation/round_image.dart';
 import '../service/group_create_service.dart';
 
 class GroupEditTemplate extends ConsumerStatefulWidget {

@@ -1,11 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class CustomAvatarScaffold extends ConsumerStatefulWidget {
   const CustomAvatarScaffold(

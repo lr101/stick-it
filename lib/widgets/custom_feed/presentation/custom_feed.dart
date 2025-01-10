@@ -1,6 +1,5 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
-import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

@@ -1,7 +1,5 @@
 
-import 'package:buff_lisa/features/achievement/data/achievement_provider.dart';
 import 'package:buff_lisa/util/types/achievement.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Batch extends StatelessWidget {

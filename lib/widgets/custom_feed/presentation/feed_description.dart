@@ -1,6 +1,5 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/feed_description.dart';

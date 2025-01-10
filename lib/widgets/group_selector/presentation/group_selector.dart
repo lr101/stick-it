@@ -1,15 +1,11 @@
 import 'dart:ui';
 
-import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/group_create/presentation/group_create.dart';
-import 'package:buff_lisa/widgets/group_selector/presentation/round_group_card.dart';
 import 'package:buff_lisa/widgets/group_selector/presentation/round_dotted_group_card.dart';
+import 'package:buff_lisa/widgets/group_selector/presentation/round_group_card.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
-import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:openapi/api.dart';
 
 import '../../../features/group_search/presentation/group_search.dart';
 import '../../../util/routing/routing.dart';

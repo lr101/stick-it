@@ -1,5 +1,4 @@
 
-import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;

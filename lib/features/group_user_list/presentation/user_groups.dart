@@ -1,6 +1,5 @@
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
-import 'package:buff_lisa/features/group_search/presentation/group_search.dart';
 import 'package:buff_lisa/features/group_user_list/presentation/pop_up_menu_create_group.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../util/routing/routing.dart';
 import '../../../widgets/tiles/presentation/group_tile.dart';
-import '../../group_overview/presentation/sub_widgets/group_overview.dart';
 import '../../group_overview/presentation/user_group_overview.dart';
 
 class UserGroups extends ConsumerStatefulWidget {
