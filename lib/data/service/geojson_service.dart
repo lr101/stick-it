@@ -12,8 +12,8 @@ part 'geojson_service.g.dart';
 class GeojsonService extends _$GeojsonService {
 
 
-  static final String GEOJSON_START = "{\"features\": [{\"properties\": {},\"geometry\":";
-  static final String GEOJSON_END = "}]}";
+  static const String GEOJSON_START = "{\"features\": [{\"properties\": {},\"geometry\":";
+  static const String GEOJSON_END = "}]}";
 
   @override
   Future<List<Polygon>> build() async {

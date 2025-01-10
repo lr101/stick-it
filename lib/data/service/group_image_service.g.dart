@@ -561,7 +561,7 @@ class _GroupPinImageByIdProviderElement
   String get groupId => (origin as GroupPinImageByIdProvider).groupId;
 }
 
-String _$groupImageServiceHash() => r'5507e528a07572e7d0335acd7362bc94648b601f';
+String _$groupImageServiceHash() => r'd922137706645691886dc6090e71bd2e077e5305';
 
 /// See also [GroupImageService].
 @ProviderFor(GroupImageService)

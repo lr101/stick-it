@@ -1,4 +1,6 @@
 
+import 'package:buff_lisa/features/map_home/presentation/map_panel_draggable.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/feed_item_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_distance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,9 +13,8 @@ import '../../../widgets/custom_feed/presentation/feed_card.dart';
 import '../data/marker_window_state.dart';
 
 class MapPanel extends ConsumerStatefulWidget {
-  const MapPanel({super.key, required this.moveToCurrentPosition, required this.tabController, required this.setLocation});
+  const MapPanel({super.key, required this.tabController, required this.setLocation});
 
-  final VoidCallback moveToCurrentPosition;
   final TabController tabController;
   final Future<void> Function(LatLng location, double zoom) setLocation;
 
@@ -34,7 +35,6 @@ class _MapPanelState extends ConsumerState<MapPanel> {
   void initState() {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.moveToCurrentPosition();
       ref.watch(pinsSortedByDistanceProvider).whenData((data) {
         _pins = data;
         _pagingController.refresh();
@@ -57,22 +57,7 @@ class _MapPanelState extends ConsumerState<MapPanel> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Container(
-          height: 22,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10)),
-          ),
-          child: Center(
-              child: Container(
-                  width: MediaQuery.of(context).size.width * 0.35,
-                  height: 5,
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).hintColor,
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(2.5))))),
-        ),
+        const MapPanelDraggable(),
         TabBar(controller: widget.tabController, tabs: [
           Tab(
             text: 'Closest Pins',
@@ -95,7 +80,13 @@ class _MapPanelState extends ConsumerState<MapPanel> {
               )),
           windowsState == null
               ? Center(child: Text('Click on a pin to see details here'))
-              : SingleChildScrollView(child: FeedCard(item: windowsState))
+              : SingleChildScrollView(
+              child: ProviderScope(
+                overrides: [
+                  feedItemProvider.overrideWithValue(windowsState)
+                ],
+                  child: const FeedCard()
+            ))
         ]))
       ],
     );

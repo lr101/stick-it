@@ -44,7 +44,6 @@ class _ChangeProfileState extends ConsumerState<ChangeProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final userId = ref.watch(globalDataServiceProvider).userId!;
     return Scaffold(
         appBar: AppBar(
           title: Text('Edit profile'),

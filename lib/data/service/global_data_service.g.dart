@@ -72,7 +72,7 @@ final globalDataServiceProvider =
 
 typedef _$GlobalDataService = Notifier<GlobalDataDto>;
 String _$currentUserServiceHash() =>
-    r'941922d2695d2e59a595ec29fa2044b552f1ff92';
+    r'7efcd9109abaeb86550ac8acfd0f36f7dfaa3645';
 
 /// See also [CurrentUserService].
 @ProviderFor(CurrentUserService)

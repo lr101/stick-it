@@ -1,8 +1,10 @@
 import 'package:buff_lisa/data/service/geojson_service.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/features/map_home/data/map_panel_state.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/circle_with_indicator.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_panel.dart';
+import 'package:buff_lisa/features/map_home/presentation/map_panel_draggable.dart';
 import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,7 @@ class MapHome extends ConsumerStatefulWidget {
 class _MapHomeState extends ConsumerState<MapHome>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final MapController _controller = MapController();
-  late final animateController;
+  late final AnimationController _animateController;
   ValueNotifier<double> panelPosition = ValueNotifier<double>(0);
   final PanelController _panelController = PanelController();
   late final TabController _tabController;
@@ -37,13 +39,14 @@ class _MapHomeState extends ConsumerState<MapHome>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    animateController = AnimationController(
+    _animateController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) => moveToCurrentPosition());
   }
 
   @override
   void dispose() {
-    animateController.dispose();
+    _animateController.dispose();
     _controller.dispose();
     _tabController.dispose();
     super.dispose();
@@ -53,12 +56,16 @@ class _MapHomeState extends ConsumerState<MapHome>
   Widget build(BuildContext context) {
     super.build(context);
     final mapState = ref.watch(mapStatesProvider);
+    final panelState = ref.watch(mapPanelStateProvider);
+    ref.watch(markerWindowStateProvider);
     return LayoutBuilder(builder: (context, constraints) => Scaffold(
       appBar: null,
       body: SlidingUpPanel(
             controller: _panelController,
             color: Theme.of(context).scaffoldBackgroundColor,
             backdropEnabled: false,
+            onPanelOpened: () => ref.watch(mapPanelStateProvider.notifier).set(true),
+            onPanelClosed: () => ref.watch(mapPanelStateProvider.notifier).set(false),
             panelSnapping: false,
             boxShadow: const [],
             minHeight: 20,
@@ -105,11 +112,10 @@ class _MapHomeState extends ConsumerState<MapHome>
                   )
               ),],
             ),
-            panel: MapPanel(
-                moveToCurrentPosition: moveToCurrentPosition,
+            panel: panelState ? MapPanel(
                 tabController: _tabController,
                 setLocation: setLocation
-            )
+            ) : const Align(alignment: Alignment.topCenter, child: MapPanelDraggable())
         ),
       floatingActionButton: Align(
           alignment: Alignment.bottomRight,
@@ -138,6 +144,7 @@ class _MapHomeState extends ConsumerState<MapHome>
   Future<void> onMarkerTab(Marker marker) async {
     final m = marker as CustomMarkerWidget;
     ref.read(markerWindowStateProvider.notifier).openPopup(m.pinDto);
+    ref.read(mapPanelStateProvider.notifier).set(true);
     await _panelController.animatePanelToPosition(1.0, duration: const Duration(milliseconds: 200));
     _tabController.animateTo(1, duration: const Duration(milliseconds: 200));
   }
@@ -158,20 +165,20 @@ class _MapHomeState extends ConsumerState<MapHome>
     final zoomTween = Tween<double>(begin: _controller.camera.zoom, end: zoom);
 
     final Animation<double> animation =
-        CurvedAnimation(parent: animateController, curve: Curves.fastOutSlowIn);
+        CurvedAnimation(parent: _animateController, curve: Curves.fastOutSlowIn);
 
-    animateController.addListener(() {
+    _animateController.addListener(() {
       _controller.move(
           LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
           zoomTween.evaluate(animation));
     });
-    animateController.addStatusListener((status) {
+    _animateController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         ref.read(districtServiceProvider.notifier).updateLatLong(latTween.evaluate(animation), lngTween.evaluate(animation));
       }
     });
 
-    animateController.forward(from: 0.0);
+    _animateController.forward(from: 0.0);
   }
 
   void onMapEvent(TapPosition event, LatLng pos) {

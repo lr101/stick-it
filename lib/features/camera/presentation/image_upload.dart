@@ -33,12 +33,12 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   final _controller = TextEditingController();
 
   final Mutex _m = Mutex();
-  late final groupIndexWhenOpened;
+  late final int _groupIndexWhenOpened;
 
   @override
   void initState() {
     super.initState();
-    groupIndexWhenOpened = ref.read(cameraGroupIndexProvider);
+    _groupIndexWhenOpened = ref.read(cameraGroupIndexProvider);
   }
 
   @override
@@ -137,7 +137,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         }
       });
     }
-    ref.read(cameraGroupIndexProvider.notifier).updateIndex(groupIndexWhenOpened);
+    ref.read(cameraGroupIndexProvider.notifier).updateIndex(_groupIndexWhenOpened);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

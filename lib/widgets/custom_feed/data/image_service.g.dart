@@ -6,7 +6,7 @@ part of 'image_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getPinImageInfoHash() => r'ea9e952036d43e3c11375c6cb7626644fd2be674';
+String _$getPinImageInfoHash() => r'4ce8c13b052597a4d6f5c53d8b9c27818299516a';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -1,16 +1,12 @@
-import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/dto/member_dto.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
-import 'package:buff_lisa/features/achievement/data/achievement_provider.dart';
 import 'package:buff_lisa/features/profile/presentation/other_user_profile.dart';
 import 'package:buff_lisa/util/types/achievement.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../features/group_overview/presentation/user_group_overview.dart';
 import '../../../util/routing/routing.dart';
 import '../../round_image/presentation/round_image.dart';
 

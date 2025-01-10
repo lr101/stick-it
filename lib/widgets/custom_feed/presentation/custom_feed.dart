@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../data/feed_item_service.dart';
 import 'feed_card.dart';
 
 class CustomFeed extends ConsumerStatefulWidget {
@@ -63,7 +64,11 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
       builderDelegate: PagedChildBuilderDelegate<LocalPinDto>(
         animateTransitions: true,
         itemBuilder: (context, item, index) => ProviderScope(
-            child: FeedCard(item: item)
+            child: ProviderScope(
+                overrides: [
+                  feedItemProvider.overrideWithValue(item),
+                ],
+                child: const FeedCard())
         ),
       ),
     );

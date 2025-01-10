@@ -5,27 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/dto/pin_dto.dart';
+import '../data/feed_item_service.dart';
 
-class FeedCard extends ConsumerStatefulWidget {
-
-  final LocalPinDto item;
-
-  const FeedCard({super.key, required this.item});
+class FeedCard extends ConsumerWidget {
+  const FeedCard({super.key});
 
 
   @override
-  FeedCardState createState() => FeedCardState();
-}
-
-class FeedCardState extends ConsumerState<FeedCard> {
-
-
-
-
-
-  @override
-  Widget build(BuildContext context) {
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final item = ref.watch(feedItemProvider);
 
     return LayoutBuilder(builder: (context, constraints) {
       double maxWidth = constraints.maxWidth;
@@ -40,9 +28,9 @@ class FeedCardState extends ConsumerState<FeedCard> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FeedTimelineHeader(groupId: widget.item.groupId, creationDate: widget.item.creationDate, height: maxHeight + ref.watch(feedDescriptionHeightProvider(widget.item))),
+          FeedTimelineHeader(groupId: item.groupId, creationDate: item.creationDate, height: maxHeight + ref.watch(feedDescriptionHeightProvider(item))),
           const SizedBox(width: 16),
-          FeedCardImage(item: widget.item, maxHeight: maxHeight, maxWidth: maxWidth - 55, )
+          FeedCardImage(item: item, maxHeight: maxHeight, maxWidth: maxWidth - 55, )
         ],
       ),
     );});

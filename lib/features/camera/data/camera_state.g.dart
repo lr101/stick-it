@@ -7,7 +7,7 @@ part of 'camera_state.dart';
 // **************************************************************************
 
 String _$cameraSelectedGroupHash() =>
-    r'7f82285b8225ad84d52be26460ae59f9560ab97d';
+    r'26352f1d404ce0374848d0c286396673a669f8ee';
 
 /// See also [cameraSelectedGroup].
 @ProviderFor(cameraSelectedGroup)
