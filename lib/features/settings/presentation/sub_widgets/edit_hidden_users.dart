@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EditHiddenUsers extends ConsumerWidget {
+  const EditHiddenUsers({super.key});
+
 
 
   @override

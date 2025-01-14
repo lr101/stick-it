@@ -2,6 +2,7 @@ import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../../round_image/presentation/round_image.dart';
 import '../service/group_order_service.dart';
@@ -41,6 +42,7 @@ class _RoundGroupCardState extends ConsumerState<RoundGroupCard> {
                     RoundImage(
                       size: baseHeight / 2,
                       clickable: false,
+                      defaultPlaceholderImage: kTransparentImage,
                       imageCallback: AsyncData(ref.watch(groupProfilePictureByIdProvider(groupId)).value),
                       child: ClipOval(
                         child: Container(

@@ -5,10 +5,10 @@ class CircleWithIndicator extends StatelessWidget {
   final int number;
 
   const CircleWithIndicator({
-    Key? key,
+    super.key,
     required this.color,
     required this.number,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

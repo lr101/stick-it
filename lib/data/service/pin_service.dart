@@ -24,7 +24,7 @@ part 'pin_service.g.dart';
 @Riverpod(keepAlive: true)
 class PinService extends _$PinService {
   late PinRepository _pinRepository;
-  Mutex _mutex = Mutex();
+  final Mutex _mutex = Mutex();
 
   @override
   Future<List<LocalPinDto>> build(String groupId) async {
@@ -47,47 +47,47 @@ class PinService extends _$PinService {
   }
 
   Future<void> sync() async {
+    final key = GlobalDataRepository.lastSeenPinKey + groupId;
+    final lastSeen = ref.read(lastSeenProvider(key));
+    final pinsApi = ref.watch(pinApiProvider);
     if (_mutex.isLocked) return;
     await _mutex.acquire();
+    final localPins = state.value ?? [];
+    final storedState = [...state.value!];
     try {
-      final key = GlobalDataRepository.lastSeenPinKey + groupId;
-      final lastSeen = ref.read(lastSeenProvider(key));
-      // sync updated and deleted pins from server
-      final pinsApi = ref.watch(pinApiProvider);
       final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false, updatedAfter: lastSeen);
-      final localPins = this.state.value ?? [];
-
       // sync local pins to server
-      final storedState = [...state.value!];
-      int numSynced = 0;
       for (int i = 0 ; i < storedState.length; i++) {
-        final pin = storedState[i];
-        if (pin.lastSynced == null) {
-          try {
-            final newPin = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
-            localPins.remove(pin);
-            _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin!), pin.id);
-            numSynced++;
-          } on ApiException catch (e) {
-            if (e.code == 409) {
-              if (kDebugMode) print("Pin already synced -- remove from list");
-              localPins.remove(pin);
-              _pinRepository.deletePinFromGroup(pin.id);
-            } else {
-              if (kDebugMode) print("Sync failed for pin ${pin.id} with message ${e.message}");
-            }
-          }
-        }
+        await _syncOfflineToOnline(storedState[i], localPins, pinsApi);
       }
-      state = AsyncData(await _mergeGroups(localPins, remotePins!));
+      final mergedState = await _mergeGroups(localPins, remotePins!);
+      state = AsyncData(mergedState);
       ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
-      if (numSynced > 0) CustomErrorSnackBar.message(message: "Synced ${numSynced} sticks to server", type: CustomErrorSnackBarType.success);
     } catch (e) {
       if (kDebugMode) print(e);
     } finally {
       _mutex.release();
-      if (kDebugMode) print("synced ${state.value!.length} pins of group ${groupId}");
+      if (kDebugMode) print("synced ${state.value!.length} pins of group $groupId");
     }
+  }
+
+  Future<bool> _syncOfflineToOnline(LocalPinDto pin, List<LocalPinDto> localPins, PinsApi pinsApi) async {
+    if (pin.lastSynced == null) {
+      try {
+        final newPin = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(await ref.watch(pinImageServiceProvider.selectAsync((e) => e[pin.id]!)))));
+        localPins.remove(pin);
+        _pinRepository.updateToSynced(LocalPinDto.fromDtoWithImage(newPin!), pin.id);
+      } on ApiException catch (e) {
+        if (e.code == 409) {
+          if (kDebugMode) print("Pin already synced -- remove from list");
+          _pinRepository.deletePinFromGroup(pin.id);
+        } else {
+          if (kDebugMode) print("Sync failed for pin ${pin.id} with message ${e.message}");
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   Future<List<LocalPinDto>> _mergeGroups(List<LocalPinDto> localPins, PinsSyncDto remotePins) async  {
@@ -101,36 +101,40 @@ class PinService extends _$PinService {
       if (hiddenUsers.contains(p.creatorId) || hiddenPosts.contains(p.id)) continue;
       localPinMap[pin.id] = p;
     }
-    remotePins.deleted.forEach((a) async => await _pinRepository.deletePinFromGroup(a));
+    for (var pin in remotePins.deleted) {
+      await _pinRepository.deletePinFromGroup(pin);
+    }
     return localPinMap.values.toList();
   }
 
   // Optimized state update function
-  void updateSinglePin(LocalPinDto updatedPin, {String? oldPinId}) {
-    final id = oldPinId ?? updatedPin.id;
-    final currentState = state.value ?? [];
-    final index = currentState.indexWhere((pin) => pin.id == id);
-    if (index != -1) {
-      final updatedState = [...currentState];
-      updatedState[index] = updatedPin;
-      state = AsyncValue.data(updatedState);
-    } else {
-      state = AsyncValue.data([...currentState, updatedPin]);
-    }
+  Future<void> updateSinglePin(LocalPinDto updatedPin, {String? oldPinId}) async {
+    await _mutex.protect(() async {
+      final id = oldPinId ?? updatedPin.id;
+      final currentState = state.value ?? [];
+      final index = currentState.indexWhere((pin) => pin.id == id);
+      if (index != -1) {
+        final updatedState = [...currentState];
+        updatedState[index] = updatedPin;
+        state = AsyncValue.data(updatedState);
+      } else {
+        state = AsyncValue.data([...currentState, updatedPin]);
+      }
+    });
   }
 
   Future<String?> addPinToGroup(LocalPinDto pin, Uint8List image) async {
     try {
       await _pinRepository.createOrUpdate(pin);
       await ref.read(pinImageServiceProvider.notifier).addOfflineImage(pin.id, image);
-      updateSinglePin(pin);
+      await updateSinglePin(pin);
       ref.read(groupRepositoryProvider).addPoint(pin.creatorId, pin.groupId);
       ref.read(userGroupServiceProvider.notifier).setIsActive(groupId, true);
       final pinsApi = ref.read(pinApiProvider);
       final result = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(image)));
       if (result != null) {
         final newPin = LocalPinDto.fromDto(result);
-        updateSinglePin(newPin, oldPinId: pin.id);
+        await updateSinglePin(newPin, oldPinId: pin.id);
         _pinRepository.updateToSynced(newPin, pin.id);
         await ref.read(pinImageServiceProvider.notifier).addImage(newPin.id, removeKeepAlive: true);
         return null;
@@ -146,12 +150,14 @@ class PinService extends _$PinService {
     try {
       final pin = (state.value ?? []).firstWhere((pin) => pin.id == pinId);
       if (pin.lastSynced != null) {
-      final pinsApi = ref.watch(pinApiProvider);
-      await pinsApi.deletePin(pinId);
+        final pinsApi = ref.watch(pinApiProvider);
+        await pinsApi.deletePin(pinId);
       }
-      final currentState = state.value ?? [];
-      currentState.removeWhere((pin) => pin.id == pinId);
-      state = AsyncValue.data(currentState);
+      await _mutex.protect(() async {
+        final currentState = state.value ?? [];
+        currentState.removeWhere((pin) => pin.id == pinId);
+        state = AsyncValue.data(currentState);
+      });
       await _pinRepository.deletePinFromGroup(pinId);
       ref.watch(groupRepositoryProvider).removePoint(ref.watch(globalDataServiceProvider).userId!, groupId);
       return null;

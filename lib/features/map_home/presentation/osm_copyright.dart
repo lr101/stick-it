@@ -4,6 +4,8 @@ import '../../../util/routing/routing.dart';
 import '../../web/presentation/show_web.dart';
 
 class OsmCopyright extends StatelessWidget {
+  const OsmCopyright({super.key});
+
 
   @override
   Widget build(BuildContext context) {

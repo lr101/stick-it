@@ -6,7 +6,7 @@ part of 'geojson_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$geojsonServiceHash() => r'a69ccc05bdde802bcfb3d1be08ddf0b7de8298c1';
+String _$geojsonServiceHash() => r'ca2a9bbe1b58daf7489a31ea914bd3f01f266abd';
 
 /// See also [GeojsonService].
 @ProviderFor(GeojsonService)
@@ -22,7 +22,7 @@ final geojsonServiceProvider =
 );
 
 typedef _$GeojsonService = AsyncNotifier<List<Polygon>>;
-String _$districtServiceHash() => r'f14234c6975bcf84d017dc491b9fac17f2ec22c8';
+String _$districtServiceHash() => r'338094244770e46fa1d274a7944b7d7c6456f4b5';
 
 /// See also [DistrictService].
 @ProviderFor(DistrictService)

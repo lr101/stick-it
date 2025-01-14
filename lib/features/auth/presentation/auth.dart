@@ -10,7 +10,7 @@ import '../../web/presentation/show_web.dart';
 
 class Auth extends ConsumerStatefulWidget  {
 
-  const Auth({Key? key}) : super(key: key);
+  const Auth({super.key});
 
   @override
   ConsumerState<Auth> createState() => _AuthState();

@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
@@ -193,7 +192,7 @@ class _CameraState extends ConsumerState<Camera> {
   Future<void> uploadFileImage() async {
     final pickedFile = await CustomImagePicker.pick(context: context);
 
-    if (pickedFile != null) {
+    if (pickedFile != null && mounted) {
       try {
         final croppedImage = await CustomImagePicker.crop(res: pickedFile, minHeight: 500, minWidth: 500, context: context, initAspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4));
         final exif = await Exif.fromPath(pickedFile.path);

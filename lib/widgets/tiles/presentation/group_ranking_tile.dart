@@ -13,7 +13,7 @@ class GroupRankingTile extends ConsumerWidget {
 
   final GroupRankingDtoInner groupDto;
 
-  GroupRankingTile({super.key, required this.groupDto});
+  const GroupRankingTile({super.key, required this.groupDto});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

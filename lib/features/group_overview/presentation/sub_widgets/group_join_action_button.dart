@@ -1,5 +1,6 @@
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,8 @@ class GroupJoinActionButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FloatingActionButton(
-      heroTag: this.key.toString(),
+    return SubmitButton(
+      text: "Join",
       onPressed: () async {
         if (groupDto.visibility == 0) {
           final result = await ref
@@ -45,7 +46,6 @@ class GroupJoinActionButton extends ConsumerWidget {
           });
         }
       },
-      child: Text("Join"),
     );
   }
 }

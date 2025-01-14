@@ -14,7 +14,7 @@ import '../data/like_service.dart';
 
 class FeedMap extends ConsumerStatefulWidget {
 
-  const FeedMap({Key? super.key, required this.item});
+  const FeedMap({super.key, required this.item});
   final LocalPinDto item;
 
   @override
@@ -71,7 +71,7 @@ class FeedMapState extends ConsumerState<FeedMap> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FloatingActionButton(
-                    heroTag: widget.item.id.toString() + "zoomIn",
+                    heroTag: "${widget.item.id}zoomIn",
                       onPressed: () => zoomIn(center),
                       backgroundColor:
                       Colors.grey.withOpacity(0.5),
@@ -79,7 +79,7 @@ class FeedMapState extends ConsumerState<FeedMap> {
                   SizedBox(height: 5,),
                   FloatingActionButton(
                     onPressed: () => zoomOut(center),
-                    heroTag: widget.item.id.toString() + "zoomOut",
+                    heroTag: "${widget.item.id}zoomOut",
                     backgroundColor:
                     Colors.grey.withOpacity(0.5),
                     child: const Icon(Icons.zoom_out),

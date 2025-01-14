@@ -49,7 +49,7 @@ Future<void> main() async {
     await dir.delete(recursive: true);
     await FMTCObjectBoxBackend().initialise();
   }
-  final storage = await FlutterSecureStorage();
+  final storage = FlutterSecureStorage();
   final globalData = await GlobalDataRepository.get(sharedPreferences, storage);
   final globalUserData = await GlobalDataRepository.getUser(sharedPreferences, storage);
   final defaultGroupImage =  (await rootBundle.load('assets/image/pin_border.png')).buffer.asUint8List();
@@ -71,6 +71,8 @@ Future<void> main() async {
 }
 
 class MyApp extends ConsumerWidget {
+  const MyApp({super.key});
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

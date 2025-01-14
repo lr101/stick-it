@@ -16,9 +16,9 @@ class MemberService extends _$MemberService {
     if (isUserGroup) {
       final localMembers = await ref.watch(groupRepositoryProvider).getMembers(groupId);
       if (localMembers.isEmpty) {
-        this.state = const AsyncLoading();
+        state = const AsyncLoading();
       }
-      this.state = AsyncData(localMembers);
+      state = AsyncData(localMembers);
     }
     final memberApi = ref.watch(memberApiProvider);
     final members = await memberApi.getGroupMembers(groupId);

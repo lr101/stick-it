@@ -1,4 +1,5 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image_header.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/pop_up_menu_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,10 +50,7 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
   @override
   Widget build(BuildContext context) {
     final data = ref.watch(getPinImageInfoProvider(widget.item));
-    final selectedBatch = ref.watch(
-        userByIdProvider(widget.item.creatorId).select((e) => e?.selectedBatch));
-    final username = ref.watch(
-        userByIdProvider(widget.item.creatorId).select((e) => e?.username));
+
     final renderDescription = !widget.rotateHeader && widget.item.description != null;
     return Expanded(
             child: Padding(padding: EdgeInsets.symmetric(horizontal: widget.rotateHeader ? 5 : 0, vertical: widget.rotateHeader ? 0 : 5), child: Column(
@@ -79,55 +77,8 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                     SizedBox(
                         width: widget.maxWidth - 20,
                         height: 65,
-                        child: Padding(
-                            padding: const EdgeInsets.all(10), child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                const SizedBox(width: 5,),
-                                ClickableUser(
-                                  userId: widget.item.creatorId,
-                                  child: RoundImage(
-                                    imageCallback: ref.watch(
-                                      userProfilePictureSmallByIdProvider(
-                                          widget.item.creatorId)), size: 15,),
-                                ),
-                                const SizedBox(width: 5,),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        ClickableUser(
-                                            userId: widget.item.creatorId,
-                                            child: Text(username ?? "",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 13))),
-                                        const SizedBox(width: 5,),
-                                        if (selectedBatch != null) Batch(
-                                          batchId: selectedBatch, fontSize: 7)
-                                      ],
-                                    ),
-                                    if (widget.distance !=
-                                        null) getDistance(selectedBatch),
-                                    if (widget.distance ==
-                                        null) getPinLocation(selectedBatch)
-                                  ],
-                                ),
-                                Expanded(child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: PopUpMenuFeed(pinDto: widget.item),
-                                ))
-
-                              ],))
-                        )),
-                    // Map
+                        child: FeedCardImageHeader(pin: widget.item, distance: widget.distance,)
+                    ),
                     Positioned(
                         right: 0,
                         top: widget.maxHeight - (renderDescription ? 170 : 120),
@@ -135,7 +86,6 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                             dimension: 100,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              // Match the borderRadius of the decoration
                               child: ref.watch(feedMapStateProvider(widget.item.id)) ? feedMap : getImage(data.value)
                               ),))
                   ],
@@ -171,39 +121,7 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
         CreateLikeDto(userId: userId, like: true));
   }
 
-  Widget getDistance(int? selectedBatch) {
-    final text = "~ ${widget.distance! >= 1000 ? "${(widget.distance! ~/ 1000)
-        .toInt()}km near you" : "${widget.distance!.toInt()}m near you"}";
-    return Text(text, style: TextStyle(fontStyle: FontStyle.italic,
-        color: Colors.white,
-        fontSize: 10),
-    );
-  }
 
-  Widget getPinLocation(int? selectedBatch) {
-    return FutureBuilder<List<Placemark>>(
-        future: placemarkFromCoordinates(
-            widget.item.latitude, widget.item.longitude),
-        builder: (context, snapshot) {
-          if (snapshot.hasData &&
-              snapshot.requireData.isNotEmpty) {
-            Placemark first = snapshot.requireData.first;
-            String near = "";
-            if (first.locality != null) {
-              near += first.locality!;
-              if (first.isoCountryCode != null)
-                near += " (${first.isoCountryCode})";
-            } else if (first.country != null) {
-              near += first.country!;
-            }
-            return Text(near, style: TextStyle(
-                fontStyle: FontStyle.italic,
-                color: Colors.white,
-                fontSize: 10));
-          } else {
-            return const Text("");
-          }
-        }
-    );
-  }
+
+
 }

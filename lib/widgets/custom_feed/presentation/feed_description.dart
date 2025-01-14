@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/feed_description.dart';
 
 class FeedDescriptionExpandable extends ConsumerWidget {
-  FeedDescriptionExpandable({
+  const FeedDescriptionExpandable({
     super.key,
     required this.pin,
   });

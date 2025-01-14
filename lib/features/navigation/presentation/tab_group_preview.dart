@@ -10,6 +10,8 @@ import '../../../util/routing/routing.dart';
 import '../../../widgets/round_image/presentation/round_image.dart';
 
 class TopGroupsPreview extends ConsumerStatefulWidget {
+  const TopGroupsPreview({super.key});
+
   @override
   ConsumerState<TopGroupsPreview> createState() => _TopGroupPreviewState();
 }
@@ -54,8 +56,8 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
                       ),
                     ),
                   ),
-                  if (data.length == 0) Text("Empty ranking", style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 10, color: Colors.blueGrey.shade600)),
-                  if (data.length > 0)
+                  if (data.isEmpty) Text("Empty ranking", style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 10, color: Colors.blueGrey.shade600)),
+                  if (data.isNotEmpty)
                     Row(
                       children: [
                         const Icon(Icons.emoji_events, color: Colors.yellowAccent, size: 20,),
@@ -64,7 +66,7 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
                         const SizedBox(width: 5,),
                         Expanded(
                           child: Text(
-                            "${data[0].groupInfoDto!.name}",
+                            data[0].groupInfoDto!.name,
                             style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 10, color: Colors.blueGrey.shade600),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
