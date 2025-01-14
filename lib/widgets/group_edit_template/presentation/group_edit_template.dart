@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,13 +11,14 @@ import 'package:mutex/mutex.dart';
 import '../service/group_create_service.dart';
 
 class GroupEditTemplate extends ConsumerStatefulWidget {
-  const GroupEditTemplate({super.key, required this.onSubmit, this.rowItems, this.groupDto});
+  const GroupEditTemplate({super.key, required this.onSubmit, this.rowItems, this.groupDto, required this.title});
 
   final Future<void> Function(String name, String description, String? link,
       Uint8List profileImage, int visibility) onSubmit;
 
   final List<Widget>? rowItems;
   final LocalGroupDto? groupDto;
+  final String title;
 
   @override
   ConsumerState<GroupEditTemplate> createState() => _GroupEditTemplate();
@@ -49,7 +51,7 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
     final group = ref.watch(groupCreateServiceProvider);
     final groupNotifier = ref.watch(groupCreateServiceProvider.notifier);
     return Scaffold(
-        appBar: AppBar(title: Text("Create a group")),
+        appBar: AppBar(title: Text(widget.title)),
         body: SingleChildScrollView(
           child: Form(
               key: _formKey,
@@ -200,10 +202,8 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
                 ],
               )),
         ),
-        floatingActionButton: FloatingActionButton(
-            child: ValueListenableBuilder<bool>(
-              valueListenable: _isLoading,
-              builder: (_,value,__) => value ? CircularProgressIndicator() : const Icon(Icons.check)),
+        floatingActionButton: SubmitButton(
+            text: "Submit",
             onPressed: () async {
               final group = ref.watch(groupCreateServiceProvider);
               if (_formKey.currentState!.validate() && group.profileImage != null && !_mutex.isLocked) {

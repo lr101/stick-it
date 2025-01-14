@@ -28,6 +28,7 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
     final adminId = ref.watch(groupEditServiceProvider);
     return GroupEditTemplate(
         groupDto: widget.groupDto,
+        title: "Edit group ${widget.groupDto.name}",
         onSubmit:
             (name, description, link, profileImage, visibility) async {
           final result = await ref

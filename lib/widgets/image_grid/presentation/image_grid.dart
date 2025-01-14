@@ -44,7 +44,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
   @override
   Widget build(BuildContext context) {
     ref.listen(widget.pinProvider, (previous, next) {
-      if (next.hasValue && next.value!.isEmpty) isInitial = false;
+      if (next.value != null && next.value!.isEmpty) isInitial = false;
       _images = next.value ?? [];
       _pagingController.notifyPageRequestListeners(0);
     });
