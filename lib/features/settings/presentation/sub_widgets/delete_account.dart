@@ -14,8 +14,8 @@ class DeleteAccount extends ConsumerStatefulWidget {
 }
 
 class _DeleteAccountState extends ConsumerState<DeleteAccount> {
-  TextEditingController _controller = TextEditingController();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _controller = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
           await ref.watch(userServiceProvider.notifier).getDeleteCode();
       if (result != null) {
         CustomErrorSnackBar.message(
-            message: "Error while sending code: ${result}");
+            message: "Error while sending code: $result");
       }
     });
   }

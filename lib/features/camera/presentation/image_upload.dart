@@ -32,13 +32,13 @@ class ImageUpload extends ConsumerStatefulWidget {
 class _ImageUploadState extends ConsumerState<ImageUpload> {
   final _controller = TextEditingController();
 
-  Mutex _m = Mutex();
-  late final groupIndexWhenOpened;
+  final Mutex _m = Mutex();
+  late final int _groupIndexWhenOpened;
 
   @override
   void initState() {
     super.initState();
-    groupIndexWhenOpened = ref.read(cameraGroupIndexProvider);
+    _groupIndexWhenOpened = ref.read(cameraGroupIndexProvider);
   }
 
   @override
@@ -137,12 +137,12 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         }
       });
     }
-    ref.read(cameraGroupIndexProvider.notifier).updateIndex(groupIndexWhenOpened);
+    ref.read(cameraGroupIndexProvider.notifier).updateIndex(_groupIndexWhenOpened);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Future<void> handleEdit() async {
-    final groups = await ref.read(groupOrderServiceProvider);
+    final groups = ref.read(groupOrderServiceProvider);
     await SelectDialog.showModal<String>(
       context,
       showSearchBox: false,

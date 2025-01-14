@@ -40,7 +40,7 @@ class UserImageService extends _$UserImageService {
   Future<String?> fetchUserImage(String userId, {String? signedUrl}) async {
     try {
       final global = ref.watch(globalDataServiceProvider);
-      final profileImage = await http.get(Uri.parse(signedUrl != null ? signedUrl :"${global.minioHost}/users/${userId}/profile.png"));
+      final profileImage = await http.get(Uri.parse(signedUrl ?? "${global.minioHost}/users/${userId}/profile.png"));
       if (profileImage.statusCode == 200) {
         state.value![userId] = profileImage.bodyBytes;
         ref.notifyListeners();

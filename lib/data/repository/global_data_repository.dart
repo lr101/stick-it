@@ -69,19 +69,19 @@ class GlobalDataRepository {
   }
 
   static Future<CurrentUserDto> getUser(SharedPreferences sharedPreferences, FlutterSecureStorage storage) async{
-    final prImage = await sharedPreferences.getString(profileImageKey);
-    final prImageSmall = await sharedPreferences.getString(profileImageSmallKey);
+    final prImage = sharedPreferences.getString(profileImageKey);
+    final prImageSmall = sharedPreferences.getString(profileImageSmallKey);
     return CurrentUserDto(
       username: await storage.read(key: usernameKey),
-      description: await sharedPreferences.getString(descriptionKey),
+      description: sharedPreferences.getString(descriptionKey),
       profileImage: prImage != null ? base64Decode(prImage) : null,
       profileImageSmall: prImageSmall != null ? base64Decode(prImageSmall) : null,
-      selectedBatch: await sharedPreferences.getInt(selectedBatchKey),
+      selectedBatch: sharedPreferences.getInt(selectedBatchKey),
       xp: UserXpDto(
-        totalXp: await sharedPreferences.getInt(xpKey) ?? 0,
-        currentLevel: await sharedPreferences.getInt(currentLevelKey) ?? 0,
-        currentLevelXp: await sharedPreferences.getInt(currentLevelXpKey) ?? 0,
-        nextLevelXp: await sharedPreferences.getInt(nextLevelXpKey) ?? 0
+        totalXp: sharedPreferences.getInt(xpKey) ?? 0,
+        currentLevel: sharedPreferences.getInt(currentLevelKey) ?? 0,
+        currentLevelXp: sharedPreferences.getInt(currentLevelXpKey) ?? 0,
+        nextLevelXp: sharedPreferences.getInt(nextLevelXpKey) ?? 0
       )
     );
   }

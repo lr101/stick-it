@@ -86,7 +86,7 @@ class   LocalGroupDto {
       name: name,
       description: description,
       profileImage: image != null ?base64Encode(image) : null,
-      visibility: this.visibility,
+      visibility: visibility,
       groupAdmin: groupAdmin,
       link: link
     );

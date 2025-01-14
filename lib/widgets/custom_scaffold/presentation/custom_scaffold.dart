@@ -13,7 +13,7 @@ class CustomScaffold<T> extends ConsumerWidget {
   final ItemWidgetBuilder listBuilder;
   final PagingController pagingController;
 
-  CustomScaffold({
+  const CustomScaffold({super.key, 
     required this.title,
     required this.listBuilder,
     required this.pagingController,
@@ -39,7 +39,7 @@ class CustomScaffold<T> extends ConsumerWidget {
             flexibleSpace: flexibleSpace != null ? SafeArea(child: flexibleSpace!) : null,
             bottom: bottom,
           ),
-          ...boxes.map((e) => SliverToBoxAdapter(child: e)).toList(),
+          ...boxes.map((e) => SliverToBoxAdapter(child: e)),
           PagedSliverList(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<T>(

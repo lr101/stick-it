@@ -39,9 +39,9 @@ class GroupImageRepository {
   Future<GroupImageDto> _fetchAndCacheImage(String groupId, bool userGroup) async {
     try {
       final global = ref.watch(globalDataServiceProvider);
-      final profileImageSmall = await http.get(Uri.parse("${global.minioHost}/groups/${groupId}/group_profile_small.png"));
-      final profileImage = await http.get(Uri.parse("${global.minioHost}/groups/${groupId}/group_profile.png"));
-      final groupPin = await http.get(Uri.parse("${global.minioHost}/groups/${groupId}/group_pin.png"));
+      final profileImageSmall = await http.get(Uri.parse("${global.minioHost}/groups/$groupId/group_profile_small.png"));
+      final profileImage = await http.get(Uri.parse("${global.minioHost}/groups/$groupId/group_profile.png"));
+      final groupPin = await http.get(Uri.parse("${global.minioHost}/groups/$groupId/group_pin.png"));
      if (userGroup) {
        _addImageToCache(GroupImageEntityCompanion( // run async
          groupId: Value(groupId),
@@ -56,7 +56,7 @@ class GroupImageRepository {
          profileImageSmall: profileImageSmall.bodyBytes
      );
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

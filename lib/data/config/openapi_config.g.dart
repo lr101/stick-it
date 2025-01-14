@@ -134,7 +134,7 @@ final rankingApiProvider = Provider<RankingApi>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef RankingApiRef = ProviderRef<RankingApi>;
-String _$openApiConfigHash() => r'22f00836fe88c13275acea26874f9d17a99da80d';
+String _$openApiConfigHash() => r'87ff77f1f4483e69dc2e12cc3da8c820e9718c3a';
 
 /// See also [OpenApiConfig].
 @ProviderFor(OpenApiConfig)

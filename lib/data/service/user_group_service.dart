@@ -23,7 +23,7 @@ class UserGroupService extends _$UserGroupService {
   late GroupsApi _groupsApi;
   late GlobalDataDto _data;
   late MembersApi _membersApi;
-  Mutex _mutex = Mutex();
+  final Mutex _mutex = Mutex();
 
   @override
   Future<List<LocalGroupDto>> build() async {
@@ -138,7 +138,7 @@ class UserGroupService extends _$UserGroupService {
       // Sync with the server
       final result = await _groupsApi.updateGroup(groupId, group);
       if (result != null) {
-        final g = await LocalGroupDto.fromDto(result);
+        final g = LocalGroupDto.fromDto(result);
         await _groupRepository.createGroup(g);
         _updateSingleGroup(g);
         ref.read(groupImageServiceProvider.notifier).updateGroupImage(groupId, result);
@@ -172,7 +172,7 @@ class UserGroupService extends _$UserGroupService {
       final result = await _membersApi.joinGroup(groupId, _data.userId!,
           inviteUrl: inviteUrl);
       if (result != null) {
-        final group = await LocalGroupDto.fromDto(result);
+        final group = LocalGroupDto.fromDto(result);
         _updateSingleGroup(group);
         await _groupRepository.createGroup(group);
         ref.read(groupImageServiceProvider.notifier).updateGroupImage(groupId, result);

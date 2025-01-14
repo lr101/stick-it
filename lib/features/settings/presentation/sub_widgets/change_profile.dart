@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChangeProfile extends ConsumerStatefulWidget {
 
-  const ChangeProfile({Key? key}) : super(key: key);
+  const ChangeProfile({super.key});
 
   @override
   ConsumerState<ChangeProfile> createState() => _ChangeProfileState();
@@ -44,7 +44,6 @@ class _ChangeProfileState extends ConsumerState<ChangeProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final userId = ref.watch(globalDataServiceProvider).userId!;
     return Scaffold(
         appBar: AppBar(
           title: Text('Edit profile'),

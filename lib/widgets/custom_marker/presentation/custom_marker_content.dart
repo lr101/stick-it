@@ -12,10 +12,10 @@ class CustomMarkerContent extends ConsumerStatefulWidget {
   final bool withAnimation;
 
   const CustomMarkerContent({
-    Key? key,
+    super.key,
     required this.pinDto,
     required this.withAnimation
-  }) : super(key: key);
+  });
 
   @override
   _CustomMarkerContentState createState() => _CustomMarkerContentState();
@@ -58,9 +58,9 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            child: markerImage,
             height: 30,
             width: 30,
+            child: markerImage,
           ),
           SizedBox.square(dimension: 30)
         ],
@@ -86,9 +86,9 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
             },
           ),
         SizedBox(
-          child: markerImage,
           height: 30,
           width: 30,
+          child: markerImage,
         )
       ],
     );

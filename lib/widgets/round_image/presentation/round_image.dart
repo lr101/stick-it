@@ -11,8 +11,9 @@ class RoundImage extends ConsumerWidget {
   final double? size;
   final Widget? child;
   final VoidCallback? handleOpenImage;
+  final Uint8List? defaultPlaceholderImage;
 
-  RoundImage({super.key, required this.imageCallback, this.clickable = false, this.size, this.child, this.handleOpenImage}) : assert (clickable && handleOpenImage != null || !clickable);
+  const RoundImage({super.key, required this.imageCallback, this.clickable = false, this.size, this.child, this.handleOpenImage, this.defaultPlaceholderImage}) : assert (clickable && handleOpenImage != null || !clickable);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,8 +36,8 @@ class RoundImage extends ConsumerWidget {
                       width: size != null ? size! * 2 : null,
                     placeholder: MemoryImage(kTransparentImage),
                     image: MemoryImage(imageCallback.when<Uint8List>(
-                        data: (data) => data ?? ref.watch(defaultErrorImageProvider),
-                        error: (_,__) => ref.watch(defaultErrorImageProvider),
+                        data: (data) => data ?? defaultPlaceholderImage ?? ref.watch(defaultErrorImageProvider),
+                        error: (_,__) => defaultPlaceholderImage ?? ref.watch(defaultErrorImageProvider),
                         loading: () => kTransparentImage
                     )),
                     fit: BoxFit.cover,

@@ -14,7 +14,7 @@ class GroupTile extends ConsumerWidget {
   final bool userCachedImage;
   final Widget? tailing;
 
-  GroupTile({super.key, required this.groupDto, this.onTap, this.userCachedImage = false, this.tailing});
+  const GroupTile({super.key, required this.groupDto, this.onTap, this.userCachedImage = false, this.tailing});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,7 +30,7 @@ class GroupTile extends ConsumerWidget {
           )
         ],
       ),
-      leading: !this.userCachedImage ? RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(groupDto.groupId)), size: 25.0, child: Container()) :
+      leading: !userCachedImage ? RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(groupDto.groupId)), size: 25.0, child: Container()) :
         RoundCachedImage(url: "${ref.watch(globalDataServiceProvider).minioHost}/groups/${groupDto.groupId}/group_profile_small.png", size: 25.0)
     );
     if (onTap == null) {

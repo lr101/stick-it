@@ -1,6 +1,7 @@
 ///
 ///  create by zmtzawqlp on 2019/5/27
 ///
+library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:like_button/src/painter/bubbles_painter.dart';
@@ -12,7 +13,7 @@ import 'package:like_button/src/utils/like_button_util.dart';
 
 class LikeButtonAnimated extends ConsumerStatefulWidget {
   const LikeButtonAnimated({
-    Key? key,
+    super.key,
     required this.isLikedProvider,
     this.size = 30.0,
     this.likeBuilder,
@@ -41,8 +42,7 @@ class LikeButtonAnimated extends ConsumerStatefulWidget {
     this.countDecoration,
     this.postFrameCallback,
   })  : bubblesSize = bubblesSize ?? size * 2.0,
-        circleSize = circleSize ?? size * 0.8,
-        super(key: key);
+        circleSize = circleSize ?? size * 0.8;
 
   /// size of like widget
   final double size;
@@ -257,9 +257,9 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
                       ? _scaleAnimation.value
                       : 1.0,
                   child: SizedBox(
-                    child: likeWidget,
                     height: widget.size,
                     width: widget.size,
+                    child: likeWidget,
                   ),
                 ),
               ),
@@ -354,12 +354,12 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
                     clipBehavior: Clip.hardEdge,
                     children: <Widget>[
                       Opacity(
-                        child: currentSameWidget,
                         opacity: _opacityAnimation.value,
+                        child: currentSameWidget,
                       ),
                       Opacity(
-                        child: preSameWidget,
                         opacity: 1.0 - _opacityAnimation.value,
+                        child: preSameWidget,
                       ),
                     ],
                   ),
@@ -410,8 +410,8 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
     }
 
     result = ClipRect(
-      child: result,
       clipper: LikeCountClip(),
+      child: result,
     );
 
     return result;

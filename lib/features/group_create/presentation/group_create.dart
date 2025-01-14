@@ -16,6 +16,7 @@ class GroupCreate extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GroupEditTemplate(
+      title: "Create a group",
         onSubmit: (name, description, link, profileImage, visibility) async {
       final createDto = api.CreateGroupDto(
           description: description,

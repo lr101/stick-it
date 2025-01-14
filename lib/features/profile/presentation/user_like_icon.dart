@@ -7,7 +7,7 @@ class UserLikeIcon extends StatelessWidget {
   final int? likeCount;
   final IconData icon;
 
-  const UserLikeIcon({required this.likeCount, required this.icon});
+  const UserLikeIcon({super.key, required this.likeCount, required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +35,9 @@ class UserLikeIcon extends StatelessWidget {
     } else if (likeCount! < 1000) {
       return likeCount.toString();
     } else if (likeCount! < 1000000) {
-      return (likeCount! / 1000).toStringAsFixed(1) + "K";
+      return "${(likeCount! / 1000).toStringAsFixed(1)}K";
     } else {
-      return (likeCount! / 1000000).toStringAsFixed(1) + "M";
+      return "${(likeCount! / 1000000).toStringAsFixed(1)}M";
     }
   }
 }

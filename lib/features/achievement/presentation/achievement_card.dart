@@ -12,7 +12,7 @@ class AchievementCard extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   
   const AchievementCard({
-    Key? key,
+    super.key,
     required this.progress,
     this.progressColor = Colors.blue,
     required this.child,
@@ -21,7 +21,7 @@ class AchievementCard extends StatelessWidget {
     this.color,
     this.borderWidth = 2.0,
     this.margin
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,8 @@ class AchievementCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.0),
           side: BorderSide(color: isSelected ? claimedBorderColor : progressColor, width: borderWidth),
         ),
-        child: child,
         margin: margin,
+        child: child,
       );
     }
     return Padding(

@@ -18,14 +18,14 @@ class GroupImageService extends _$GroupImageService {
 
   @override
   Future<Map<String, GroupImageDto>> build() async {
-    final _groupImageRepository = ref.watch(groupImageRepositoryProvider);
-    return await _groupImageRepository.fetchAllCashedImages();
+    final groupImageRepository = ref.watch(groupImageRepositoryProvider);
+    return await groupImageRepository.fetchAllCashedImages();
   }
 
   Future<String?> fetchGroupImage(String groupId, bool userGroup) async {
     try {
-      final _groupImageRepository = ref.watch(groupImageRepositoryProvider);
-      final groupImage = await _groupImageRepository.fetchImage(groupId, userGroup);
+      final groupImageRepository = ref.watch(groupImageRepositoryProvider);
+      final groupImage = await groupImageRepository.fetchImage(groupId, userGroup);
       state.value![groupId] = groupImage;
       ref.notifyListeners();
       return null;
@@ -35,17 +35,17 @@ class GroupImageService extends _$GroupImageService {
   }
 
   Future<void> deleteGroupImage(String groupId) async {
-    final _groupImageRepository = ref.watch(groupImageRepositoryProvider);
-    _groupImageRepository.deleteGroupImage(groupId); // run async
-    return null;
+    final groupImageRepository = ref.watch(groupImageRepositoryProvider);
+    groupImageRepository.deleteGroupImage(groupId); // run async
+    return;
   }
 
   Future<String?> updateGroupImage(String groupId, GroupDto groupDto) async {
     try {
       if (groupDto.profileImage == null) return null;
-      final _groupImageRepository = ref.watch(groupImageRepositoryProvider);
-      final imageGroupDto = await await GroupImageDto.fromGroupDto(groupDto);
-      _groupImageRepository.addImage(groupId, imageGroupDto); // run async
+      final groupImageRepository = ref.watch(groupImageRepositoryProvider);
+      final imageGroupDto = await GroupImageDto.fromGroupDto(groupDto);
+      groupImageRepository.addImage(groupId, imageGroupDto); // run async
       state.value![groupId] = imageGroupDto;
       ref.notifyListeners();
       return null;

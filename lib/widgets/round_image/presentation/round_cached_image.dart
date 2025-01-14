@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 
 class RoundCachedImage extends StatelessWidget {
-  const RoundCachedImage( {Key? key, required this.url, required this.size,}) : super(key: key);
+  const RoundCachedImage( {super.key, required this.url, required this.size,});
 
   final String url;
   final double size;
@@ -13,7 +13,7 @@ class RoundCachedImage extends StatelessWidget {
     return SizedBox.square(
       dimension: size * 2,
       child: ClipOval(
-        child: CachedNetworkImage(imageUrl: this.url, fit: BoxFit.cover,),
+        child: CachedNetworkImage(imageUrl: url, fit: BoxFit.cover,),
       ),
     );
   }

@@ -12,8 +12,8 @@ part 'geojson_service.g.dart';
 class GeojsonService extends _$GeojsonService {
 
 
-  static final String GEOJSON_START = "{\"features\": [{\"properties\": {},\"geometry\":";
-  static final String GEOJSON_END = "}]}";
+  static const String GEOJSON_START = "{\"features\": [{\"properties\": {},\"geometry\":";
+  static const String GEOJSON_END = "}]}";
 
   @override
   Future<List<Polygon>> build() async {
@@ -34,8 +34,8 @@ class GeojsonService extends _$GeojsonService {
 @Riverpod(keepAlive: true)
 class DistrictService extends _$DistrictService {
   
-  double? _lat = null;
-  double? _long = null;
+  double? _lat;
+  double? _long;
   
   @override
   MapInfoDto? build()  {

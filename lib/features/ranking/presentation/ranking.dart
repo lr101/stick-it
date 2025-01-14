@@ -88,7 +88,7 @@ class _RankingState extends ConsumerState<Ranking> {
 
   Future<void> updatePage(int pageKey) async {
     try {
-      final districts = await ref.watch(districtServiceProvider);
+      final districts = ref.watch(districtServiceProvider);
       final type = ref.watch(rankingTypeProvider);
       final map = ref.watch(rankingMapProvider);
       if (districts == null) return;

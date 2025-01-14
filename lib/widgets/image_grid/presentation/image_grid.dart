@@ -15,7 +15,7 @@ class ImageGrid extends ConsumerStatefulWidget {
 }
 
 class _ImageGridState extends ConsumerState<ImageGrid> {
-  PagingController<int, LocalPinDto> _pagingController =
+  final PagingController<int, LocalPinDto> _pagingController =
       PagingController(firstPageKey: 0, invisibleItemsThreshold: 4);
 
   final int _pageSize = 18;
@@ -44,7 +44,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
   @override
   Widget build(BuildContext context) {
     ref.listen(widget.pinProvider, (previous, next) {
-      if (next.hasValue && next.value!.isEmpty) isInitial = false;
+      if (next.value != null && next.value!.isEmpty) isInitial = false;
       _images = next.value ?? [];
       _pagingController.notifyPageRequestListeners(0);
     });

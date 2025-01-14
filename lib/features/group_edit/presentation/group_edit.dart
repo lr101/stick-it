@@ -28,6 +28,7 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
     final adminId = ref.watch(groupEditServiceProvider);
     return GroupEditTemplate(
         groupDto: widget.groupDto,
+        title: "Edit group ${widget.groupDto.name}",
         onSubmit:
             (name, description, link, profileImage, visibility) async {
           final result = await ref
@@ -71,19 +72,20 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
                                         data: (data) => data
                                             .map((e) =>
                                                 DropdownMenuItem<String>(
-                                                    child: Text(e.username),
-                                                    value: e.userId))
+                                                    value: e.userId,
+                                                    child: Text(e.username)))
                                             .toList()) ??
                                 [
                                   DropdownMenuItem<String>(
-                                      child: Text(ref.watch(currentUserServiceProvider).username!),
-                                      value: global.userId)
+                                      value: global.userId,
+                                      child: Text(ref.watch(currentUserServiceProvider).username!))
                                 ],
                             onChanged: (String? value) {
-                              if (value != null)
+                              if (value != null) {
                                 ref
                                     .read(groupEditServiceProvider.notifier)
                                     .updateAdminId(value);
+                              }
                             },
                             value: adminId),
                       ])),

@@ -15,9 +15,9 @@ class OpenApiConfig extends _$OpenApiConfig {
 
   String _accessToken = "NOTANACCESSTOKEN";
 
-  Mutex _m = Mutex();
+  final Mutex _m = Mutex();
 
-  DateTime? _lastCheck = null;
+  DateTime? _lastCheck;
 
   @override
   ApiClient build() {

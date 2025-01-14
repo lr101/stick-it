@@ -9,7 +9,7 @@ class SquareImage extends ConsumerWidget {
   final int index;
   final Function(int index) onTap;
 
-  SquareImage(
+  const SquareImage(
       {super.key,
       required this.pinId,
       required this.index,
