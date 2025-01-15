@@ -9,6 +9,16 @@ jobs:
     steps:
     - name: Clone repository
       uses: actions/checkout@v4
+    - name: Create .env files
+      run: |
+        touch .env
+        touch .env.dev
+        echo "API_HOST=${{ secrets.API_HOST }}" > .env
+        echo "MINIO_HOST=${{ secrets.MINIO_HOST }}" >> .env
+        echo "DISCORD_INVITE=${{ secrets.DISCORD_INVITE }}" >> .env
+        echo "INSTAGRAM_URL=${{ secrets.INSTAGRAM_URL }}" >> .env
+        echo "GITHUB_URL=${{ secrets.GITHUB_URL }}" >> .env
+        echo "APPSTORE_ID=${{ secrets.APPSTORE_ID }}" >> .env
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
