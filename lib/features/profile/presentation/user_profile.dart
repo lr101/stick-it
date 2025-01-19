@@ -5,6 +5,7 @@ import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
 import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
 import 'package:buff_lisa/features/profile/presentation/user_like_icon.dart';
+import 'package:buff_lisa/features/profile/service/user_pin_service.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
@@ -22,7 +23,7 @@ class UserProfile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    final userPins = ref.watch(sortedUserPinsProvider);
+    final userPins = ref.watch(userPinProvider);
     final currentUser = ref.watch(currentUserServiceProvider);
     final likes = ref.watch(userLikesByIdProvider(userId));
     return CustomAvatarScaffold(
@@ -63,11 +64,7 @@ class UserProfile extends ConsumerWidget {
                 Flexible(
                   child: ListTile(
                     title: Text("Groups", maxLines: 1,),
-                    subtitle: Text(ref
-                            .watch(userGroupServiceProvider)
-                            .whenOrNull(
-                                data: (data) => data.length.toString()) ??
-                        "---"),
+                    subtitle: Text(ref.watch(numberOfGroupProvider)?.toString() ?? "---"),
                   ),
                 ),
               ],
