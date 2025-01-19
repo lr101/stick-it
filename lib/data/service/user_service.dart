@@ -207,7 +207,8 @@ LocalUserDto? userById(Ref ref, String userId) {
   final user = ref.watch(userServiceProvider.select((u) => u.whenOrNull(data: (e) => e.containsKey(userId) ? e[userId] : null)));
   if (user != null) {
     return user;
-  } ref.read(userServiceProvider.notifier).fetchUserById(userId);
+  }
+  ref.read(userServiceProvider.notifier).fetchUserById(userId);
   return null;
 }
 
