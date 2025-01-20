@@ -1,12 +1,10 @@
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/data/repository/global_data_repository.dart';
+import 'package:buff_lisa/data/repository/group_image_repository.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
-import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -17,7 +15,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_group_service.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class UserGroupService extends _$UserGroupService {
   late GroupRepository _groupRepository;
   late GroupsApi _groupsApi;
@@ -26,95 +24,36 @@ class UserGroupService extends _$UserGroupService {
   final Mutex _mutex = Mutex();
 
   @override
-  Future<List<LocalGroupDto>> build() async {
+  Future<Set<LocalGroupDto>> build() async {
     _groupRepository = ref.watch(groupRepositoryProvider);
     _groupsApi = ref.watch(groupApiProvider);
     _membersApi = ref.watch(memberApiProvider);
     _data = ref.watch(globalDataServiceProvider);
-    final groups =  await _groupRepository.getAllGroups();
-    sync();
-    return groups;
+    final groups = await _groupRepository.getAll();
+    return groups.map((e) => LocalGroupDto.fromEntityData(e)).toSet();
   }
 
-  Future<void> sync() async {
-    if (_mutex.isLocked) return;
-    await _mutex.acquire();
-    try {
-      final lastSeen = ref.read(lastSeenProvider(GlobalDataRepository.lastSeenKey));
-      final remoteGroups = await _groupsApi.getGroupsByIds(
-          userId: _data.userId,
-          withUser: true,
-          withImages: true,
-          updatedAfter: lastSeen);
-      state = AsyncData(await _mergeGroups(state.value ?? [], remoteGroups!));
-      for (GroupDto group in remoteGroups.items) {
-        ref.read(groupImageServiceProvider.notifier).updateGroupImage(group.id, group);
-      }
-      ref.read(lastSeenProvider(GlobalDataRepository.lastSeenKey).notifier).setLastSeenNow();
-    } catch (e) {
-      if (kDebugMode) print(e);
-    }finally {
-      if (kDebugMode) print("Groups synced");
-      ref.read(currentUserServiceProvider.notifier).updateFromRemote();
-      _mutex.release();
-      for (LocalGroupDto group in state.value ?? []) {
-        if (group.isActivated) {
-          ref.read(pinServiceProvider(group.groupId));
-        } else {
-          Future.delayed(Duration(seconds: 10), () {
-            ref.read(pinServiceProvider(group.groupId));
-          });
-        }
-      }
-    }
+  void _updateSingleGroup(LocalGroupDto? currentGroup, LocalGroupDto updateGroup) {
+    final stateVal = {...state.value!};
+    stateVal.remove(currentGroup);
+    stateVal.add(updateGroup);
+    state = AsyncData(stateVal);
+    _groupRepository.put(updateGroup.groupId, updateGroup.toEntity());
   }
 
-  Future<List<LocalGroupDto>> _mergeGroups(
-      List<LocalGroupDto> localGroups, GroupsSyncDto remoteGroups) async {
-    Map<String, LocalGroupDto> localGroupsMap = {
-      for (var group in localGroups) group.groupId: group
-    };
-    localGroupsMap.removeWhere((k, v) => remoteGroups.deleted.contains(k));
-    for (var group in remoteGroups.items) {
-      final g = LocalGroupDto.fromDto(group);
-      localGroupsMap[group.id] = g;
-      _groupRepository.createGroup(g);
+  void _updateSingleGroupById(String? groupId, LocalGroupDto updateGroup) {
+    final currentGroup = state.value!.where((e) => e.groupId == groupId).firstOrNull;
+    if (currentGroup != null) {
+      _updateSingleGroup(currentGroup, updateGroup);
     }
-    remoteGroups.deleted
-        .forEach((a) async => await _groupRepository.deleteGroup(a));
-    return localGroupsMap.values.toList();
-  }
-
-  void _updateSingleGroup(LocalGroupDto updateGroup) {
-    final currentState = state.value ?? [];
-    state = AsyncLoading();
-    final groupIndex = currentState
-        .indexWhere((group) => group.groupId == updateGroup.groupId);
-    LocalGroupDto group;
-    if (groupIndex == -1) {
-      group = updateGroup;
-      currentState.add(group);
-    } else {
-      group = currentState[groupIndex];
-      group.isActivated = updateGroup.isActivated;
-      group.lastUpdated = DateTime.now();
-      group.name = updateGroup.name;
-      group.description = updateGroup.description;
-      group.groupAdmin = updateGroup.groupAdmin;
-      group.link = updateGroup.link;
-      group.inviteUrl = updateGroup.inviteUrl;
-      group.visibility = updateGroup.visibility;
-    }
-
-    state = AsyncData(currentState);
   }
 
   void setIsActive(String groupId, bool isActive) {
-    final currentState = state.value ?? [];
-    final group = currentState.firstWhere((group) => group.groupId == groupId);
-    group.isActivated = isActive;
-    state = AsyncValue.data(currentState);
-    _groupRepository.createGroup(group);
+    final currentGroup = state.value!.where((e) => e.groupId == groupId).firstOrNull;
+    if (currentGroup != null) {
+      final updateGroup = currentGroup.copyWith(isActivated: isActive);
+      _updateSingleGroup(currentGroup, updateGroup);
+    }
   }
 
   Future<String?> createGroup(CreateGroupDto group) async {
@@ -122,8 +61,7 @@ class UserGroupService extends _$UserGroupService {
       final result = await _groupsApi.addGroup(group);
       if (result != null) {
         final group = LocalGroupDto.fromDto(result);
-        _updateSingleGroup(group);
-        await _groupRepository.createGroup(group);
+        _updateSingleGroup(null, group);
         return null;
       } else {
         return "Failed to create group remotely unexpectedly";
@@ -139,9 +77,10 @@ class UserGroupService extends _$UserGroupService {
       final result = await _groupsApi.updateGroup(groupId, group);
       if (result != null) {
         final g = LocalGroupDto.fromDto(result);
-        await _groupRepository.createGroup(g);
-        _updateSingleGroup(g);
-        ref.read(groupImageServiceProvider.notifier).updateGroupImage(groupId, result);
+        _updateSingleGroupById(groupId, g);
+        ref.read(groupProfileRepoProvider).overrideUrl(groupId, result.profileImage!, true);
+        ref.read(groupProfileSmallRepoProvider).overrideUrl(groupId, result.profileImageSmall!, true);
+        ref.read(groupPinImageRepoProvider).overrideUrl(groupId, result.pinImage!, true);
       } else {
         return "Failed to update group remotely";
       }
@@ -151,31 +90,23 @@ class UserGroupService extends _$UserGroupService {
     return null;
   }
 
-  Future<void> deleteGroup(String groupId) async {
-    try {
-      // Sync with the server
-      await _groupsApi.deleteGroup(groupId);
-      // Delete locally
-      await _groupRepository.deleteGroup(groupId);
-      state.value?.removeWhere((e) => e.groupId == groupId);
-    } catch (e) {
-      // Handle errors, rollback changes if necessary
-    }
-  }
-
-  Future<List<LocalGroupDto>> getActiveGroups() async {
-    return await _groupRepository.getActiveGroups();
+  Future<void> _leaveGroup(String groupId) async {
+    await _groupRepository.delete(groupId);
+    // Delete in state
+    final currentState = {...state.value!};
+    currentState.removeWhere((e) => e.groupId == groupId);
+    state = AsyncData(currentState);
   }
 
   Future<String?> joinGroup(String groupId, {String? inviteUrl}) async {
     try {
-      final result = await _membersApi.joinGroup(groupId, _data.userId!,
-          inviteUrl: inviteUrl);
+      final result = await _membersApi.joinGroup(groupId, _data.userId!, inviteUrl: inviteUrl);
       if (result != null) {
         final group = LocalGroupDto.fromDto(result);
-        _updateSingleGroup(group);
-        await _groupRepository.createGroup(group);
-        ref.read(groupImageServiceProvider.notifier).updateGroupImage(groupId, result);
+        _updateSingleGroup(null, group);
+        ref.read(groupProfileRepoProvider).overrideUrl(groupId, result.profileImage!, true);
+        ref.read(groupProfileSmallRepoProvider).overrideUrl(groupId, result.profileImageSmall!, true);
+        ref.read(groupPinImageRepoProvider).overrideUrl(groupId, result.pinImage!, true);
       } else {
         return "Failed to join group remotely";
       }
@@ -189,10 +120,7 @@ class UserGroupService extends _$UserGroupService {
     try {
       await _membersApi.deleteMemberFromGroup(groupId, _data.userId!);
       afterSuccess();
-      await _groupRepository.leaveGroup(groupId);
-      state.value!.removeWhere((e) => e.groupId == groupId);
-      ref.notifyListeners();
-      ref.read(groupImageServiceProvider.notifier).deleteGroupImage(groupId);
+      _leaveGroup(groupId);
       return null;
     } on ApiException catch (e) {
       if (e.code == 409) {
@@ -213,21 +141,28 @@ Future<LocalGroupDto?> groupById(Ref ref, String groupId) async {
   }
 }
 
-@Riverpod(keepAlive: true)
-Future<List<LocalGroupDto>> activeGroups(Ref ref) async {
+@riverpod
+Future<Set<LocalGroupDto>> activeGroups(Ref ref) async {
   return await ref.watch(userGroupServiceProvider.selectAsync(
-      (groups) => groups.where((t) => t.isActivated == true).toList()));
+      (groups) => groups.where((t) => t.isActivated == true).toSet()));
 }
 
 @riverpod
 Future<List<LocalGroupDto>> orderedGroups(Ref ref) async {
   final groupOrder = ref.watch(groupOrderServiceProvider);
   final groups = await ref.watch(userGroupServiceProvider.future);
-  groups.sort((a,b) => groupOrder.indexOf(a.groupId) - groupOrder.indexOf(b.groupId));
-  return groups;
+  final groupList = groups.toList();
+  groupList.sort((a,b) => groupOrder.indexOf(a.groupId) - groupOrder.indexOf(b.groupId));
+  return groupList;
 }
 
 @riverpod
 Future<bool> groupByIdActivated(Ref ref, String groupId) async {
   return await ref.watch(groupByIdProvider(groupId).selectAsync((group) => group!.isActivated));
+}
+
+@riverpod
+Future<LocalGroupDto> groupByIdWithoutState(Ref ref, String groupId) async {
+  final groupEntity = await ref.watch(groupRepositoryProvider).get(groupId);
+  return LocalGroupDto.fromEntityData(groupEntity!);
 }

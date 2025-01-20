@@ -78,11 +78,11 @@ class CameraGroupIndex extends _$CameraGroupIndex {
 
 }
 
-@Riverpod(keepAlive: true)
-LocalGroupDto cameraSelectedGroup(Ref ref) {
-  final groups = ref.watch(userGroupServiceProvider).value ?? [];
+@riverpod
+Future<LocalGroupDto> cameraSelectedGroup(Ref ref) async {
   final groupIds = ref.watch(groupOrderServiceProvider);
-  return groups.firstWhere((e) => e.groupId == groupIds[ref.watch(cameraGroupIndexProvider)]);
+  final groupCameraIndex = ref.watch(cameraGroupIndexProvider);
+  return await ref.watch(groupByIdWithoutStateProvider(groupIds[groupCameraIndex]).future);
 }
 
 @riverpod

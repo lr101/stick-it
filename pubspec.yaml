@@ -138,6 +138,9 @@ dependencies:
   in_app_review: ^2.0.10
   flutter_map_geojson: ^1.0.8
   choice: ^2.3.2
+  hive: any
+  hive_flutter: any
+  json_annotation: ^4.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -153,6 +156,7 @@ dev_dependencies:
   flutter_lints:
   meta:
   test:
+  hive_generator: any
   change_app_package_name:
   flutter_launcher_icons:
 

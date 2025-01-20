@@ -25,7 +25,7 @@ class _UserGroupsState extends ConsumerState<UserGroups> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      updatePage(ref.watch(userGroupServiceProvider).value ?? []);
+      updatePage(ref.watch(userGroupServiceProvider).value?.toList() ?? []);
     });
   }
 

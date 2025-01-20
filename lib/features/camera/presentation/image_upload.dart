@@ -79,7 +79,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
                         ),
                       ),
                     ),
-                    Card(child: GroupTile(groupDto: group, onTap: handleEdit)),
+                    group.value != null ? Card(child: GroupTile(groupDto: group.value!, onTap: handleEdit)) : Card(),
                     Card(
                       child: TextFormField(
                         controller: _controller,
@@ -110,6 +110,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   Future<void> handleApprove() async {
     if (_m.isLocked) return;
     await _m.acquire();
+    final group = await ref.watch(cameraSelectedGroupProvider.future);
     final pin = LocalPinDto(
         id: const Uuid().v4(),
         latitude: widget.position.latitude,
@@ -117,10 +118,10 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         creationDate: DateTime.now(),
         description: _controller.text.isEmpty ? null : _controller.text,
         creatorId: ref.watch(globalDataServiceProvider).userId!,
-        groupId: ref.watch(cameraSelectedGroupProvider).groupId,
+        groupId: group.groupId,
         isHidden: false);
     _m.release();
-    Future(() => ref.read(pinServiceProvider(ref.watch(cameraSelectedGroupProvider).groupId).notifier).addPinToGroup(pin, widget.image).then((result) {
+    Future(() => ref.read(pinServiceProvider(group.groupId).notifier).addPinToGroup(pin, widget.image).then((result) {
           if (result != null) {
             CustomErrorSnackBar.message(message: result);
           } else {

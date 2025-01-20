@@ -23,7 +23,7 @@ final currentLocationProvider = StreamProvider<Position>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CurrentLocationRef = StreamProviderRef<Position>;
-String _$mapStatesHash() => r'c0ff07f1ef079ed6beb5406a563917ba86bff3a5';
+String _$mapStatesHash() => r'716e0bbf4c6560bd089cd3c49e1b10b986c484fb';
 
 /// See also [MapStates].
 @ProviderFor(MapStates)

@@ -1,10 +1,15 @@
-import 'package:buff_lisa/data/entity/database.dart';
+import 'package:buff_lisa/data/repository/group_image_repository.dart';
+import 'package:buff_lisa/data/repository/group_repository.dart';
+import 'package:buff_lisa/data/repository/member_repository.dart';
+import 'package:buff_lisa/data/repository/pin_image_repository.dart';
+import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
+import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_image_service_small.dart';
@@ -26,10 +31,17 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:social_media_buttons/social_media_button.dart';
 
+import '../../../data/entity/group_entity.dart';
+import '../../../data/entity/image_entity.dart';
+import '../../../data/entity/member_entity.dart';
+import '../../../data/entity/pin_entity.dart';
+import '../../../data/entity/user_entity.dart';
 import '../../../data/service/global_data_service.dart';
 import '../../../util/routing/routing.dart';
 import '../../web/presentation/show_web.dart';
@@ -233,7 +245,13 @@ class _SettingsState extends ConsumerState<Settings> {
 
   Future<void> invalidateCache() async {
     showLoading();
-    await ref.watch(databaseProvider).deleteEverything();
+    await ref.read(pinImageRepositoryProvider).deleteAll();
+    await ref.read(groupRepositoryProvider).deleteAll();
+    await ref.read(groupProfileRepoProvider).deleteAll();
+    await ref.read(groupProfileSmallRepoProvider).deleteAll();
+    await ref.read(groupPinImageRepoProvider).deleteAll();
+    await ref.read(memberRepositoryProvider).deleteAll();
+    await ref.read(pinRepositoryProvider).deleteAll();
     final mgmt = FMTCStore('tileStore').manage;
     await mgmt.reset();
     final sharedPreferences = ref.watch(sharedPreferencesProvider);
@@ -243,12 +261,11 @@ class _SettingsState extends ConsumerState<Settings> {
     ref.invalidate(pinServiceProvider);
     ref.invalidate(userImageServiceProvider);
     ref.invalidate(userImageServiceSmallProvider);
-    ref.invalidate(pinImageServiceProvider);
     ref.invalidate(memberServiceProvider);
     ref.invalidate(noUserGroupServiceProvider);
     ref.invalidate(likeServiceProvider);
-    ref.invalidate(groupImageServiceProvider);
     ref.invalidate(userGroupServiceProvider);
     ref.invalidate(groupOrderServiceProvider);
+    ref.invalidate(syncingServiceProvider);
   }
 }

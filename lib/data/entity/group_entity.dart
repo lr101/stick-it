@@ -1,35 +1,61 @@
+import 'package:hive/hive.dart';
 import 'package:buff_lisa/data/entity/user_entity.dart';
-import 'package:drift/drift.dart';
+import 'package:openapi/api.dart';
 
-// Define the Drift table for GroupDTO
-class GroupEntity extends Table {
-  // Group Id - primary key
-  TextColumn get groupId => text()();
+part 'group_entity.g.dart'; // This will be generated
 
-  // Name of the group
-  TextColumn get name => text()();
+@HiveType(typeId: 1) // Unique type ID for this entity
+class GroupEntity {
+  @HiveField(0)
+  final String groupId;
 
-  // Visibility of the group
-  IntColumn get visibility => integer()();
+  @HiveField(1)
+  final String name;
 
-  // Invite URL (nullable)
-  TextColumn get inviteUrl => text().nullable()();
+  @HiveField(2)
+  final int visibility;
 
-  // Group admin (nullable)
-  TextColumn get groupAdmin => text().references(UserEntity, #userId).nullable()();
+  @HiveField(3)
+  final String? inviteUrl;
 
-  // Description of the group (nullable)
-  TextColumn get description => text().nullable()();
+  @HiveField(4)
+  final String? groupAdmin; // Assuming this is a userId
 
-  // Is the group activated?
-  BoolColumn get isActivated => boolean().withDefault(const Constant(false))();
+  @HiveField(5)
+  final String? description;
 
-  // Last updated timestamp (nullable)
-  DateTimeColumn get lastUpdated => dateTime().nullable()();
+  @HiveField(6)
+  final bool isActivated;
 
-  TextColumn get link => text().nullable()();
+  @HiveField(7)
+  final DateTime? lastUpdated;
 
-  // Specify the primary key
-  @override
-  Set<Column> get primaryKey => {groupId};
+  @HiveField(8)
+  final String? link;
+
+  GroupEntity({
+    required this.groupId,
+    required this.name,
+    required this.visibility,
+    this.inviteUrl,
+    this.groupAdmin,
+    this.description,
+    this.isActivated = false,
+    this.lastUpdated,
+    this.link,
+  });
+  
+  factory GroupEntity.fromGroupDto(GroupDto groupDto) {
+    return GroupEntity(
+        groupId: groupDto.id, 
+        name: groupDto.name, 
+        visibility: groupDto.visibility,
+        isActivated: false,
+        description: groupDto.description,
+        inviteUrl: groupDto.inviteUrl,
+        groupAdmin: groupDto.groupAdmin,
+        lastUpdated: groupDto.lastUpdated,
+        link: groupDto.link
+    );
+  }
 }

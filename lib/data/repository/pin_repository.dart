@@ -1,88 +1,47 @@
 
-import 'package:drift/drift.dart';
+import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:buff_lisa/util/core/cache_impl.dart';
+import 'package:buff_lisa/util/core/in_memory_cache_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../dto/pin_dto.dart';
-import '../entity/database.dart';
+import '../../util/core/cache_api.dart';
 
 part 'pin_repository.g.dart';
 
-class PinRepository {
+abstract class PinRepositoryApi {
+  Future<Set<LocalPinDto>> getPinsByGroup(String groupId);
+}
 
-  PinRepository({required this.ref}) {
-    _db = ref.watch(databaseProvider);
+class PinRepository extends CacheImpl<PinEntity> implements PinRepositoryApi  {
+
+  PinRepository() : super("pinRepository");
+
+  @override
+  Future<Set<LocalPinDto>> getPinsByGroup(String groupId) async {
+    final pins = await getAll();
+    final filteredPins = pins.where((e) => e.group == groupId);
+    return filteredPins.map((e) => LocalPinDto.fromEntityData(e)).toSet();
   }
 
-  final Ref ref;
+}
 
-  late Database _db;
+class OtherPinRepository extends InMemoryCache<PinEntity> implements PinRepositoryApi {
 
-  Future<void> createOrUpdate(LocalPinDto pin) async {
-    await _db.into(_db.pinEntity).insertOnConflictUpdate(pin.toEntityCompanion());
-  }
-
-  Future<List<LocalPinDto>> getAllPins() async {
-    final pinRows = await (_db.select(_db.pinEntity)).get();
-    return pinRows.map((e) => LocalPinDto.fromEntityData(e)).toList();
-  }
-
-  Future<List<LocalPinDto>> getPinsOfGroup(String groupId) async {
-    final pinRows = await (
-        _db.select(_db.pinEntity)
-            .join([
-          innerJoin(
-              _db.groupEntity,
-              _db.groupEntity.groupId.equalsExp(_db.pinEntity.group)
-          )
-        ])
-          ..where(_db.pinEntity.group.equals(groupId))).get();
-    return pinRows.map((e) => LocalPinDto.fromEntityData(e.readTable(_db.pinEntity))).toList();
-  }
-
-  Future<List<LocalPinDto>> getPinsOActiveGroup() async {
-    final pinRows = await (
-        _db.select(_db.pinEntity)
-            .join([
-          innerJoin(
-              _db.groupEntity,
-              _db.groupEntity.groupId.equalsExp(_db.pinEntity.group)
-          )
-        ])
-          ..where(_db.groupEntity.isActivated.equals(true))).get();
-    return pinRows.map((e) => LocalPinDto.fromEntityData(e.readTable(_db.pinEntity))).toList();
-  }
-
-  Future<LocalPinDto?> getPinById(String pinId) async {
-    final pinRow = await (_db.select(_db.pinEntity)..where((tbl) => tbl.pinId.equals(pinId))).getSingleOrNull();
-    if (pinRow == null) return null;
-    return LocalPinDto.fromEntityData(pinRow);
-  }
-
-  Future<void> deletePinFromGroup(String pinId) async {
-    await _db.transaction(() async {
-      await (_db.delete(_db.pinEntity)
-        ..where((tbl) => tbl.pinId.equals(pinId))).go();
-      await (_db.delete(_db.pinImageEntity)..where((tbl) => tbl.pinId.equals(pinId))).go();
-    });
-  }
-
-  Future<void> updateToSynced(LocalPinDto pin, String oldPinId) async {
-    await _db.transaction(() async {
-      await (_db.delete(_db.pinEntity)..where((tbl) => tbl.pinId.equals(oldPinId))).go();
-      await (_db.delete(_db.pinImageEntity)..where((tbl) => tbl.pinId.equals(oldPinId))).go();
-      await (_db.into(_db.pinEntity)).insert(pin.toEntityCompanion());
-    });
-  }
-
-  Future<List<LocalPinDto>> getAllNotSyncedPins() async {
-    final pinRows = await (_db.select(_db.pinEntity)..where((tbl) => tbl.lastSynced.isNull())).get();
-    return pinRows.map((e) => LocalPinDto.fromEntityData(e)).toList();
+  @override
+  Future<Set<LocalPinDto>> getPinsByGroup(String groupId) async {
+    final pins = await getAll();
+    final filteredPins = pins.where((e) => e.group == groupId);
+    return filteredPins.map((e) => LocalPinDto.fromEntityData(e)).toSet();
   }
 
 }
 
 @Riverpod(keepAlive: true)
 PinRepository pinRepository(Ref ref) {
-  return PinRepository(ref: ref);
+  return PinRepository();
 }
+
+@Riverpod(keepAlive: true)
+OtherPinRepository otherPinRepository(Ref ref) => OtherPinRepository();

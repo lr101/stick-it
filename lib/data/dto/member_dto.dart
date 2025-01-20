@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:openapi/api.dart';
 
+
+@immutable
 class MemberDto {
   final String userId;
   final String groupId;
@@ -7,7 +10,7 @@ class MemberDto {
   final int points;
   final int? selectedBatch;
 
-  MemberDto({required this.userId, required this.groupId, required this.username, required this.points, required this.selectedBatch});
+  const MemberDto({required this.userId, required this.groupId, required this.username, required this.points, required this.selectedBatch});
 
   factory MemberDto.fromRanking(MemberResponseDto ranking, String groupId) {
     return MemberDto(

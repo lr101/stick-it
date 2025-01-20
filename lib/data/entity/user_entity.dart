@@ -1,16 +1,21 @@
-import 'package:drift/drift.dart';
+import 'package:hive/hive.dart';
 
-@TableIndex(name: 'user_username', columns: {#username})
-class UserEntity extends Table {
-  // Unique ID of the pin - Primary Key
-  TextColumn get userId => text()();
+part 'user_entity.g.dart'; // This will be generated
 
-  // Unique username
-  TextColumn get username => text().unique()();
+@HiveType(typeId: 6) // Unique type ID for this entity
+class UserEntity {
+  @HiveField(0)
+  final String userId;
 
-  IntColumn get selectedBatch => integer().nullable()();
+  @HiveField(1)
+  final String username;
 
-  // Specify the primary key
-  @override
-  Set<Column> get primaryKey => {userId};
+  @HiveField(2)
+  final int? selectedBatch;
+
+  UserEntity({
+    required this.userId,
+    required this.username,
+    this.selectedBatch,
+  });
 }

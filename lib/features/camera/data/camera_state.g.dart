@@ -7,11 +7,12 @@ part of 'camera_state.dart';
 // **************************************************************************
 
 String _$cameraSelectedGroupHash() =>
-    r'26352f1d404ce0374848d0c286396673a669f8ee';
+    r'e34f8df3bcae7820db52382e7eb2854077fa2e4c';
 
 /// See also [cameraSelectedGroup].
 @ProviderFor(cameraSelectedGroup)
-final cameraSelectedGroupProvider = Provider<LocalGroupDto>.internal(
+final cameraSelectedGroupProvider =
+    AutoDisposeFutureProvider<LocalGroupDto>.internal(
   cameraSelectedGroup,
   name: r'cameraSelectedGroupProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,7 +24,7 @@ final cameraSelectedGroupProvider = Provider<LocalGroupDto>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef CameraSelectedGroupRef = ProviderRef<LocalGroupDto>;
+typedef CameraSelectedGroupRef = AutoDisposeFutureProviderRef<LocalGroupDto>;
 String _$cameraIndexHash() => r'1586261879e9dbbace237e964af490a507397937';
 
 /// See also [CameraIndex].

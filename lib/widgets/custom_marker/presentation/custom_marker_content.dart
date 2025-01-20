@@ -49,7 +49,7 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
   Widget build(BuildContext context) {
     final isInRange = ref.watch(currentLocationProvider.select((e) => e.whenOrNull(data: (data) => _isWithinDistance(data))));
     final markerImage = ref.watch(groupPinImageByIdProvider(widget.pinDto.groupId)).when(
-      data: (data) => Image.memory(data ?? ref.read(defaultGroupPinImageProvider)),
+      data: (data) => Image.memory(data),
       error: (e, s) => Image.memory(ref.read(defaultGroupPinImageProvider)),
       loading: () => Image.memory(ref.read(defaultGroupPinImageProvider)),
     );

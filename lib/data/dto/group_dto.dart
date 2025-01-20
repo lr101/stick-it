@@ -1,22 +1,23 @@
 import 'dart:convert';
-
-import 'package:buff_lisa/data/entity/database.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:drift/drift.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:openapi/api.dart';
 
-class   LocalGroupDto {
+@immutable
+class LocalGroupDto {
 
-  String groupId;
-  String name;
-  int visibility;
-  String? link;
-  String? inviteUrl;
-  String? groupAdmin;
-  String? description;
-  DateTime? lastUpdated;
-  bool isActivated;
+  final String groupId;
+  final String name;
+  final int visibility;
+  final String? link;
+  final String? inviteUrl;
+  final String? groupAdmin;
+  final String? description;
+  final DateTime? lastUpdated;
+  final bool isActivated;
 
-  LocalGroupDto({
+  const LocalGroupDto({
     required this.groupId,
     required this.name,
     required this.visibility,
@@ -28,7 +29,7 @@ class   LocalGroupDto {
     required this.isActivated
   });
 
-  factory LocalGroupDto.fromEntityData(GroupEntityData entityData) {
+  factory LocalGroupDto.fromEntityData(GroupEntity entityData) {
     return LocalGroupDto(
       groupId: entityData.groupId,
       name: entityData.name,
@@ -42,17 +43,17 @@ class   LocalGroupDto {
     );
   }
 
-  GroupEntityCompanion toCompanion() {
-    return GroupEntityCompanion(
-      groupId: Value(groupId),
-      name: Value(name),
-      link: Value(link),
-      visibility: Value(visibility),
-      inviteUrl: Value(inviteUrl),
-      groupAdmin: Value(groupAdmin),
-      description: Value(description),
-      lastUpdated: Value(lastUpdated),
-      isActivated: Value(isActivated)
+  GroupEntity toEntity() {
+    return GroupEntity(
+      groupId: groupId,
+      name: name,
+      link: link,
+      visibility: visibility,
+      inviteUrl: inviteUrl,
+      groupAdmin: groupAdmin,
+      description: description,
+      lastUpdated: lastUpdated,
+      isActivated: isActivated
     );
   }
 
@@ -100,21 +101,19 @@ class   LocalGroupDto {
     String? inviteUrl,
     String? groupAdmin,
     String? description,
-    Uint8List? profileImage,
-    Uint8List? pinImage,
     DateTime? lastUpdated,
-    bool? isActivated
+    bool? isActivated,
   }) {
     return LocalGroupDto(
-        groupId: groupId ?? this.groupId,
-        name: name ?? this.name,
-        visibility: visibility ?? this.visibility,
-        link: link ?? this.link,
-        inviteUrl: inviteUrl ?? this.inviteUrl,
-        groupAdmin: groupAdmin ?? this.groupAdmin,
-        description: description ?? this.description,
-        lastUpdated: lastUpdated ?? this.lastUpdated,
-        isActivated: isActivated ?? this.isActivated
+      groupId: groupId ?? this.groupId,
+      name: name ?? this.name,
+      visibility: visibility ?? this.visibility,
+      link: link ?? this.link,
+      inviteUrl: inviteUrl ?? this.inviteUrl,
+      groupAdmin: groupAdmin ?? this.groupAdmin,
+      description: description ?? this.description,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+      isActivated: isActivated ?? this.isActivated,
     );
   }
 

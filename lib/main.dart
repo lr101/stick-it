@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:buff_lisa/data/entity/group_entity.dart';
+import 'package:buff_lisa/data/entity/image_entity.dart';
+import 'package:buff_lisa/data/entity/member_entity.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:buff_lisa/data/entity/user_entity.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
@@ -11,6 +16,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hive/hive.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +34,12 @@ import 'features/navigation/presentation/navigation.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
+  await Hive.initFlutter();
+  Hive.registerAdapter(GroupEntityAdapter());
+  Hive.registerAdapter(ImageEntityAdapter());
+  Hive.registerAdapter(MemberEntityAdapter());
+  Hive.registerAdapter(PinEntityAdapter());
+  Hive.registerAdapter(UserEntityAdapter());
   const bool isProduction = bool.fromEnvironment('dart.vm.product');
   if (isProduction) {
     await dotenv.load(fileName: ".env");

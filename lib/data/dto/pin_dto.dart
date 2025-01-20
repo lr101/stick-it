@@ -1,7 +1,9 @@
-import 'package:buff_lisa/data/entity/database.dart';
-import 'package:drift/drift.dart';
+
+import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:openapi/api.dart';
 
+@immutable
 class LocalPinDto {
   final String id;
   final double latitude;
@@ -14,7 +16,7 @@ class LocalPinDto {
   final PinLikeDto? likes;
   final String? description;
 
-  LocalPinDto({
+  const LocalPinDto({
     required this.id,
     required this.latitude,
     required this.longitude,
@@ -27,7 +29,7 @@ class LocalPinDto {
     this.likes
   });
 
-  factory LocalPinDto.fromEntityData(PinEntityData entityData) {
+  factory LocalPinDto.fromEntityData(PinEntity entityData) {
     return LocalPinDto(
       id: entityData.pinId,
       latitude: entityData.latitude,
@@ -41,17 +43,17 @@ class LocalPinDto {
     );
   }
 
-  PinEntityCompanion toEntityCompanion() {
-    return PinEntityCompanion(
-      pinId: Value(id),
-      latitude: Value(latitude),
-      longitude: Value(longitude),
-      creationDate: Value(creationDate),
-      creator: Value(creatorId),
-      group: Value(groupId),
-      isHidden: Value(isHidden),
-      description: Value(description),
-      lastSynced: Value(lastSynced)
+  PinEntity toEntityCompanion() {
+    return PinEntity(
+      pinId: id,
+      latitude: latitude,
+      longitude: longitude,
+      creationDate: creationDate,
+      creator: creatorId,
+      group: groupId,
+      isHidden: isHidden,
+      description: description,
+      lastSynced: lastSynced
     );
   }
 
