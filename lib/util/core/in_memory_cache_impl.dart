@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'cache_api.dart';
 
-class InMemoryCache<T> implements CacheApi<T> {
+abstract class InMemoryCache<T> implements CacheApi<T> {
   final Map<String, T> _cache = {};
-  final int maxItems; // Optional max items for TTL
+  final int maxItems;
 
-  InMemoryCache({this.maxItems = 100}); // Default max items
+  InMemoryCache({this.maxItems = 100});
 
   @override
   Future<void> put(String id, T item) async {

@@ -1,6 +1,7 @@
 import 'package:buff_lisa/data/dto/member_dto.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/user_image_service_small.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/profile/presentation/other_user_profile.dart';
 import 'package:buff_lisa/util/types/achievement.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
@@ -23,7 +24,7 @@ class MemberTile extends ConsumerWidget {
     final isCurrentUser = userId == memberDto.userId;
     final int? batch;
     if (isCurrentUser) {
-       batch = ref.watch(currentUserServiceProvider.select((e) => e.selectedBatch));
+       batch = ref.watch(currentUserProvider.select((e) => e.value?.selectedBatch));
     } else {
        batch = memberDto.selectedBatch;
     }
@@ -42,7 +43,7 @@ class MemberTile extends ConsumerWidget {
           ],)
         ],
       ),
-      leading: RoundImage(imageCallback: ref.watch(userProfilePictureSmallByIdProvider(memberDto.userId)), size: 25.0),
+      leading: RoundImage(imageCallback: ref.watch(getUserProfileSmallProvider(memberDto.userId)), size: 25.0),
       trailing: Text("${memberDto.points} sticks"),
     );
     if (isCurrentUser) {

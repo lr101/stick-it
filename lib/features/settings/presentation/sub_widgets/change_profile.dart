@@ -34,9 +34,9 @@ class _ChangeProfileState extends ConsumerState<ChangeProfile> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _originalDescription = ref.watch(currentUserServiceProvider).description ?? "";
+      _originalDescription = ref.watch(currentUserProvider).value?.description ?? "";
       _descriptionController.text = _originalDescription;
-      _originalUsername = ref.watch(currentUserServiceProvider).username!;
+      _originalUsername = ref.watch(currentUserProvider).value!.username;
       _usernameController.text = _originalUsername;
     });
     super.initState();
@@ -93,7 +93,8 @@ class _ChangeProfileState extends ConsumerState<ChangeProfile> {
   Future<void> _changeProfilePicture(WidgetRef ref, BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       final image = ref.watch(userEditStateProvider);
-      final result = await ref.read(userServiceProvider.notifier).changeUser(
+      final userId = ref.read(userIdProvider);
+      final result = await ref.read(userServiceProvider(userId).notifier).changeUser(
           username: _originalUsername == _usernameController.text ? null : _usernameController.text,
           description: _originalDescription == _descriptionController.text ? null : _descriptionController.text,
           profilePicture: ref.read(userEditStateProvider.notifier).hasChanged ? image : null

@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_image_service.dart';
+part of 'like_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profilePictureByIdHash() =>
-    r'5c600cc9819cc74f204416e3b7945ad04df2f2a9';
+String _$userLikeServiceHash() => r'77521d5c094b55b29050a5f7cc56d914bb0ab163';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,27 +29,36 @@ class _SystemHash {
   }
 }
 
-/// See also [profilePictureById].
-@ProviderFor(profilePictureById)
-const profilePictureByIdProvider = ProfilePictureByIdFamily();
+abstract class _$UserLikeService
+    extends BuildlessAutoDisposeAsyncNotifier<UserLikesDto> {
+  late final String userId;
 
-/// See also [profilePictureById].
-class ProfilePictureByIdFamily extends Family<AsyncValue<Uint8List?>> {
-  /// See also [profilePictureById].
-  const ProfilePictureByIdFamily();
+  FutureOr<UserLikesDto> build(
+    String userId,
+  );
+}
 
-  /// See also [profilePictureById].
-  ProfilePictureByIdProvider call(
+/// See also [UserLikeService].
+@ProviderFor(UserLikeService)
+const userLikeServiceProvider = UserLikeServiceFamily();
+
+/// See also [UserLikeService].
+class UserLikeServiceFamily extends Family<AsyncValue<UserLikesDto>> {
+  /// See also [UserLikeService].
+  const UserLikeServiceFamily();
+
+  /// See also [UserLikeService].
+  UserLikeServiceProvider call(
     String userId,
   ) {
-    return ProfilePictureByIdProvider(
+    return UserLikeServiceProvider(
       userId,
     );
   }
 
   @override
-  ProfilePictureByIdProvider getProviderOverride(
-    covariant ProfilePictureByIdProvider provider,
+  UserLikeServiceProvider getProviderOverride(
+    covariant UserLikeServiceProvider provider,
   ) {
     return call(
       provider.userId,
@@ -69,32 +77,30 @@ class ProfilePictureByIdFamily extends Family<AsyncValue<Uint8List?>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'profilePictureByIdProvider';
+  String? get name => r'userLikeServiceProvider';
 }
 
-/// See also [profilePictureById].
-class ProfilePictureByIdProvider extends AutoDisposeFutureProvider<Uint8List?> {
-  /// See also [profilePictureById].
-  ProfilePictureByIdProvider(
+/// See also [UserLikeService].
+class UserLikeServiceProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    UserLikeService, UserLikesDto> {
+  /// See also [UserLikeService].
+  UserLikeServiceProvider(
     String userId,
   ) : this._internal(
-          (ref) => profilePictureById(
-            ref as ProfilePictureByIdRef,
-            userId,
-          ),
-          from: profilePictureByIdProvider,
-          name: r'profilePictureByIdProvider',
+          () => UserLikeService()..userId = userId,
+          from: userLikeServiceProvider,
+          name: r'userLikeServiceProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$profilePictureByIdHash,
-          dependencies: ProfilePictureByIdFamily._dependencies,
+                  : _$userLikeServiceHash,
+          dependencies: UserLikeServiceFamily._dependencies,
           allTransitiveDependencies:
-              ProfilePictureByIdFamily._allTransitiveDependencies,
+              UserLikeServiceFamily._allTransitiveDependencies,
           userId: userId,
         );
 
-  ProfilePictureByIdProvider._internal(
+  UserLikeServiceProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -107,13 +113,20 @@ class ProfilePictureByIdProvider extends AutoDisposeFutureProvider<Uint8List?> {
   final String userId;
 
   @override
-  Override overrideWith(
-    FutureOr<Uint8List?> Function(ProfilePictureByIdRef provider) create,
+  FutureOr<UserLikesDto> runNotifierBuild(
+    covariant UserLikeService notifier,
   ) {
+    return notifier.build(
+      userId,
+    );
+  }
+
+  @override
+  Override overrideWith(UserLikeService Function() create) {
     return ProviderOverride(
       origin: this,
-      override: ProfilePictureByIdProvider._internal(
-        (ref) => create(ref as ProfilePictureByIdRef),
+      override: UserLikeServiceProvider._internal(
+        () => create()..userId = userId,
         from: from,
         name: null,
         dependencies: null,
@@ -125,13 +138,14 @@ class ProfilePictureByIdProvider extends AutoDisposeFutureProvider<Uint8List?> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<Uint8List?> createElement() {
-    return _ProfilePictureByIdProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<UserLikeService, UserLikesDto>
+      createElement() {
+    return _UserLikeServiceProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ProfilePictureByIdProvider && other.userId == userId;
+    return other is UserLikeServiceProvider && other.userId == userId;
   }
 
   @override
@@ -145,35 +159,18 @@ class ProfilePictureByIdProvider extends AutoDisposeFutureProvider<Uint8List?> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin ProfilePictureByIdRef on AutoDisposeFutureProviderRef<Uint8List?> {
+mixin UserLikeServiceRef on AutoDisposeAsyncNotifierProviderRef<UserLikesDto> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
-class _ProfilePictureByIdProviderElement
-    extends AutoDisposeFutureProviderElement<Uint8List?>
-    with ProfilePictureByIdRef {
-  _ProfilePictureByIdProviderElement(super.provider);
+class _UserLikeServiceProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<UserLikeService,
+        UserLikesDto> with UserLikeServiceRef {
+  _UserLikeServiceProviderElement(super.provider);
 
   @override
-  String get userId => (origin as ProfilePictureByIdProvider).userId;
+  String get userId => (origin as UserLikeServiceProvider).userId;
 }
-
-String _$userImageServiceHash() => r'63e3f8b7195dfd436d09dda9e57aa7447869d898';
-
-/// See also [UserImageService].
-@ProviderFor(UserImageService)
-final userImageServiceProvider =
-    AsyncNotifierProvider<UserImageService, Map<String, Uint8List?>>.internal(
-  UserImageService.new,
-  name: r'userImageServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$userImageServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$UserImageService = AsyncNotifier<Map<String, Uint8List?>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

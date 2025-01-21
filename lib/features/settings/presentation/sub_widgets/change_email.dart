@@ -1,3 +1,4 @@
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/data/login_service.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
@@ -19,7 +20,8 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
 
   Future<void> _changeEmail() async {
     if (_formKey.currentState!.validate()) {
-      final result = await ref.read(userServiceProvider.notifier).changeUser(email: _newEmailController.text);
+      final userId = ref.watch(userIdProvider);
+      final result = await ref.read(userServiceProvider(userId).notifier).changeUser(email: _newEmailController.text);
       if (result != null) {
         CustomErrorSnackBar.message(message: result, type: CustomErrorSnackBarType.error);
       } else {

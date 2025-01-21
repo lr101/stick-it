@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../data/service/global_data_service.dart';
-import '../../../../data/service/user_image_service.dart';
 
 part 'user_edit_state.g.dart';
 
@@ -16,7 +16,8 @@ class UserEditState extends _$UserEditState {
 
   @override
   Uint8List? build() {
-    return ref.watch(profilePictureByIdProvider(ref.watch(globalDataServiceProvider).userId!)).value;
+    final userId = ref.watch(userIdProvider);
+    return ref.watch(getUserProfileProvider(userId)).value;
   }
 
   void update(Uint8List image) {

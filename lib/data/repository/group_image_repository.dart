@@ -10,43 +10,32 @@ import '../service/global_data_service.dart';
 
 part 'group_image_repository.g.dart';
 
-class GroupImageRepository extends CacheImpl<ImageEntity> {
-  GroupImageRepository(super.boxName, {required this.ref, required this.url, super.maxItems = 500});
+class ImageRepository extends CacheImpl<ImageEntity> {
+  ImageRepository(super.boxName, {
+    required this.ref,
+    required this.urlFileName,
+    required this.urlSubFolder,
+    super.maxItems,
+    super.ttlDuration = const Duration(days: 1)
+  });
 
-  final String url;
+  final String urlFileName;
+  final String urlSubFolder;
   final Ref ref;
 
-  @override
-  Future<void> deleteOldestItems() async {
-    final box = await openBox();
-    final items = await getAllAsMap();
-    final keys = items.keys.toList();
-    for (int i = 0; i < (box.length - maxItems!); i++) {
-      final key = keys[i];
-      if (items[key]?.keepAlive == false) {
-        await box.delete(key);
-      }
-    }
-  }
-
-  Future<Uint8List> fetchImage(String groupId, bool userGroup) async {
-    final cachedImage = await get(groupId); // Use the get method from CacheImpl
+  Future<Uint8List> fetchImage(String id, bool keepAlive) async {
+    final cachedImage = await get(id);
     if (cachedImage != null) {
       return cachedImage.blob1!;
     }
-    return await _fetchAndCacheImage(groupId, userGroup);
+    return await _fetchAndCacheImage(id, keepAlive);
   }
 
-  Future<Uint8List> overrideUrl(String groupId, String url, bool userGroup) async {
+  Future<Uint8List> overrideUrl(String id, String url, bool keepAlive) async {
     try {
       final image = await http.get(Uri.parse(url));
-
-      if (userGroup) {
-        await put(groupId, ImageEntity(
-            blob1: image.bodyBytes,
-            ttl: DateTime.now().add(Duration(days: 7)),
-            keepAlive: userGroup
-        ));
+      if (keepAlive) {
+        await put(id, ImageEntity(blob1: image.bodyBytes, keepAlive: keepAlive));
       }
       return image.bodyBytes;
     } catch (e) {
@@ -57,14 +46,13 @@ class GroupImageRepository extends CacheImpl<ImageEntity> {
 
 
   // Fetch the image from the API and cache it
-  Future<Uint8List> _fetchAndCacheImage(String groupId, bool userGroup) async {
+  Future<Uint8List> _fetchAndCacheImage(String id, bool keepAlive) async {
     try {
       final global = ref.watch(globalDataServiceProvider);
-      final image = await http.get(Uri.parse("${global.minioHost}/groups/$groupId/$url"));
-      put(groupId, ImageEntity(
+      final image = await http.get(Uri.parse("${global.minioHost}/$urlSubFolder/$id/$urlFileName"));
+      put(id, ImageEntity(
         blob1: image.bodyBytes,
-          ttl: DateTime.now().add(Duration(days: 7)),
-        keepAlive: userGroup
+        keepAlive: keepAlive
       ));
       return image.bodyBytes;
     } catch (e) {
@@ -72,23 +60,27 @@ class GroupImageRepository extends CacheImpl<ImageEntity> {
     }
   }
 
-  Future<void> addImage(String groupId, Uint8List image) async {
-    await put(groupId, ImageEntity( // Use the put method from CacheImpl
+  Future<void> addImage(String id, Uint8List image, bool keepAlive) async {
+    await put(id, ImageEntity(
       blob1: image,
-      ttl: DateTime.now().add(Duration(days: 7)),
+      keepAlive: keepAlive
     ));
   }
-
-  Future<void> deleteGroupImage(String groupId) async {
-    await delete(groupId);
-  }
+  
 }
 
-@riverpod
-GroupImageRepository groupProfileRepo(Ref ref) => GroupImageRepository("groupProfileRepo", ref: ref, url: "group_profile.png", maxItems: 20);
+@Riverpod(keepAlive: true)
+ImageRepository groupProfileRepo(Ref ref) => ImageRepository("groupProfileRepo", ref: ref, urlSubFolder: "groups", urlFileName: "group_profile.png", maxItems: 20);
 
-@riverpod
-GroupImageRepository groupProfileSmallRepo(Ref ref) => GroupImageRepository("groupProfileSmallRepo", ref: ref ,url: "group_profile_small.png", maxItems: 200);
+@Riverpod(keepAlive: true)
+ImageRepository groupProfileSmallRepo(Ref ref) => ImageRepository("groupProfileSmallRepo", ref: ref,urlSubFolder: "groups", urlFileName: "group_profile_small.png", maxItems: 500);
 
-@riverpod
-GroupImageRepository groupPinImageRepo(Ref ref) => GroupImageRepository("groupPinImageRepository", ref: ref,  url: "group_pin.png", maxItems: 50);
+@Riverpod(keepAlive: true)
+ImageRepository groupPinImageRepo(Ref ref) => ImageRepository("groupPinImageRepository", ref: ref, urlSubFolder: "groups", urlFileName: "group_pin.png", maxItems: 50);
+
+@Riverpod(keepAlive: true)
+ImageRepository userImageSmallRepo(Ref ref) => ImageRepository("userImageSmallRepository", ref: ref, urlSubFolder: "users", urlFileName: "profile_small.png", maxItems: 500);
+
+@Riverpod(keepAlive: true)
+ImageRepository userImageRepo(Ref ref) => ImageRepository("userImageRepository", ref: ref, urlSubFolder: "users", urlFileName: "profile.png", maxItems: 50);
+

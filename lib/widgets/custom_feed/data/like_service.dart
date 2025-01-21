@@ -1,6 +1,6 @@
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/data/service/like_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -41,7 +41,7 @@ class LikeService extends _$LikeService {
     try {
       final likeApi = ref.watch(likeApiProvider);
       await likeApi.createOrUpdateLike(pinId, createLikeDto);
-      ref.watch(userServiceProvider.notifier).updateLikeCount(creatorId, createLikeDto);
+      ref.read(userLikeServiceProvider(creatorId).notifier).updateLikeCount(createLikeDto);
     } on ApiException catch (_) {
       state[pinId] = currentLikes ?? PinLikeDto();
       ref.notifyListeners();

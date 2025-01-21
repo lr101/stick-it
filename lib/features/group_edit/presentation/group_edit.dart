@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/group_edit/service/group_edit_service.dart';
 import 'package:buff_lisa/widgets/group_edit_template/presentation/group_edit_template.dart';
 import 'package:flutter/material.dart';
@@ -50,46 +51,44 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
         },
         rowItems: [
           const SizedBox(height: 5),
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Group admin:",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.normal)),
-                        DropdownButton<String>(
-                            isExpanded: true,
-                            items: ref
-                                    .watch(
-                                        memberServiceProvider(widget.groupDto.groupId))
-                                    .whenOrNull(
-                                        data: (data) => data
-                                            .map((e) =>
-                                                DropdownMenuItem<String>(
-                                                    value: e.userId,
-                                                    child: Text(e.username)))
-                                            .toList()) ??
-                                [
-                                  DropdownMenuItem<String>(
-                                      value: global.userId,
-                                      child: Text(ref.watch(currentUserServiceProvider).username!))
-                                ],
-                            onChanged: (String? value) {
-                              if (value != null) {
-                                ref
-                                    .read(groupEditServiceProvider.notifier)
-                                    .updateAdminId(value);
-                              }
-                            },
-                            value: adminId),
-                      ])),
-            ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.85,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Group admin:",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.normal)),
+                      DropdownButton<String>(
+                          isExpanded: true,
+                          items: ref
+                                  .watch(
+                                      memberServiceProvider(widget.groupDto.groupId))
+                                  .whenOrNull(
+                                      data: (data) => data
+                                          .map((e) =>
+                                              DropdownMenuItem<String>(
+                                                  value: e.userId,
+                                                  child: Text(e.username)))
+                                          .toList()) ??
+                              [
+                                DropdownMenuItem<String>(
+                                    value: global.userId,
+                                    child: Text(ref.watch(currentUserProvider).value!.username))
+                              ],
+                          onChanged: (String? value) {
+                            if (value != null) {
+                              ref
+                                  .read(groupEditServiceProvider.notifier)
+                                  .updateAdminId(value);
+                            }
+                          },
+                          value: adminId),
+                    ])),
           ),
         ]);
   }

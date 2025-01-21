@@ -1,4 +1,6 @@
+import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:hive/hive.dart';
+import 'package:openapi/api.dart';
 
 part 'member_entity.g.dart'; // This will be generated
 
@@ -20,16 +22,21 @@ class MemberEntity {
     required this.userId,
     required this.points,
     required this.username,
-    required this.selectedBatch
+    required this.selectedBatch,
   });
+
+  factory MemberEntity.fromRanking(MemberResponseDto memberDto) {
+    return MemberEntity(userId: memberDto.userId, points: memberDto.ranking, username: memberDto.username, selectedBatch: memberDto.selectedBatch);
+  }
 }
 
-@HiveType(typeId: 4) // Unique type ID for this entity
-class MembersEntity {
-  @HiveField(0)
+@HiveType(typeId: 4)
+class MembersEntity extends CacheEntity {
+  @HiveField(3)
   final List<MemberEntity> members;
 
   MembersEntity({
     required this.members,
+    super.keepAlive
   });
 }

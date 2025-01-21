@@ -1,9 +1,9 @@
 import 'package:buff_lisa/data/service/filter_service.dart';
-import 'package:buff_lisa/data/service/user_image_service_small.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../data/service/image_service.dart';
 import '../../custom_interaction/presentation/custom_dialog.dart';
 import '../../round_image/presentation/round_image.dart';
 
@@ -21,9 +21,9 @@ class UserTile extends ConsumerWidget {
             acceptText: "Remove",
             title: "Remove hidden user",
             onPressed: () => ref.read(hiddenUserServiceProvider.notifier).removeHiddenUser(userId)),
-          title: Align(alignment: Alignment.centerLeft, child: Text(user ?? "")),
+          title: Align(alignment: Alignment.centerLeft, child: Text(user.value ?? "")),
           leading: RoundImage(
-                imageCallback: ref.watch(userProfilePictureSmallByIdProvider(userId)),
+                imageCallback: ref.watch(getUserProfileSmallProvider(userId)),
                 size: 25.0,
                 child: Container()),
             );

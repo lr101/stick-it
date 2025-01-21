@@ -60,16 +60,23 @@ class MembersEntityAdapter extends TypeAdapter<MembersEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MembersEntity(
-      members: (fields[0] as List).cast<MemberEntity>(),
+      members: (fields[3] as List).cast<MemberEntity>(),
+      keepAlive: fields[2] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, MembersEntity obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(4)
+      ..writeByte(3)
+      ..write(obj.members)
       ..writeByte(0)
-      ..write(obj.members);
+      ..write(obj.ttl)
+      ..writeByte(1)
+      ..write(obj.hits)
+      ..writeByte(2)
+      ..write(obj.keepAlive);
   }
 
   @override

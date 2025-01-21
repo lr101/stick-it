@@ -17,40 +17,47 @@ class GroupEntityAdapter extends TypeAdapter<GroupEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return GroupEntity(
-      groupId: fields[0] as String,
-      name: fields[1] as String,
-      visibility: fields[2] as int,
-      inviteUrl: fields[3] as String?,
-      groupAdmin: fields[4] as String?,
-      description: fields[5] as String?,
-      isActivated: fields[6] as bool,
-      lastUpdated: fields[7] as DateTime?,
-      link: fields[8] as String?,
+      groupId: fields[3] as String,
+      name: fields[4] as String,
+      visibility: fields[5] as int,
+      inviteUrl: fields[6] as String?,
+      groupAdmin: fields[7] as String?,
+      description: fields[8] as String?,
+      isActivated: fields[9] as bool,
+      lastUpdated: fields[10] as DateTime?,
+      link: fields[11] as String?,
+      keepAlive: fields[2] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, GroupEntity obj) {
     writer
-      ..writeByte(9)
-      ..writeByte(0)
-      ..write(obj.groupId)
-      ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.visibility)
+      ..writeByte(12)
       ..writeByte(3)
-      ..write(obj.inviteUrl)
+      ..write(obj.groupId)
       ..writeByte(4)
-      ..write(obj.groupAdmin)
+      ..write(obj.name)
       ..writeByte(5)
-      ..write(obj.description)
+      ..write(obj.visibility)
       ..writeByte(6)
-      ..write(obj.isActivated)
+      ..write(obj.inviteUrl)
       ..writeByte(7)
-      ..write(obj.lastUpdated)
+      ..write(obj.groupAdmin)
       ..writeByte(8)
-      ..write(obj.link);
+      ..write(obj.description)
+      ..writeByte(9)
+      ..write(obj.isActivated)
+      ..writeByte(10)
+      ..write(obj.lastUpdated)
+      ..writeByte(11)
+      ..write(obj.link)
+      ..writeByte(0)
+      ..write(obj.ttl)
+      ..writeByte(1)
+      ..write(obj.hits)
+      ..writeByte(2)
+      ..write(obj.keepAlive);
   }
 
   @override

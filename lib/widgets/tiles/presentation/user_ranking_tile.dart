@@ -1,5 +1,6 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/user_image_service_small.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/profile/presentation/other_user_profile.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class UserRankingTile extends ConsumerWidget {
     final isCurrentUser = userId == user.userInfoDto!.userId;
     final int? batch;
     if (isCurrentUser) {
-       batch = ref.watch(currentUserServiceProvider.select((e) => e.selectedBatch));
+       batch = ref.watch(currentUserProvider.select((e) => e.value?.selectedBatch));
     } else {
        batch = user.userInfoDto!.selectedBatch;
     }
@@ -36,7 +37,7 @@ class UserRankingTile extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             user.rankNr! <= 3 ? Icon(Icons.emoji_events, color: user.rankNr == 1 ? Colors.yellow : user.rankNr == 2 ? Colors.grey : Colors.brown,) : Text("${user.rankNr}.",),
-            RoundImage(imageCallback: ref.watch(userProfilePictureSmallByIdProvider(user.userInfoDto!.userId)), size: 25.0),
+            RoundImage(imageCallback: ref.watch(getUserProfileSmallProvider(user.userInfoDto!.userId)), size: 25.0),
           ],
         ),
       ),

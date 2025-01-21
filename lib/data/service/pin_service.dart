@@ -6,19 +6,15 @@ import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/repository/pin_image_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
-import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/util/core/cache_api.dart';
-import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../repository/global_data_repository.dart';
 import '../repository/pin_repository.dart';
 import 'global_data_service.dart';
 
@@ -33,23 +29,29 @@ class PinService extends _$PinService {
   Future<Set<LocalPinDto>> build(String groupId) async {
     final isUserGroup = (await ref.watch(groupRepositoryProvider).get(groupId)) != null;
     _pinRepository = isUserGroup ? ref.watch(pinRepositoryProvider) : ref.watch(otherPinRepositoryProvider);
-    final pinsApi = ref.watch(pinApiProvider);
     final hiddenUsers = ref.watch(hiddenUserServiceProvider);
     final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
-    if (isUserGroup) {
-      final localPins = await _pinRepository.getPinsByGroup(groupId);
-      localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
-      return localPins;
-    } else {
-      final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
-      final localPins = remotePins!.items.map((e) => LocalPinDto.fromDtoWithImage(e)).toSet();
-      localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
-      return localPins;
+    Set<LocalPinDto> localPins = await _pinRepository.getPinsByGroup(groupId);
+    if (isUserGroup && localPins.isEmpty) {
+      localPins = await _fetchOtherUserGroupPins();
     }
+    localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
+    return localPins;
   }
-
-
-  // Optimized state update function
+  
+  Future<Set<LocalPinDto>> _fetchOtherUserGroupPins() async {
+    final pinsApi = ref.watch(pinApiProvider);
+    final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
+    final localPins = remotePins!.items.map((e) => LocalPinDto.fromDtoWithImage(e)).toSet();
+    final storage = (_pinRepository as CacheApi<PinEntity>);
+    final map = <String, PinEntity>{};
+    for (final pin in remotePins.items) {
+      map[pin.id] = PinEntity.fromDto(pin);
+    }
+    storage.putMultiple(map);
+    return localPins;
+  }
+  
   Future<void> updateSinglePin(LocalPinDto? oldPin, LocalPinDto updatedPin) async {
     final storage = (_pinRepository as CacheApi<PinEntity>);
     await _mutex.protect(() async {
@@ -63,24 +65,24 @@ class PinService extends _$PinService {
   }
 
   Future<String?> addPinToGroup(LocalPinDto pin, Uint8List image) async {
-    final pinsApi = ref.read(pinApiProvider);
     final pinImageRepo = ref.read(pinImageRepositoryProvider);
     try {
       await updateSinglePin(null, pin);
       await pinImageRepo.addOfflineImage(pin.id, image);
       ref.read(userGroupServiceProvider.notifier).setIsActive(groupId, true);
-      final result = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(image)));
-      if (result != null) {
-        final newPin = LocalPinDto.fromDto(result);
-        updateSinglePin(pin, newPin);
-        await pinImageRepo.delete(pin.id);
-      } else {
-        return 'Failed to add pin to group';
-      }
+      await _addPinToRemote(pin, image, pinImageRepo);
     } on ApiException catch (e) {
       return e.message;
     }
     return null;
+  }
+  
+  Future<void> _addPinToRemote(LocalPinDto pin, Uint8List image, PinImageRepository pinImageRepo) async {
+    final pinsApi = ref.read(pinApiProvider);
+    final result = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(image)));
+    final newPin = LocalPinDto.fromDto(result!);
+    updateSinglePin(pin, newPin);
+    await pinImageRepo.delete(pin.id);
   }
 
   Future<String?> deletePinFromGroup(String pinId) async {

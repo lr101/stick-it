@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:hive/hive.dart';
 import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/entity/user_entity.dart';
@@ -9,32 +10,32 @@ import 'package:openapi/api.dart';
 part 'pin_entity.g.dart'; // This will be generated
 
 @HiveType(typeId: 5) // Unique type ID for this entity
-class PinEntity {
-  @HiveField(0)
+class PinEntity extends CacheEntity {
+  @HiveField(3)
   final String pinId;
 
-  @HiveField(1)
+  @HiveField(4)
   final double latitude;
 
-  @HiveField(2)
+  @HiveField(5)
   final double longitude;
 
-  @HiveField(3)
+  @HiveField(6)
   final DateTime creationDate;
 
-  @HiveField(4)
+  @HiveField(7)
   final String? description;
 
-  @HiveField(5)
+  @HiveField(8)
   final String creator; // Assuming this is a userId
 
-  @HiveField(6)
+  @HiveField(9)
   final String group; // Assuming this is a groupId
 
-  @HiveField(7)
+  @HiveField(10)
   final bool isHidden;
 
-  @HiveField(8)
+  @HiveField(11)
   final DateTime? lastSynced;
 
   PinEntity({
@@ -47,6 +48,7 @@ class PinEntity {
     required this.group,
     this.isHidden = false,
     this.lastSynced,
+    super.keepAlive
   });
 
   factory PinEntity.fromDto(PinWithOptionalImageDto pinDto) {

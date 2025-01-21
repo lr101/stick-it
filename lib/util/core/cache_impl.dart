@@ -1,20 +1,24 @@
+import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'cache_api.dart';
 import 'package:hive/hive.dart';
 
-class CacheImpl<T> implements CacheApi<T> {
+abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
   final String boxName;
   final int? maxItems; // Optional max items for TTL
+  final Duration? ttlDuration;
 
-  CacheImpl(this.boxName, {this.maxItems});
+  CacheImpl(this.boxName, {this.maxItems, this.ttlDuration});
 
   @protected
   Box<T>? box;
 
   @protected
   Future<Box<T>> openBox() async {
-    box ??= await Hive.openBox<T>(boxName);
+    if (box != null) return box!;
+    box = await Hive.openBox<T>(boxName);
+    await _removeByTTL();
     return box!;
   }
 
@@ -72,12 +76,44 @@ class CacheImpl<T> implements CacheApi<T> {
     }
   }
 
+  Future<void> _removeByTTL() async {
+    if (ttlDuration != null) {
+      final values = box!.toMap() as Map<String, T>;
+      final ttlTime = DateTime.now().subtract(ttlDuration!);
+      values.removeWhere((a, b) => b.ttl.isAfter(ttlTime));
+      await box!.clear();
+      await box!.putAll(values);
+    }
+  }
+
+  /// Delete items with the lowest hit count.
+  /// Not included are items with keepAlive == true and items younger than 10% of ttlDuration
   @override
   Future<void> deleteOldestItems() async {
     final box = await openBox();
-    final keys = box.keys.toList();
-    for (int i = 0; i < (box.length - maxItems!); i++) {
-      await box.delete(keys[i]);
+    final values = box.toMap();
+
+    final entries = values.entries.toList();
+
+    entries.sort((a, b) {
+      final aHits = a.value.hits;
+      final bHits = b.value.hits;
+      return aHits.compareTo(bHits);
+    });
+
+    final itemsToDelete = box.length - maxItems!;
+    int itemsDeleted = 0;
+    final duration = ttlDuration != null ? (ttlDuration!.inSeconds * 0.1).toInt() : 3600;
+    final ttlTime = DateTime.now().subtract(Duration(seconds: duration));
+
+    for (int i = 0; i < entries.length && itemsDeleted < itemsToDelete; i++) {
+      final key = entries[i].key;
+      final value = values[key]!;
+      if (value.keepAlive == false && value.ttl.isBefore(ttlTime)) {
+        await box.delete(key);
+        itemsDeleted++;
+      }
     }
   }
+
 }

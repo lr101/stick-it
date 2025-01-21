@@ -1,3 +1,4 @@
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
@@ -22,8 +23,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       CustomErrorSnackBar.message(message: "Sending code to your email");
-      final result =
-          await ref.watch(userServiceProvider.notifier).getDeleteCode();
+      final result = await ref.watch(globalDataServiceProvider.notifier).getDeleteCode();
       if (result != null) {
         CustomErrorSnackBar.message(
             message: "Error while sending code: $result");
@@ -70,8 +70,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
 
   Future<void> _submitDelete() async {
     if (_formKey.currentState!.validate()) {
-      final result = await ref
-          .watch(userServiceProvider.notifier)
+      final result = await ref.watch(globalDataServiceProvider.notifier)
           .deleteAccount(int.parse(_controller.text));
       if (result != null) {
         CustomErrorSnackBar.message(message: result);

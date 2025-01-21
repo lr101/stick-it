@@ -5,6 +5,8 @@ import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_s
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../data/service/global_data_service.dart';
+
 class ChangePassword extends ConsumerStatefulWidget {
   const ChangePassword({super.key});
 
@@ -119,7 +121,8 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
 
   Future<void> _changePassword() async {
     if (_formKey.currentState!.validate()) {
-      final result = await ref.read(userServiceProvider.notifier).changeUser(password: _newPasswordController.text);
+      final userId = ref.watch(userIdProvider);
+      final result = await ref.read(userServiceProvider(userId).notifier).changeUser(password: _newPasswordController.text);
       if (result == null) {
         Navigator.pop(context);
       } else {

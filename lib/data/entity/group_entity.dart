@@ -2,35 +2,38 @@ import 'package:hive/hive.dart';
 import 'package:buff_lisa/data/entity/user_entity.dart';
 import 'package:openapi/api.dart';
 
+import 'cache_entity.dart';
+
 part 'group_entity.g.dart'; // This will be generated
 
 @HiveType(typeId: 1) // Unique type ID for this entity
-class GroupEntity {
-  @HiveField(0)
-  final String groupId;
-
-  @HiveField(1)
-  final String name;
-
-  @HiveField(2)
-  final int visibility;
+class GroupEntity extends CacheEntity {
 
   @HiveField(3)
-  final String? inviteUrl;
+  final String groupId;
 
   @HiveField(4)
-  final String? groupAdmin; // Assuming this is a userId
+  final String name;
 
   @HiveField(5)
-  final String? description;
+  final int visibility;
 
   @HiveField(6)
-  final bool isActivated;
+  final String? inviteUrl;
 
   @HiveField(7)
-  final DateTime? lastUpdated;
+  final String? groupAdmin; // Assuming this is a userId
 
   @HiveField(8)
+  final String? description;
+
+  @HiveField(9)
+  final bool isActivated;
+
+  @HiveField(10)
+  final DateTime? lastUpdated;
+
+  @HiveField(11)
   final String? link;
 
   GroupEntity({
@@ -43,6 +46,7 @@ class GroupEntity {
     this.isActivated = false,
     this.lastUpdated,
     this.link,
+    super.keepAlive
   });
   
   factory GroupEntity.fromGroupDto(GroupDto groupDto) {

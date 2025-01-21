@@ -1,4 +1,5 @@
 
+import 'package:buff_lisa/data/entity/user_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:openapi/api.dart';
 
@@ -18,5 +19,10 @@ class LocalUserDto {
 
   LocalUserDto fromCurrentWithLikes(UserLikesDto likes) {
     return LocalUserDto(username: username, userId: userId, description: description, likes: likes, selectedBatch: selectedBatch);
+  }
+
+  factory LocalUserDto.fromEntity(UserEntity entity) {
+    return LocalUserDto(
+        username: entity.username, userId: entity.userId, description: entity.description, selectedBatch: entity.selectedBatch);
   }
 }

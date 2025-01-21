@@ -39,23 +39,7 @@ final lastKnownLocationProvider = AutoDisposeProvider<LatLng>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LastKnownLocationRef = AutoDisposeProviderRef<LatLng>;
-String _$xpHash() => r'375343c54646153bc3b7ef15ff57c4d5f7baed4c';
-
-/// See also [xp].
-@ProviderFor(xp)
-final xpProvider = AutoDisposeProvider<UserXpDto>.internal(
-  xp,
-  name: r'xpProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$xpHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef XpRef = AutoDisposeProviderRef<UserXpDto>;
-String _$globalDataServiceHash() => r'1c3d49f8486320d0428395a60b991927fb72f5d0';
+String _$globalDataServiceHash() => r'51da21900871568ea0aa913c860d9985b0a90a79';
 
 /// See also [GlobalDataService].
 @ProviderFor(GlobalDataService)
@@ -71,23 +55,6 @@ final globalDataServiceProvider =
 );
 
 typedef _$GlobalDataService = Notifier<GlobalDataDto>;
-String _$currentUserServiceHash() =>
-    r'7efcd9109abaeb86550ac8acfd0f36f7dfaa3645';
-
-/// See also [CurrentUserService].
-@ProviderFor(CurrentUserService)
-final currentUserServiceProvider =
-    NotifierProvider<CurrentUserService, CurrentUserDto>.internal(
-  CurrentUserService.new,
-  name: r'currentUserServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentUserServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$CurrentUserService = Notifier<CurrentUserDto>;
 String _$cameraTorchHash() => r'd9b867808565232d7ea3ccb93b3f588211414af4';
 
 /// See also [CameraTorch].

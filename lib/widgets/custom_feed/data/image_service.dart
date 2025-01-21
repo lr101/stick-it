@@ -26,6 +26,5 @@ Future<PinImageInfo?> getPinImageInfo(Ref ref, LocalPinDto pinDto) async {
     completer.complete(img);
   });
   final res = await completer.future;
-  ref.watch(userByIdProvider(pinDto.creatorId));
   return PinImageInfo(image: imageData.value!, width: res.width, height: res.height);
 }

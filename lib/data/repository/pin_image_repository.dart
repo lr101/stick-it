@@ -11,23 +11,10 @@ part 'pin_image_repository.g.dart';
 
 class PinImageRepository extends CacheImpl<ImageEntity> {
   final Ref ref;
-  final int maxCacheSize;
   final Map<String, Mutex> _mutexMap = {};
 
-  PinImageRepository({required this.ref, required this.maxCacheSize}) : super("pinImages"); // Use the CacheImpl constructor
+  PinImageRepository({required this.ref, super.maxItems, super.ttlDuration}) : super("pinImages");
 
-  @override
-  Future<void> deleteOldestItems() async {
-    final box = await openBox();
-    final items = await getAllAsMap();
-    final keys = items.keys.toList();
-    for (int i = 0; i < (box.length - maxItems!); i++) {
-      final key = keys[i];
-      if (items[key]?.keepAlive == false) {
-        await box.delete(key);
-      }
-    }
-  }
 
   Future<Uint8List> fetchImage(String pinId) async {
     final mutex = _mutexMap.putIfAbsent(pinId, () => Mutex());
@@ -49,7 +36,6 @@ class PinImageRepository extends CacheImpl<ImageEntity> {
 
       await put(pinId, ImageEntity(
         blob1: decodedImage,
-        ttl: DateTime.now().add(Duration(days: 180)),
         keepAlive: false,
       ));
       return decodedImage;
@@ -61,7 +47,6 @@ class PinImageRepository extends CacheImpl<ImageEntity> {
   Future<void> addOfflineImage(String pinId, Uint8List image) async {
     await put(pinId, ImageEntity(
       blob1: image,
-      ttl: DateTime.now().add(Duration(days: 180)),
       keepAlive: true,
     ));
   }
@@ -71,5 +56,5 @@ class PinImageRepository extends CacheImpl<ImageEntity> {
 
 @Riverpod(keepAlive: true)
 PinImageRepository pinImageRepository(Ref ref) {
-  return PinImageRepository(ref: ref, maxCacheSize: 1000);
+  return PinImageRepository(ref: ref, maxItems: 500, ttlDuration: const Duration(days: 180));
 }

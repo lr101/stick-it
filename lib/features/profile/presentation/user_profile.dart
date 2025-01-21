@@ -1,6 +1,6 @@
+import 'package:buff_lisa/data/service/image_service.dart';
+import 'package:buff_lisa/data/service/like_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
-import 'package:buff_lisa/data/service/user_image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
 import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
@@ -24,16 +24,16 @@ class UserProfile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(globalDataServiceProvider).userId!;
     final userPins = ref.watch(userPinProvider);
-    final currentUser = ref.watch(currentUserServiceProvider);
-    final likes = ref.watch(userLikesByIdProvider(userId));
+    final currentUser = ref.watch(currentUserProvider);
+    final likes = ref.watch(userLikeServiceProvider(userId));
+    final profileImage = ref.watch(getUserProfileProvider(userId));
     return CustomAvatarScaffold(
-      avatar: AsyncData(ref
-          .watch(profilePictureByIdProvider(userId)).value),
+      avatar: profileImage,
       title: Row(children: [
-        Text(currentUser.username ?? ""),
+        Text(currentUser.value?.username ?? ""),
         SizedBox(width: 10,),
-        if (currentUser.selectedBatch != null) GestureDetector(
-          child: Batch(batchId: currentUser.selectedBatch!, fontSize: 10,),
+        if (currentUser.value?.selectedBatch != null) GestureDetector(
+          child: Batch(batchId: currentUser.value!.selectedBatch!, fontSize: 10,),
           onTap: () => Routing.to(context, const AchievementsPage()),
         )
       ]),
@@ -73,22 +73,22 @@ class UserProfile extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
 
-                UserLikeIcon(likeCount: likes?.likeCount, icon: Icons.favorite),
-                UserLikeIcon(likeCount: likes?.likeLocationCount, icon: CupertinoIcons.location_solid),
-                UserLikeIcon(likeCount: likes?.likePhotographyCount, icon: Icons.photo_camera),
-                UserLikeIcon(likeCount: likes?.likeArtCount, icon: Icons.brush)
+                UserLikeIcon(likeCount: likes.value?.likeCount, icon: Icons.favorite),
+                UserLikeIcon(likeCount: likes.value?.likeLocationCount, icon: CupertinoIcons.location_solid),
+                UserLikeIcon(likeCount: likes.value?.likePhotographyCount, icon: Icons.photo_camera),
+                UserLikeIcon(likeCount: likes.value?.likeArtCount, icon: Icons.brush)
 
               ],
             )),
           ],
         ),
       boxes: [
-        if (currentUser.description != null)
+        if (currentUser.value?.description != null)
           SliverToBoxAdapter(
               child: ListTile(
                   title: Text("Description"),
                   subtitle: Text(
-                    currentUser.description!,
+                    currentUser.value!.description!,
                     softWrap: true,
                     maxLines: 10,
                     style: TextStyle(fontStyle: FontStyle.italic),

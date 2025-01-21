@@ -7,7 +7,7 @@ part of 'no_user_group_service.dart';
 // **************************************************************************
 
 String _$noUserGroupServiceHash() =>
-    r'f1ef59f40d89406aba61096b8781465817bfc733';
+    r'9b08715e8473568f27c005679f79ab49fbdfed2f';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,7 +31,7 @@ class _SystemHash {
 }
 
 abstract class _$NoUserGroupService
-    extends BuildlessAsyncNotifier<LocalGroupDto> {
+    extends BuildlessAutoDisposeAsyncNotifier<LocalGroupDto> {
   late final String groupId;
 
   FutureOr<LocalGroupDto> build(
@@ -82,8 +82,8 @@ class NoUserGroupServiceFamily extends Family<AsyncValue<LocalGroupDto>> {
 }
 
 /// See also [NoUserGroupService].
-class NoUserGroupServiceProvider
-    extends AsyncNotifierProviderImpl<NoUserGroupService, LocalGroupDto> {
+class NoUserGroupServiceProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    NoUserGroupService, LocalGroupDto> {
   /// See also [NoUserGroupService].
   NoUserGroupServiceProvider(
     String groupId,
@@ -139,7 +139,7 @@ class NoUserGroupServiceProvider
   }
 
   @override
-  AsyncNotifierProviderElement<NoUserGroupService, LocalGroupDto>
+  AutoDisposeAsyncNotifierProviderElement<NoUserGroupService, LocalGroupDto>
       createElement() {
     return _NoUserGroupServiceProviderElement(this);
   }
@@ -160,14 +160,15 @@ class NoUserGroupServiceProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin NoUserGroupServiceRef on AsyncNotifierProviderRef<LocalGroupDto> {
+mixin NoUserGroupServiceRef
+    on AutoDisposeAsyncNotifierProviderRef<LocalGroupDto> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
 class _NoUserGroupServiceProviderElement
-    extends AsyncNotifierProviderElement<NoUserGroupService, LocalGroupDto>
-    with NoUserGroupServiceRef {
+    extends AutoDisposeAsyncNotifierProviderElement<NoUserGroupService,
+        LocalGroupDto> with NoUserGroupServiceRef {
   _NoUserGroupServiceProviderElement(super.provider);
 
   @override

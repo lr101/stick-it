@@ -1,3 +1,4 @@
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
@@ -46,7 +47,7 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
       setState(() {
         sending = true;
       });
-      final result = await ref.read(userServiceProvider.notifier).report("userId: ${widget.userId}, groupId: ${widget.groupId}, pinId: ${widget.pinId}, issueType: $_selectedIssueType", _messageController.text);
+      final result = await ref.read(globalDataServiceProvider.notifier).report("userId: ${widget.userId}, groupId: ${widget.groupId}, pinId: ${widget.pinId}, issueType: $_selectedIssueType", _messageController.text);
       if (result != null) {
         CustomErrorSnackBar.message(message: result);
       } else {

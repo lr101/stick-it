@@ -9,11 +9,6 @@ import 'package:openapi/api.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../../data/service/global_data_service.dart';
-import '../../../data/service/user_image_service_small.dart';
-import '../../../data/service/user_service.dart';
-import '../../clickable_names/presentation/clickable_user.dart';
-import '../../round_image/presentation/round_image.dart';
-import '../../tiles/presentation/batch.dart';
 import '../data/feed_map_state.dart';
 import '../data/image_service.dart';
 import '../data/like_service.dart';

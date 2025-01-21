@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/service/user_image_service.dart';
-import 'package:buff_lisa/data/service/user_image_service_small.dart';
+import 'package:buff_lisa/data/entity/user_entity.dart';
+import 'package:buff_lisa/data/repository/group_image_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -13,218 +13,101 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../dto/global_data_dto.dart';
 import '../dto/local_user_dto.dart';
+import '../repository/user_repository.dart';
 import 'global_data_service.dart';
 
 part 'user_service.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class UserService extends _$UserService {
-  late UsersApi _usersApi;
-  late AuthApi _authApi;
-  late ReportApi _reportApi;
-  late GlobalDataDto _data;
+  late UserRepository _repo;
+  late GlobalDataDto _global;
 
   @override
-  Future<Map<String, LocalUserDto>> build() async {
-    _data = ref.watch(globalDataServiceProvider);
-    _usersApi = ref.watch(userApiProvider);
-    _authApi = ref.watch(authApiProvider);
-    _reportApi = ref.watch(reportApiProvider);
-    if (_data.userId == null) return {};
-    return {
-      _data.userId!: ref.watch(currentUserServiceProvider).toLocalUser(
-          _data.userId!)
-    };
-  }
-
-  Future<LocalUserDto> fetchUserById(String userId) async {
-    final user = await _usersApi.getUser(userId);
-    if (user != null) {
-      final map = {...state.value ?? {}};
-      map[userId] = LocalUserDto.fromInfoDto(user);
-      state = AsyncData(map);
-      return map[userId]!;
+  Future<LocalUserDto> build(String userId) async {
+    _repo = ref.watch(userRepositoryProvider);
+    _global = ref.watch(globalDataServiceProvider);
+    final repo = ref.watch(userRepositoryProvider);
+    final user = await repo.get(_global.userId!);
+    if (user == null) {
+      return await _updateRemote();
     } else {
-      throw Exception("User not found");
+      return LocalUserDto.fromEntity(user);
     }
   }
 
-  Future<String?> auth(String name, String password) async {
-    try {
-      final response = await _authApi.userLogin(
-          UserLoginRequest(username: name, password: password));
-      if (response != null) {
-        await ref
-            .read(globalDataServiceProvider.notifier)
-            .login(name, response.userId, response.refreshToken);
-        return null;
-      }
-      return "Something unexpected happened";
-    } on ApiException catch (e) {
-      return e.message == null || e.message!.isEmpty
-          ? "Something unexpected happened"
-          : e.message;
-    }
+  Future<LocalUserDto> _updateRemote() async {
+    final userApi = ref.watch(userApiProvider);
+    final userDto = await userApi.getUser(this.userId);
+    await _repo.put(this.userId,
+        UserEntity.fromDto(userDto!, keepAlive: this.userId == _global.userId));
+    final user = LocalUserDto.fromInfoDto(userDto);
+    return user;
   }
 
-  Future<bool> recover(String? name) async {
-    try {
-      await _authApi.requestPasswordRecovery(name!);
-      return true;
-    } catch (e) {
-      print('Error during password recovery: $e');
-      return false;
-    }
+  Future<void> updateRemote() async {
+    state = AsyncData(await _updateRemote());
   }
 
-  Future<String?> signupNewUser(String username, String password,
-      String email) async {
-    try {
-      final request = UserRequestDto(
-          name: username, password: password, email: email);
-      final response = await _authApi.createUser(request);
-      if (response != null) {
-        await ref.read(globalDataServiceProvider.notifier).login(
-            username, response.userId, response.refreshToken);
-        return null;
-      } else {
-        return "Something unexpected happened";
-      }
-    } on ApiException catch (e) {
-      return e.message;
-    }
-  }
 
-  Future<String?> changeUser(
-      {String? password, String? email, Uint8List? profilePicture, String? description, String? username, int? selectedBatch}) async {
+  Future<String?> changeUser({
+    String? password,
+    String? email,
+    Uint8List? profilePicture,
+    String? description,
+    String? username,
+    int? selectedBatch
+  }) async {
     try {
-      final global = ref.watch(globalDataServiceProvider);
-      final userId = global.userId!;
-      final result = await _usersApi.updateUser(
-          userId,
+      final userApi = ref.watch(userApiProvider);
+      final result = await userApi.updateUser(
+          this.userId,
           UserUpdateDto(
               password: password,
               email: email,
               description: description,
               username: username,
               selectedBatch: selectedBatch,
-              image: profilePicture == null
-                  ? null
-                  : base64Encode(profilePicture)));
-      if (result != null) {
-        ref.read(userImageServiceSmallProvider.notifier).fetchUserImage(
-            userId, signedUrl: result.profileImageSmall);
-        ref.read(userImageServiceProvider.notifier).fetchUserImage(
-            userId, signedUrl: result.profileImage);
-        ref.read(currentUserServiceProvider.notifier).update(
-            username: result.username, description: result.description, selectedBatch: selectedBatch);
+              image: profilePicture == null ? null : base64Encode(
+                  profilePicture))
+      );
+      final userEntity = await _repo.get(this.userId);
+      if (result != null && userEntity != null) {
+        await _repo.put(
+            this.userId, userEntity.copyWith(result, selectedBatch));
+        if (profilePicture != null) {
+          ref.read(userImageRepoProvider).overrideUrl(
+              this.userId, result.profileImage!, true);
+          ref.read(userImageSmallRepoProvider).overrideUrl(
+              this.userId, result.profileImageSmall!, true);
+        }
       }
       return null;
     } on ApiException catch (e) {
       return e.message ?? "Something unexpected happened";
     }
   }
-
-  Future<String?> report(String reportedReferences,
-      String reportMessage) async {
-    try {
-      final request = ReportDto(
-        report: reportedReferences,
-        userId: _data.userId!,
-        message: reportMessage,
-      );
-      await _reportApi.createReport(request);
-      return null;
-    } on ApiException catch (e) {
-      return e.message;
-    }
-  }
-
-  Future<String?> getDeleteCode() async {
-    try {
-      await _authApi.generateDeleteCode(ref
-          .watch(currentUserServiceProvider)
-          .username!);
-      return null;
-    } on ApiException catch (e) {
-      return e.message;
-    }
-  }
-
-  Future<String?> deleteAccount(int code) async {
-    try {
-      await _usersApi.deleteUser(_data.userId!, body: code);
-      await ref.watch(globalDataServiceProvider.notifier).logout();
-      return null;
-    } on ApiException catch (e) {
-      print('Error deleting account: $e');
-      return e.message;
-    }
-  }
-
-  Future<UserLikesDto> fetchUserLikes(String userId) async {
-    try {
-      final likeDto = await ref.watch(likeApiProvider).getUserLikes(userId);
-      if (likeDto != null) {
-        final map = state.value!;
-        final dto = map[userId]!.fromCurrentWithLikes(likeDto);
-        map[userId] = dto;
-        state = AsyncData(map);
-        return likeDto;
-      } else {
-        throw Exception("User not found");
-      }
-    } catch (e) {
-      throw Exception("Something unexpected happened");
-    }
-  }
-
-  Future<void> updateLikeCount(String userId, CreateLikeDto likeUpdate) async {
-    final user = state.value![userId];
-    if (user == null || user.likes == null) return;
-    UserLikesDto likes = UserLikesDto(
-      likeCount: user.likes!.likeCount + _likeUpdate(likeUpdate.like),
-      likeArtCount: user.likes!.likeArtCount + _likeUpdate(likeUpdate.likeArt),
-      likeLocationCount: user.likes!.likeLocationCount + _likeUpdate(likeUpdate.likeLocation),
-      likePhotographyCount: user.likes!.likePhotographyCount + _likeUpdate(likeUpdate.likePhotography)
-    );
-    state.value![userId] = user.fromCurrentWithLikes(likes);
-  }
-
-  int _likeUpdate(bool? like) {
-    if (like == true) {
-      return 1;
-    } else if (like == false) {
-      return -1;
-    } else {
-      return 0;
-    }
-  }
 }
 
 @riverpod
-LocalUserDto? userById(Ref ref, String userId) {
-  final user = ref.watch(userServiceProvider.select((u) => u.whenOrNull(data: (e) => e.containsKey(userId) ? e[userId] : null)));
-  if (user != null) {
-    return user;
-  }
-  ref.read(userServiceProvider.notifier).fetchUserById(userId);
-  return null;
+Future<String?> userByIdUsername(Ref ref, String userId) async {
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e?.username));
 }
 
 @riverpod
-UserLikesDto? userLikesById(Ref ref, String userId) {
-  final likes = ref.watch(userByIdProvider(userId).select((e) => e?.likes));
-  if (likes != null) {
-    return likes;
-  }
-  ref.read(userServiceProvider.notifier).fetchUserLikes(userId);
-  return null;
+Future<int?> userByIdSelectedBatch(Ref ref, String userId) async {
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e?.selectedBatch));
 }
 
 @riverpod
-String? userByIdUsername(Ref ref, String userId) {
-  return ref.watch(userByIdProvider(userId).select((e) => e?.username));
+Future<String?> userByIdDescription(Ref ref, String userId) async {
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e?.description));
+}
+
+@riverpod
+Future<LocalUserDto> currentUser(Ref ref) async {
+  final userId = ref.watch(userIdProvider);
+  return await ref.watch(userServiceProvider(userId).future);
 }
 
 

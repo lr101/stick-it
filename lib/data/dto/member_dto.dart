@@ -1,3 +1,4 @@
+import 'package:buff_lisa/data/entity/member_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:openapi/api.dart';
 
@@ -19,6 +20,16 @@ class MemberDto {
       groupId: groupId,
       points: ranking.ranking,
       selectedBatch: ranking.selectedBatch
+    );
+  }
+
+  factory MemberDto.fromEntity(MemberEntity memberEntity, String groupId) {
+    return MemberDto(
+        userId: memberEntity.userId,
+        username: memberEntity.username,
+        groupId: groupId,
+        points: memberEntity.points,
+        selectedBatch: memberEntity.selectedBatch
     );
   }
 }

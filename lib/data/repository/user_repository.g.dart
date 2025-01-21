@@ -1,45 +1,45 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'group_repository.dart';
+part of 'user_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupRepositoryHash() => r'51119577a6fb9b3cadc87be1bd741ef7955662de';
+String _$userRepositoryHash() => r'6f33c0662d4bd5e514fd4f4f99ff0bcb31cd094d';
 
-/// See also [groupRepository].
-@ProviderFor(groupRepository)
-final groupRepositoryProvider = Provider<GroupRepository>.internal(
-  groupRepository,
-  name: r'groupRepositoryProvider',
+/// See also [userRepository].
+@ProviderFor(userRepository)
+final userRepositoryProvider = Provider<UserRepository>.internal(
+  userRepository,
+  name: r'userRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$groupRepositoryHash,
+      : _$userRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef GroupRepositoryRef = ProviderRef<GroupRepository>;
-String _$noUserGroupRepositoryHash() =>
-    r'29f49486540c45e237de0692db29e0cd11b961fe';
+typedef UserRepositoryRef = ProviderRef<UserRepository>;
+String _$userLikeRepositoryHash() =>
+    r'aa5331a3d8ca02c10b25d92a92e421f9ff8ae956';
 
-/// See also [noUserGroupRepository].
-@ProviderFor(noUserGroupRepository)
-final noUserGroupRepositoryProvider = Provider<NoUserGroupRepository>.internal(
-  noUserGroupRepository,
-  name: r'noUserGroupRepositoryProvider',
+/// See also [userLikeRepository].
+@ProviderFor(userLikeRepository)
+final userLikeRepositoryProvider = Provider<UserLikeRepository>.internal(
+  userLikeRepository,
+  name: r'userLikeRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$noUserGroupRepositoryHash,
+      : _$userLikeRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef NoUserGroupRepositoryRef = ProviderRef<NoUserGroupRepository>;
+typedef UserLikeRepositoryRef = ProviderRef<UserLikeRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
