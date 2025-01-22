@@ -1,5 +1,4 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +24,7 @@ class LoginService {
   /// return returns null when login was successful and an error message on errors
   Future<String?> authUser(LoginData data) async {
     try {
-      return await ref.read(globalDataServiceProvider.notifier).login(data.name, data.password);
+      return await ref.read(authServiceProvider.notifier).login(data.name, data.password);
     } catch (e) {
       return "cannot connect to server";
     }
@@ -41,7 +40,7 @@ class LoginService {
         return Future<String>.value("email does not have the correct format");
       } else {
         return await ref
-            .read(globalDataServiceProvider.notifier)
+            .read(authServiceProvider.notifier)
             .signupNewUser(data.name!, data.password!,
                 data.additionalSignupData!["email"]!);
       }
@@ -54,7 +53,7 @@ class LoginService {
   /// Returns null on a successful call to the server or an error message on errors
   Future<String?> recoverPassword(String name) {
     try {
-      return ref.read(globalDataServiceProvider.notifier).recover(name).then((value) {
+      return ref.read(authServiceProvider.notifier).recover(name).then((value) {
         return value ? null : 'User does not have an email address';
       });
     } catch (e) {

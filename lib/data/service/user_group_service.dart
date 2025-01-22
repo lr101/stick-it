@@ -1,7 +1,7 @@
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/data/repository/group_image_repository.dart';
+import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
@@ -38,7 +38,7 @@ class UserGroupService extends _$UserGroupService {
     stateVal.remove(currentGroup);
     stateVal.add(updateGroup);
     state = AsyncData(stateVal);
-    _groupRepository.put(updateGroup.groupId, updateGroup.toEntity());
+    _groupRepository.put(updateGroup.groupId, updateGroup.toEntity(keepAlive: true));
   }
 
   void _updateSingleGroupById(String? groupId, LocalGroupDto updateGroup) {
@@ -92,7 +92,6 @@ class UserGroupService extends _$UserGroupService {
 
   Future<void> _leaveGroup(String groupId) async {
     await _groupRepository.delete(groupId);
-    // Delete in state
     final currentState = {...state.value!};
     currentState.removeWhere((e) => e.groupId == groupId);
     state = AsyncData(currentState);

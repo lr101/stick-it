@@ -4,7 +4,7 @@ import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../config/openapi_config.dart';
-import '../entity/like_entity.dart';
+import '../entity/user_like_entity.dart';
 
 part 'like_service.g.dart';
 
@@ -30,15 +30,16 @@ class UserLikeService extends _$UserLikeService {
   }
 
   Future<void> updateLikeCount(CreateLikeDto likeUpdate) async {
-      UserLikesDto likes = UserLikesDto(
-          likeCount: state.value!.likeCount + _likeUpdate(likeUpdate.like),
-          likeArtCount: state.value!.likeArtCount + _likeUpdate(likeUpdate.likeArt),
-          likeLocationCount: state.value!.likeLocationCount + _likeUpdate(likeUpdate.likeLocation),
-          likePhotographyCount: state.value!.likePhotographyCount + _likeUpdate(likeUpdate.likePhotography)
-      );
-      state = AsyncData(likes);
-      final userLikeRepo = ref.read(userLikeRepositoryProvider);
-      userLikeRepo.put(userId, UserLikeEntity.fromDto(likes));
+    if (state.value == null) return;
+    UserLikesDto likes = UserLikesDto(
+        likeCount: state.value!.likeCount + _likeUpdate(likeUpdate.like),
+        likeArtCount: state.value!.likeArtCount + _likeUpdate(likeUpdate.likeArt),
+        likeLocationCount: state.value!.likeLocationCount + _likeUpdate(likeUpdate.likeLocation),
+        likePhotographyCount: state.value!.likePhotographyCount + _likeUpdate(likeUpdate.likePhotography)
+    );
+    state = AsyncData(likes);
+    final userLikeRepo = ref.read(userLikeRepositoryProvider);
+    userLikeRepo.put(userId, UserLikeEntity.fromDto(likes));
   }
 
   int _likeUpdate(bool? like) {

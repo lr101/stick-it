@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/entity/user_entity.dart';
-import 'package:buff_lisa/data/repository/group_image_repository.dart';
+import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +28,7 @@ class UserService extends _$UserService {
     _repo = ref.watch(userRepositoryProvider);
     _global = ref.watch(globalDataServiceProvider);
     final repo = ref.watch(userRepositoryProvider);
-    final user = await repo.get(_global.userId!);
+    final user = await repo.get(userId);
     if (user == null) {
       return await _updateRemote();
     } else {

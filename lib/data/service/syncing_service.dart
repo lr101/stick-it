@@ -48,7 +48,7 @@ class SyncingService extends _$SyncingService {
         await _groupRepository.delete(groupId);
       }
       for (final group in remoteGroups.items) {
-        await _groupRepository.put(group.id, GroupEntity.fromGroupDto(group));
+        await _groupRepository.put(group.id, GroupEntity.fromGroupDto(group, keepAlive: true));
       }
       ref.invalidate(userGroupServiceProvider);
       await syncOfflinePins();
@@ -71,7 +71,7 @@ class SyncingService extends _$SyncingService {
         await _pinRepository.delete(pinId);
       }
       for (final pin in remotePins.items) {
-        await _pinRepository.put(pin.id, PinEntity.fromDto(pin));
+        await _pinRepository.put(pin.id, PinEntity.fromDto(pin, keepAlive: true));
       }
       ref.invalidate(pinServiceProvider(groupId));
     } catch (e) {
@@ -85,7 +85,7 @@ class SyncingService extends _$SyncingService {
       final image = await ref.read(pinImageRepositoryProvider).get(pin.pinId);
       try {
         final newPin = await _pinsApi.createPin(pin.toRequestDto(image!.blob1!));
-        await _pinRepository.put(newPin!.id, PinEntity.fromDto(newPin));
+        await _pinRepository.put(newPin!.id, PinEntity.fromDto(newPin, keepAlive: true));
       } on ApiException catch(e) {
         if (e.code == 409) {
           await _pinRepository.delete(pin.pinId);

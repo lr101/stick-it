@@ -3,7 +3,7 @@ import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:hive/hive.dart';
 import 'package:openapi/api.dart';
 
-part 'like_entity.g.dart';
+part 'user_like_entity.g.dart';
 
 @HiveType(typeId: 7)
 class UserLikeEntity extends CacheEntity {

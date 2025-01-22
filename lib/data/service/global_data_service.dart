@@ -28,18 +28,29 @@ class GlobalDataService  extends _$GlobalDataService {
     state = GlobalDataDto(userId: null, refreshToken: null, cameras: state.cameras);
   }
 
-  Future<void> _updateTokenAndUser(TokenResponseDto refreshToken) async {
+  Future<void> updateData(TokenResponseDto refreshToken) async {
     state = state.copyWith(refreshToken: refreshToken.refreshToken, userId: refreshToken.userId);
     await ref.read(userServiceProvider(refreshToken.userId).notifier).updateRemote();
   }
 
+}
+
+@riverpod
+class AuthService extends _$AuthService {
+
+  @override
+  FutureOr<bool> build() async {
+    return true;
+  }
+
   Future<String?> login(String name, String password) async {
-    final authApi = ref.watch(authApiProvider);
+    final authApi = ref.read(authApiProvider);
+    final global = ref.read(globalDataServiceProvider.notifier);
     try {
       final response = await authApi.userLogin(UserLoginRequest(username: name, password: password));
       if (response != null) {
         await ref.watch(globalDataRepositoryProvider).login(name, response.userId, response.refreshToken);
-        await _updateTokenAndUser(response);
+        await global.updateData(response);
       }
       return "Something unexpected happened";
     } on ApiException catch (e) {
@@ -62,11 +73,12 @@ class GlobalDataService  extends _$GlobalDataService {
 
   Future<String?> signupNewUser(String username, String password, String email) async {
     final authApi = ref.read(authApiProvider);
+    final global = ref.read(globalDataServiceProvider.notifier);
     try {
       final request = UserRequestDto(name: username, password: password, email: email);
       final response = await authApi.createUser(request);
       if (response != null) {
-        await _updateTokenAndUser(response);
+        await global.updateData(response);
         return null;
       } else {
         return "Something unexpected happened";
@@ -78,10 +90,11 @@ class GlobalDataService  extends _$GlobalDataService {
 
   Future<String?> report(String reportedReferences, String reportMessage) async {
     final reportApi = ref.watch(reportApiProvider);
+    final userId = ref.read(userIdProvider);
     try {
       final request = ReportDto(
         report: reportedReferences,
-        userId: state.userId!,
+        userId: userId,
         message: reportMessage,
       );
       await reportApi.createReport(request);
@@ -94,8 +107,8 @@ class GlobalDataService  extends _$GlobalDataService {
   Future<String?> getDeleteCode() async {
     final authApi = ref.read(authApiProvider);
     try {
-      final username = await ref.read(userServiceProvider(state.userId!).future);
-      await authApi.generateDeleteCode(username!.username);
+      final username = await ref.read(userServiceProvider(ref.read(userIdProvider)).future);
+      await authApi.generateDeleteCode(username.username);
       return null;
     } on ApiException catch (e) {
       return e.message;
@@ -104,9 +117,11 @@ class GlobalDataService  extends _$GlobalDataService {
 
   Future<String?> deleteAccount(int code) async {
     final userApi = ref.watch(userApiProvider);
+    final userId = ref.read(userIdProvider);
+    final global = ref.read(globalDataServiceProvider.notifier);
     try {
-      await userApi.deleteUser(state.userId!, body: code);
-      await logout();
+      await userApi.deleteUser(userId, body: code);
+      await global.logout();
       return null;
     } on ApiException catch (e) {
       if(kDebugMode) print('Error deleting account: $e');

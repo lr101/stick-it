@@ -1,50 +1,63 @@
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:buff_lisa/data/entity/pin_like_entity.dart';
+import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/service/like_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'like_service.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class LikeService extends _$LikeService {
   @override
-  Map<String, PinLikeDto> build() => {};
-
-
-  Future<PinLikeDto> fetchLike(String pinId) async {
-    final likeApi = ref.watch(likeApiProvider);
-    final like = await likeApi.getPinLikes(pinId);
-    if (like != null) {
-      state[pinId] = like;
-      ref.notifyListeners();
-      return like;
+  Future<PinLikeDto> build(String pinId) async {
+    final pinLikeRepo = ref.watch(pinLikeRepositoryProvider);
+    final pinLike = await pinLikeRepo.get(pinId);
+    if (pinLike != null) {
+      return pinLike.toDto();
     } else {
-      throw ApiException(400, "Likes could not be fetched");
+      final pinLikeDto = await _fetchLike(pinId);
+      pinLikeRepo.put(pinId, PinLikeEntity.fromDto(pinLikeDto));
+      return pinLikeDto;
     }
   }
 
-  Future<void> addLike(String pinId, String creatorId, CreateLikeDto createLikeDto) async {
-    final currentLikes = state[pinId];
-    state[pinId] = PinLikeDto(
-      likePhotographyCount: _likeUpdate(createLikeDto.likePhotography,state[pinId]?.likedPhotographyByUser, state[pinId]?.likePhotographyCount ?? 0),
-      likeArtCount: _likeUpdate(createLikeDto.likeArt, state[pinId]?.likedArtByUser,state[pinId]?.likeArtCount ?? 0),
-      likeLocationCount: _likeUpdate(createLikeDto.likeLocation, state[pinId]?.likedLocationByUser, state[pinId]?.likeLocationCount ?? 0),
-      likeCount: _likeUpdate(createLikeDto.like, state[pinId]?.likedByUser, state[pinId]?.likeCount ?? 0),
-      likedArtByUser: createLikeDto.likeArt ?? state[pinId]?.likedArtByUser ?? false,
-      likedPhotographyByUser: createLikeDto.likePhotography ?? state[pinId]?.likedPhotographyByUser ?? false,
-      likedLocationByUser: createLikeDto.likeLocation ?? state[pinId]?.likedLocationByUser ?? false,
-      likedByUser: createLikeDto.like ?? state[pinId]?.likedByUser ?? false
+
+  Future<PinLikeDto> _fetchLike(String pinId) async {
+    try {
+      final likeApi = ref.watch(likeApiProvider);
+      final like = await likeApi.getPinLikes(pinId);
+      return like!;
+    } catch(e) {
+      if (kDebugMode) print(e);
+      return PinLikeDto();
+    }
+  }
+
+  Future<void> addLike(String creatorId, CreateLikeDto createLikeDto) async {
+    final pinLikeRepo = ref.read(pinLikeRepositoryProvider);
+    final currentState = state.value!;
+    final pinDto = PinLikeDto(
+      likePhotographyCount: _likeUpdate(createLikeDto.likePhotography, currentState.likedPhotographyByUser, currentState.likePhotographyCount ?? 0),
+      likeArtCount: _likeUpdate(createLikeDto.likeArt, currentState.likedArtByUser,currentState.likeArtCount ?? 0),
+      likeLocationCount: _likeUpdate(createLikeDto.likeLocation, currentState.likedLocationByUser, currentState.likeLocationCount ?? 0),
+      likeCount: _likeUpdate(createLikeDto.like, currentState.likedByUser, currentState.likeCount ?? 0),
+      likedArtByUser: createLikeDto.likeArt ?? currentState.likedArtByUser ?? false,
+      likedPhotographyByUser: createLikeDto.likePhotography ?? currentState.likedPhotographyByUser ?? false,
+      likedLocationByUser: createLikeDto.likeLocation ?? currentState.likedLocationByUser ?? false,
+      likedByUser: createLikeDto.like ?? currentState.likedByUser ?? false
     );
-    ref.notifyListeners();
+    state = AsyncData(pinDto);
+    pinLikeRepo.put(pinId, PinLikeEntity.fromDto(pinDto));
     try {
       final likeApi = ref.watch(likeApiProvider);
       await likeApi.createOrUpdateLike(pinId, createLikeDto);
       ref.read(userLikeServiceProvider(creatorId).notifier).updateLikeCount(createLikeDto);
     } on ApiException catch (_) {
-      state[pinId] = currentLikes ?? PinLikeDto();
-      ref.notifyListeners();
+      state = AsyncData(currentState);
     }
   }
 
@@ -58,14 +71,4 @@ class LikeService extends _$LikeService {
     }
   }
 
-}
-
-@riverpod
-Future<PinLikeDto> pinLike(Ref ref, String pinId) async {
-  final pinLike = ref.watch(likeServiceProvider.select((e) => e[pinId]));
-  if (pinLike == null) {
-    return await ref.read(likeServiceProvider.notifier).fetchLike(pinId);
-  } else {
-    return pinLike;
-  }
 }

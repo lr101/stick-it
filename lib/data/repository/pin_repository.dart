@@ -1,6 +1,7 @@
 
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:buff_lisa/data/entity/pin_like_entity.dart';
 import 'package:buff_lisa/util/core/cache_impl.dart';
 import 'package:buff_lisa/util/core/in_memory_cache_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,6 +39,10 @@ class OtherPinRepository extends InMemoryCache<PinEntity> implements PinReposito
 
 }
 
+class PinLikeRepository extends CacheImpl<PinLikeEntity> {
+  PinLikeRepository(): super("pinLikeRepository", maxItems: 50, ttlDuration: const Duration(hours: 1));
+}
+
 @Riverpod(keepAlive: true)
 PinRepository pinRepository(Ref ref) {
   return PinRepository();
@@ -45,3 +50,6 @@ PinRepository pinRepository(Ref ref) {
 
 @Riverpod(keepAlive: true)
 OtherPinRepository otherPinRepository(Ref ref) => OtherPinRepository();
+
+@Riverpod(keepAlive: true)
+PinLikeRepository pinLikeRepository(Ref ref) => PinLikeRepository();

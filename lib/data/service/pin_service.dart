@@ -20,11 +20,14 @@ import 'global_data_service.dart';
 
 part 'pin_service.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class PinService extends _$PinService {
   late PinRepositoryApi _pinRepository;
   final Mutex _mutex = Mutex();
 
+  /// returns cached pins by groupId
+  /// If pins do not exists AND the current user is not a member, they are fetched from the server
+  /// Pins of a group that the current user is a member of are synced by the SyncingService
   @override
   Future<Set<LocalPinDto>> build(String groupId) async {
     final isUserGroup = (await ref.watch(groupRepositoryProvider).get(groupId)) != null;
@@ -60,7 +63,7 @@ class PinService extends _$PinService {
       currentState.add(updatedPin);
       state = AsyncData(currentState);
       if (oldPin != null) await storage.delete(oldPin.id);
-      await storage.put(updatedPin.id, updatedPin.toEntityCompanion());
+      await storage.put(updatedPin.id, updatedPin.toEntityCompanion(keepAlive: true));
     });
   }
 

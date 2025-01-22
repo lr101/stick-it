@@ -6,7 +6,7 @@ part of 'like_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pinLikeHash() => r'06d975e78b9b940c0ddef47ff764d8f13376338c';
+String _$likeServiceHash() => r'671a94518f1da680520c133e95c17c65a6c4f04f';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,27 +29,36 @@ class _SystemHash {
   }
 }
 
-/// See also [pinLike].
-@ProviderFor(pinLike)
-const pinLikeProvider = PinLikeFamily();
+abstract class _$LikeService
+    extends BuildlessAutoDisposeAsyncNotifier<PinLikeDto> {
+  late final String pinId;
 
-/// See also [pinLike].
-class PinLikeFamily extends Family<AsyncValue<PinLikeDto>> {
-  /// See also [pinLike].
-  const PinLikeFamily();
+  FutureOr<PinLikeDto> build(
+    String pinId,
+  );
+}
 
-  /// See also [pinLike].
-  PinLikeProvider call(
+/// See also [LikeService].
+@ProviderFor(LikeService)
+const likeServiceProvider = LikeServiceFamily();
+
+/// See also [LikeService].
+class LikeServiceFamily extends Family<AsyncValue<PinLikeDto>> {
+  /// See also [LikeService].
+  const LikeServiceFamily();
+
+  /// See also [LikeService].
+  LikeServiceProvider call(
     String pinId,
   ) {
-    return PinLikeProvider(
+    return LikeServiceProvider(
       pinId,
     );
   }
 
   @override
-  PinLikeProvider getProviderOverride(
-    covariant PinLikeProvider provider,
+  LikeServiceProvider getProviderOverride(
+    covariant LikeServiceProvider provider,
   ) {
     return call(
       provider.pinId,
@@ -68,31 +77,30 @@ class PinLikeFamily extends Family<AsyncValue<PinLikeDto>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'pinLikeProvider';
+  String? get name => r'likeServiceProvider';
 }
 
-/// See also [pinLike].
-class PinLikeProvider extends AutoDisposeFutureProvider<PinLikeDto> {
-  /// See also [pinLike].
-  PinLikeProvider(
+/// See also [LikeService].
+class LikeServiceProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<LikeService, PinLikeDto> {
+  /// See also [LikeService].
+  LikeServiceProvider(
     String pinId,
   ) : this._internal(
-          (ref) => pinLike(
-            ref as PinLikeRef,
-            pinId,
-          ),
-          from: pinLikeProvider,
-          name: r'pinLikeProvider',
+          () => LikeService()..pinId = pinId,
+          from: likeServiceProvider,
+          name: r'likeServiceProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$pinLikeHash,
-          dependencies: PinLikeFamily._dependencies,
-          allTransitiveDependencies: PinLikeFamily._allTransitiveDependencies,
+                  : _$likeServiceHash,
+          dependencies: LikeServiceFamily._dependencies,
+          allTransitiveDependencies:
+              LikeServiceFamily._allTransitiveDependencies,
           pinId: pinId,
         );
 
-  PinLikeProvider._internal(
+  LikeServiceProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -105,13 +113,20 @@ class PinLikeProvider extends AutoDisposeFutureProvider<PinLikeDto> {
   final String pinId;
 
   @override
-  Override overrideWith(
-    FutureOr<PinLikeDto> Function(PinLikeRef provider) create,
+  FutureOr<PinLikeDto> runNotifierBuild(
+    covariant LikeService notifier,
   ) {
+    return notifier.build(
+      pinId,
+    );
+  }
+
+  @override
+  Override overrideWith(LikeService Function() create) {
     return ProviderOverride(
       origin: this,
-      override: PinLikeProvider._internal(
-        (ref) => create(ref as PinLikeRef),
+      override: LikeServiceProvider._internal(
+        () => create()..pinId = pinId,
         from: from,
         name: null,
         dependencies: null,
@@ -123,13 +138,14 @@ class PinLikeProvider extends AutoDisposeFutureProvider<PinLikeDto> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<PinLikeDto> createElement() {
-    return _PinLikeProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<LikeService, PinLikeDto>
+      createElement() {
+    return _LikeServiceProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is PinLikeProvider && other.pinId == pinId;
+    return other is LikeServiceProvider && other.pinId == pinId;
   }
 
   @override
@@ -143,33 +159,18 @@ class PinLikeProvider extends AutoDisposeFutureProvider<PinLikeDto> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin PinLikeRef on AutoDisposeFutureProviderRef<PinLikeDto> {
+mixin LikeServiceRef on AutoDisposeAsyncNotifierProviderRef<PinLikeDto> {
   /// The parameter `pinId` of this provider.
   String get pinId;
 }
 
-class _PinLikeProviderElement
-    extends AutoDisposeFutureProviderElement<PinLikeDto> with PinLikeRef {
-  _PinLikeProviderElement(super.provider);
+class _LikeServiceProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<LikeService, PinLikeDto>
+    with LikeServiceRef {
+  _LikeServiceProviderElement(super.provider);
 
   @override
-  String get pinId => (origin as PinLikeProvider).pinId;
+  String get pinId => (origin as LikeServiceProvider).pinId;
 }
-
-String _$likeServiceHash() => r'e3bd83066bffb3bc968cefb9ac2f0a01a81d9746';
-
-/// See also [LikeService].
-@ProviderFor(LikeService)
-final likeServiceProvider =
-    NotifierProvider<LikeService, Map<String, PinLikeDto>>.internal(
-  LikeService.new,
-  name: r'likeServiceProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$likeServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$LikeService = Notifier<Map<String, PinLikeDto>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

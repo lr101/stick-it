@@ -1,4 +1,4 @@
-import 'package:buff_lisa/data/repository/group_image_repository.dart';
+import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/repository/member_repository.dart';
 import 'package:buff_lisa/data/repository/pin_image_repository.dart';

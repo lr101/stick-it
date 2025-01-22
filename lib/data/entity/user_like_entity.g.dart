@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'like_entity.dart';
+part of 'user_like_entity.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

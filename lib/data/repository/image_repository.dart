@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../service/global_data_service.dart';
 
-part 'group_image_repository.g.dart';
+part 'image_repository.g.dart';
 
 class ImageRepository extends CacheImpl<ImageEntity> {
   ImageRepository(super.boxName, {

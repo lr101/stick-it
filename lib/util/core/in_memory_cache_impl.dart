@@ -1,12 +1,15 @@
 import 'dart:async';
 
+import 'package:buff_lisa/data/entity/cache_entity.dart';
+
 import 'cache_api.dart';
 
-abstract class InMemoryCache<T> implements CacheApi<T> {
+abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
   final Map<String, T> _cache = {};
   final int maxItems;
+  final Duration? ttlDuration;
 
-  InMemoryCache({this.maxItems = 100});
+  InMemoryCache({this.maxItems = 100, this.ttlDuration = const Duration(days: 1)});
 
   @override
   Future<void> put(String id, T item) async {
@@ -48,14 +51,30 @@ abstract class InMemoryCache<T> implements CacheApi<T> {
     }
   }
 
+  /// Delete items with the lowest hit count.
+  /// Not included are items with keepAlive == true and items younger than 10% of ttlDuration
   @override
   Future<void> deleteOldestItems() async {
-    // If you want to implement a simple eviction policy, you can remove
-    // the first N items based on the insertion order.
-    if (_cache.isNotEmpty) {
-      final keysToRemove = _cache.keys.take(1).toList(); // Remove the oldest item
-      for (var key in keysToRemove) {
+
+    final entries = _cache.entries.toList();
+
+    entries.sort((a, b) {
+      final aHits = a.value.hits;
+      final bHits = b.value.hits;
+      return aHits.compareTo(bHits);
+    });
+
+    final itemsToDelete = _cache.length - maxItems;
+    int itemsDeleted = 0;
+    final duration = ttlDuration != null ? (ttlDuration!.inSeconds * 0.1).toInt() : 3600;
+    final ttlTime = DateTime.now().subtract(Duration(seconds: duration));
+
+    for (int i = 0; i < entries.length && itemsDeleted < itemsToDelete; i++) {
+      final key = entries[i].key;
+      final value = _cache[key]!;
+      if (value.keepAlive == false && value.ttl.isBefore(ttlTime)) {
         _cache.remove(key);
+        itemsDeleted++;
       }
     }
   }

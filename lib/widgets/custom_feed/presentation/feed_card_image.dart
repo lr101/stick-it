@@ -12,7 +12,6 @@ import '../../../data/service/global_data_service.dart';
 import '../data/feed_map_state.dart';
 import '../data/image_service.dart';
 import '../data/like_service.dart';
-import 'feed_card_shimmer.dart';
 import 'feed_description.dart';
 import 'feed_map.dart';
 import 'like_buttons.dart';
@@ -99,21 +98,20 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
             LatLng(widget.item.latitude, widget.item.longitude), 18) : !isBig ? switchFun : null ,
         child: Container(
          color: Colors.grey.withOpacity(0.5),
-          child: image != null ? FadeInImage(
+          child: FadeInImage(
           fadeInDuration: const Duration(milliseconds: 100),
           fit: BoxFit.cover,
           placeholder: MemoryImage(kTransparentImage),
-          image:  MemoryImage(image.image),
+          image:  MemoryImage(image?.image ?? kTransparentImage),
           width: double.infinity,
-        ) : FeedCardShimmer())
+        ))
     );
   }
 
   void likeImage() {
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    ref.read(likeServiceProvider.notifier).addLike(
-        widget.item.id, widget.item.creatorId,
-        CreateLikeDto(userId: userId, like: true));
+    ref.read(likeServiceProvider(widget.item.id).notifier)
+        .addLike(widget.item.creatorId, CreateLikeDto(userId: userId, like: true));
   }
 
 

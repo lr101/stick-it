@@ -39,7 +39,7 @@ final lastKnownLocationProvider = AutoDisposeProvider<LatLng>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LastKnownLocationRef = AutoDisposeProviderRef<LatLng>;
-String _$globalDataServiceHash() => r'51da21900871568ea0aa913c860d9985b0a90a79';
+String _$globalDataServiceHash() => r'16775a4cd05cadd0de41be76ce29932fe4613b18';
 
 /// See also [GlobalDataService].
 @ProviderFor(GlobalDataService)
@@ -55,6 +55,21 @@ final globalDataServiceProvider =
 );
 
 typedef _$GlobalDataService = Notifier<GlobalDataDto>;
+String _$authServiceHash() => r'2a3e5dbc17181bd207a448c5a4b436d62cbfc009';
+
+/// See also [AuthService].
+@ProviderFor(AuthService)
+final authServiceProvider =
+    AutoDisposeAsyncNotifierProvider<AuthService, bool>.internal(
+  AuthService.new,
+  name: r'authServiceProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$AuthService = AutoDisposeAsyncNotifier<bool>;
 String _$cameraTorchHash() => r'd9b867808565232d7ea3ccb93b3f588211414af4';
 
 /// See also [CameraTorch].

@@ -1,5 +1,5 @@
 
-import 'package:buff_lisa/data/entity/like_entity.dart';
+import 'package:buff_lisa/data/entity/user_like_entity.dart';
 import 'package:buff_lisa/data/entity/user_entity.dart';
 import 'package:buff_lisa/util/core/cache_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

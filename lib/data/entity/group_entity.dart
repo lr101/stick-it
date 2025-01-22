@@ -22,7 +22,7 @@ class GroupEntity extends CacheEntity {
   final String? inviteUrl;
 
   @HiveField(7)
-  final String? groupAdmin; // Assuming this is a userId
+  final String? groupAdmin;
 
   @HiveField(8)
   final String? description;
@@ -49,17 +49,18 @@ class GroupEntity extends CacheEntity {
     super.keepAlive
   });
   
-  factory GroupEntity.fromGroupDto(GroupDto groupDto) {
+  factory GroupEntity.fromGroupDto(GroupDto groupDto, {bool keepAlive = false}) {
     return GroupEntity(
-        groupId: groupDto.id, 
-        name: groupDto.name, 
-        visibility: groupDto.visibility,
-        isActivated: false,
-        description: groupDto.description,
-        inviteUrl: groupDto.inviteUrl,
-        groupAdmin: groupDto.groupAdmin,
-        lastUpdated: groupDto.lastUpdated,
-        link: groupDto.link
+      groupId: groupDto.id,
+      name: groupDto.name,
+      visibility: groupDto.visibility,
+      isActivated: false,
+      description: groupDto.description,
+      inviteUrl: groupDto.inviteUrl,
+      groupAdmin: groupDto.groupAdmin,
+      lastUpdated: groupDto.lastUpdated,
+      link: groupDto.link,
+      keepAlive: keepAlive
     );
   }
 }

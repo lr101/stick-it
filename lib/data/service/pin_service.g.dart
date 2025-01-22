@@ -255,9 +255,10 @@ final pinsSortedByDistanceProvider = AutoDisposeProvider<
 // ignore: unused_element
 typedef PinsSortedByDistanceRef
     = AutoDisposeProviderRef<AsyncValue<List<MapEntry<LocalPinDto, double>>>>;
-String _$pinServiceHash() => r'dd38428671fbcc43f08f4b5d65e07c654c73c74e';
+String _$pinServiceHash() => r'f73f18280f670f88c3060378a35c5bdba56e6194';
 
-abstract class _$PinService extends BuildlessAsyncNotifier<Set<LocalPinDto>> {
+abstract class _$PinService
+    extends BuildlessAutoDisposeAsyncNotifier<Set<LocalPinDto>> {
   late final String groupId;
 
   FutureOr<Set<LocalPinDto>> build(
@@ -309,7 +310,7 @@ class PinServiceFamily extends Family<AsyncValue<Set<LocalPinDto>>> {
 
 /// See also [PinService].
 class PinServiceProvider
-    extends AsyncNotifierProviderImpl<PinService, Set<LocalPinDto>> {
+    extends AutoDisposeAsyncNotifierProviderImpl<PinService, Set<LocalPinDto>> {
   /// See also [PinService].
   PinServiceProvider(
     String groupId,
@@ -365,7 +366,8 @@ class PinServiceProvider
   }
 
   @override
-  AsyncNotifierProviderElement<PinService, Set<LocalPinDto>> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<PinService, Set<LocalPinDto>>
+      createElement() {
     return _PinServiceProviderElement(this);
   }
 
@@ -385,14 +387,14 @@ class PinServiceProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin PinServiceRef on AsyncNotifierProviderRef<Set<LocalPinDto>> {
+mixin PinServiceRef on AutoDisposeAsyncNotifierProviderRef<Set<LocalPinDto>> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
 class _PinServiceProviderElement
-    extends AsyncNotifierProviderElement<PinService, Set<LocalPinDto>>
-    with PinServiceRef {
+    extends AutoDisposeAsyncNotifierProviderElement<PinService,
+        Set<LocalPinDto>> with PinServiceRef {
   _PinServiceProviderElement(super.provider);
 
   @override

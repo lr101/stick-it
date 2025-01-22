@@ -43,7 +43,7 @@ class LocalPinDto {
     );
   }
 
-  PinEntity toEntityCompanion() {
+  PinEntity toEntityCompanion({bool keepAlive = false}) {
     return PinEntity(
       pinId: id,
       latitude: latitude,
@@ -53,7 +53,8 @@ class LocalPinDto {
       group: groupId,
       isHidden: isHidden,
       description: description,
-      lastSynced: lastSynced
+      lastSynced: lastSynced,
+      keepAlive: keepAlive
     );
   }
 

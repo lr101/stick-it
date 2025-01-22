@@ -43,7 +43,7 @@ class LocalGroupDto {
     );
   }
 
-  GroupEntity toEntity() {
+  GroupEntity toEntity({bool keepAlive = false}) {
     return GroupEntity(
       groupId: groupId,
       name: name,
@@ -53,7 +53,8 @@ class LocalGroupDto {
       groupAdmin: groupAdmin,
       description: description,
       lastUpdated: lastUpdated,
-      isActivated: isActivated
+      isActivated: isActivated,
+      keepAlive: keepAlive
     );
   }
 

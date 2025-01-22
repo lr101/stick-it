@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 
 abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
   final String boxName;
-  final int? maxItems; // Optional max items for TTL
+  final int? maxItems;
   final Duration? ttlDuration;
 
   CacheImpl(this.boxName, {this.maxItems, this.ttlDuration});
@@ -78,7 +78,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
 
   Future<void> _removeByTTL() async {
     if (ttlDuration != null) {
-      final values = box!.toMap() as Map<String, T>;
+      final values = box!.toMap();
       final ttlTime = DateTime.now().subtract(ttlDuration!);
       values.removeWhere((a, b) => b.ttl.isAfter(ttlTime));
       await box!.clear();
@@ -86,7 +86,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
     }
   }
 
-  /// Delete items with the lowest hit count.
+  /// Delete the oldest items.
   /// Not included are items with keepAlive == true and items younger than 10% of ttlDuration
   @override
   Future<void> deleteOldestItems() async {
@@ -96,9 +96,9 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
     final entries = values.entries.toList();
 
     entries.sort((a, b) {
-      final aHits = a.value.hits;
-      final bHits = b.value.hits;
-      return aHits.compareTo(bHits);
+      final aHits = a.value.ttl;
+      final bHits = b.value.ttl;
+      return bHits.compareTo(aHits);
     });
 
     final itemsToDelete = box.length - maxItems!;

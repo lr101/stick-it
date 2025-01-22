@@ -101,6 +101,7 @@ class FeedMapState extends ConsumerState<FeedMap> {
 
   void like() {
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    ref.read(likeServiceProvider.notifier).addLike(widget.item.id, widget.item.creatorId, CreateLikeDto(userId: userId, likeLocation: true));
+    ref.read(likeServiceProvider(widget.item.id).notifier)
+        .addLike(widget.item.creatorId, CreateLikeDto(userId: userId, likeLocation: true));
   }
 }

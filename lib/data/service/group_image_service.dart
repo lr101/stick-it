@@ -3,7 +3,7 @@
 
 import 'dart:typed_data';
 
-import 'package:buff_lisa/data/repository/group_image_repository.dart';
+import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

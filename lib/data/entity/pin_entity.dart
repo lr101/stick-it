@@ -51,16 +51,17 @@ class PinEntity extends CacheEntity {
     super.keepAlive
   });
 
-  factory PinEntity.fromDto(PinWithOptionalImageDto pinDto) {
+  factory PinEntity.fromDto(PinWithOptionalImageDto pinDto, {keepAlive = false}) {
     return PinEntity(
-        pinId: pinDto.id,
-        latitude: pinDto.latitude as double,
-        longitude: pinDto.longitude as double,
-        creationDate: pinDto.creationDate,
-        creator: pinDto.creationUser,
-        group: pinDto.groupId,
-        description: pinDto.description,
-        lastSynced: DateTime.now()
+      pinId: pinDto.id,
+      latitude: pinDto.latitude as double,
+      longitude: pinDto.longitude as double,
+      creationDate: pinDto.creationDate,
+      creator: pinDto.creationUser,
+      group: pinDto.groupId,
+      description: pinDto.description,
+      lastSynced: DateTime.now(),
+      keepAlive: keepAlive
     );
   }
 

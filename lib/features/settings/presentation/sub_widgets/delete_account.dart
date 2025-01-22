@@ -23,7 +23,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       CustomErrorSnackBar.message(message: "Sending code to your email");
-      final result = await ref.watch(globalDataServiceProvider.notifier).getDeleteCode();
+      final result = await ref.watch(authServiceProvider.notifier).getDeleteCode();
       if (result != null) {
         CustomErrorSnackBar.message(
             message: "Error while sending code: $result");
@@ -70,7 +70,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
 
   Future<void> _submitDelete() async {
     if (_formKey.currentState!.validate()) {
-      final result = await ref.watch(globalDataServiceProvider.notifier)
+      final result = await ref.watch(authServiceProvider.notifier)
           .deleteAccount(int.parse(_controller.text));
       if (result != null) {
         CustomErrorSnackBar.message(message: result);

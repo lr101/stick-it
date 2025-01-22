@@ -6,7 +6,7 @@ part of 'image_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getUserProfileHash() => r'8aa2a1758b2e10533f189c2fa32eeaf748af5840';
+String _$getUserProfileHash() => r'cfb2e83ca0010827fe002f08eb3f9bcf1a00f0f6';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -159,7 +159,7 @@ class _GetUserProfileProviderElement
 }
 
 String _$getUserProfileSmallHash() =>
-    r'477cbddecf1a01fc6857c93b79479b03cef0ab00';
+    r'0d3f9c098f91d88a90d15ddb23f06fb017805279';
 
 /// See also [getUserProfileSmall].
 @ProviderFor(getUserProfileSmall)
