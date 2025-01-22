@@ -1,5 +1,7 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -84,7 +86,10 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
       }
       final idList = _pins.getRange(pageKey, end).toList();
       for (var pin in idList) {
-        ref.watch(getPinImageAndFetchProvider(pin.id));
+        // prefetch data
+        ref.read(getPinImageAndFetchProvider(pin.id));
+        ref.read(userServiceProvider(pin.creatorId));
+        ref.read(getUserProfileSmallProvider(pin.creatorId));
       }
       if (end == _pins.length) {
         widget.pagingController.appendLastPage(idList);

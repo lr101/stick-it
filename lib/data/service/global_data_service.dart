@@ -51,6 +51,7 @@ class AuthService extends _$AuthService {
       if (response != null) {
         await ref.watch(globalDataRepositoryProvider).login(name, response.userId, response.refreshToken);
         await global.updateData(response);
+        return null;
       }
       return "Something unexpected happened";
     } on ApiException catch (e) {

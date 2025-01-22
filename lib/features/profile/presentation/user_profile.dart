@@ -22,7 +22,7 @@ class UserProfile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userId = ref.watch(globalDataServiceProvider).userId!;
+    final userId = ref.watch(userIdProvider);
     final userPins = ref.watch(userPinProvider);
     final currentUser = ref.watch(currentUserProvider);
     final likes = ref.watch(userLikeServiceProvider(userId));

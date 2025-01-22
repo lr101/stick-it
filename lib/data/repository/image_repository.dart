@@ -16,7 +16,7 @@ class ImageRepository extends CacheImpl<ImageEntity> {
     required this.urlFileName,
     required this.urlSubFolder,
     super.maxItems,
-    super.ttlDuration = const Duration(days: 1)
+    super.ttlDuration
   });
 
   final String urlFileName;

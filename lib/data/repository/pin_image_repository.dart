@@ -11,20 +11,16 @@ part 'pin_image_repository.g.dart';
 
 class PinImageRepository extends CacheImpl<ImageEntity> {
   final Ref ref;
-  final Map<String, Mutex> _mutexMap = {};
 
   PinImageRepository({required this.ref, super.maxItems, super.ttlDuration}) : super("pinImages");
 
 
   Future<Uint8List> fetchImage(String pinId) async {
-    final mutex = _mutexMap.putIfAbsent(pinId, () => Mutex());
-    return await mutex.protect(() async {
-      final cachedImage = await get(pinId); // Use the get method from CacheImpl
-      if (cachedImage != null) {
-        return cachedImage.blob1!;
-      }
-      return await _fetchAndCacheImage(pinId);
-    });
+    final cachedImage = await get(pinId);
+    if (cachedImage != null) {
+      return cachedImage.blob1!;
+    }
+    return await _fetchAndCacheImage(pinId);
   }
 
   // Fetch the image from the API and cache it

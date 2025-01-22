@@ -27,7 +27,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
     final box = await openBox();
     await box.put(id, item);
     if (maxItems != null && box.length > maxItems!) {
-      await deleteOldestItems();
+      deleteOldestItems();
     }
   }
 
@@ -80,7 +80,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
     if (ttlDuration != null) {
       final values = box!.toMap();
       final ttlTime = DateTime.now().subtract(ttlDuration!);
-      values.removeWhere((a, b) => b.ttl.isAfter(ttlTime));
+      values.removeWhere((a, b) => b.ttl.isBefore(ttlTime));
       await box!.clear();
       await box!.putAll(values);
     }
@@ -90,8 +90,8 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
   /// Not included are items with keepAlive == true and items younger than 10% of ttlDuration
   @override
   Future<void> deleteOldestItems() async {
-    final box = await openBox();
-    final values = box.toMap();
+    final values = box!.toMap();
+    if (maxItems == null || maxItems! >= values.length) return;
 
     final entries = values.entries.toList();
 
@@ -101,7 +101,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
       return bHits.compareTo(aHits);
     });
 
-    final itemsToDelete = box.length - maxItems!;
+    final itemsToDelete = box!.length - maxItems!;
     int itemsDeleted = 0;
     final duration = ttlDuration != null ? (ttlDuration!.inSeconds * 0.1).toInt() : 3600;
     final ttlTime = DateTime.now().subtract(Duration(seconds: duration));
@@ -110,7 +110,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
       final key = entries[i].key;
       final value = values[key]!;
       if (value.keepAlive == false && value.ttl.isBefore(ttlTime)) {
-        await box.delete(key);
+        await box!.delete(key);
         itemsDeleted++;
       }
     }
