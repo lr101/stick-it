@@ -39,6 +39,7 @@ Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(GroupEntityAdapter());
   Hive.registerAdapter(ImageEntityAdapter());
+  Hive.registerAdapter(MembersEntityAdapter());
   Hive.registerAdapter(MemberEntityAdapter());
   Hive.registerAdapter(PinEntityAdapter());
   Hive.registerAdapter(UserEntityAdapter());

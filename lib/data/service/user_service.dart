@@ -73,8 +73,9 @@ class UserService extends _$UserService {
       );
       final userEntity = await _repo.get(this.userId);
       if (result != null && userEntity != null) {
-        await _repo.put(
-            this.userId, userEntity.copyWith(result, selectedBatch));
+        final userDto = userEntity.copyWith(result, selectedBatch);
+        await _repo.put(this.userId, userDto);
+        state = AsyncData(LocalUserDto.fromEntity(userDto));
         if (profilePicture != null) {
           ref.read(userImageRepoProvider).overrideUrl(
               this.userId, result.profileImage!, true);
@@ -91,17 +92,17 @@ class UserService extends _$UserService {
 
 @riverpod
 Future<String?> userByIdUsername(Ref ref, String userId) async {
-  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e?.username));
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e.username));
 }
 
 @riverpod
 Future<int?> userByIdSelectedBatch(Ref ref, String userId) async {
-  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e?.selectedBatch));
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e.selectedBatch));
 }
 
 @riverpod
 Future<String?> userByIdDescription(Ref ref, String userId) async {
-  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e?.description));
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e.description));
 }
 
 @riverpod

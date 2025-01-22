@@ -18,7 +18,7 @@ class MemberService extends _$MemberService {
     final preLoadedMembers = await repo.get(groupId);
     if (preLoadedMembers != null) {
       final convertedMembers = preLoadedMembers.members.map((e) => MemberDto.fromEntity(e, groupId)).toList();
-      convertedMembers.sort((a,b) => a.points - b.points);
+      convertedMembers.sort((a,b) => b.points - a.points);
       state = AsyncData(convertedMembers);
     }
     try {

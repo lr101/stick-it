@@ -35,7 +35,7 @@ class PinService extends _$PinService {
     final hiddenUsers = ref.watch(hiddenUserServiceProvider);
     final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
     Set<LocalPinDto> localPins = await _pinRepository.getPinsByGroup(groupId);
-    if (isUserGroup && localPins.isEmpty) {
+    if (!isUserGroup && localPins.isEmpty) {
       localPins = await _fetchOtherUserGroupPins();
     }
     localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));

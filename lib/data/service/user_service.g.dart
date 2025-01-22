@@ -6,7 +6,7 @@ part of 'user_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userByIdUsernameHash() => r'27fbfa2239f745e103be782eb3049d83e5b6e14e';
+String _$userByIdUsernameHash() => r'21f7b6f196858c93791b1ddd6b8de7a6653c9361';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -158,7 +158,7 @@ class _UserByIdUsernameProviderElement
 }
 
 String _$userByIdSelectedBatchHash() =>
-    r'1bf0914796a3e386b1614785a42300ea62ac0e1c';
+    r'bb4422c45e4eaa9289924d021e6cfb9fcf155584';
 
 /// See also [userByIdSelectedBatch].
 @ProviderFor(userByIdSelectedBatch)
@@ -290,7 +290,7 @@ class _UserByIdSelectedBatchProviderElement
 }
 
 String _$userByIdDescriptionHash() =>
-    r'807d617e46eed0e31274313a7f979efaea71c64e';
+    r'52cd243d3b92c403e20b6f260cd3632e52cad0a3';
 
 /// See also [userByIdDescription].
 @ProviderFor(userByIdDescription)
@@ -437,7 +437,7 @@ final currentUserProvider = AutoDisposeFutureProvider<LocalUserDto>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CurrentUserRef = AutoDisposeFutureProviderRef<LocalUserDto>;
-String _$userServiceHash() => r'f3f82a61b39db94c52443acbac3a67032b6bec03';
+String _$userServiceHash() => r'e8d5e7033f3a31f565df80f77b996048940ff5d9';
 
 abstract class _$UserService
     extends BuildlessAutoDisposeAsyncNotifier<LocalUserDto> {

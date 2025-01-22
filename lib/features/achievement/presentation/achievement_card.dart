@@ -101,7 +101,6 @@ class ProgressBorderPainter extends CustomPainter {
 
     for (final metric in progressPath.computeMetrics()) {
       final length = metric.length * progress; // Adjust length based on progress
-      print(length);
       canvas.drawPath(
         metric.extractPath(0, length),
         paintProgress,
