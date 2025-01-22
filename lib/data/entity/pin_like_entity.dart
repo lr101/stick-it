@@ -5,7 +5,7 @@ import 'package:openapi/api.dart';
 
 part 'pin_like_entity.g.dart';
 
-@HiveType(typeId: 7)
+@HiveType(typeId: 8)
 class PinLikeEntity extends CacheEntity {
 
   @HiveField(3)
@@ -45,14 +45,14 @@ class PinLikeEntity extends CacheEntity {
 
   factory PinLikeEntity.fromDto(PinLikeDto likes) {
     return PinLikeEntity(
-      likeCount: likes.likeCount!,
-      likePhotographyCount: likes.likePhotographyCount!,
-      likeLocationCount: likes.likeLocationCount!,
-      likeArtCount: likes.likeArtCount!,
-      hasLike: likes.likedByUser!,
-      hasLikeLocation: likes.likedLocationByUser!,
-      hasLikeArt: likes.likedArtByUser!,
-      hasLikePhotography: likes.likedPhotographyByUser!,
+      likeCount: likes.likeCount ?? 0,
+      likePhotographyCount: likes.likePhotographyCount ?? 0,
+      likeLocationCount: likes.likeLocationCount ?? 0,
+      likeArtCount: likes.likeArtCount ?? 0,
+      hasLike: likes.likedByUser ?? false,
+      hasLikeLocation: likes.likedLocationByUser ?? false,
+      hasLikeArt: likes.likedArtByUser ?? false,
+      hasLikePhotography: likes.likedPhotographyByUser ?? false,
     );
   }
 

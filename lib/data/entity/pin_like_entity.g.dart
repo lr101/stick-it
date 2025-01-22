@@ -8,7 +8,7 @@ part of 'pin_like_entity.dart';
 
 class PinLikeEntityAdapter extends TypeAdapter<PinLikeEntity> {
   @override
-  final int typeId = 7;
+  final int typeId = 8;
 
   @override
   PinLikeEntity read(BinaryReader reader) {
