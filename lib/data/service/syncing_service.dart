@@ -48,7 +48,7 @@ class SyncingService extends _$SyncingService {
         await _groupRepository.delete(groupId);
       }
       for (final group in remoteGroups.items) {
-        await _groupRepository.put(group.id, GroupEntity.fromGroupDto(group, keepAlive: true));
+        await _groupRepository.put(group.id, GroupEntity.fromGroupDto(group, keepAlive: true, isActivated: true));
       }
       ref.invalidate(userGroupServiceProvider);
       await syncOfflinePins();

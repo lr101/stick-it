@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,7 +44,7 @@ class PopUpMenuFeed extends ConsumerWidget {
             ),
             if (userId == adminId || !isNotCreator) const PopupMenuItem<int>(
               value: 4,
-              child: Text("Delete stick"),
+              child: Text("Delete"),
             )
           ];
         },
@@ -53,16 +54,24 @@ class PopUpMenuFeed extends ConsumerWidget {
             case 1: Routing.to(context, ReportIssuePage(issueTypes: ["Report stick"], pinId: pinDto.id,)); break;
             case 2: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(pinDto.creatorId);break;
             case 3: Routing.to(context, ReportIssuePage(issueTypes: ["Report user"], userId: pinDto.creatorId,)); break;
-            case 4: leaveGroup(ref, context); break;
+            case 4: _deleteStick(ref, context); break;
           }
         }
     );
   }
 
-  Future<void> leaveGroup(WidgetRef ref, BuildContext context) async {
-    final result = await ref.read(pinServiceProvider(pinDto.groupId).notifier).deletePinFromGroup(pinDto.id);
-    if (result != null) {
-      CustomErrorSnackBar.message(message: result);
-    }
+  Future<void> _deleteStick(WidgetRef ref, BuildContext context) async {
+    CustomDialog.show(
+        context,
+        acceptText: "Delete",
+        title: "Delete this sticker?",
+        cancelText: "Cancel",
+        onPressed: () async {
+          final result = await ref.read(pinServiceProvider(pinDto.groupId).notifier).deletePinFromGroup(pinDto.id);
+          if (result != null) {
+            CustomErrorSnackBar.message(message: result);
+          }
+    });
+
   }
 }

@@ -51,12 +51,12 @@ class GroupEntity extends CacheEntity {
     super.ttl
   });
   
-  factory GroupEntity.fromGroupDto(GroupDto groupDto, {bool keepAlive = false}) {
+  factory GroupEntity.fromGroupDto(GroupDto groupDto, {bool keepAlive = false, bool isActivated = false}) {
     return GroupEntity(
       groupId: groupDto.id,
       name: groupDto.name,
       visibility: groupDto.visibility,
-      isActivated: false,
+      isActivated: isActivated,
       description: groupDto.description,
       inviteUrl: groupDto.inviteUrl,
       groupAdmin: groupDto.groupAdmin,
@@ -76,6 +76,7 @@ class GroupEntity extends CacheEntity {
       inviteUrl: inviteUrl,
       groupAdmin: groupAdmin,
       lastUpdated: lastUpdated,
+      isActivated: isActivated,
       link: link,
       keepAlive: keepAlive ?? this.keepAlive,
       hits: hits ?? this.hits,
