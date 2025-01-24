@@ -4,6 +4,7 @@ import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,7 +34,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomCloseKeyboardScaffold(
         appBar: AppBar(
           title: Text("Delete Account"),
         ),

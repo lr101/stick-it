@@ -7,6 +7,7 @@ import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/data/app_review_state.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
+import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -51,7 +52,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   Widget build(BuildContext context) {
     final group = ref.watch(cameraSelectedGroupProvider);
     bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
-    return Scaffold(
+    return CustomCloseKeyboardScaffold(
       appBar: AppBar(
         title: Text("Approve"),
       ),

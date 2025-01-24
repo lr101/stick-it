@@ -2,6 +2,7 @@ import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -61,7 +62,7 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomCloseKeyboardScaffold(
       appBar: AppBar(
         title: Text('Report Issue'),
       ),

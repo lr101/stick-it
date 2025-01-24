@@ -28,9 +28,9 @@ class GlobalDataService  extends _$GlobalDataService {
     state = GlobalDataDto(userId: null, refreshToken: null, cameras: state.cameras);
   }
 
-  Future<void> updateData(TokenResponseDto refreshToken) async {
+  Future<void> updateData(TokenResponseDto refreshToken, String username) async {
     state = state.copyWith(refreshToken: refreshToken.refreshToken, userId: refreshToken.userId);
-    await ref.read(userServiceProvider(refreshToken.userId).notifier).updateRemote();
+    await ref.read(globalDataRepositoryProvider).login(username, refreshToken.userId, refreshToken.refreshToken);
   }
 
 }
@@ -49,8 +49,7 @@ class AuthService extends _$AuthService {
     try {
       final response = await authApi.userLogin(UserLoginRequest(username: name, password: password));
       if (response != null) {
-        await ref.watch(globalDataRepositoryProvider).login(name, response.userId, response.refreshToken);
-        await global.updateData(response);
+        await global.updateData(response, name);
         return null;
       }
       return "Something unexpected happened";
@@ -79,7 +78,7 @@ class AuthService extends _$AuthService {
       final request = UserRequestDto(name: username, password: password, email: email);
       final response = await authApi.createUser(request);
       if (response != null) {
-        await global.updateData(response);
+        await global.updateData(response, username);
         return null;
       } else {
         return "Something unexpected happened";
