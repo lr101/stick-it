@@ -46,7 +46,9 @@ class GroupEntity extends CacheEntity {
     this.isActivated = false,
     this.lastUpdated,
     this.link,
-    super.keepAlive
+    super.keepAlive,
+    super.hits,
+    super.ttl
   });
   
   factory GroupEntity.fromGroupDto(GroupDto groupDto, {bool keepAlive = false}) {
@@ -61,6 +63,23 @@ class GroupEntity extends CacheEntity {
       lastUpdated: groupDto.lastUpdated,
       link: groupDto.link,
       keepAlive: keepAlive
+    );
+  }
+
+  @override
+  GroupEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+    return GroupEntity(
+      groupId: groupId,
+      name: name,
+      visibility: visibility,
+      description: description,
+      inviteUrl: inviteUrl,
+      groupAdmin: groupAdmin,
+      lastUpdated: lastUpdated,
+      link: link,
+      keepAlive: keepAlive ?? this.keepAlive,
+      hits: hits ?? this.hits,
+      ttl: ttl
     );
   }
 }

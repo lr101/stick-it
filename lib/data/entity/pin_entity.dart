@@ -48,7 +48,9 @@ class PinEntity extends CacheEntity {
     required this.group,
     this.isHidden = false,
     this.lastSynced,
-    super.keepAlive
+    super.keepAlive,
+    super.hits,
+    super.ttl
   });
 
   factory PinEntity.fromDto(PinWithOptionalImageDto pinDto, {keepAlive = false}) {
@@ -67,6 +69,24 @@ class PinEntity extends CacheEntity {
 
   PinRequestDto toRequestDto(Uint8List image) {
     return PinRequestDto(image: base64Encode(image), latitude: latitude, longitude: longitude, userId: creator, groupId: group);
+  }
+
+  @override
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+    return PinEntity(
+      pinId: pinId,
+      latitude: latitude,
+      longitude: longitude,
+      creationDate: creationDate,
+      description: description,
+      creator: creator,
+      group: group,
+      isHidden: isHidden,
+      lastSynced: lastSynced,
+      hits: hits ?? this.hits,
+      ttl: ttl ?? this.ttl,
+      keepAlive: keepAlive ?? this.keepAlive,
+    );
   }
 
 }

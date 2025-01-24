@@ -23,7 +23,9 @@ class UserEntity extends CacheEntity {
     required this.username,
     this.selectedBatch,
     this.description,
-    super.keepAlive
+    super.keepAlive,
+    super.hits,
+    super.ttl
   });
 
   factory UserEntity.fromDto(UserInfoDto user, {bool keepAlive = false}) {
@@ -36,15 +38,32 @@ class UserEntity extends CacheEntity {
     );
   }
 
-  UserEntity copyWith(UserUpdateResponseDto userDto, int? selectedBatch) {
+  UserEntity copyUserWith(UserUpdateResponseDto userDto, int? selectedBatch) {
     return UserEntity(
       userId: userId,
       username: userDto.username ?? username,
       selectedBatch: selectedBatch ?? this.selectedBatch,
       description: userDto.description ?? description,
       keepAlive: keepAlive,
+      ttl: ttl,
+      hits: hits
     );
   }
+
+  @override
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool?keepAlive}) {
+    return UserEntity(
+      userId: userId,
+      username: username,
+      selectedBatch: selectedBatch,
+      description: description,
+      keepAlive: keepAlive ?? this.keepAlive,
+      ttl: ttl ?? this.ttl,
+      hits: hits ?? this.hits
+    );
+  }
+  
+
 
 
 }

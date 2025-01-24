@@ -57,7 +57,6 @@ class _MapPanelState extends ConsumerState<MapPanel> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        const MapPanelDraggable(),
         TabBar(controller: widget.tabController, tabs: [
           Tab(
             text: 'Closest Pins',

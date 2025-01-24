@@ -13,6 +13,18 @@ class ImageEntity extends CacheEntity {
 
   ImageEntity({
     required this.blob1,
-    super.keepAlive = false
+    super.keepAlive = false,
+    super.hits,
+    super.ttl
   });
+
+  @override
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+    return ImageEntity(
+      blob1: blob1,
+      keepAlive: keepAlive ?? this.keepAlive,
+      hits: hits ?? this.hits,
+      ttl: ttl ?? this.ttl
+    );
+  }
 }

@@ -40,7 +40,9 @@ class PinLikeEntity extends CacheEntity {
     required this.hasLikeArt,
     required this.hasLike,
     required this.hasLikeLocation,
-    required this.hasLikePhotography
+    required this.hasLikePhotography,
+    super.hits,
+    super.ttl
   });
 
   factory PinLikeEntity.fromDto(PinLikeDto likes) {
@@ -69,5 +71,22 @@ class PinLikeEntity extends CacheEntity {
       likedArtByUser: hasLikeArt
     );
   }
+
+  @override
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+    return PinLikeEntity(
+      likeCount: likeCount,
+      likePhotographyCount: likePhotographyCount,
+      likeLocationCount: likeLocationCount,
+      likeArtCount: likeArtCount,
+      hasLike: hasLike,
+      hasLikeLocation: hasLikeLocation,
+      hasLikeArt: hasLikeArt,
+      hasLikePhotography: hasLikePhotography,
+      hits: hits ?? this.hits,
+      ttl: ttl ?? this.ttl
+    );
+  }
+  
 
 }

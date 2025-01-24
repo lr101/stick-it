@@ -73,7 +73,7 @@ class UserService extends _$UserService {
       );
       final userEntity = await _repo.get(this.userId);
       if (result != null && userEntity != null) {
-        final userDto = userEntity.copyWith(result, selectedBatch);
+        final userDto = userEntity.copyUserWith(result, selectedBatch);
         await _repo.put(this.userId, userDto);
         state = AsyncData(LocalUserDto.fromEntity(userDto));
         if (profilePicture != null) {

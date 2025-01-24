@@ -24,7 +24,9 @@ class UserLikeEntity extends CacheEntity {
     required this.likeCount,
     required this.likePhotographyCount,
     required this.likeLocationCount,
-    required this.likeArtCount
+    required this.likeArtCount,
+    super.hits,
+    super.ttl
   });
 
   factory UserLikeEntity.fromDto(UserLikesDto likes) {
@@ -33,6 +35,18 @@ class UserLikeEntity extends CacheEntity {
         likePhotographyCount: likes.likePhotographyCount,
         likeLocationCount: likes.likeLocationCount,
         likeArtCount: likes.likeArtCount
+    );
+  }
+
+  @override
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+    return UserLikeEntity(
+      likeCount: likeCount,
+      likePhotographyCount: likePhotographyCount,
+      likeLocationCount: likeLocationCount,
+      likeArtCount: likeArtCount,
+      hits: hits ?? this.hits,
+      ttl: ttl ?? this.ttl
     );
   }
 

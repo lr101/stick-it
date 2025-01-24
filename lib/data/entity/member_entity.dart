@@ -37,6 +37,18 @@ class MembersEntity extends CacheEntity {
 
   MembersEntity({
     required this.members,
-    super.keepAlive
+    super.keepAlive,
+    super.hits,
+    super.ttl
   });
+
+  @override
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+    return MembersEntity(
+      members: members,
+      ttl: ttl ?? this.ttl,
+      hits: hits ?? this.hits,
+      keepAlive: keepAlive ?? this.keepAlive,
+    );
+  }
 }

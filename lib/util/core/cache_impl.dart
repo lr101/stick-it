@@ -34,7 +34,10 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
   @override
   Future<T?> get(String id) async {
     final box = await openBox();
-    return box.get(id);
+    final result = box.get(id);
+    final resultWithHits = result?.copyWith(hits: result.hits + 1);
+    if (resultWithHits != null) await box.put(id, resultWithHits as T);
+    return result;
   }
 
   @override
@@ -86,7 +89,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
     }
   }
 
-  /// Delete the oldest items.
+  /// Delete the items with the lowest hit count
   /// Not included are items with keepAlive == true and items younger than 10% of ttlDuration
   @override
   Future<void> deleteOldestItems() async {
@@ -96,9 +99,9 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
     final entries = values.entries.toList();
 
     entries.sort((a, b) {
-      final aHits = a.value.ttl;
-      final bHits = b.value.ttl;
-      return bHits.compareTo(aHits);
+      final aHits = a.value.hits;
+      final bHits = b.value.hits;
+      return aHits.compareTo(bHits);
     });
 
     final itemsToDelete = box!.length - maxItems!;

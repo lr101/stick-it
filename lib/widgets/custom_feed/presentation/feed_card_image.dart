@@ -1,5 +1,6 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image_header.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_switchable_image.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/pop_up_menu_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,9 +17,16 @@ import 'feed_description.dart';
 import 'feed_map.dart';
 import 'like_buttons.dart';
 
-class FeedCardImage extends ConsumerStatefulWidget{
-  
-  const FeedCardImage({super.key, required this.item, required this.maxHeight, required this.maxWidth, this.distance, this.rotateHeader = false, this.onTab});
+class FeedCardImage extends ConsumerStatefulWidget {
+  const FeedCardImage(
+      {super.key,
+      required this.item,
+      required this.maxHeight,
+      required this.maxWidth,
+      this.distance,
+      this.rotateHeader = false,
+      this.onTab});
+
   final LocalPinDto item;
   final double maxWidth;
   final double maxHeight;
@@ -31,8 +39,6 @@ class FeedCardImage extends ConsumerStatefulWidget{
 }
 
 class _FeedCardImageState extends ConsumerState<FeedCardImage> {
-
-
   late final Widget feedMap;
 
   @override
@@ -44,77 +50,81 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
   @override
   Widget build(BuildContext context) {
     final data = ref.watch(getPinImageInfoProvider(widget.item));
+    final feedImage = FeedSwitchableImage(
+        item: widget.item,
+        image: data.value,
+        likeImage: likeImage,
+        onTab: widget.onTab);
 
-    final renderDescription = !widget.rotateHeader && widget.item.description != null;
+    final renderDescription =
+        !widget.rotateHeader && widget.item.description != null;
     return Expanded(
-            child: Padding(padding: EdgeInsets.symmetric(horizontal: widget.rotateHeader ? 5 : 0, vertical: widget.rotateHeader ? 0 : 5), child: Column(
+        child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: widget.rotateHeader ? 5 : 0,
+                vertical: widget.rotateHeader ? 0 : 5),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
                   children: [
-                    Padding(padding: EdgeInsets.only(right: 10), child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                         SizedBox(
-                           height: widget.maxHeight - 50 - (renderDescription ? 50 : 0),
-                             child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: ref.watch(feedMapStateProvider(widget.item.id)) ? getImage(data.value) : feedMap)),
-                          SizedBox(height: 5,),
-                          LikeButtons(pinId: widget.item.id,
-                              creatorId: widget.item.creatorId),
-                          if (renderDescription) SizedBox(height: 5,),
-                          if (renderDescription) FeedDescriptionExpandable(pin: widget.item,)
-                        ]
-                    )),
+                    Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                  height: widget.maxHeight - 50 - (renderDescription ? 50 : 0),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: ref.watch(feedMapStateProvider(
+                                              widget.item.id))
+                                          ? feedImage
+                                          : feedMap)),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              LikeButtons(
+                                  pinId: widget.item.id,
+                                  creatorId: widget.item.creatorId),
+                              if (renderDescription)
+                                SizedBox(
+                                  height: 5,
+                                ),
+                              if (renderDescription)
+                                FeedDescriptionExpandable(
+                                  pin: widget.item,
+                                )
+                            ])),
                     SizedBox(
                         width: widget.maxWidth - 20,
                         height: 65,
-                        child: FeedCardImageHeader(pin: widget.item, distance: widget.distance,)
-                    ),
+                        child: FeedCardImageHeader(
+                          pin: widget.item,
+                          distance: widget.distance,
+                        )),
                     Positioned(
                         right: 0,
                         top: widget.maxHeight - (renderDescription ? 170 : 120),
                         child: SizedBox.square(
-                            dimension: 100,
-                            child: ClipRRect(
+                          dimension: 100,
+                          child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: ref.watch(feedMapStateProvider(widget.item.id)) ? feedMap : getImage(data.value)
-                              ),))
+                              child: ref.watch(
+                                      feedMapStateProvider(widget.item.id))
+                                  ? feedMap
+                                  : feedImage),
+                        ))
                   ],
                 ),
               ],
-            ))
-    );
-  }
-
-  Widget getImage(PinImageInfo? image) {
-    final switchFun = ref.read(feedMapStateProvider(widget.item.id).notifier).update;
-    final isBig = ref.watch(feedMapStateProvider(widget.item.id));
-    return GestureDetector(
-        onDoubleTap: isBig ? () => likeImage() : null,
-        onTap: isBig && widget.onTab != null ? () => widget.onTab!(
-            LatLng(widget.item.latitude, widget.item.longitude), 18) : !isBig ? switchFun : null ,
-        child: Container(
-         color: Colors.grey.withOpacity(0.5),
-          child: FadeInImage(
-          fadeInDuration: const Duration(milliseconds: 100),
-          fit: BoxFit.cover,
-          placeholder: MemoryImage(kTransparentImage),
-          image:  MemoryImage(image?.image ?? kTransparentImage),
-          width: double.infinity,
-        ))
-    );
+            )));
   }
 
   void likeImage() {
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    ref.read(likeServiceProvider(widget.item.id).notifier)
-        .addLike(widget.item.creatorId, CreateLikeDto(userId: userId, like: true));
+    ref.read(likeServiceProvider(widget.item.id).notifier).addLike(
+        widget.item.creatorId, CreateLikeDto(userId: userId, like: true));
   }
-
-
-
-
 }

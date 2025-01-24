@@ -11,7 +11,6 @@ class MapPanelState extends _$MapPanelState {
   }
 
   void set(bool val) {
-    print(val);
     state = val;
   }
 }

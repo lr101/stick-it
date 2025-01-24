@@ -112,10 +112,12 @@ class _MapHomeState extends ConsumerState<MapHome>
                   )
               ),],
             ),
-            panel: panelState ? MapPanel(
-                tabController: _tabController,
-                setLocation: setLocation
-            ) : const Align(alignment: Alignment.topCenter, child: MapPanelDraggable())
+            panel: Column(
+              children: [
+                MapPanelDraggable(panelController: _panelController),
+                if (panelState) Expanded(child: MapPanel(tabController: _tabController, setLocation: setLocation))
+              ],
+            )
         ),
       floatingActionButton: Align(
           alignment: Alignment.bottomRight,

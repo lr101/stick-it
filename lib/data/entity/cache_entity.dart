@@ -3,14 +3,18 @@ import 'package:hive/hive.dart';
 
 abstract class CacheEntity {
 
-  CacheEntity({this.keepAlive = false});
+  CacheEntity({this.keepAlive = false, this.hits = 1, ttl}) {
+    this.ttl = ttl ?? DateTime.now();
+  }
 
   @HiveField(0)
-  final DateTime ttl = DateTime.now();
+  late final DateTime ttl;
 
   @HiveField(1)
-  final int hits = 1;
+  final int hits;
 
   @HiveField(2)
   final bool keepAlive;
+
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive});
 }
