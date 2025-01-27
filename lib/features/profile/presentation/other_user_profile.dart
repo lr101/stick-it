@@ -4,7 +4,6 @@ import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/profile/presentation/pop_up_menu_other_user.dart';
 import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
 import 'package:buff_lisa/features/profile/presentation/user_like_icon.dart';
-import 'package:buff_lisa/features/profile/service/other_user_pin_service.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
@@ -13,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../widgets/tiles/presentation/batch.dart';
+import '../service/user_pin_service.dart';
 
 class OtherUserProfile extends ConsumerWidget {
   const OtherUserProfile({super.key, required this.userId});
@@ -21,7 +21,7 @@ class OtherUserProfile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userPins = ref.watch(otherUserPinServiceProvider(userId));
+    final userPins = ref.watch(userPinProvider(userId));
     final username = ref.watch(userByIdUsernameProvider(userId));
     final description = ref.watch(userByIdDescriptionProvider(userId));
     final selectedBatch = ref.watch(userByIdSelectedBatchProvider(userId));
@@ -65,9 +65,8 @@ class OtherUserProfile extends ConsumerWidget {
           style: TextStyle(fontStyle: FontStyle.italic),))),
       ],
       body: ImageGrid(
-        pinProvider: otherUserPinProvider(userId),
-        onTab: (index) =>
-            Routing.to(context, UserImageFeed(index: index, userId: userId, userPinNotifier: otherUserPinProvider(userId))),
+        pinProvider: userPinProvider(userId),
+        onTab: (index) => Routing.to(context, UserImageFeed(index: index, userId: userId, userPinNotifier: userPinProvider(userId))),
       ),
     );
   }

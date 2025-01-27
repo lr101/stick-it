@@ -7,6 +7,7 @@ import 'package:buff_lisa/data/entity/user_like_entity.dart';
 import 'package:buff_lisa/data/entity/member_entity.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/entity/user_entity.dart';
+import 'package:buff_lisa/data/entity/user_pins_entity.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
@@ -45,6 +46,7 @@ Future<void> main() async {
   Hive.registerAdapter(UserEntityAdapter());
   Hive.registerAdapter(UserLikeEntityAdapter());
   Hive.registerAdapter(PinLikeEntityAdapter());
+  Hive.registerAdapter(UserPinsEntityAdapter());
   const bool isProduction = bool.fromEnvironment('dart.vm.product');
   if (isProduction) {
     await dotenv.load(fileName: ".env");

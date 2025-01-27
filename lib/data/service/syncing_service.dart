@@ -90,6 +90,9 @@ class SyncingService extends _$SyncingService {
         if (e.code == 409) {
           await _pinRepository.delete(pin.pinId);
         }
+      } catch (e) {
+        if (kDebugMode) print(e);
+        await _pinRepository.delete(pin.pinId);
       }
     }
   }

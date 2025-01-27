@@ -8,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:string_validator/string_validator.dart';
 
+import '../../../data/service/syncing_service.dart';
+
 part 'login_service.g.dart';
 
 class LoginService {
@@ -17,6 +19,7 @@ class LoginService {
 
   /// Navigates to the NavBar Widget when authentication was successful
   void handleLoginComplete(BuildContext context) {
+    ref.invalidate(syncingServiceProvider);
     Routing.toAndDelete(context, const Navigation(), "/home");
   }
 

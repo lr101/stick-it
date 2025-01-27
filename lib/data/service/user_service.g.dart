@@ -437,7 +437,7 @@ final currentUserProvider = AutoDisposeFutureProvider<LocalUserDto>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CurrentUserRef = AutoDisposeFutureProviderRef<LocalUserDto>;
-String _$userServiceHash() => r'e8d5e7033f3a31f565df80f77b996048940ff5d9';
+String _$userServiceHash() => r'b4eeea30011fad2f165ebfd8d088bbbc087d8f6b';
 
 abstract class _$UserService
     extends BuildlessAutoDisposeAsyncNotifier<LocalUserDto> {

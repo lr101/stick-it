@@ -6,7 +6,7 @@ part of 'map_panel_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mapPanelStateHash() => r'c5199ee772393b7871db3e39ba1f087663c734ce';
+String _$mapPanelStateHash() => r'd2d9ae3943f5158a973e4abe611a4c16969e6984';
 
 /// See also [MapPanelState].
 @ProviderFor(MapPanelState)

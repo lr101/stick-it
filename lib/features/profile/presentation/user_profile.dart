@@ -1,6 +1,5 @@
 import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/like_service.dart';
-import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
 import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
@@ -23,7 +22,7 @@ class UserProfile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(userIdProvider);
-    final userPins = ref.watch(userPinProvider);
+    final userPins = ref.watch(userPinProvider(userId));
     final currentUser = ref.watch(currentUserProvider);
     final likes = ref.watch(userLikeServiceProvider(userId));
     final profileImage = ref.watch(getUserProfileProvider(userId));
@@ -56,9 +55,7 @@ class UserProfile extends ConsumerWidget {
                 Flexible(
                   child: ListTile(
                     title: Text("Sticks", maxLines: 1,),
-                    subtitle: Text(userPins.whenOrNull(
-                            data: (data) => data.length.toString()) ??
-                        "---"),
+                    subtitle: Text(userPins.whenOrNull(data: (data) => data.length.toString()) ?? "---"),
                   ),
                 ),
                 Flexible(
@@ -95,13 +92,13 @@ class UserProfile extends ConsumerWidget {
                   ))),
       ],
       body: ImageGrid(
-        pinProvider: sortedUserPinsProvider,
+        pinProvider: userPinProvider(userId),
         onTab: (index) => Routing.to(
             context,
             UserImageFeed(
               index: index,
               userId: userId,
-              userPinNotifier: sortedUserPinsProvider,
+              userPinNotifier: userPinProvider(userId),
             )),
       ),
     );

@@ -25,6 +25,8 @@ class PinLikeEntityAdapter extends TypeAdapter<PinLikeEntity> {
       hasLike: fields[7] as bool,
       hasLikeLocation: fields[9] as bool,
       hasLikePhotography: fields[8] as bool,
+      hits: fields[1] as int,
+      ttl: fields[0] as dynamic,
     );
   }
 

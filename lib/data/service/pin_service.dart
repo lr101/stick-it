@@ -5,6 +5,7 @@ import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/repository/pin_image_repository.dart';
+import 'package:buff_lisa/data/repository/user_pins_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
@@ -15,6 +16,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../features/profile/service/user_pin_service.dart';
 import '../repository/pin_repository.dart';
 import 'global_data_service.dart';
 
@@ -56,14 +58,19 @@ class PinService extends _$PinService {
   }
   
   Future<void> updateSinglePin(LocalPinDto? oldPin, LocalPinDto updatedPin) async {
+    final userPinRepo = ref.read(userPinServiceProvider(updatedPin.creatorId).notifier);
     final storage = (_pinRepository as CacheApi<PinEntity>);
     await _mutex.protect(() async {
       final currentState = {...state.value!};
       currentState.remove(oldPin);
       currentState.add(updatedPin);
       state = AsyncData(currentState);
-      if (oldPin != null) await storage.delete(oldPin.id);
+      if (oldPin != null) {
+        await storage.delete(oldPin.id);
+        await userPinRepo.removePin(oldPin.id);
+      }
       await storage.put(updatedPin.id, updatedPin.toEntityCompanion(keepAlive: true));
+      await userPinRepo.addPin(updatedPin);
     });
   }
 
@@ -89,19 +96,22 @@ class PinService extends _$PinService {
   }
 
   Future<String?> deletePinFromGroup(String pinId) async {
-    final pinsApi = ref.watch(pinApiProvider);
+    final pinsApi = ref.read(pinApiProvider);
     final storage = (_pinRepository as CacheApi<PinEntity>);
+    final userId = ref.read(userIdProvider);
+    final userPinRepo = ref.read(userPinServiceProvider(userId).notifier);
     try {
       final pin = state.value!.firstWhere((e) => e.id == pinId);
       if (pin.lastSynced != null) {
         await pinsApi.deletePin(pinId);
+        await _mutex.protect(() async {
+          final currentState = {...state.value!};
+          currentState.remove(pin);
+          state = AsyncValue.data(currentState);
+        });
+        storage.delete(pinId);
+        userPinRepo.removePin(pinId);
       }
-      await _mutex.protect(() async {
-        final currentState = {...state.value!};
-        currentState.remove(pin);
-        state = AsyncValue.data(currentState);
-      });
-      storage.delete(pinId);
     } on ApiException catch (e) {
       return e.message;
     }
@@ -143,19 +153,6 @@ Future<List<LocalPinDto>> sortedActivatedPins(Ref ref) async {
 Future<List<LocalPinDto>?> sortedGroupPins(Ref ref, String groupId) async {
   final pins = ref.watch(pinServiceProvider(groupId)).value?.toList();
   if (pins == null) return null;
-  pins.sort((a, b) => b.creationDate.compareTo(a.creationDate));
-  return pins;
-}
-
-@riverpod
-Future<List<LocalPinDto>> sortedUserPins(Ref ref) async {
-  final userId = ref.watch(globalDataServiceProvider).userId!;
-  final groups = await ref.watch(userGroupServiceProvider.selectAsync((e) => e.map((e) => e.groupId)));
-  final pins = <LocalPinDto>[];
-  for (var groupId in groups) {
-    final p = await ref.watch(pinServiceProvider(groupId).selectAsync(((data) => data.where((e) => e.creatorId == userId))));
-    pins.addAll(p);
-  }
   pins.sort((a, b) => b.creationDate.compareTo(a.creationDate));
   return pins;
 }

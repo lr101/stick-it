@@ -46,7 +46,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
     ref.listen(widget.pinProvider, (previous, next) {
       if (next.value != null && next.value!.isEmpty) isInitial = false;
       _images = next.value ?? [];
-      _pagingController.notifyPageRequestListeners(0);
+      _pagingController.refresh();
     });
     return PagedGridView<int, LocalPinDto>(
       pagingController: _pagingController,

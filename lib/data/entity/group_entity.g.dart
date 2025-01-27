@@ -27,6 +27,8 @@ class GroupEntityAdapter extends TypeAdapter<GroupEntity> {
       lastUpdated: fields[10] as DateTime?,
       link: fields[11] as String?,
       keepAlive: fields[2] as bool,
+      hits: fields[1] as int,
+      ttl: fields[0] as dynamic,
     );
   }
 

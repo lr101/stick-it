@@ -1,26 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_entity.dart';
+part of 'user_pins_entity.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserEntityAdapter extends TypeAdapter<UserEntity> {
+class UserPinsEntityAdapter extends TypeAdapter<UserPinsEntity> {
   @override
-  final int typeId = 6;
+  final int typeId = 9;
 
   @override
-  UserEntity read(BinaryReader reader) {
+  UserPinsEntity read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserEntity(
-      userId: fields[3] as String,
-      username: fields[4] as String,
-      selectedBatch: fields[5] as int?,
-      description: fields[6] as String?,
+    return UserPinsEntity(
+      pins: (fields[3] as List).cast<PinEntity>(),
       keepAlive: fields[2] as bool,
       hits: fields[1] as int,
       ttl: fields[0] as dynamic,
@@ -28,17 +25,11 @@ class UserEntityAdapter extends TypeAdapter<UserEntity> {
   }
 
   @override
-  void write(BinaryWriter writer, UserEntity obj) {
+  void write(BinaryWriter writer, UserPinsEntity obj) {
     writer
-      ..writeByte(7)
-      ..writeByte(3)
-      ..write(obj.userId)
       ..writeByte(4)
-      ..write(obj.username)
-      ..writeByte(5)
-      ..write(obj.selectedBatch)
-      ..writeByte(6)
-      ..write(obj.description)
+      ..writeByte(3)
+      ..write(obj.pins)
       ..writeByte(0)
       ..write(obj.ttl)
       ..writeByte(1)
@@ -53,7 +44,7 @@ class UserEntityAdapter extends TypeAdapter<UserEntity> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserEntityAdapter &&
+      other is UserPinsEntityAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

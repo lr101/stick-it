@@ -3,6 +3,7 @@ import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/repository/member_repository.dart';
 import 'package:buff_lisa/data/repository/pin_image_repository.dart';
 import 'package:buff_lisa/data/repository/pin_repository.dart';
+import 'package:buff_lisa/data/repository/user_pins_repository.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
@@ -212,6 +213,7 @@ class _SettingsState extends ConsumerState<Settings> {
             "Deleting the cache can fix wrong states of the app caused by outdated data. This does not log you out and an automatic refresh of all deleted data is performed. IMPORTANT: Posts that are not synced to the server will be lost forever.",
             maxLines: 10), onPressed: () async {
           await invalidateCache();
+          ref.invalidate(syncingServiceProvider);
           Navigator.of(context).pop();
         }
     );
@@ -255,6 +257,7 @@ class _SettingsState extends ConsumerState<Settings> {
     await ref.read(userImageSmallRepoProvider).deleteAll();
     await ref.read(userLikeRepositoryProvider).deleteAll();
     await ref.read(userRepositoryProvider).deleteAll();
+    await ref.read(userPinsRepositoryProvider).deleteAll();
     final mgmt = FMTCStore('tileStore').manage;
     await mgmt.reset();
     final sharedPreferences = ref.watch(sharedPreferencesProvider);
@@ -262,6 +265,5 @@ class _SettingsState extends ConsumerState<Settings> {
     await DefaultCacheManager().emptyCache();
     ref.invalidate(lastSeenProvider);
     ref.invalidate(groupOrderServiceProvider);
-    ref.invalidate(syncingServiceProvider);
   }
 }

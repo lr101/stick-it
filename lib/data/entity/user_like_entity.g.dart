@@ -21,6 +21,8 @@ class UserLikeEntityAdapter extends TypeAdapter<UserLikeEntity> {
       likePhotographyCount: fields[4] as int,
       likeLocationCount: fields[5] as int,
       likeArtCount: fields[6] as int,
+      hits: fields[1] as int,
+      ttl: fields[0] as dynamic,
     );
   }
 

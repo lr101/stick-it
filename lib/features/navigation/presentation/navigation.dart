@@ -40,8 +40,8 @@ class _NavigationState extends ConsumerState<Navigation> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 0.09;
     final groupSelector = GroupSelector(height: height);
+    ref.watch(syncingServiceProvider);
     final state = ref.watch(navigationStateProvider);
-    final syncing = ref.watch(syncingServiceProvider);
     return  Scaffold(
         appBar: null,
         backgroundColor: state == 2 ? Colors.transparent : null,
@@ -65,7 +65,6 @@ class _NavigationState extends ConsumerState<Navigation> {
                 groupSelector,
                 if (state == 2) TopGroupsPreview()
               ]),
-            syncing.when(data: (data) => Text(data.toString()), error: (e,s) => Text(e.toString()), loading: () => CircularProgressIndicator())
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

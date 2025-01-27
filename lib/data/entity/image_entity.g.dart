@@ -19,6 +19,8 @@ class ImageEntityAdapter extends TypeAdapter<ImageEntity> {
     return ImageEntity(
       blob1: fields[3] as Uint8List?,
       keepAlive: fields[2] as bool,
+      hits: fields[1] as int,
+      ttl: fields[0] as dynamic,
     );
   }
 

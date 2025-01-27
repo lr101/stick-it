@@ -217,24 +217,6 @@ class _SortedGroupPinsProviderElement
   String get groupId => (origin as SortedGroupPinsProvider).groupId;
 }
 
-String _$sortedUserPinsHash() => r'd8d8d0f626f5086019d0fcddaf32e383b3d56652';
-
-/// See also [sortedUserPins].
-@ProviderFor(sortedUserPins)
-final sortedUserPinsProvider =
-    AutoDisposeFutureProvider<List<LocalPinDto>>.internal(
-  sortedUserPins,
-  name: r'sortedUserPinsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$sortedUserPinsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SortedUserPinsRef = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
 String _$pinsSortedByDistanceHash() =>
     r'a96af8dece559a07fed9f79fe4d1da23f921d5cf';
 
@@ -255,7 +237,7 @@ final pinsSortedByDistanceProvider = AutoDisposeProvider<
 // ignore: unused_element
 typedef PinsSortedByDistanceRef
     = AutoDisposeProviderRef<AsyncValue<List<MapEntry<LocalPinDto, double>>>>;
-String _$pinServiceHash() => r'd2eb16aa5ddf2ca6ad266a1235cee13bcda5260b';
+String _$pinServiceHash() => r'3145d237a8b58dc0b2811684c6fcbce712bdbd32';
 
 abstract class _$PinService
     extends BuildlessAutoDisposeAsyncNotifier<Set<LocalPinDto>> {
