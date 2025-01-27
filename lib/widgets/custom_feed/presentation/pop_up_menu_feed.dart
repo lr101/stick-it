@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../util/routing/routing.dart';
 import '../../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+import '../../buttons/presentation/custom_menu_item.dart';
 
 class PopUpMenuFeed extends ConsumerWidget {
 
@@ -26,25 +27,30 @@ class PopUpMenuFeed extends ConsumerWidget {
     return PopupMenuButton(
         itemBuilder: (context) {
           return [
-            if(isNotCreator) const PopupMenuItem<int>(
+            if(isNotCreator) CustomMenuItem<int>(
                 value: 0,
-                child: Text("Hide post")
+                title: "Hide post",
+                icon: Icons.hide_image,
             ),
-            if(isNotCreator) const PopupMenuItem<int>(
+            if(isNotCreator) CustomMenuItem<int>(
                 value: 1,
-                child: Text("Report stick")
+                title: "Report stick",
+              icon: Icons.report
             ),
-            if(isNotCreator) const PopupMenuItem<int>(
+            if(isNotCreator) CustomMenuItem<int>(
                 value: 2,
-                child: Text("Hide user")
+                title: "Hide user",
+              icon: Icons.hide_source,
             ),
-            if(isNotCreator) const PopupMenuItem<int>(
+            if(isNotCreator) CustomMenuItem<int>(
                 value: 3,
-                child: Text("Report user")
+                title: "Report user",
+              icon: Icons.report
             ),
-            if (userId == adminId || !isNotCreator) const PopupMenuItem<int>(
+            if (userId == adminId || !isNotCreator) CustomMenuItem<int>(
               value: 4,
-              child: Text("Delete"),
+              title: "Delete",
+              icon: Icons.delete
             )
           ];
         },

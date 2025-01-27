@@ -1,5 +1,6 @@
 
 import 'package:buff_lisa/features/map_home/presentation/map_panel_draggable.dart';
+import 'package:buff_lisa/features/map_home/presentation/map_panel_feed_card.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_item_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_distance.dart';
 import 'package:flutter/material.dart';
@@ -79,13 +80,12 @@ class _MapPanelState extends ConsumerState<MapPanel> {
               )),
           windowsState == null
               ? Center(child: Text('Click on a pin to see details here'))
-              : SingleChildScrollView(
-              child: ProviderScope(
+              : ProviderScope(
                 overrides: [
                   feedItemProvider.overrideWithValue(windowsState)
                 ],
-                  child: const FeedCard()
-            ))
+                  child: const MapPanelFeedCard()
+            )
         ]))
       ],
     );
