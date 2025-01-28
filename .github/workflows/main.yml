@@ -39,7 +39,8 @@ jobs:
 
     - uses: mshick/add-pr-comment@v2
       with:
-        message: '### Flutter Analyze Results\n\`\`\`\n${{ steps.lint.outputs.results }}\n\`\`\`'
+        message-id: "flutter_analyze"
+        message: ${{ steps.lint.outputs.results }}
 
     - name: Run tests
       run: flutter test
