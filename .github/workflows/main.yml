@@ -24,7 +24,16 @@ jobs:
       with:
         channel: any
         flutter-version: 3.x
-    - run: flutter --version
-    - run: flutter pub get
-    - run: flutter test
-    - run: flutter build apk --debug
+    - name: Install dependencies
+      run: |
+        flutter --version
+        flutter pub get
+
+    - name: Lint code
+      run: flutter analyze
+
+    - name: Run tests
+      run: flutter test
+
+    - name: Build APK
+      run: flutter build apk --debug
