@@ -40,7 +40,7 @@ jobs:
     - uses: mshick/add-pr-comment@v2
       with:
         message-id: "flutter_analyze"
-        message: ${{ steps.lint.outputs.results }}
+        message-path: analysis_results.txt
 
     - name: Run tests
       run: flutter test
