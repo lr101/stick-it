@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+// ignore: avoid_classes_with_only_static_members
 class CustomImagePicker {
 
   static Future<XFile?> pick({required BuildContext context}) async {

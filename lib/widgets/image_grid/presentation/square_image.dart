@@ -20,9 +20,7 @@ class SquareImage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final item = ref.watch(getPinImageAndFetchProvider(pinId));
     return item.when(
-        data: (data) => data == null
-            ? const SizedBox.shrink()
-            : GestureDetector(
+        data: (data) => GestureDetector(
                 onTap: () => onTap(index),
                 child: FadeInImage(
                     fadeInDuration: const Duration(milliseconds: 100),
