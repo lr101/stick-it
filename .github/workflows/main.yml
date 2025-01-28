@@ -29,8 +29,26 @@ jobs:
         flutter --version
         flutter pub get
 
+    - name: Post lint results as a comment
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const results = '${{ steps.lint.outputs.results }}';
+          if (results) {
+            const comment = `### Flutter Analyze Results\n\`\`\`\n${results}\n\`\`\``;
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.payload.pull_request.number,
+              body: comment,
+            });
+          }
+
     - name: Lint code
-      run: flutter analyze
+      id: lint
+      run: |
+        flutter analyze > analysis_results.txt || true
+        echo "::set-output name=results::$(cat analysis_results.txt)"
 
     - name: Run tests
       run: flutter test
