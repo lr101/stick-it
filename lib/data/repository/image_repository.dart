@@ -83,4 +83,3 @@ ImageRepository userImageSmallRepo(Ref ref) => ImageRepository("userImageSmallRe
 
 @Riverpod(keepAlive: true)
 ImageRepository userImageRepo(Ref ref) => ImageRepository("userImageRepository", ref: ref, urlSubFolder: "users", urlFileName: "profile.png", maxItems: 50);
-

@@ -87,6 +87,5 @@ class PinLikeEntity extends CacheEntity {
       ttl: ttl ?? this.ttl,
     );
   }
-  
 
 }

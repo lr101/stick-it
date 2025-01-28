@@ -109,5 +109,3 @@ Future<LocalUserDto> currentUser(Ref ref) async {
   final userId = ref.watch(userIdProvider);
   return await ref.watch(userServiceProvider(userId).future);
 }
-
-

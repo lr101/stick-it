@@ -9,7 +9,6 @@ import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dar
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -21,7 +20,6 @@ class UserGroupService extends _$UserGroupService {
   late GroupsApi _groupsApi;
   late GlobalDataDto _data;
   late MembersApi _membersApi;
-  final Mutex _mutex = Mutex();
 
   @override
   Future<Set<LocalGroupDto>> build() async {

@@ -39,6 +39,7 @@ jobs:
 
     - name: Format analysis results
       run: |
+        echo "### Flutter Analyze Results" > formatted_results.txt
         cat analysis_results.txt | sed 's/^info • /- [ ] /' >> formatted_results.txt
         echo "" >> formatted_results.txt
         echo "### Flutter Analyze Results" >> formatted_results.txt
@@ -47,7 +48,7 @@ jobs:
     - uses: mshick/add-pr-comment@v2
       with:
         message-id: "flutter_analyze"
-        message-path: analysis_results.txt
+        message-path: formatted_results.txt
 
     - name: Run tests
       run: flutter test

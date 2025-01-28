@@ -62,8 +62,5 @@ class UserEntity extends CacheEntity {
       hits: hits ?? this.hits,
     );
   }
-  
-
-
 
 }
