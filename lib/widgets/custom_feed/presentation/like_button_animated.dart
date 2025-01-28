@@ -1,13 +1,14 @@
-///
-///  create by zmtzawqlp on 2019/5/27
-///
-library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/painter/bubbles_painter.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/painter/circle_painter.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/utils/like_button_model.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/utils/like_button_typedef.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/utils/like_button_util.dart';
 
 

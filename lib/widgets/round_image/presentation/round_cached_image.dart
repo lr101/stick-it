@@ -18,5 +18,4 @@ class RoundCachedImage extends StatelessWidget {
     );
   }
 
-
 }
