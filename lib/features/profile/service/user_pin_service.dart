@@ -46,19 +46,19 @@ class UserPinService extends _$UserPinService {
     }
   }
 
-  void addPin(LocalPinDto pin) {
+  Future<void> addPin(LocalPinDto pin) async {
     if (state.value == null) return;
     final pins = [pin, ...state.value!];
     state = AsyncData(pins);
     final pinEntities = pins.map((e) => e.toEntityCompanion()).toList();
-    ref.read(userPinsRepositoryProvider).put(this.userId, UserPinsEntity(pins: pinEntities, keepAlive: _isCurrentUser));
+    await ref.read(userPinsRepositoryProvider).put(this.userId, UserPinsEntity(pins: pinEntities, keepAlive: _isCurrentUser));
   }
 
-  removePin(String pinId) {
+  Future<void> removePin(String pinId) async {
     final pins = state.value!.where((e) => e.id != pinId).toList();
     state = AsyncData(pins);
     final pinEntities = pins.map((e) => e.toEntityCompanion()).toList();
-    ref.read(userPinsRepositoryProvider).put(this.userId, UserPinsEntity(pins: pinEntities, keepAlive: _isCurrentUser));
+    await ref.read(userPinsRepositoryProvider).put(this.userId, UserPinsEntity(pins: pinEntities, keepAlive: _isCurrentUser));
   }
 
 }

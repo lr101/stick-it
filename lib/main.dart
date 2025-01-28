@@ -56,7 +56,7 @@ Future<void> main() async {
     await FMTCObjectBoxBackend().initialise();
     final mgmt = const FMTCStore('tileStore').manage;
     final ready = await mgmt.ready; // Check whether the store exists
-    if (!ready) await mgmt.create(); // Create the store
+    if (!ready) await mgmt.create(maxLength: 2000); // Create the store
   } catch (e) {
     final dir = Directory(
       path.join(

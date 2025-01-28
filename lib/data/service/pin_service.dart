@@ -69,7 +69,7 @@ class PinService extends _$PinService {
         await userPinRepo.removePin(oldPin.id);
       }
       await storage.put(updatedPin.id, updatedPin.toEntityCompanion(keepAlive: true));
-      userPinRepo.addPin(updatedPin);
+      await userPinRepo.addPin(updatedPin);
     });
   }
 
@@ -108,8 +108,8 @@ class PinService extends _$PinService {
           currentState.remove(pin);
           state = AsyncValue.data(currentState);
         });
-        storage.delete(pinId);
-        userPinRepo.removePin(pinId);
+        await storage.delete(pinId);
+        await userPinRepo.removePin(pinId);
       }
     } on ApiException catch (e) {
       return e.message;

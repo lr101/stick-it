@@ -28,7 +28,7 @@ class OpenApiConfig extends _$OpenApiConfig {
     // set retry client
     apiClient.client = RetryClient(
       Client(),
-      delay: (_) => const Duration(),
+      delay: (_) => Duration.zero,
       retries: 1,
       when: (response) {
         return response.statusCode == 403 || response.statusCode == 401;
@@ -86,5 +86,3 @@ LikesApi likeApi(Ref ref) => LikesApi(ref.watch(openApiConfigProvider));
 
 @Riverpod(keepAlive: true)
 RankingApi rankingApi(Ref ref) => RankingApi(ref.watch(openApiConfigProvider));
-
-
