@@ -73,14 +73,14 @@ class FeedMapState extends ConsumerState<FeedMap> {
                     heroTag: "${widget.item.id}zoomIn",
                       onPressed: () => zoomIn(center),
                       backgroundColor:
-                      Colors.grey.withOpacity(0.5),
+                      Colors.grey.withValues(alpha: 0.5),
                       child: const Icon(Icons.zoom_in),),
                   const SizedBox(height: 5,),
                   FloatingActionButton(
                     onPressed: () => zoomOut(center),
                     heroTag: "${widget.item.id}zoomOut",
                     backgroundColor:
-                    Colors.grey.withOpacity(0.5),
+                    Colors.grey.withValues(alpha: 0.5),
                     child: const Icon(Icons.zoom_out),
                   ),
                   const SizedBox(height: 30,),

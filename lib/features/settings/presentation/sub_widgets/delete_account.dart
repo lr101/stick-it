@@ -73,7 +73,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
           .deleteAccount(int.parse(_controller.text));
       if (result != null) {
         CustomErrorSnackBar.message(message: result);
-      } else {
+      } else if (mounted) {
         Routing.toAndDelete(context, const Auth(), "/login");
       }
     }

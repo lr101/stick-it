@@ -27,7 +27,7 @@ class FeedSwitchableImage extends ConsumerWidget {
         onTap: isBig && onTab != null ? () => onTab!(
             LatLng(item.latitude, item.longitude), 18,) : !isBig ? switchFun : null ,
         child: ColoredBox(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withValues(alpha: 0.5),
             child: FadeInImage(
               fadeInDuration: const Duration(milliseconds: 100),
               fit: BoxFit.cover,

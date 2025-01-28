@@ -22,7 +22,7 @@ final userIdProvider = AutoDisposeProvider<String>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserIdRef = AutoDisposeProviderRef<String>;
-String _$lastKnownLocationHash() => r'a7747ffd98bed64169822ee672ea88adadc7fcf5';
+String _$lastKnownLocationHash() => r'32bf99245b9bc078cb9ab20675d6db2f5b6f0191';
 
 /// See also [lastKnownLocation].
 @ProviderFor(lastKnownLocation)

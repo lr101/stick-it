@@ -112,4 +112,3 @@ class ProgressBorderPainter extends CustomPainter {
     return true; // Redraw when progress changes
   }
 }
-

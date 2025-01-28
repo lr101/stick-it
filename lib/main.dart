@@ -114,8 +114,7 @@ class MyApp extends ConsumerWidget {
           return const Navigation();
         },
       },
-      navigatorKey: NavigationService.navigatorKey,
+      navigatorKey: navigatorKey,
     );
   }
 }
-

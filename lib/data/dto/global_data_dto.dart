@@ -23,10 +23,10 @@ class GlobalDataDto {
     String? refreshToken,
     List<CameraDescription>? cameras,
   }) {
-  return GlobalDataDto(
-    userId: userId ?? this.userId,
-    refreshToken: refreshToken ?? this.refreshToken,
-    cameras: cameras ?? this.cameras,
-  );
-}
+    return GlobalDataDto(
+      userId: userId ?? this.userId,
+      refreshToken: refreshToken ?? this.refreshToken,
+      cameras: cameras ?? this.cameras,
+    );
+  }
 }

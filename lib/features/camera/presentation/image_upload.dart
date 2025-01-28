@@ -139,6 +139,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
       });
     }
     ref.read(cameraGroupIndexProvider.notifier).updateIndex(_groupIndexWhenOpened);
+    if (!mounted) return;
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

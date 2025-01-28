@@ -24,7 +24,7 @@ class GroupJoinActionButton extends ConsumerWidget {
               .joinGroup(groupDto.groupId);
           if (result != null) {
             CustomErrorSnackBar.message(message: result);
-          } else {
+          } else if (context.mounted){
             Navigator.of(context).pop();
           }
         } else {
@@ -40,7 +40,7 @@ class GroupJoinActionButton extends ConsumerWidget {
                 .joinGroup(groupDto.groupId, inviteUrl: _textController.text);
             if (result != null) {
               CustomErrorSnackBar.message(message: result);
-            } else {
+            } else if (context.mounted) {
               Navigator.of(context).pop();
             }
           },);

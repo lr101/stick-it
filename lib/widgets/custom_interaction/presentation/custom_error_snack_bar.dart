@@ -8,7 +8,7 @@ class CustomErrorSnackBar {
       CustomErrorSnackBarType type = CustomErrorSnackBarType.info,}) {
     floatingSnackBar(
       message: message,
-      context: NavigationService.navigatorKey.currentContext!,
+      context: navigatorKey.currentContext!,
       backgroundColor: type.color,
     );
   }

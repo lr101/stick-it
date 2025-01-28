@@ -123,9 +123,9 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
     if (_formKey.currentState!.validate()) {
       final userId = ref.watch(userIdProvider);
       final result = await ref.read(userServiceProvider(userId).notifier).changeUser(password: _newPasswordController.text);
-      if (result == null) {
+      if (result == null && mounted) {
         Navigator.pop(context);
-      } else {
+      } else if (result != null) {
         CustomErrorSnackBar.message(message: result, type: CustomErrorSnackBarType.error);
       }
     }

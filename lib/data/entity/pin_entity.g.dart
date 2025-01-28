@@ -28,7 +28,7 @@ class PinEntityAdapter extends TypeAdapter<PinEntity> {
       lastSynced: fields[11] as DateTime?,
       keepAlive: fields[2] as bool,
       hits: fields[1] as int,
-      ttl: fields[0] as dynamic,
+      ttl: fields[0] as DateTime?,
     );
   }
 

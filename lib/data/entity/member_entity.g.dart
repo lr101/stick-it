@@ -63,7 +63,7 @@ class MembersEntityAdapter extends TypeAdapter<MembersEntity> {
       members: (fields[3] as List).cast<MemberEntity>(),
       keepAlive: fields[2] as bool,
       hits: fields[1] as int,
-      ttl: fields[0] as dynamic,
+      ttl: fields[0] as DateTime?,
     );
   }
 

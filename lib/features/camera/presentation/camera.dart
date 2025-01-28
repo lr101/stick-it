@@ -102,7 +102,7 @@ class _CameraState extends ConsumerState<Camera> {
                                     padding: const EdgeInsets.all(2.5),
                                     child: CircleAvatar(
                                         radius: 20,
-                                        backgroundColor: Colors.grey.withOpacity(0.5),
+                                        backgroundColor: Colors.grey.withValues(alpha: 0.5),
                                         child: Center(child: IconButton(
                                             onPressed: () => handleFlashChange(!cameraFlashMode),
                                             icon: cameraFlashMode ? const Icon(Icons.flash_off) : const Icon(Icons.flash_auto),
@@ -116,7 +116,7 @@ class _CameraState extends ConsumerState<Camera> {
                                       padding: const EdgeInsets.all(2.5),
                                       child: CircleAvatar(
                                           radius: 20,
-                                          backgroundColor: cameraIndex == index ? Colors.grey.withOpacity(0.8) : Colors.grey.withOpacity(0.5),
+                                          backgroundColor: cameraIndex == index ? Colors.grey.withValues(alpha: 0.8) : Colors.grey.withValues(alpha: 0.5),
                                           child: Center(child: IconButton(
                                               onPressed: () => handleCameraChange(index),
                                               icon: cameras[index].lensDirection == CameraLensDirection.back ? const Icon(Icons.landscape) : const Icon(Icons.person),
@@ -127,11 +127,11 @@ class _CameraState extends ConsumerState<Camera> {
                                   padding: const EdgeInsets.all(2.5),
                                   child:CircleAvatar(
                                       radius: 20,
-                                      backgroundColor: Colors.grey.withOpacity(0.5),
+                                      backgroundColor: Colors.grey.withValues(alpha: 0.5),
                                       child: Center(
                                           child: GestureDetector(
                                              onTap: uploadFileImage,
-                                             child: Container(child: const Icon(Icons.upload)),
+                                             child: const Icon(Icons.upload),
                                              ),),
                                   ),
                               ),
@@ -193,7 +193,7 @@ class _CameraState extends ConsumerState<Camera> {
         final croppedImage = await CustomImagePicker.crop(res: pickedFile, minHeight: 500, minWidth: 500, context: context, initAspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4));
         final exif = await Exif.fromPath(pickedFile.path);
         final coord = await exif.getLatLong();
-
+        if (!mounted) return;
         Routing.to(context, SelectLocation(image: croppedImage!, center:  coord != null ? LatLng(coord.latitude, coord.longitude) : null,));
       } catch (e) {
         CustomErrorSnackBar.message(message: "Could not load or crop image");
@@ -242,6 +242,7 @@ class _CameraState extends ConsumerState<Camera> {
         final Uint8List bytes = await image.readAsBytes();
         final Position position = await Geolocator.getCurrentPosition();
         final pos = LatLng(position.latitude, position.longitude);
+        if (!mounted) return;
         Routing.to(context, ImageUpload(image: bytes, position: pos));
       } catch (e) {
         if(kDebugMode) print(e);

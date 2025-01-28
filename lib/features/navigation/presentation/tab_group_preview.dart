@@ -29,7 +29,7 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
           width: MediaQuery.of(context).size.width * 0.4, // Explicitly set the width
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.4),
+            color: Colors.grey.withValues(alpha: 0.4),
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: groupRanking.whenOrNull(
@@ -116,13 +116,13 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(height: 14, width: MediaQuery.of(context).size.width * 0.2,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.white.withOpacity(0.5), )),
+                Container(height: 14, width: MediaQuery.of(context).size.width * 0.2,decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.white.withValues(alpha: 0.5), )),
                 const SizedBox(height: 3,),
-                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white.withOpacity(0.5),) ),
+                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white.withValues(alpha: 0.5),) ),
                 const SizedBox(height: 3,),
-                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white.withOpacity(0.5), ),),
+                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.white.withValues(alpha: 0.5), ),),
                 const SizedBox(height: 3,),
-                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.white.withOpacity(0.5), ),),
+                Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.white.withValues(alpha: 0.5), ),),
               ],
               ),
             ),),
@@ -131,4 +131,3 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
     );
   }
 }
-

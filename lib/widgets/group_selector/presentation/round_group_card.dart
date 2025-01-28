@@ -17,7 +17,7 @@ class _RoundGroupCardState extends ConsumerState<RoundGroupCard> {
   @override
   Widget build(BuildContext context) {
     final double baseHeight = (MediaQuery.of(context).size.height * 0.09) - 15;
-    final Color color = Colors.grey.withOpacity(0.8);
+    final Color color = Colors.grey.withValues(alpha: 0.8);
     final groupId = ref.watch(roundGroupIdProvider);
     final isActive = ref.watch(groupByIdActivatedProvider(groupId)).value ?? false;
 

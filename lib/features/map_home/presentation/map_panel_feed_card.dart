@@ -29,5 +29,4 @@ class MapPanelFeedCard extends ConsumerWidget {
       );},);
   }
 
-
 }

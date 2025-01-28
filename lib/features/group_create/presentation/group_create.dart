@@ -27,9 +27,9 @@ class GroupCreate extends ConsumerWidget {
       final result = await ref
           .read(userGroupServiceProvider.notifier)
           .createGroup(createDto);
-      if (result == null) {
+      if (result == null && context.mounted) {
         Navigator.of(context).pop();
-      } else {
+      } else if (result != null) {
         CustomErrorSnackBar.message(message: result);
       }
     },);

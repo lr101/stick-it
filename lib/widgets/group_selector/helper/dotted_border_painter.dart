@@ -10,7 +10,7 @@ class DottedBorderPainter extends CustomPainter {
     const double gapBetweenDots = 12; // Space between dots
 
     final paint = Paint()
-      ..color = Colors.grey.withOpacity(0.8) // Set your dot color
+      ..color = Colors.grey.withValues(alpha: 0.8) // Set your dot color
       ..style = PaintingStyle.fill;
 
     for (double angle = 0; angle < 360; angle += gapBetweenDots) {

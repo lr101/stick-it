@@ -7,7 +7,7 @@ part of 'reachability_service.dart';
 // **************************************************************************
 
 String _$reachabilityServiceHash() =>
-    r'44ad8258f4d52162b8408eb839e1f5b1bbbfbce8';
+    r'cfd90fc1cee128f4572f2805b078f4805f02a07a';
 
 /// See also [reachabilityService].
 @ProviderFor(reachabilityService)

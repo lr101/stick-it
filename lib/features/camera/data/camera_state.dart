@@ -30,6 +30,7 @@ class CameraIndex extends _$CameraIndex {
     state = (state + 1) % ref.watch(globalDataServiceProvider.select((t) => t.cameras)).length;
   }
 
+  // ignore: use_setters_to_change_properties
   void setIndex(int index) {
     state = index;
   }
@@ -71,6 +72,7 @@ class CameraGroupIndex extends _$CameraGroupIndex {
   @override
   int build() => 0;
 
+  // ignore: use_setters_to_change_properties
   void updateIndex(int index) {
     state = index;
   }
@@ -92,6 +94,7 @@ class CameraCapturing extends _$CameraCapturing {
     return false;
   }
 
+  // ignore: use_setters_to_change_properties
   void setCapturing(bool value) {
     state = value;
   }

@@ -181,6 +181,7 @@ class _SettingsState extends ConsumerState<Settings> {
                             onPressed: () async {
                               await ref.read(globalDataServiceProvider.notifier).logout();
                               await invalidateCache();
+                              if (!context.mounted) return;
                               Routing.toAndDelete(context, const Auth(), "/login");
                             },
                           ),),),
@@ -199,6 +200,7 @@ class _SettingsState extends ConsumerState<Settings> {
             maxLines: 10,), onPressed: () async {
           await invalidateCache();
           ref.invalidate(syncingServiceProvider);
+          if (!context.mounted) return;
           Navigator.of(context).pop();
         },
     );
@@ -206,7 +208,7 @@ class _SettingsState extends ConsumerState<Settings> {
 
   void showLoading() {
     showDialog(
-      context: NavigationService.navigatorKey.currentContext!,
+      context: navigatorKey.currentContext!,
       builder: (context) => Dialog(
         child: SizedBox(
           width: MediaQuery.of(context).size.width - 40,

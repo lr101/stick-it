@@ -14,7 +14,7 @@ class OsmCopyright extends StatelessWidget {
           onTap: () => _onTap(context),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.5), // Semi-transparent grey
+              color: Colors.grey.withValues(alpha: 0.5), // Semi-transparent grey
               borderRadius: BorderRadius.circular(8.0), // Rounded corners
             ),
             padding: const EdgeInsets.symmetric(

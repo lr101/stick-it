@@ -48,7 +48,7 @@ class ShowWebWidgetState extends ConsumerState<ShowWebWidget> {
     );
   }
 
-  copyToClip() {
+  void copyToClip() {
     Clipboard.setData(
         ClipboardData(text: 'https://${ref.watch(globalDataServiceProvider).host}/${widget.route}'),);
     Fluttertoast.showToast(

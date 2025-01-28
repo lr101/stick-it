@@ -38,7 +38,7 @@ class _GroupSelectorState extends ConsumerState<GroupSelector>  with AutomaticKe
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.transparent),
                   borderRadius: BorderRadius.all(Radius.circular(widget.height / 2)),
-                  color: Colors.grey.withOpacity(0.4),
+                  color: Colors.grey.withValues(alpha: 0.4),
               ),
               width: MediaQuery
                   .of(context)
@@ -122,7 +122,6 @@ class _GroupSelectorState extends ConsumerState<GroupSelector>  with AutomaticKe
   }
   
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive =>  true;
 
 }

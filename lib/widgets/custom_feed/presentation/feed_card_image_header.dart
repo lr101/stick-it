@@ -25,7 +25,7 @@ class FeedCardImageHeader extends ConsumerWidget {
     return Padding(
         padding: const EdgeInsets.all(10), child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.5),
+          color: Colors.grey.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(

@@ -405,12 +405,10 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
       );
     }
 
-    result = ClipRect(
+    return ClipRect(
       clipper: LikeCountClip(),
       child: result,
     );
-
-    return result;
   }
 
   Widget _createLikeCountWidget(int? likeCount, bool isLiked, String text) {

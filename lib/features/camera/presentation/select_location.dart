@@ -87,7 +87,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                             ref
                                 .watch(groupPinImageByIdProvider(groupIds[groupIndex]))
                                 .when(
-                                  data: (data) => Image.memory(data ?? ref.read(defaultGroupPinImageProvider)),
+                                  data: (data) => Image.memory(data),
                                   error: (e, s) => Image.memory(
                                       ref.read(defaultGroupPinImageProvider),),
                                   loading: () => Image.memory(

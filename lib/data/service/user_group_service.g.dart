@@ -455,7 +455,7 @@ class _GroupByIdWithoutStateProviderElement
   String get groupId => (origin as GroupByIdWithoutStateProvider).groupId;
 }
 
-String _$userGroupServiceHash() => r'f66ed168f5aaae85f498f5926386f9000a1ef652';
+String _$userGroupServiceHash() => r'66e35b95bf0d9b390a65ab6de55bd6d10476a437';
 
 /// See also [UserGroupService].
 @ProviderFor(UserGroupService)

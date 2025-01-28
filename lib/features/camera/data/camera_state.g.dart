@@ -40,7 +40,7 @@ final cameraIndexProvider =
 );
 
 typedef _$CameraIndex = AutoDisposeNotifier<int>;
-String _$cameraValuesHash() => r'04dc4771f764b5c78e0198ddc6aabdfeedfc7a19';
+String _$cameraValuesHash() => r'dc8cdd00db744bf7c31b244af90f84c55bff2103';
 
 /// Copied from Dart SDK
 class _SystemHash {

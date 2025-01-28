@@ -13,6 +13,7 @@ class MarkerWindowState extends _$MarkerWindowState {
     return null;
   }
 
+  // ignore: use_setters_to_change_properties
   void openPopup(LocalPinDto pin) {
     state = pin;
   }

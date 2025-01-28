@@ -13,12 +13,10 @@ class NavigationState extends _$NavigationState {
     return 2;
   }
 
+  // ignore: use_setters_to_change_properties
   void setIndex(int index) {
     state = index;
   }
 }
 
-class NavigationService {
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-}
-
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

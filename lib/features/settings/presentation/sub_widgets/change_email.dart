@@ -22,11 +22,16 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
   Future<void> _changeEmail() async {
     if (_formKey.currentState!.validate()) {
       final userId = ref.watch(userIdProvider);
-      final result = await ref.read(userServiceProvider(userId).notifier).changeUser(email: _newEmailController.text);
+      final result = await ref
+          .read(userServiceProvider(userId).notifier)
+          .changeUser(email: _newEmailController.text);
       if (result != null) {
-        CustomErrorSnackBar.message(message: result, type: CustomErrorSnackBarType.error);
-      } else {
-        Navigator.pop(context);
+        CustomErrorSnackBar.message(
+            message: result, type: CustomErrorSnackBarType.error,);
+      } else if (mounted) {
+        {
+          Navigator.pop(context);
+        }
       }
     }
   }

@@ -80,7 +80,7 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
                 height: 50 + scale * 50,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8 - (scale - 0.2)),
+                  color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.8 - (scale - 0.2)),
                 ),
               );
             },

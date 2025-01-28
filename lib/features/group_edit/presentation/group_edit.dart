@@ -42,9 +42,9 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
                       visibility: visibility,
                       groupAdmin: adminId,),
                   widget.groupDto.groupId,);
-          if (result == null) {
+          if (result == null && context.mounted) {
             Navigator.of(context).pop();
-          } else {
+          } else if (result != null){
             CustomErrorSnackBar.message(message: result);
           }
         },

@@ -9,6 +9,7 @@ class RankingMap extends _$RankingMap {
     return 2;
   }
 
+  // ignore: use_setters_to_change_properties
   void update(int index) {
     state = index;
   }
@@ -21,6 +22,7 @@ class RankingType extends _$RankingType {
     return 0;
   }
 
+  // ignore: use_setters_to_change_properties
   void update(int index) {
     state = index;
   }

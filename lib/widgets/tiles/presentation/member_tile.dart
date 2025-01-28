@@ -36,7 +36,7 @@ class MemberTile extends ConsumerWidget {
         children: [
           Text(memberDto.username),
           Row(children: [
-            if (memberDto.userId == adminId) Batch(batchId: Achievement.ADMIN.id, fontSize: 10,),
+            if (memberDto.userId == adminId) Batch(batchId: Achievement.admin.id, fontSize: 10,),
             if (memberDto.userId == adminId) const SizedBox(width: 5,),
             if (batch != null) Batch(batchId: batch, fontSize: 10,),
           ],),

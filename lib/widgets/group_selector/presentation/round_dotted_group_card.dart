@@ -29,7 +29,7 @@ class RoundDottedGroupCard extends StatelessWidget {
             CircleAvatar(
               radius: baseHeight / 2 - 5, // Reduced radius for dot visibility
               backgroundColor: Colors.transparent,
-              child: Icon(icon, color: Colors.grey.withOpacity(0.8),),
+              child: Icon(icon, color: Colors.grey.withValues(alpha: 0.8),),
             ),
           ],
         ),
@@ -37,5 +37,3 @@ class RoundDottedGroupCard extends StatelessWidget {
     );
   }
 }
-
-

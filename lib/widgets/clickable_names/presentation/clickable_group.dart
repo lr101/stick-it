@@ -30,5 +30,4 @@ class ClickableGroup extends ConsumerWidget {
     }
   }
 
-
 }
