@@ -1,12 +1,11 @@
 
 
+import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_group.dart';
+import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../data/service/group_image_service.dart';
-import '../../../data/service/user_group_service.dart';
-import '../../clickable_names/presentation/clickable_group.dart';
-import '../../round_image/presentation/round_image.dart';
 
 class FeedTimelineHeader extends ConsumerWidget {
   const FeedTimelineHeader({super.key, required this.groupId, required this.creationDate, required this.height, this.isRotated = false});
@@ -31,8 +30,8 @@ class FeedTimelineHeader extends ConsumerWidget {
                 child: ClickableGroup(
                   groupId: groupId, child: RoundImage(
                     size: 15,
-                    imageCallback: ref.watch(groupProfilePictureByIdProvider(groupId))
-            ),)),
+                    imageCallback: ref.watch(groupProfilePictureByIdProvider(groupId)),
+            ),),),
             Container(
               width: 2,
               height: height  - 130,
@@ -42,17 +41,17 @@ class FeedTimelineHeader extends ConsumerWidget {
         ),
         Row(
           children: [
-            SizedBox(width: 15,),
+            const SizedBox(width: 15,),
             Column(
               children: [
                 SizedBox(
                     height: 95,
                     child: Align(
                         alignment: Alignment.bottomLeft,
-                        child: RotatedBox(quarterTurns: 1, child: Text(formatTime(), style: TextStyle(color: Colors.grey, fontSize: 12),),)
-                    )
+                        child: RotatedBox(quarterTurns: 1, child: Text(formatTime(), style: const TextStyle(color: Colors.grey, fontSize: 12),),),
+                    ),
                 ),
-                SizedBox(height: 40,),
+                const SizedBox(height: 40,),
                   Align(
                     alignment: Alignment.topLeft,
                     child: ClickableGroup(
@@ -60,20 +59,20 @@ class FeedTimelineHeader extends ConsumerWidget {
                       child: RotatedBox(
                         quarterTurns: 1,
                         child: Text(ref.watch(groupByIdProvider(groupId).select((e) => e.value?.name)) ?? "",
-                          style: TextStyle(color: Colors.grey, fontSize: 12),),
-                      )
-                ))
+                          style: const TextStyle(color: Colors.grey, fontSize: 12),),
+                      ),
+                ),),
               ],
-            )
+            ),
           ],
-        )
+        ),
       ],
-    )) ;
+    ),) ;
   }
 
   String formatTime() {
-    DateTime now = DateTime.now().toUtc();
-    DateTime time = creationDate.toUtc();
+    final DateTime now = DateTime.now().toUtc();
+    final DateTime time = creationDate.toUtc();
     final difference = now.difference(time);
     if (difference.inDays >= 365) {
       return "${difference.inDays ~/ 365} years ago";

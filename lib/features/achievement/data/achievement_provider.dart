@@ -28,7 +28,7 @@ class Achievements extends _$Achievements {
             claimed: true,
             thresholdValue: state.value![index].thresholdValue,
             currentValue: state.value![index].currentValue,
-            thresholdUp: state.value![index].thresholdUp
+            thresholdUp: state.value![index].thresholdUp,
         );
         ref.notifyListeners();
       }

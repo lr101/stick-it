@@ -2,12 +2,11 @@ import 'dart:convert';
 
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/group_edit_template/presentation/group_edit_template.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart' as api;
-
-import '../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 
 class GroupCreate extends ConsumerWidget {
   const GroupCreate({super.key});
@@ -24,7 +23,7 @@ class GroupCreate extends ConsumerWidget {
           visibility: visibility,
           profileImage: base64Encode(profileImage.toList()),
           groupAdmin: ref.watch(globalDataServiceProvider).userId!,
-          link: link);
+          link: link,);
       final result = await ref
           .read(userGroupServiceProvider.notifier)
           .createGroup(createDto);
@@ -33,6 +32,6 @@ class GroupCreate extends ConsumerWidget {
       } else {
         CustomErrorSnackBar.message(message: result);
       }
-    });
+    },);
   }
 }

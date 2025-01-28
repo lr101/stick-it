@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 class DottedBorderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    double radius = size.width / 2;
-    double dotRadius = 2; // Radius of each dot
-    double gapBetweenDots = 12; // Space between dots
+    final double radius = size.width / 2;
+    const double dotRadius = 2; // Radius of each dot
+    const double gapBetweenDots = 12; // Space between dots
 
     final paint = Paint()
       ..color = Colors.grey.withOpacity(0.8) // Set your dot color

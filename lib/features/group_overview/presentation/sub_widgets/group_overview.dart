@@ -3,6 +3,8 @@ import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_image_feed.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/member_tile.dart';
@@ -10,12 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../util/routing/routing.dart';
-import 'group_image_feed.dart';
-
 class GroupOverview extends ConsumerStatefulWidget {
   const GroupOverview(
-      {super.key, required this.groupId, this.floatingActionButton, this.actions});
+      {super.key, required this.groupId, this.floatingActionButton, this.actions,});
 
   final String groupId;
   final Widget? floatingActionButton;
@@ -52,51 +51,51 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
         actions: widget.actions,
         bottom: TabBar(controller: _tabController, tabs: const [
           Tab(icon: Icon(Icons.groups)),
-          Tab(icon: Icon(Icons.image))
-        ]),
+          Tab(icon: Icon(Icons.image)),
+        ],),
         boxes: [
           SliverToBoxAdapter(
               child: ListTile(
-            title: Text("Members"),
+            title: const Text("Members"),
             subtitle: Text(
                 members.whenOrNull(data: (data) => data.length.toString()) ??
-                    0.toString()),
-          )),
+                    0.toString(),),
+          ),),
           SliverToBoxAdapter(
               child: ListTile(
-            title: Text("Sticks"),
+            title: const Text("Sticks"),
             subtitle: Text(members.whenOrNull(
                     data: (data) =>
-                        data.fold(0, (p, e) => p + e.points).toString()) ??
-                0.toString()),
-          )),
+                        data.fold(0, (p, e) => p + e.points).toString(),) ??
+                0.toString(),),
+          ),),
           SliverToBoxAdapter(
               child: ListTile(
-            title: Text("Description"),
+            title: const Text("Description"),
             subtitle: group?.description != null
                 ? Text(
                     group!.description!,
                     softWrap: true,
                     maxLines: 10,
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                    style: const TextStyle(fontStyle: FontStyle.italic),
                   )
-                : Icon(Icons.lock),
-          )),
+                : const Icon(Icons.lock),
+          ),),
           if (group?.link != null)
             SliverToBoxAdapter(
                     child: ListTile(
                       onTap: () => Routing.clickedOnLink(group.link),
-                    title: Row( children: [Text("External Link"), Spacer(), Icon(Icons.open_in_new_rounded)]),
-                    subtitle: Text(group!.link ?? "No link set", maxLines: 1, overflow: TextOverflow.ellipsis,))),
+                    title: const Row( children: [Text("External Link"), Spacer(), Icon(Icons.open_in_new_rounded)]),
+                    subtitle: Text(group!.link ?? "No link set", maxLines: 1, overflow: TextOverflow.ellipsis,),),),
           if (group != null && group.visibility != 0)
             SliverToBoxAdapter(
               child: ListTile(
                 onTap: ()  => clickedOnInviteCode(group),
-                title: Text("Invite code"),
+                title: const Text("Invite code"),
                 subtitle:
                     Text(group.inviteUrl ?? "Ups something went wrong"),
               ),
-            )
+            ),
         ],
         body: TabBarView(controller: _tabController, children: [
           members.when(
@@ -105,14 +104,14 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
                         MemberTile(memberDto: data[index], adminId: group?.groupAdmin ?? "", ),
                     itemCount: data.length,
                   ),
-              error: (err, __) => Center(child: Text("Ups something went wrong")),
-              loading: () => const Center(child: CircularProgressIndicator())),
+              error: (err, __) => const Center(child: Text("Ups something went wrong")),
+              loading: () => const Center(child: CircularProgressIndicator()),),
           ImageGrid(
             pinProvider: sortedGroupPinsProvider(widget.groupId),
             onTab: (index) => Routing.to(context,
-                GroupImageFeed(index: index, groupId: widget.groupId)),
+                GroupImageFeed(index: index, groupId: widget.groupId),),
           ),
-        ]));
+        ],),);
   }
 
 

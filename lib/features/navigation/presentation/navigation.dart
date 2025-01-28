@@ -1,15 +1,14 @@
 import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:buff_lisa/features/camera/presentation/camera.dart';
 import 'package:buff_lisa/features/feed/presentation/active_group_feed.dart';
+import 'package:buff_lisa/features/group_user_list/presentation/user_groups.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_home.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/features/navigation/presentation/tab_group_preview.dart';
 import 'package:buff_lisa/features/profile/presentation/user_profile.dart';
+import 'package:buff_lisa/widgets/group_selector/presentation/group_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../widgets/group_selector/presentation/group_selector.dart';
-import '../../group_user_list/presentation/user_groups.dart';
 
 class Navigation extends ConsumerStatefulWidget {
   const Navigation({super.key});
@@ -32,7 +31,7 @@ class _NavigationState extends ConsumerState<Navigation> {
       const Camera(),
       const MapHome(),
       const ActiveGroupFeed(),
-      const UserProfile()
+      const UserProfile(),
     ];
   }
 
@@ -43,7 +42,6 @@ class _NavigationState extends ConsumerState<Navigation> {
     ref.watch(syncingServiceProvider);
     final state = ref.watch(navigationStateProvider);
     return  Scaffold(
-        appBar: null,
         backgroundColor: state == 2 ? Colors.transparent : null,
         body: Stack(
           children: [
@@ -56,15 +54,15 @@ class _NavigationState extends ConsumerState<Navigation> {
                     physics: const NeverScrollableScrollPhysics(),
                     children: widgetOptions,
                   ),
-                )
+                ),
               ],
             ),
             if (state == 2 || state == 3)  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 groupSelector,
-                if (state == 2) TopGroupsPreview()
-              ]),
+                if (state == 2) const TopGroupsPreview(),
+              ],),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -95,7 +93,7 @@ class _NavigationState extends ConsumerState<Navigation> {
           onTap: onItemTapped,
           selectedItemColor: Theme.of(context).colorScheme.primary,
           unselectedItemColor: Theme.of(context).hintColor,
-        ));
+        ),);
   }
 
   void onItemTapped(int index) {

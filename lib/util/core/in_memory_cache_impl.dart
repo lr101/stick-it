@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 
-import 'cache_api.dart';
+import 'package:buff_lisa/util/core/cache_api.dart';
 
 abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
   final Map<String, T> _cache = {};
@@ -46,7 +46,7 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
 
   @override
   Future<void> putMultiple(Map<String, T> items) async {
-    for (var entry in items.entries) {
+    for (final entry in items.entries) {
       await put(entry.key, entry.value);
     }
   }

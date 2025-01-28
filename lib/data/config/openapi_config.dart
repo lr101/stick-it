@@ -23,7 +23,7 @@ class OpenApiConfig extends _$OpenApiConfig {
   ApiClient build() {
     final data = ref.watch(globalDataServiceProvider);
     _authentication.accessToken = getToken;
-    ApiClient apiClient = ApiClient(basePath: data.host, authentication: _authentication);
+    final ApiClient apiClient = ApiClient(basePath: data.host, authentication: _authentication);
 
     // set retry client
     apiClient.client = RetryClient(
@@ -46,7 +46,7 @@ class OpenApiConfig extends _$OpenApiConfig {
   Future<void> provideAccessToken() async {
     await _m.protect(() async {
       final data = ref.watch(globalDataServiceProvider);
-      if (data.refreshToken != null && _lastCheck == null || DateTime.now().difference(_lastCheck!) > Duration(minutes: 1)) {
+      if (data.refreshToken != null && _lastCheck == null || DateTime.now().difference(_lastCheck!) > const Duration(minutes: 1)) {
         final authApi = AuthApi(ApiClient(basePath: data.host));
         final refreshTokenDto = RefreshTokenRequestDto(refreshToken: data.refreshToken, userId: data.userId);
         final response = await authApi.refreshToken(refreshTokenRequestDto: refreshTokenDto);

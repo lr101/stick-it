@@ -5,10 +5,12 @@ import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/repository/pin_image_repository.dart';
-import 'package:buff_lisa/data/repository/user_pins_repository.dart';
+import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
+import 'package:buff_lisa/features/profile/service/user_pin_service.dart';
 import 'package:buff_lisa/util/core/cache_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,9 +18,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../features/profile/service/user_pin_service.dart';
-import '../repository/pin_repository.dart';
-import 'global_data_service.dart';
 
 part 'pin_service.g.dart';
 
@@ -48,7 +47,7 @@ class PinService extends _$PinService {
     final pinsApi = ref.watch(pinApiProvider);
     final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
     final localPins = remotePins!.items.map((e) => LocalPinDto.fromDtoWithImage(e)).toSet();
-    final storage = (_pinRepository as CacheApi<PinEntity>);
+    final storage = _pinRepository as CacheApi<PinEntity>;
     final map = <String, PinEntity>{};
     for (final pin in remotePins.items) {
       map[pin.id] = PinEntity.fromDto(pin);
@@ -59,7 +58,7 @@ class PinService extends _$PinService {
   
   Future<void> updateSinglePin(LocalPinDto? oldPin, LocalPinDto updatedPin) async {
     final userPinRepo = ref.read(userPinServiceProvider(updatedPin.creatorId).notifier);
-    final storage = (_pinRepository as CacheApi<PinEntity>);
+    final storage = _pinRepository as CacheApi<PinEntity>;
     await _mutex.protect(() async {
       final currentState = {...state.value!};
       currentState.remove(oldPin);
@@ -70,7 +69,7 @@ class PinService extends _$PinService {
         await userPinRepo.removePin(oldPin.id);
       }
       await storage.put(updatedPin.id, updatedPin.toEntityCompanion(keepAlive: true));
-      await userPinRepo.addPin(updatedPin);
+      userPinRepo.addPin(updatedPin);
     });
   }
 
@@ -97,7 +96,7 @@ class PinService extends _$PinService {
 
   Future<String?> deletePinFromGroup(String pinId) async {
     final pinsApi = ref.read(pinApiProvider);
-    final storage = (_pinRepository as CacheApi<PinEntity>);
+    final storage = _pinRepository as CacheApi<PinEntity>;
     final userId = ref.read(userIdProvider);
     final userPinRepo = ref.read(userPinServiceProvider(userId).notifier);
     try {
@@ -124,7 +123,7 @@ class PinService extends _$PinService {
 Future<Set<LocalPinDto>> activatedPins(Ref ref) async {
   final groups = await ref.watch(activeGroupsProvider.future);
   final pins = <LocalPinDto>{};
-  for (var group in groups) {
+  for (final group in groups) {
     final p = await ref.watch(pinServiceProvider(group.groupId).future);
     pins.addAll(p);
   }
@@ -135,7 +134,7 @@ Future<Set<LocalPinDto>> activatedPins(Ref ref) async {
 Set<LocalPinDto> activatedPinsWithoutLoading(Ref ref) {
   final groups = ref.watch(activeGroupsProvider).value ?? {};
   final pins = <LocalPinDto>{};
-  for (var group in groups) {
+  for (final group in groups) {
     final p = ref.watch(pinServiceProvider(group.groupId)).value ?? {};
     pins.addAll(p);
   }
@@ -159,10 +158,10 @@ Future<List<LocalPinDto>?> sortedGroupPins(Ref ref, String groupId) async {
 
 @riverpod
 AsyncValue<List<MapEntry<LocalPinDto, double>>> pinsSortedByDistance(Ref ref) {
-  Distance d = Distance();
+  const Distance d = Distance();
   final value = ref.watch(activatedPinsProvider);
-  if (value.isLoading) return AsyncLoading();
-  if (value.value == null) return AsyncData([]);
+  if (value.isLoading) return const AsyncLoading();
+  if (value.value == null) return const AsyncData([]);
   return ref.watch(currentLocationProvider).when(
     data: (data) {
       final latlong = LatLng(data.latitude, data.longitude);
@@ -172,6 +171,6 @@ AsyncValue<List<MapEntry<LocalPinDto, double>>> pinsSortedByDistance(Ref ref) {
       return AsyncData(pinsWithDistance);
     },
     error: (error, stackTrace) => AsyncValue.error(error, stackTrace),
-    loading: () => AsyncLoading(),
+    loading: () => const AsyncLoading(),
   );
 }

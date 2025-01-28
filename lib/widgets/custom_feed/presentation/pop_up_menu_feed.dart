@@ -4,14 +4,13 @@ import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_menu_item.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../util/routing/routing.dart';
-import '../../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
-import '../../buttons/presentation/custom_menu_item.dart';
 
 class PopUpMenuFeed extends ConsumerWidget {
 
@@ -23,7 +22,7 @@ class PopUpMenuFeed extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(globalDataServiceProvider).userId!;
     final adminId = ref.watch(groupByIdProvider(pinDto.groupId)).whenOrNull(data: (d) => d?.groupAdmin);
-    bool isNotCreator =  userId != pinDto.creatorId;
+    final bool isNotCreator =  userId != pinDto.creatorId;
     return PopupMenuButton(
         itemBuilder: (context) {
           return [
@@ -35,7 +34,7 @@ class PopUpMenuFeed extends ConsumerWidget {
             if(isNotCreator) CustomMenuItem<int>(
                 value: 1,
                 title: "Report stick",
-              icon: Icons.report
+              icon: Icons.report,
             ),
             if(isNotCreator) CustomMenuItem<int>(
                 value: 2,
@@ -45,24 +44,24 @@ class PopUpMenuFeed extends ConsumerWidget {
             if(isNotCreator) CustomMenuItem<int>(
                 value: 3,
                 title: "Report user",
-              icon: Icons.report
+              icon: Icons.report,
             ),
             if (userId == adminId || !isNotCreator) CustomMenuItem<int>(
               value: 4,
               title: "Delete",
-              icon: Icons.delete
-            )
+              icon: Icons.delete,
+            ),
           ];
         },
         onSelected:(value){
           switch (value) {
-            case 0: ref.read(hiddenPostsServiceProvider.notifier).addHiddenPost(pinDto.id);break;
-            case 1: Routing.to(context, ReportIssuePage(issueTypes: ["Report stick"], pinId: pinDto.id,)); break;
-            case 2: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(pinDto.creatorId);break;
-            case 3: Routing.to(context, ReportIssuePage(issueTypes: ["Report user"], userId: pinDto.creatorId,)); break;
-            case 4: _deleteStick(ref, context); break;
+            case 0: ref.read(hiddenPostsServiceProvider.notifier).addHiddenPost(pinDto.id);
+            case 1: Routing.to(context, ReportIssuePage(issueTypes: const ["Report stick"], pinId: pinDto.id,));
+            case 2: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(pinDto.creatorId);
+            case 3: Routing.to(context, ReportIssuePage(issueTypes: const ["Report user"], userId: pinDto.creatorId,));
+            case 4: _deleteStick(ref, context);
           }
-        }
+        },
     );
   }
 
@@ -77,7 +76,7 @@ class PopUpMenuFeed extends ConsumerWidget {
           if (result != null) {
             CustomErrorSnackBar.message(message: result);
           }
-    });
+    },);
 
   }
 }

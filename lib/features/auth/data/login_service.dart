@@ -1,4 +1,5 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,8 +8,6 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:string_validator/string_validator.dart';
-
-import '../../../data/service/syncing_service.dart';
 
 part 'login_service.g.dart';
 
@@ -45,7 +44,7 @@ class LoginService {
         return await ref
             .read(authServiceProvider.notifier)
             .signupNewUser(data.name!, data.password!,
-                data.additionalSignupData!["email"]!);
+                data.additionalSignupData!["email"]!,);
       }
     } catch (e) {
       return "cannot connect to server";

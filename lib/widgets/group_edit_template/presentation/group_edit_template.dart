@@ -3,18 +3,17 @@ import 'dart:typed_data';
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
+import 'package:buff_lisa/widgets/group_edit_template/service/group_create_service.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mutex/mutex.dart';
 
-import '../service/group_create_service.dart';
-
 class GroupEditTemplate extends ConsumerStatefulWidget {
   const GroupEditTemplate({super.key, required this.onSubmit, this.rowItems, this.groupDto, required this.title});
 
   final Future<void> Function(String name, String description, String? link,
-      Uint8List profileImage, int visibility) onSubmit;
+      Uint8List profileImage, int visibility,) onSubmit;
 
   final List<Widget>? rowItems;
   final LocalGroupDto? groupDto;
@@ -56,7 +55,6 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
           child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
@@ -72,8 +70,8 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
                                   groupNotifier.updateProfileImage(image);
                                 },
                                 imageCallback: AsyncData(
-                                    ref.watch(createGroupProfileImageProvider)),
-                              )),
+                                    ref.watch(createGroupProfileImageProvider),),
+                              ),),
                           const SizedBox(
                             width: 10,
                           ),
@@ -86,9 +84,9 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
                                   : null,
                               textAlign: TextAlign.left,
                               decoration: const InputDecoration(
-                                  hintText: "Type your group name"),
+                                  hintText: "Type your group name",),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -108,23 +106,22 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
                                     style: TextStyle(
                                         fontSize: 12,
                                         fontStyle: FontStyle.italic,
-                                        fontWeight: FontWeight.normal)),
+                                        fontWeight: FontWeight.normal,),),
                                 TextFormField(
                                   validator: (value) => value!.isEmpty
                                       ? "Please enter a group description"
                                       : null,
                                   controller: _textEditControllerDescription,
-                                  textAlign: TextAlign.start,
                                   keyboardType: TextInputType.multiline,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.normal,
                                   ),
                                   decoration: const InputDecoration(
-                                      hintText: "Type your group description"),
+                                      hintText: "Type your group description",),
                                   maxLines: null,
                                 ),
-                              ])),
+                              ],),),
                     ),
                   ),
                   const SizedBox(
@@ -142,24 +139,22 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
                                     style: TextStyle(
                                         fontSize: 12,
                                         fontStyle: FontStyle.italic,
-                                        fontWeight: FontWeight.normal)),
+                                        fontWeight: FontWeight.normal,),),
                                 TextFormField(
                                   validator: (value) => value == null || value.isEmpty ||
                                           Uri.parse(value).isAbsolute
                                       ? null
                                       : "Invalid link",
                                   controller: _textEditControllerLink,
-                                  textAlign: TextAlign.start,
                                   keyboardType: TextInputType.url,
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.normal,
                                   ),
                                   decoration: const InputDecoration(
-                                      hintText: "Type your link (optional)"),
-                                  maxLines: 1,
+                                      hintText: "Type your link (optional)",),
                                 ),
-                              ])),
+                              ],),),
                     ),
                   ),
                   const SizedBox(
@@ -177,33 +172,32 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
                               style: TextStyle(
                                   fontSize: 14,
                                   fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.normal)),
+                                  fontWeight: FontWeight.normal,),),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Icon(Icons.lock_open),
-                              SizedBox(width: 5,),
+                              const Icon(Icons.lock_open),
+                              const SizedBox(width: 5,),
                               Switch(
                                 value: group.visibility == 1,
                                 onChanged: (value) => groupNotifier.updateVisibility(!value ? 0 : 1),
                               ),
-                              SizedBox(width: 5,),
-                              Icon(Icons.lock)
+                              const SizedBox(width: 5,),
+                              const Icon(Icons.lock),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
-                  )),
+                  ),),
                   const SizedBox(
                     height: 5,
                   ),
                   ...widget.rowItems ?? [],
                 ],
-              )),
+              ),),
         ),
         floatingActionButton: SubmitButton(
-            text: "Submit",
             onPressed: () async {
               final group = ref.watch(groupCreateServiceProvider);
               if (_formKey.currentState!.validate() && group.profileImage != null && !_mutex.isLocked) {
@@ -217,12 +211,12 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
                           ? null
                           : _textEditControllerLink.text,
                       group.profileImage!,
-                      group.visibility);
+                      group.visibility,);
                 } finally {
                   _isLoading.value = false;
                   _mutex.release();
                 }
               }
-            }));
+            },),);
   }
 }

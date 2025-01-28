@@ -1,6 +1,5 @@
+import 'package:buff_lisa/widgets/group_selector/helper/dotted_border_painter.dart';
 import 'package:flutter/material.dart';
-
-import '../helper/dotted_border_painter.dart';
 
 class RoundDottedGroupCard extends StatelessWidget {
 
@@ -11,7 +10,7 @@ class RoundDottedGroupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double baseHeight = (MediaQuery.of(context).size.height * 0.09) - 15;
+    final double baseHeight = (MediaQuery.of(context).size.height * 0.09) - 15;
 
     return Padding(
       padding: const EdgeInsets.all(5),

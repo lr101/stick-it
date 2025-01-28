@@ -1,13 +1,12 @@
 import 'package:buff_lisa/data/service/geojson_service.dart';
+import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/ranking_service.dart';
 import 'package:buff_lisa/features/ranking/presentation/ranking.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
+import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../../data/service/group_image_service.dart';
-import '../../../util/routing/routing.dart';
-import '../../../widgets/round_image/presentation/round_image.dart';
 
 class TopGroupsPreview extends ConsumerStatefulWidget {
   const TopGroupsPreview({super.key});
@@ -37,7 +36,6 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
             data: (data) {
               if (data == null) return null;
               return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Wrap with Align to apply width constraints
@@ -114,7 +112,6 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
           ) ?? Shimmer.fromColors(
             baseColor: Colors.grey.shade300,
             highlightColor: Colors.grey.shade100,
-            enabled: true,
             child: SizedBox(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,8 +124,8 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
                 const SizedBox(height: 3,),
                 Container(height: 10, width: MediaQuery.of(context).size.width * 0.3, decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),  color: Colors.white.withOpacity(0.5), ),),
               ],
-              )
-            ))
+              ),
+            ),),
         ),
       ),
     );

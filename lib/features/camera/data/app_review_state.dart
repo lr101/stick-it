@@ -11,7 +11,7 @@ class AppReviewState extends _$AppReviewState {
   bool build() {
     final pref = ref.watch(sharedPreferencesProvider);
     final lastReviewDate = pref.getString(GlobalDataRepository.lastReviewKey);
-    if (lastReviewDate == null || DateTime.tryParse(lastReviewDate)?.add(Duration(days: 7)).isBefore(DateTime.now()) == true)  {
+    if (lastReviewDate == null || DateTime.tryParse(lastReviewDate)?.add(const Duration(days: 7)).isBefore(DateTime.now()) == true)  {
       return true;
     }
     return false;

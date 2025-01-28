@@ -5,11 +5,10 @@ import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/achievement/data/achievement_provider.dart';
 import 'package:buff_lisa/features/achievement/presentation/achievement_card.dart';
 import 'package:buff_lisa/util/types/achievement.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
-
-import '../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 
 
 class AchievementsPage extends ConsumerWidget {
@@ -26,7 +25,7 @@ class AchievementsPage extends ConsumerWidget {
         title: const Text('Achievements'),
       ),
       body: GridView.builder(
-          gridDelegate: (SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0)),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0),
           itemCount: Achievement.values.where((e) => e.id >= 0).length,
           itemBuilder: (context, index) {
           final achievement = Achievement.getById(index);
@@ -39,12 +38,11 @@ class AchievementsPage extends ConsumerWidget {
               child: AchievementCard(
                 progress: progress,
                 isSelected: selectedBatch.value == index,
-                borderWidth: 2.0,
                 claimedBorderColor: Theme.of(context).colorScheme.primary,
                 progressColor: Theme.of(context).highlightColor,
                 color: color,
                 margin: const EdgeInsets.all(8.0),
-                child: Padding(padding: EdgeInsets.all(10.0), child: Column(
+                child: Padding(padding: const EdgeInsets.all(10.0), child: Column(
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10), // Match the borderRadius of the decoration
@@ -60,8 +58,8 @@ class AchievementsPage extends ConsumerWidget {
                     style: const TextStyle(fontSize: 12),
                   ),
                 ],
-              )),
-            )
+              ),),
+            ),
           );
         },
       ),

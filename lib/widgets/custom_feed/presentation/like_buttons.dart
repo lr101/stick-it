@@ -1,11 +1,10 @@
+import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/like_button_animated.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
-
-import '../../../data/service/global_data_service.dart';
-import '../data/like_service.dart';
-import 'like_button_animated.dart';
 
 class LikeButtons extends ConsumerWidget {
 
@@ -44,7 +43,7 @@ class LikeButtons extends ConsumerWidget {
                 return true;
               },
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             LikeButtonAnimated(
               isLikedProvider: likeServiceProvider(pinId).select((e) => e.valueOrNull?.likedLocationByUser),
               isLiked: pinLike.valueOrNull?.likedLocationByUser ?? false,
@@ -69,7 +68,7 @@ class LikeButtons extends ConsumerWidget {
                 return true;
               },
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             LikeButtonAnimated(
               isLikedProvider: likeServiceProvider(pinId).select((e) => e.valueOrNull?.likedPhotographyByUser),
               isLiked: pinLike.valueOrNull?.likedPhotographyByUser ?? false,
@@ -94,7 +93,7 @@ class LikeButtons extends ConsumerWidget {
                 return true;
               },
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             LikeButtonAnimated(
               isLikedProvider: likeServiceProvider(pinId).select((e) => e.valueOrNull?.likedArtByUser),
               isLiked: pinLike.valueOrNull?.likedArtByUser ?? false,
@@ -118,7 +117,7 @@ class LikeButtons extends ConsumerWidget {
                 }
                 return true;
               },
-            )
+            ),
           ],
         );
   }

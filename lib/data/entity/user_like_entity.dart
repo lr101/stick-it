@@ -26,7 +26,7 @@ class UserLikeEntity extends CacheEntity {
     required this.likeLocationCount,
     required this.likeArtCount,
     super.hits,
-    super.ttl
+    super.ttl,
   });
 
   factory UserLikeEntity.fromDto(UserLikesDto likes) {
@@ -34,7 +34,7 @@ class UserLikeEntity extends CacheEntity {
         likeCount: likes.likeCount,
         likePhotographyCount: likes.likePhotographyCount,
         likeLocationCount: likes.likeLocationCount,
-        likeArtCount: likes.likeArtCount
+        likeArtCount: likes.likeArtCount,
     );
   }
 
@@ -46,7 +46,7 @@ class UserLikeEntity extends CacheEntity {
       likeLocationCount: likeLocationCount,
       likeArtCount: likeArtCount,
       hits: hits ?? this.hits,
-      ttl: ttl ?? this.ttl
+      ttl: ttl ?? this.ttl,
     );
   }
 

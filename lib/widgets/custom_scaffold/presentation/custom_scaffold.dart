@@ -10,10 +10,10 @@ class CustomScaffold<T> extends ConsumerWidget {
   final List<Widget> boxes;
   final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
-  final ItemWidgetBuilder listBuilder;
+  final ItemWidgetBuilder<T> listBuilder;
   final PagingController pagingController;
 
-  const CustomScaffold({super.key, 
+  const CustomScaffold({super.key,
     required this.title,
     required this.listBuilder,
     required this.pagingController,
@@ -30,9 +30,7 @@ class CustomScaffold<T> extends ConsumerWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            pinned: false,
             floating: true,
-            snap: false,
             actions: actions,
             title: title,
             expandedHeight: headerHeight,
@@ -43,10 +41,9 @@ class CustomScaffold<T> extends ConsumerWidget {
           PagedSliverList(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<T>(
-                animateTransitions: false,
-                itemBuilder: listBuilder
+                itemBuilder: listBuilder,
             ),
-          )
+          ),
         ],
       ),
     );

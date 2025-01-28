@@ -26,7 +26,7 @@ class LocalGroupDto {
     this.groupAdmin,
     this.description,
     this.lastUpdated,
-    required this.isActivated
+    required this.isActivated,
   });
 
   factory LocalGroupDto.fromEntityData(GroupEntity entityData) {
@@ -39,7 +39,7 @@ class LocalGroupDto {
       groupAdmin: entityData.groupAdmin,
       description: entityData.description,
       lastUpdated: entityData.lastUpdated,
-      isActivated: entityData.isActivated
+      isActivated: entityData.isActivated,
     );
   }
 
@@ -54,7 +54,7 @@ class LocalGroupDto {
       description: description,
       lastUpdated: lastUpdated,
       isActivated: isActivated,
-      keepAlive: keepAlive
+      keepAlive: keepAlive,
     );
   }
 
@@ -68,7 +68,7 @@ class LocalGroupDto {
         groupAdmin:  dto.groupAdmin,
         link: dto.link,
         lastUpdated: dto.lastUpdated,
-        isActivated: false
+        isActivated: false,
     );
   }
 
@@ -79,7 +79,7 @@ class LocalGroupDto {
       description: description!,
       profileImage: base64Encode(image),
       visibility: visibility,
-      link: link!
+      link: link,
     );
   }
 
@@ -90,7 +90,7 @@ class LocalGroupDto {
       profileImage: image != null ?base64Encode(image) : null,
       visibility: visibility,
       groupAdmin: groupAdmin,
-      link: link
+      link: link,
     );
   }
 

@@ -1,8 +1,6 @@
+import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:hive/hive.dart';
-import 'package:buff_lisa/data/entity/user_entity.dart';
 import 'package:openapi/api.dart';
-
-import 'cache_entity.dart';
 
 part 'group_entity.g.dart'; // This will be generated
 
@@ -48,7 +46,7 @@ class GroupEntity extends CacheEntity {
     this.link,
     super.keepAlive,
     super.hits,
-    super.ttl
+    super.ttl,
   });
   
   factory GroupEntity.fromGroupDto(GroupDto groupDto, {bool keepAlive = false, bool isActivated = false}) {
@@ -62,7 +60,7 @@ class GroupEntity extends CacheEntity {
       groupAdmin: groupDto.groupAdmin,
       lastUpdated: groupDto.lastUpdated,
       link: groupDto.link,
-      keepAlive: keepAlive
+      keepAlive: keepAlive,
     );
   }
 
@@ -80,7 +78,7 @@ class GroupEntity extends CacheEntity {
       link: link,
       keepAlive: keepAlive ?? this.keepAlive,
       hits: hits ?? this.hits,
-      ttl: ttl
+      ttl: ttl,
     );
   }
 }

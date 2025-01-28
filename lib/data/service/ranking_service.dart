@@ -1,9 +1,8 @@
 
+import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/service/geojson_service.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../config/openapi_config.dart';
 
 part 'ranking_service.g.dart';
 

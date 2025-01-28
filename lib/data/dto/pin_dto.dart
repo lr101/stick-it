@@ -26,7 +26,7 @@ class LocalPinDto {
     required this.isHidden,
     required this.description,
     this.lastSynced,
-    this.likes
+    this.likes,
   });
 
   factory LocalPinDto.fromEntityData(PinEntity entityData) {
@@ -54,7 +54,7 @@ class LocalPinDto {
       isHidden: isHidden,
       description: description,
       lastSynced: lastSynced,
-      keepAlive: keepAlive
+      keepAlive: keepAlive,
     );
   }
 
@@ -94,7 +94,7 @@ class LocalPinDto {
       creationDate: creationDate,
       image: image,
       description: description,
-      userId: creatorId
+      userId: creatorId,
     );
   }
 

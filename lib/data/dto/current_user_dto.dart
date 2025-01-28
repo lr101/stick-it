@@ -21,7 +21,7 @@ class CurrentUserDto {
         username: username!,
         description: description,
         userId: userId,
-      selectedBatch: selectedBatch
+      selectedBatch: selectedBatch,
     );
   }
 }

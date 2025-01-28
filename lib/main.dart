@@ -1,15 +1,20 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/entity/image_entity.dart';
-import 'package:buff_lisa/data/entity/pin_like_entity.dart';
-import 'package:buff_lisa/data/entity/user_like_entity.dart';
 import 'package:buff_lisa/data/entity/member_entity.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:buff_lisa/data/entity/pin_like_entity.dart';
 import 'package:buff_lisa/data/entity/user_entity.dart';
+import 'package:buff_lisa/data/entity/user_like_entity.dart';
 import 'package:buff_lisa/data/entity/user_pins_entity.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
+import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/shared_preferences_service.dart';
+import 'package:buff_lisa/features/auth/presentation/auth.dart';
+import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
+import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
@@ -19,16 +24,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'data/service/global_data_service.dart';
-import 'data/service/shared_preferences_service.dart';
-import 'features/auth/presentation/auth.dart';
-import 'features/navigation/data/navigation_provider.dart';
-import 'features/navigation/presentation/navigation.dart';
 
 /// THIS IS THE START OF THE PROGRAMM
 /// binding Widgets before initialization is required by multiple packages
@@ -49,13 +48,13 @@ Future<void> main() async {
   Hive.registerAdapter(UserPinsEntityAdapter());
   const bool isProduction = bool.fromEnvironment('dart.vm.product');
   if (isProduction) {
-    await dotenv.load(fileName: ".env");
+    await dotenv.load();
   } else {
     await dotenv.load(fileName: ".env.dev");
   }
   try {
     await FMTCObjectBoxBackend().initialise();
-    final mgmt = FMTCStore('tileStore').manage;
+    final mgmt = const FMTCStore('tileStore').manage;
     final ready = await mgmt.ready; // Check whether the store exists
     if (!ready) await mgmt.create(); // Create the store
   } catch (e) {
@@ -68,7 +67,7 @@ Future<void> main() async {
     await dir.delete(recursive: true);
     await FMTCObjectBoxBackend().initialise();
   }
-  final storage = FlutterSecureStorage();
+  const storage = FlutterSecureStorage();
   final globalData = await GlobalDataRepository.get(sharedPreferences, storage);
   final globalUserData = await GlobalDataRepository.getUser(sharedPreferences, storage);
   final defaultGroupImage =  (await rootBundle.load('assets/image/pin_border.png')).buffer.asUint8List();
@@ -84,7 +83,7 @@ Future<void> main() async {
           defaultGroupPinImageProvider.overrideWithValue(defaultGroupImage),
           defaultErrorImageProvider.overrideWithValue(defaultErrorImage),
         ],
-        child: MyApp(),
+        child: const MyApp(),
     ),
   );
 }
@@ -110,10 +109,10 @@ class MyApp extends ConsumerWidget {
       theme: theme.light(),
       initialRoute: ref.watch(globalDataServiceProvider).userId != null ? '/home' : '/login',
       routes: {
-        '/login': (context) => Auth(),
+        '/login': (context) => const Auth(),
         '/home': (context) {
           return const Navigation();
-        }
+        },
       },
       navigatorKey: NavigationService.navigatorKey,
     );

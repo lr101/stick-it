@@ -1,21 +1,17 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/feed_map_state.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/image_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image_header.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_description.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_map.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_switchable_image.dart';
-import 'package:buff_lisa/widgets/custom_feed/presentation/pop_up_menu_feed.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/like_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
-import 'package:transparent_image/transparent_image.dart';
-
-import '../../../data/service/global_data_service.dart';
-import '../data/feed_map_state.dart';
-import '../data/image_service.dart';
-import '../data/like_service.dart';
-import 'feed_description.dart';
-import 'feed_map.dart';
-import 'like_buttons.dart';
 
 class FeedCardImage extends ConsumerStatefulWidget {
   const FeedCardImage(
@@ -25,7 +21,7 @@ class FeedCardImage extends ConsumerStatefulWidget {
       required this.maxWidth,
       this.distance,
       this.rotateHeader = false,
-      this.onTab});
+      this.onTab,});
 
   final LocalPinDto item;
   final double maxWidth;
@@ -54,7 +50,7 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
         item: widget.item,
         image: data.value,
         likeImage: likeImage,
-        onTab: widget.onTab);
+        onTab: widget.onTab,);
 
     final renderDescription =
         !widget.rotateHeader && widget.item.description != null;
@@ -62,16 +58,15 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
         child: Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: widget.rotateHeader ? 5 : 0,
-                vertical: widget.rotateHeader ? 0 : 5),
+                vertical: widget.rotateHeader ? 0 : 5,),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
                   children: [
                     Padding(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
@@ -79,31 +74,31 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: ref.watch(feedMapStateProvider(
-                                              widget.item.id))
+                                              widget.item.id,),)
                                           ? feedImage
-                                          : feedMap)),
-                              SizedBox(
+                                          : feedMap,),),
+                              const SizedBox(
                                 height: 5,
                               ),
                               LikeButtons(
                                   pinId: widget.item.id,
-                                  creatorId: widget.item.creatorId),
+                                  creatorId: widget.item.creatorId,),
                               if (renderDescription)
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                               if (renderDescription)
                                 FeedDescriptionExpandable(
                                   pin: widget.item,
-                                )
-                            ])),
+                                ),
+                            ],),),
                     SizedBox(
                         width: widget.maxWidth - 20,
                         height: 65,
                         child: FeedCardImageHeader(
                           pin: widget.item,
                           distance: widget.distance,
-                        )),
+                        ),),
                     Positioned(
                         right: 0,
                         top: widget.maxHeight - (renderDescription ? 170 : 120),
@@ -112,19 +107,19 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: ref.watch(
-                                      feedMapStateProvider(widget.item.id))
+                                      feedMapStateProvider(widget.item.id),)
                                   ? feedMap
-                                  : feedImage),
-                        ))
+                                  : feedImage,),
+                        ),),
                   ],
                 ),
               ],
-            )));
+            ),),);
   }
 
   void likeImage() {
     final userId = ref.watch(globalDataServiceProvider).userId!;
     ref.read(likeServiceProvider(widget.item.id).notifier).addLike(
-        widget.item.creatorId, CreateLikeDto(userId: userId, like: true));
+        widget.item.creatorId, CreateLikeDto(userId: userId, like: true),);
   }
 }

@@ -2,11 +2,10 @@
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../widgets/group_selector/service/group_order_service.dart';
 
 part 'camera_state.g.dart';
 
@@ -49,19 +48,19 @@ class CameraValues extends _$CameraValues {
     return CameraState(
         ratio: _controller.value.aspectRatio,
         minZoom: await _controller.getMinZoomLevel(),
-        maxZoom: await _controller.getMaxZoomLevel()
+        maxZoom: await _controller.getMaxZoomLevel(),
     );
   }
 
   Future<void> updateCamera(int cameraIndex) async {
-    state = AsyncLoading();
+    state = const AsyncLoading();
     await _controller.setDescription(ref.read(globalDataServiceProvider).cameras[cameraIndex]);
     await _controller.initialize();
     state = AsyncData(CameraState(
         ratio: controller.value.aspectRatio,
         minZoom: await controller.getMinZoomLevel(),
-        maxZoom: await controller.getMaxZoomLevel()
-    ));
+        maxZoom: await controller.getMaxZoomLevel(),
+    ),);
   }
 
 }

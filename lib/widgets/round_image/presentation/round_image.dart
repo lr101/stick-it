@@ -26,7 +26,7 @@ class RoundImage extends ConsumerWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.grey.withOpacity(0.4),
-                  )
+                  ),
 
                   ),
 
@@ -38,20 +38,20 @@ class RoundImage extends ConsumerWidget {
                     image: MemoryImage(imageCallback.when<Uint8List>(
                         data: (data) => data ?? defaultPlaceholderImage ?? ref.watch(defaultErrorImageProvider),
                         error: (_,__) => defaultPlaceholderImage ?? ref.watch(defaultErrorImageProvider),
-                        loading: () => kTransparentImage
-                    )),
+                        loading: () => kTransparentImage,
+                    ),),
                     fit: BoxFit.cover,
                     fadeInDuration: const Duration(milliseconds: 250),
                     fadeOutDuration: const Duration(milliseconds: 250),
                     imageErrorBuilder: (_, __, ___) => Image.memory(
                       ref.watch(defaultErrorImageProvider),
                       fit: BoxFit.cover,
-                    )
+                    ),
                 ),
               ),
-                if (child != null) child!
-              ],)
-          )
+                if (child != null) child!,
+              ],),
+          ),
         );
   }
 
@@ -59,7 +59,7 @@ class RoundImage extends ConsumerWidget {
     if (clickable) {
       return GestureDetector(
           onTap: handleOpenImage,
-          child: child
+          child: child,
       );
     } else {
       return child;

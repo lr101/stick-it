@@ -15,7 +15,7 @@ class ImageEntity extends CacheEntity {
     required this.blob1,
     super.keepAlive = false,
     super.hits,
-    super.ttl
+    super.ttl,
   });
 
   @override
@@ -24,7 +24,7 @@ class ImageEntity extends CacheEntity {
       blob1: blob1,
       keepAlive: keepAlive ?? this.keepAlive,
       hits: hits ?? this.hits,
-      ttl: ttl ?? this.ttl
+      ttl: ttl ?? this.ttl,
     );
   }
 }

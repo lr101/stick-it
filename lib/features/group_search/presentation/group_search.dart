@@ -4,13 +4,12 @@ import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/features/group_overview/presentation/no_user_group_overview.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
+import 'package:buff_lisa/widgets/tiles/presentation/group_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
-import '../../../util/routing/routing.dart';
-import '../../../widgets/tiles/presentation/group_tile.dart';
 
 class GroupSearch extends ConsumerStatefulWidget {
   const GroupSearch({super.key});
@@ -62,28 +61,28 @@ class _GroupSearchState extends ConsumerState<GroupSearch> {
                   onPressed: () => _textEditController.clear(),
                   icon: const Icon(Icons.delete),
                 ),
-              )
+              ),
             ],
           ),
         ),
         listBuilder: (context, item, index) => GroupTile(groupDto: item, onTap: () => Routing.to(context, NoUserGroupOverview(groupId: item.groupId)),),
-        pagingController: _pagingController);
+        pagingController: _pagingController,);
   }
 
   Future<void> updatePage(int pageKey) async {
     final groups = await ref.watch(groupApiProvider).getGroupsByIds(
         search: _textEditController.text,
         withUser: false,
-        userId: ref.watch(globalDataServiceProvider).userId!,
+        userId: ref.watch(globalDataServiceProvider).userId,
         page: pageKey,
         size: _pageSize,
-        withImages: true);
+        withImages: true,);
     if (groups == null) {
       _pagingController.error = "Groups could not be fetched";
       return;
     }
     final groupDtos = <LocalGroupDto>[];
-    for (var e in groups.items) {
+    for (final e in groups.items) {
       groupDtos.add(LocalGroupDto.fromDto(e));
     }
     if (groupDtos.length < _pageSize) {

@@ -17,7 +17,7 @@ class CustomImagePicker {
         await Permission.accessMediaLocation.request();
       }
       final picker = ImagePicker();
-      XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 25, requestFullMetadata: true);
+      XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
       final LostDataResponse response = await picker.retrieveLostData();
       if (response.file != null) {
         pickedFile = response.file;
@@ -51,11 +51,10 @@ class CustomImagePicker {
     required int minHeight,
     required int minWidth,
     required BuildContext context,
-    CropAspectRatio? initAspectRatio
+    CropAspectRatio? initAspectRatio,
   }) async {
       if (res != null && context.mounted) {
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-          compressFormat: ImageCompressFormat.jpg,
+        final CroppedFile? croppedFile = await ImageCropper().cropImage(
           sourcePath: res.path,
           aspectRatio: initAspectRatio ?? const CropAspectRatio(ratioX: 1, ratioY: 1),
           uiSettings: [
@@ -68,7 +67,6 @@ class CustomImagePicker {
             IOSUiSettings(
               title: 'Cropper',
               aspectRatioLockEnabled: true,
-              aspectRatioLockDimensionSwapEnabled: false,
               aspectRatioPickerButtonHidden: true,
               resetAspectRatioEnabled: false,
             ),
@@ -78,9 +76,9 @@ class CustomImagePicker {
           ],
         );
         if (croppedFile == null) return null;
-        Uint8List image = await croppedFile.readAsBytes();
+        final Uint8List image = await croppedFile.readAsBytes();
         final dimensions = await decodeImageFromList(image);
-        if ((dimensions.width < minHeight && dimensions.height < minHeight)) {
+        if (dimensions.width < minHeight && dimensions.height < minHeight) {
           return null;
         }
         return image;

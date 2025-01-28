@@ -42,7 +42,7 @@ class PinLikeEntity extends CacheEntity {
     required this.hasLikeLocation,
     required this.hasLikePhotography,
     super.hits,
-    super.ttl
+    super.ttl,
   });
 
   factory PinLikeEntity.fromDto(PinLikeDto likes) {
@@ -68,7 +68,7 @@ class PinLikeEntity extends CacheEntity {
       likedByUser: hasLike,
       likedPhotographyByUser: hasLikePhotography,
       likedLocationByUser: hasLikeLocation,
-      likedArtByUser: hasLikeArt
+      likedArtByUser: hasLikeArt,
     );
   }
 
@@ -84,7 +84,7 @@ class PinLikeEntity extends CacheEntity {
       hasLikeArt: hasLikeArt,
       hasLikePhotography: hasLikePhotography,
       hits: hits ?? this.hits,
-      ttl: ttl ?? this.ttl
+      ttl: ttl ?? this.ttl,
     );
   }
   

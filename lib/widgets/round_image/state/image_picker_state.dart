@@ -13,7 +13,7 @@ class ImagePickerState extends _$ImagePickerState {
   }
 
   Future<void> setImage(Function(Uint8List) uploadImage, Uint8List image) async {
-    state = AsyncLoading();
+    state = const AsyncLoading();
     await uploadImage(image);
     state = AsyncData(image);
   }

@@ -32,7 +32,7 @@ class GroupJoinActionButton extends ConsumerWidget {
               acceptText: "Join",
               title: "Join Group",
               child: TextFormField(
-                decoration: InputDecoration(hintText: "Invite code"),
+                decoration: const InputDecoration(hintText: "Invite code"),
                 controller: _textController,
               ), onPressed: () async {
             final result = await ref
@@ -43,7 +43,7 @@ class GroupJoinActionButton extends ConsumerWidget {
             } else {
               Navigator.of(context).pop();
             }
-          });
+          },);
         }
       },
     );

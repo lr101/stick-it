@@ -1,12 +1,12 @@
 
 import 'dart:typed_data';
+
 import 'package:buff_lisa/data/entity/image_entity.dart';
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/util/core/cache_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../service/global_data_service.dart';
 
 part 'image_repository.g.dart';
 
@@ -16,7 +16,7 @@ class ImageRepository extends CacheImpl<ImageEntity> {
     required this.urlFileName,
     required this.urlSubFolder,
     super.maxItems,
-    super.ttlDuration
+    super.ttlDuration,
   });
 
   final String urlFileName;
@@ -52,8 +52,8 @@ class ImageRepository extends CacheImpl<ImageEntity> {
       final image = await http.get(Uri.parse("${global.minioHost}/$urlSubFolder/$id/$urlFileName"));
       put(id, ImageEntity(
         blob1: image.bodyBytes,
-        keepAlive: keepAlive
-      ));
+        keepAlive: keepAlive,
+      ),);
       return image.bodyBytes;
     } catch (e) {
       rethrow;
@@ -63,8 +63,8 @@ class ImageRepository extends CacheImpl<ImageEntity> {
   Future<void> addImage(String id, Uint8List image, bool keepAlive) async {
     await put(id, ImageEntity(
       blob1: image,
-      keepAlive: keepAlive
-    ));
+      keepAlive: keepAlive,
+    ),);
   }
   
 }

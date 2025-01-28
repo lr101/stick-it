@@ -26,7 +26,7 @@ enum Achievement {
     this.name,
     this.description,
     this.imagePath,
-    this.color);
+    this.color,);
 
   final int id;
   final String name;

@@ -5,14 +5,13 @@ import 'dart:typed_data';
 
 import 'package:buff_lisa/data/dto/current_user_dto.dart';
 import 'package:buff_lisa/data/dto/global_data_dto.dart';
+import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../service/shared_preferences_service.dart';
 
 part 'global_data_repository.g.dart';
 
@@ -81,8 +80,8 @@ class GlobalDataRepository {
         totalXp: sharedPreferences.getInt(xpKey) ?? 0,
         currentLevel: sharedPreferences.getInt(currentLevelKey) ?? 0,
         currentLevelXp: sharedPreferences.getInt(currentLevelXpKey) ?? 0,
-        nextLevelXp: sharedPreferences.getInt(nextLevelXpKey) ?? 0
-      )
+        nextLevelXp: sharedPreferences.getInt(nextLevelXpKey) ?? 0,
+      ),
     );
   }
 
@@ -103,7 +102,7 @@ class GlobalDataRepository {
       String? description,
       Uint8List? profileImage,
       Uint8List? profileImageSmall,
-    int? selectedBatch
+    int? selectedBatch,
   }) async {
     final sharedPrefs = ref.watch(sharedPreferencesProvider);
     final storage = ref.watch(flutterSecureStorageProvider);

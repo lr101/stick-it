@@ -35,7 +35,7 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
   Widget build(BuildContext context) {
     return CustomCloseKeyboardScaffold(
       appBar: AppBar(
-        title: Text('Change Email'),
+        title: const Text('Change Email'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -46,13 +46,13 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
               children: [
                 TextFormField(
                   controller: _newEmailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'New Email',
                     border: OutlineInputBorder(),
                   ),
                   validator: LoginService.emailValidatorWithErrorMessage,
                 ),
-                SizedBox(height: 50.0),
+                const SizedBox(height: 50.0),
                 SubmitButton(onPressed: _changeEmail, text: 'Change Email'),
               ],
             ),

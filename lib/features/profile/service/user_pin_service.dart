@@ -1,15 +1,14 @@
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:buff_lisa/data/entity/user_pins_entity.dart';
 import 'package:buff_lisa/data/repository/user_pins_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../data/dto/pin_dto.dart';
-import '../../../data/entity/pin_entity.dart';
-import '../../../data/entity/user_pins_entity.dart';
-import '../../../data/service/user_group_service.dart';
 
 part 'user_pin_service.g.dart';
 
@@ -47,7 +46,7 @@ class UserPinService extends _$UserPinService {
     }
   }
 
-  addPin(LocalPinDto pin) {
+  void addPin(LocalPinDto pin) {
     if (state.value == null) return;
     final pins = [pin, ...state.value!];
     state = AsyncData(pins);

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -15,10 +14,10 @@ class MapPanelDraggable extends StatelessWidget {
           onTap: _closePanel,
           child: Container(
               height: 22,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
+                    topRight: Radius.circular(10),),
               ),
               child: Center(
                   child: Container(
@@ -27,12 +26,12 @@ class MapPanelDraggable extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: Theme.of(context).hintColor,
                           borderRadius:
-                              BorderRadius.all(Radius.circular(2.5)))))),
-        ));
+                              const BorderRadius.all(Radius.circular(2.5)),),),),),
+        ),);
   }
 
   Future<void> _closePanel() async {
     await panelController.animatePanelToPosition(0.0,
-        duration: const Duration(milliseconds: 200));
+        duration: const Duration(milliseconds: 200),);
   }
 }

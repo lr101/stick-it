@@ -13,7 +13,7 @@ class CustomMarkerWidget extends Marker {
     point: LatLng(pinDto.latitude, pinDto.longitude),
     child: CustomMarkerContent(pinDto: pinDto, withAnimation: withAnimation),
     width: 80,
-    height: 80
+    height: 80,
   );
 
 }

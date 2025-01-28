@@ -12,12 +12,12 @@ part 'geojson_service.g.dart';
 class GeojsonService extends _$GeojsonService {
 
 
-  static const String GEOJSON_START = "{\"features\": [{\"properties\": {},\"geometry\":";
+  static const String GEOJSON_START = '{"features": [{"properties": {},"geometry":';
   static const String GEOJSON_END = "}]}";
 
   @override
   Future<List<Polygon>> build() async {
-    GeoJsonParser myGeoJson = GeoJsonParser(defaultPolygonFillColor: Colors.orange.withOpacity(0.05));
+    final GeoJsonParser myGeoJson = GeoJsonParser(defaultPolygonFillColor: Colors.orange.withOpacity(0.05));
     final district =  ref.watch(districtServiceProvider);
     if (district == null) return [];
     final geojson = await ref.watch(rankingApiProvider).getGeoJson(gid2: district.gid2);
@@ -43,8 +43,8 @@ class DistrictService extends _$DistrictService {
   }
 
   Future<void> updateLatLong(double latitude, double longitude) async {
-    final latPrecision = 0.0001; // approximately 10m
-    final longPrecision = 0.0001; // approximately 10m
+    const latPrecision = 0.0001; // approximately 10m
+    const longPrecision = 0.0001; // approximately 10m
 
     if ((_lat == null || (latitude - _lat!).abs() > latPrecision) ||
         (_long == null || (longitude - _long!).abs() > longPrecision)) {

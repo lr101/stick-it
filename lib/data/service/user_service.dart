@@ -2,19 +2,18 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:buff_lisa/data/dto/global_data_dto.dart';
+import 'package:buff_lisa/data/dto/local_user_dto.dart';
 import 'package:buff_lisa/data/entity/user_entity.dart';
 import 'package:buff_lisa/data/repository/image_repository.dart';
+import 'package:buff_lisa/data/repository/user_repository.dart';
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../dto/global_data_dto.dart';
-import '../dto/local_user_dto.dart';
-import '../repository/user_repository.dart';
-import 'global_data_service.dart';
 
 part 'user_service.g.dart';
 
@@ -40,7 +39,7 @@ class UserService extends _$UserService {
     final userApi = ref.watch(userApiProvider);
     final userDto = await userApi.getUser(this.userId);
     await _repo.put(this.userId,
-        UserEntity.fromDto(userDto!, keepAlive: this.userId == _global.userId));
+        UserEntity.fromDto(userDto!, keepAlive: this.userId == _global.userId),);
     final user = LocalUserDto.fromInfoDto(userDto);
     return user;
   }
@@ -56,7 +55,7 @@ class UserService extends _$UserService {
     Uint8List? profilePicture,
     String? description,
     String? username,
-    int? selectedBatch
+    int? selectedBatch,
   }) async {
     try {
       final userApi = ref.watch(userApiProvider);
@@ -69,7 +68,7 @@ class UserService extends _$UserService {
               username: username,
               selectedBatch: selectedBatch,
               image: profilePicture == null ? null : base64Encode(
-                  profilePicture))
+                  profilePicture,),),
       );
       final userEntity = await _repo.get(this.userId);
       if (result != null && userEntity != null) {
@@ -78,9 +77,9 @@ class UserService extends _$UserService {
         state = AsyncData(LocalUserDto.fromEntity(userDto));
         if (profilePicture != null) {
           ref.read(userImageRepoProvider).overrideUrl(
-              this.userId, result.profileImage!, true);
+              this.userId, result.profileImage!, true,);
           ref.read(userImageSmallRepoProvider).overrideUrl(
-              this.userId, result.profileImageSmall!, true);
+              this.userId, result.profileImageSmall!, true,);
         }
       }
       return null;

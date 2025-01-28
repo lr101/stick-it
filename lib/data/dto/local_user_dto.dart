@@ -14,7 +14,7 @@ class LocalUserDto {
 
   factory LocalUserDto.fromInfoDto(UserInfoDto user) {
     return LocalUserDto(
-        username: user.username, userId: user.userId, description: user.description, selectedBatch: user.selectedBatch);
+        username: user.username, userId: user.userId, description: user.description, selectedBatch: user.selectedBatch,);
   }
 
   LocalUserDto fromCurrentWithLikes(UserLikesDto likes) {
@@ -23,6 +23,6 @@ class LocalUserDto {
 
   factory LocalUserDto.fromEntity(UserEntity entity) {
     return LocalUserDto(
-        username: entity.username, userId: entity.userId, description: entity.description, selectedBatch: entity.selectedBatch);
+        username: entity.username, userId: entity.userId, description: entity.description, selectedBatch: entity.selectedBatch,);
   }
 }

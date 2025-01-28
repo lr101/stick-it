@@ -1,7 +1,6 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
+import 'package:buff_lisa/util/core/cache_api.dart';
 import 'package:flutter/cupertino.dart';
-
-import 'cache_api.dart';
 import 'package:hive/hive.dart';
 
 abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
@@ -57,8 +56,8 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
     final box = await openBox();
     final Map<String, T> resultMap = {};
 
-    for (var key in box.keys) {
-      resultMap[key] = box.get(key) as T;
+    for (final key in box.keys) {
+      resultMap[key as String] = box.get(key)!;
     }
 
     return resultMap;

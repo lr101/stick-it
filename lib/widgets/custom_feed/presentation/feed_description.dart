@@ -1,8 +1,7 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/feed_description.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../data/feed_description.dart';
 
 class FeedDescriptionExpandable extends ConsumerWidget {
   const FeedDescriptionExpandable({
@@ -47,7 +46,7 @@ class FeedDescriptionExpandable extends ConsumerWidget {
                 },
                 child: Text(
                   isExpanded ? 'Show Less' : 'Show More',
-                  style: showLessOrMoreStyle
+                  style: showLessOrMoreStyle,
                 ),
               ),
           ],

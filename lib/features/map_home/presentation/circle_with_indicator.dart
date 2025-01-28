@@ -13,7 +13,6 @@ class CircleWithIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.center,
       child: Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -26,6 +25,6 @@ class CircleWithIndicator extends StatelessWidget {
           fontSize: 10.0,
           fontWeight: FontWeight.bold,
         ),
-    )));
+    ),),);
   }
 }

@@ -18,9 +18,9 @@ class _EditHiddenPostsState extends ConsumerState<EditHiddenPosts> {
   Widget build(BuildContext context) {
     final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
     return Scaffold(
-        appBar: AppBar(title: Text("Edit hidden Posts")),
+        appBar: AppBar(title: const Text("Edit hidden Posts")),
         body: CustomScrollView(slivers: [
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: Text("Tap on the post to remove it from the list"),
           ),
           SliverList.builder(
@@ -31,20 +31,19 @@ class _EditHiddenPostsState extends ConsumerState<EditHiddenPosts> {
                     title: "Remove hidden post",
                     onPressed: () => ref
                         .read(hiddenPostsServiceProvider.notifier)
-                        .removeHiddenPost(hiddenPosts[index])),
+                        .removeHiddenPost(hiddenPosts[index]),),
                 title: ref
                         .watch(getPinImageAndFetchProvider(hiddenPosts[index]))
                         .whenOrNull(
                           data: (data) {
-                            if (data == null) return null;
                             return FadeInImage(
                                 placeholder: MemoryImage(kTransparentImage),
-                                image: MemoryImage(data));
+                                image: MemoryImage(data),);
                           },
-                          error: (_, __) => Icon(Icons.error),
+                          error: (_, __) => const Icon(Icons.error),
                         ) ??
-                    CircularProgressIndicator()),
-          )
-        ]));
+                    const CircularProgressIndicator(),),
+          ),
+        ],),);
   }
 }

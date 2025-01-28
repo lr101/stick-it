@@ -25,7 +25,7 @@ class UserEntity extends CacheEntity {
     this.description,
     super.keepAlive,
     super.hits,
-    super.ttl
+    super.ttl,
   });
 
   factory UserEntity.fromDto(UserInfoDto user, {bool keepAlive = false}) {
@@ -34,7 +34,7 @@ class UserEntity extends CacheEntity {
       username: user.username,
       selectedBatch: user.selectedBatch,
       description: user.description,
-      keepAlive: keepAlive
+      keepAlive: keepAlive,
     );
   }
 
@@ -46,7 +46,7 @@ class UserEntity extends CacheEntity {
       description: userDto.description ?? description,
       keepAlive: keepAlive,
       ttl: ttl,
-      hits: hits
+      hits: hits,
     );
   }
 
@@ -59,7 +59,7 @@ class UserEntity extends CacheEntity {
       description: description,
       keepAlive: keepAlive ?? this.keepAlive,
       ttl: ttl ?? this.ttl,
-      hits: hits ?? this.hits
+      hits: hits ?? this.hits,
     );
   }
   

@@ -4,7 +4,6 @@ import 'package:buff_lisa/data/entity/image_entity.dart';
 import 'package:buff_lisa/util/core/cache_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:mutex/mutex.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'pin_image_repository.g.dart';
@@ -32,8 +31,7 @@ class PinImageRepository extends CacheImpl<ImageEntity> {
 
       await put(pinId, ImageEntity(
         blob1: decodedImage,
-        keepAlive: false,
-      ));
+      ),);
       return decodedImage;
     } catch (e) {
       rethrow;
@@ -44,7 +42,7 @@ class PinImageRepository extends CacheImpl<ImageEntity> {
     await put(pinId, ImageEntity(
       blob1: image,
       keepAlive: true,
-    ));
+    ),);
   }
 
 

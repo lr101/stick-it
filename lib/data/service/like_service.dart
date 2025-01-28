@@ -1,10 +1,9 @@
 
+import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:buff_lisa/data/entity/user_like_entity.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../config/openapi_config.dart';
-import '../entity/user_like_entity.dart';
 
 part 'like_service.g.dart';
 
@@ -20,7 +19,7 @@ class UserLikeService extends _$UserLikeService {
           likeCount: likes.likeCount, 
           likeArtCount: likes.likeArtCount, 
           likeLocationCount: likes.likeLocationCount, 
-          likePhotographyCount: likes.likePhotographyCount
+          likePhotographyCount: likes.likePhotographyCount,
       );
     } else {
       final likeDto = await likeApi.getUserLikes(userId);
@@ -31,11 +30,11 @@ class UserLikeService extends _$UserLikeService {
 
   Future<void> updateLikeCount(CreateLikeDto likeUpdate) async {
     if (state.value == null) return;
-    UserLikesDto likes = UserLikesDto(
+    final UserLikesDto likes = UserLikesDto(
         likeCount: state.value!.likeCount + _likeUpdate(likeUpdate.like),
         likeArtCount: state.value!.likeArtCount + _likeUpdate(likeUpdate.likeArt),
         likeLocationCount: state.value!.likeLocationCount + _likeUpdate(likeUpdate.likeLocation),
-        likePhotographyCount: state.value!.likePhotographyCount + _likeUpdate(likeUpdate.likePhotography)
+        likePhotographyCount: state.value!.likePhotographyCount + _likeUpdate(likeUpdate.likePhotography),
     );
     state = AsyncData(likes);
     final userLikeRepo = ref.read(userLikeRepositoryProvider);

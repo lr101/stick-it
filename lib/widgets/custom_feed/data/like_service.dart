@@ -4,7 +4,6 @@ import 'package:buff_lisa/data/entity/pin_like_entity.dart';
 import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/service/like_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -58,7 +57,7 @@ class LikeService extends _$LikeService {
         likedArtByUser: createLikeDto.likeArt ?? currentState.likedArtByUser ?? false,
         likedPhotographyByUser: createLikeDto.likePhotography ?? currentState.likedPhotographyByUser ?? false,
         likedLocationByUser: createLikeDto.likeLocation ?? currentState.likedLocationByUser ?? false,
-        likedByUser: createLikeDto.like ?? currentState.likedByUser ?? false
+        likedByUser: createLikeDto.like ?? currentState.likedByUser ?? false,
       );
       state = AsyncData(pinDto);
       pinLikeRepo.put(pinId, PinLikeEntity.fromDto(pinDto));

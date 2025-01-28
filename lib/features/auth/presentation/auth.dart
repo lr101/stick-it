@@ -1,12 +1,11 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/features/auth/data/login_service.dart';
+import 'package:buff_lisa/features/web/presentation/show_web.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../util/routing/routing.dart';
-import '../../web/presentation/show_web.dart';
 
 class Auth extends ConsumerStatefulWidget  {
 
@@ -24,10 +23,10 @@ class _AuthState extends ConsumerState<Auth> {
     final global = ref.watch(globalDataServiceProvider);
     final loginService = ref.watch(loginServiceProvider);
     return FlutterLogin(
-      logo: AssetImage('assets/icon/logo-rounded-corners.png'),
+      logo: const AssetImage('assets/icon/logo-rounded-corners.png'),
       termsOfService: [
         TermOfService(id: "0", text: "Terms of Service", mandatory: true, linkUrl: "${global.host}/public/agb"),
-        TermOfService(id: "1", text: "Privacy Policy", mandatory: true, linkUrl: "${global.host}/public/privacy-policy")
+        TermOfService(id: "1", text: "Privacy Policy", mandatory: true, linkUrl: "${global.host}/public/privacy-policy"),
       ],
       onLogin: loginService.authUser,
       onSignup: loginService.signupUser,
@@ -39,7 +38,7 @@ class _AuthState extends ConsumerState<Auth> {
       onRecoverPassword: loginService.recoverPassword,
       messages: LoginMessages(
           recoverPasswordDescription: "Type your username here and than check your emails",
-          recoverPasswordSuccess: "Check your emails for a recovery link"
+          recoverPasswordSuccess: "Check your emails for a recovery link",
       ),
       additionalSignupFields: const [UserFormField(keyName: "email", userType: LoginUserType.email)],
       theme: LoginTheme(
@@ -54,8 +53,8 @@ class _AuthState extends ConsumerState<Auth> {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: privacyPolicyLinkAndTermsOfService(context),
-              )
-          )
+              ),
+          ),
       ),],
     );
   }
@@ -80,7 +79,7 @@ class _AuthState extends ConsumerState<Auth> {
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       Routing.to(context, ShowWebWidget(route: "${ref.watch(globalDataServiceProvider).host}/public/agb",title: "Terms of Service",));
-                    }
+                    },
               ),
               TextSpan(
                   text: ' and ', style: const TextStyle(
@@ -97,12 +96,12 @@ class _AuthState extends ConsumerState<Auth> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             Routing.to(context, ShowWebWidget(route: "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",title: "Privacy Policy",));
-                          }
-                    )
-                  ]
-              )
-            ]
-        )
+                          },
+                    ),
+                  ],
+              ),
+            ],
+        ),
     );
   }
 }

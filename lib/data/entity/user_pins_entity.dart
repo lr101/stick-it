@@ -21,7 +21,7 @@ class UserPinsEntity extends CacheEntity {
       pins: pins,
       ttl: ttl ?? this.ttl,
       hits: hits ?? this.hits,
-      keepAlive: keepAlive ?? this.keepAlive
+      keepAlive: keepAlive ?? this.keepAlive,
     );
   }
 

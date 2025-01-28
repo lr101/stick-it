@@ -8,7 +8,7 @@ part 'member_repository.g.dart';
 
 class MemberRepository extends CacheImpl<MembersEntity> {
 
-  MemberRepository(): super("membersRepository", ttlDuration: Duration(days: 1));
+  MemberRepository(): super("membersRepository", ttlDuration: const Duration(days: 1));
 
 }
 

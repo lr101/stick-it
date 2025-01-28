@@ -159,6 +159,7 @@ dev_dependencies:
   hive_generator: any
   change_app_package_name:
   flutter_launcher_icons:
+  lint: ^2.3.0
 
 flutter:
   assets:

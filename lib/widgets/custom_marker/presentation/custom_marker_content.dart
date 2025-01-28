@@ -14,7 +14,7 @@ class CustomMarkerContent extends ConsumerStatefulWidget {
   const CustomMarkerContent({
     super.key,
     required this.pinDto,
-    required this.withAnimation
+    required this.withAnimation,
   });
 
   @override
@@ -23,7 +23,7 @@ class CustomMarkerContent extends ConsumerStatefulWidget {
 
 class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  final Distance _distance = Distance();
+  final Distance _distance = const Distance();
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
 
   bool _isWithinDistance(Position userPosition) {
     return _distance.as(LengthUnit.Meter, LatLng(userPosition.latitude, userPosition.longitude),
-        LatLng(widget.pinDto.latitude, widget.pinDto.longitude)) <= 50.0;
+        LatLng(widget.pinDto.latitude, widget.pinDto.longitude),) <= 50.0;
   }
 
   @override
@@ -62,7 +62,7 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
             width: 30,
             child: markerImage,
           ),
-          SizedBox.square(dimension: 30)
+          const SizedBox.square(dimension: 30),
         ],
       );
     }
@@ -89,7 +89,7 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
           height: 30,
           width: 30,
           child: markerImage,
-        )
+        ),
       ],
     );
   }

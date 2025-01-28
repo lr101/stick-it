@@ -3,8 +3,6 @@ import 'dart:typed_data';
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:hive/hive.dart';
-import 'package:buff_lisa/data/entity/group_entity.dart';
-import 'package:buff_lisa/data/entity/user_entity.dart';
 import 'package:openapi/api.dart';
 
 part 'pin_entity.g.dart'; // This will be generated
@@ -50,10 +48,10 @@ class PinEntity extends CacheEntity {
     this.lastSynced,
     super.keepAlive,
     super.hits,
-    super.ttl
+    super.ttl,
   });
 
-  factory PinEntity.fromDto(PinWithOptionalImageDto pinDto, {keepAlive = false}) {
+  factory PinEntity.fromDto(PinWithOptionalImageDto pinDto, {bool keepAlive = false}) {
     return PinEntity(
       pinId: pinDto.id,
       latitude: pinDto.latitude as double,
@@ -63,7 +61,7 @@ class PinEntity extends CacheEntity {
       group: pinDto.groupId,
       description: pinDto.description,
       lastSynced: DateTime.now(),
-      keepAlive: keepAlive
+      keepAlive: keepAlive,
     );
   }
 

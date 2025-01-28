@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 abstract class CacheEntity {
 
-  CacheEntity({this.keepAlive = false, this.hits = 1, ttl}) {
+  CacheEntity({this.keepAlive = false, this.hits = 1, DateTime? ttl}) {
     this.ttl = ttl ?? DateTime.now();
   }
 

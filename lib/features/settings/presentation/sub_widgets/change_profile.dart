@@ -47,7 +47,7 @@ class _ChangeProfileState extends ConsumerState<ChangeProfile> {
   Widget build(BuildContext context) {
     return CustomCloseKeyboardScaffold(
         appBar: AppBar(
-          title: Text('Edit profile'),
+          title: const Text('Edit profile'),
         ),
         body: SingleChildScrollView(
             child: Padding(
@@ -64,31 +64,31 @@ class _ChangeProfileState extends ConsumerState<ChangeProfile> {
                     },
                     imageCallback: AsyncData(ref.watch(userEditStateProvider)),
                   ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     TextFormField(
                       controller: _usernameController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Username',
                         border: OutlineInputBorder(),
                       ),
                       validator: LoginService.userValidator,
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     TextFormField(
                       controller: _descriptionController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Description',
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    SizedBox(height: 50.0),
+                    const SizedBox(height: 50.0),
                     SubmitButton(onPressed: () async => await _changeProfilePicture(ref, context), text: "Update profile"),
-                    SizedBox(height: 16,),
-                    Text("Tip: A username can only be changed every 14 days.", style: TextStyle(fontStyle: FontStyle.italic),),
-                    SizedBox(height: 5,),
-                    Text("Tip: Updating a profile picture can take up to 30 sec.", style: TextStyle(fontStyle: FontStyle.italic),),
+                    const SizedBox(height: 16,),
+                    const Text("Tip: A username can only be changed every 14 days.", style: TextStyle(fontStyle: FontStyle.italic),),
+                    const SizedBox(height: 5,),
+                    const Text("Tip: Updating a profile picture can take up to 30 sec.", style: TextStyle(fontStyle: FontStyle.italic),),
                   ],
-                )))));
+                ),),),),);
   }
 
   Future<void> _changeProfilePicture(WidgetRef ref, BuildContext context) async {
@@ -98,7 +98,7 @@ class _ChangeProfileState extends ConsumerState<ChangeProfile> {
       final result = await ref.read(userServiceProvider(userId).notifier).changeUser(
           username: _originalUsername == _usernameController.text ? null : _usernameController.text,
           description: _originalDescription == _descriptionController.text ? null : _descriptionController.text,
-          profilePicture: ref.read(userEditStateProvider.notifier).hasChanged ? image : null
+          profilePicture: ref.read(userEditStateProvider.notifier).hasChanged ? image : null,
       );
       if (result == null) {
         CustomErrorSnackBar.message(message: "Successfully changed profile");

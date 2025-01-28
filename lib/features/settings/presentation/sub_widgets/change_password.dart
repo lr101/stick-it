@@ -1,3 +1,4 @@
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/data/login_service.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
@@ -5,8 +6,6 @@ import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_s
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../data/service/global_data_service.dart';
 
 class ChangePassword extends ConsumerStatefulWidget {
   const ChangePassword({super.key});
@@ -30,7 +29,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
   Widget build(BuildContext context) {
     return CustomCloseKeyboardScaffold(
       appBar: AppBar(
-        title: Text('Change Password'),
+        title: const Text('Change Password'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -45,7 +44,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   obscureText: _obscureCurrentPassword,
                   decoration: InputDecoration(
                     labelText: 'Current Password',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureCurrentPassword ? Icons.visibility_off : Icons.visibility,
@@ -59,7 +58,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   ),
                   validator: LoginService.passwordValidator,
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // New Password Field
                 TextFormField(
@@ -67,7 +66,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   obscureText: _obscureNewPassword,
                   decoration: InputDecoration(
                     labelText: 'New Password',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureNewPassword ? Icons.visibility_off : Icons.visibility,
@@ -81,7 +80,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   ),
                   validator: LoginService.passwordValidator,
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Confirm New Password Field
                 TextFormField(
@@ -89,7 +88,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   obscureText: _obscureConfirmPassword,
                   decoration: InputDecoration(
                     labelText: 'Confirm New Password',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
@@ -103,7 +102,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   ),
                   validator: _validateConfirmPassword,
                 ),
-                SizedBox(height: 50.0),
+                const SizedBox(height: 50.0),
                 SubmitButton(onPressed: _changePassword, text: 'Change Password'),
               ],
             ),

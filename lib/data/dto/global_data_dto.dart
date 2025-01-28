@@ -15,7 +15,7 @@ class GlobalDataDto {
   GlobalDataDto({
     required this.userId,
     required this.refreshToken,
-    required this.cameras
+    required this.cameras,
   });
 
   GlobalDataDto copyWith({

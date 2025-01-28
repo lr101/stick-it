@@ -7,7 +7,10 @@ import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/data/app_review_state.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
+import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
+import 'package:buff_lisa/widgets/tiles/presentation/group_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -15,10 +18,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
-import '../../../widgets/group_selector/service/group_order_service.dart';
-import '../../../widgets/tiles/presentation/group_tile.dart';
 
 class ImageUpload extends ConsumerStatefulWidget {
   const ImageUpload({super.key, required this.image, required this.position});
@@ -51,17 +50,17 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   @override
   Widget build(BuildContext context) {
     final group = ref.watch(cameraSelectedGroupProvider);
-    bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return CustomCloseKeyboardScaffold(
       appBar: AppBar(
-        title: Text("Approve"),
+        title: const Text("Approve"),
       ),
       body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
                     Card(
@@ -80,14 +79,14 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
                         ),
                       ),
                     ),
-                    group.value != null ? Card(child: GroupTile(groupDto: group.value!, onTap: handleEdit)) : Card(),
+                    if (group.value != null) Card(child: GroupTile(groupDto: group.value!, onTap: handleEdit)) else const Card(),
                     Card(
                       child: TextFormField(
                         controller: _controller,
                         minLines: 1,
                         maxLines: 10,
                         textInputAction: TextInputAction.newline,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Add a description ...',
                           border: OutlineInputBorder(),
                         ),
@@ -101,7 +100,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
           ),
             Visibility(
             visible: !isKeyboardVisible,
-            child:Padding(padding: EdgeInsets.all(10), child:SubmitButton(onPressed: handleApprove, text: "Upload"))),
+            child:Padding(padding: const EdgeInsets.all(10), child:SubmitButton(onPressed: handleApprove, text: "Upload")),),
         ],
       ),
     );
@@ -120,16 +119,16 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         description: _controller.text.isEmpty ? null : _controller.text,
         creatorId: ref.watch(globalDataServiceProvider).userId!,
         groupId: group.groupId,
-        isHidden: false);
+        isHidden: false,);
     _m.release();
     Future(() => ref.read(pinServiceProvider(group.groupId).notifier).addPinToGroup(pin, widget.image).then((result) {
           if (result != null) {
             CustomErrorSnackBar.message(message: result);
           } else {
             CustomErrorSnackBar.message(
-                message: "Successfully synced to server");
+                message: "Successfully synced to server",);
           }
-        }));
+        }),);
     if (ref.read(appReviewStateProvider)) {
       ref.read(appReviewStateProvider.notifier).updateLastReviewDate();
       Future(() async {
@@ -148,7 +147,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
     await SelectDialog.showModal<String>(
       context,
       showSearchBox: false,
-      label: Text("Change Group"),
+      label: const Text("Change Group"),
       selectedValue: groups[ref.watch(cameraGroupIndexProvider)],
       itemBuilder: (context, group, b) => GroupTile(groupDto: ref.read(userGroupServiceProvider).value!.firstWhere((e) => e.groupId == group),),
       items: groups,

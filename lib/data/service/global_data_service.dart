@@ -1,9 +1,7 @@
 
 
-import 'dart:typed_data';
-
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/dto/current_user_dto.dart';
+import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
@@ -12,8 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../dto/global_data_dto.dart';
 
 part 'global_data_service.g.dart';
 
@@ -171,6 +167,6 @@ class LastSeen extends _$LastSeen {
 LatLng lastKnownLocation(Ref ref) {
   final lat = ref.watch(sharedPreferencesProvider).getDouble(GlobalDataRepository.lastKnownLat);
   final lng = ref.watch(sharedPreferencesProvider).getDouble(GlobalDataRepository.lastKnownLong);
-  if (lat == null || lng == null) return LatLng(49.01105, 8.25190);
+  if (lat == null || lng == null) return const LatLng(49.01105, 8.25190);
   return LatLng(lat, lng);
 }

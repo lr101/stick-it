@@ -1,11 +1,10 @@
+import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
 import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_join_action_button.dart';
 import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_overview.dart';
+import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../data/service/group_image_service.dart';
-import '../../../widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 
 class NoUserGroupOverview extends ConsumerWidget {
 
@@ -25,13 +24,13 @@ class NoUserGroupOverview extends ConsumerWidget {
               floatingActionButton: GroupJoinActionButton(groupDto: data, key: Key("no-user-group-join-$groupId")),
               avatar: ref.watch(groupProfilePictureByIdProvider(groupId)),
               title: Text(data.name),
-            body: Center(child: Icon(Icons.lock),),
+            body: const Center(child: Icon(Icons.lock),),
           );
         }
 
       },
-      error: (error, stackTrace) => Icon(Icons.error),
-      loading: () => SizedBox.shrink(),
+      error: (error, stackTrace) => const Icon(Icons.error),
+      loading: () => const SizedBox.shrink(),
     );
   }
 }

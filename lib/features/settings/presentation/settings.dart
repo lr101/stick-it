@@ -1,18 +1,13 @@
-import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
+import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/repository/member_repository.dart';
 import 'package:buff_lisa/data/repository/pin_image_repository.dart';
 import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/repository/user_pins_repository.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
-import 'package:buff_lisa/data/service/group_image_service.dart';
-import 'package:buff_lisa/data/service/member_service.dart';
-import 'package:buff_lisa/data/service/no_user_group_service.dart';
-import 'package:buff_lisa/data/service/pin_image_service.dart';
-import 'package:buff_lisa/data/service/pin_service.dart';
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/syncing_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
@@ -21,8 +16,9 @@ import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_prof
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/delete_account.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_posts.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden_users.dart';
+import 'package:buff_lisa/features/web/presentation/show_web.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
-import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
@@ -31,20 +27,9 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:social_media_buttons/social_media_button.dart';
-
-import '../../../data/entity/group_entity.dart';
-import '../../../data/entity/image_entity.dart';
-import '../../../data/entity/member_entity.dart';
-import '../../../data/entity/pin_entity.dart';
-import '../../../data/entity/user_entity.dart';
-import '../../../data/service/global_data_service.dart';
-import '../../../util/routing/routing.dart';
-import '../../web/presentation/show_web.dart';
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
@@ -58,7 +43,7 @@ class _SettingsState extends ConsumerState<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Settings"),
+          title: const Text("Settings"),
         ),
         body: SettingsList(
           sections: [
@@ -79,7 +64,7 @@ class _SettingsState extends ConsumerState<Settings> {
                 SettingsTile(
                     title: const Text("Delete cache"),
                     leading: const Icon(Icons.cached),
-                    onPressed: (context) => deleteCache(ref, context))
+                    onPressed: (context) => deleteCache(ref, context),),
               ],
             ),
             SettingsSection(
@@ -98,17 +83,17 @@ class _SettingsState extends ConsumerState<Settings> {
                 SettingsTile.navigation(
                   leading: const Icon(Icons.email),
                   title: const Text('Edit email'),
-                  onPressed: (context) => Routing.to(context, ChangeEmailPage())
+                  onPressed: (context) => Routing.to(context, const ChangeEmailPage()),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.hide_image),
                   title: const Text('Edit hidden posts'),
-                  onPressed: (context) => Routing.to(context, EditHiddenPosts()),
+                  onPressed: (context) => Routing.to(context, const EditHiddenPosts()),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.hide_source),
                   title: const Text('Edit hidden users'),
-                  onPressed: (context) => Routing.to(context, EditHiddenUsers()),
+                  onPressed: (context) => Routing.to(context, const EditHiddenUsers()),
                 ),
               ],
             ),
@@ -118,7 +103,7 @@ class _SettingsState extends ConsumerState<Settings> {
                 SettingsTile.navigation(
                   leading: const Icon(Icons.contact_support),
                   title: const Text('Contact developer'),
-                  onPressed: (context) => Routing.to(context, ReportIssuePage(issueTypes: ["Bug", "Feature Request", "Other"],)),
+                  onPressed: (context) => Routing.to(context, const ReportIssuePage(issueTypes: ["Bug", "Feature Request", "Other"],)),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.document_scanner),
@@ -130,7 +115,7 @@ class _SettingsState extends ConsumerState<Settings> {
                           route:
                               "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",
                           title: "Privacy Policy",
-                        ));
+                        ),);
                   },
                 ),
                 SettingsTile.navigation(
@@ -143,7 +128,7 @@ class _SettingsState extends ConsumerState<Settings> {
                           route:
                               "${ref.watch(globalDataServiceProvider).host}/public/agb",
                           title: "Terms of Service",
-                        ));
+                        ),);
                   },
                 ),
                 SettingsTile.navigation(
@@ -155,21 +140,21 @@ class _SettingsState extends ConsumerState<Settings> {
                         const ShowWebWidget(
                           route: "https://www.openstreetmap.org/copyright",
                           title: "OpenStreetMap Copyright",
-                        ));
+                        ),);
                   },
                 ),
                 SettingsTile(
-                  leading: Icon(Icons.share),
+                  leading: const Icon(Icons.share),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      IconButton(onPressed: () => Routing.clickedOnLink(dotenv.env["DISCORD_INVITE"]), icon: Icon(Icons.discord), iconSize: 30, color: Theme.of(context).iconTheme.color),
+                      IconButton(onPressed: () => Routing.clickedOnLink(dotenv.env["DISCORD_INVITE"]), icon: const Icon(Icons.discord), iconSize: 30, color: Theme.of(context).iconTheme.color),
                       SocialMediaButton.instagram(onTap: () => Routing.clickedOnLink(dotenv.env["INSTAGRAM_URL"]), size: 30, color: Theme.of(context).iconTheme.color,) ,
                       SocialMediaButton.github(onTap: () => Routing.clickedOnLink(dotenv.env["GITHUB_URL"]), size: 30, color: Theme.of(context).iconTheme.color),
-                      IconButton(onPressed: () => InAppReview.instance.openStoreListing(appStoreId: dotenv.env["APPSTORE_ID"]), icon: Icon(Icons.star_border), iconSize: 30, color: Theme.of(context).iconTheme.color)
+                      IconButton(onPressed: () => InAppReview.instance.openStoreListing(appStoreId: dotenv.env["APPSTORE_ID"]), icon: const Icon(Icons.star_border), iconSize: 30, color: Theme.of(context).iconTheme.color),
                     ],
                   ),
-                )
+                ),
               ],
             ),
             SettingsSection(title: const Text("Logout"), tiles: [
@@ -179,7 +164,7 @@ class _SettingsState extends ConsumerState<Settings> {
                   'Delete Account',
                   style: TextStyle(color: Colors.red),
                 ),
-                onPressed: (context) => Routing.to(context, DeleteAccount()),
+                onPressed: (context) => Routing.to(context, const DeleteAccount()),
               ),
               SettingsTile.navigation(
                   leading: const Icon(Icons.logout, color: Colors.red),
@@ -196,12 +181,12 @@ class _SettingsState extends ConsumerState<Settings> {
                             onPressed: () async {
                               await ref.read(globalDataServiceProvider.notifier).logout();
                               await invalidateCache();
-                              Routing.toAndDelete(context, Auth(), "/login");
+                              Routing.toAndDelete(context, const Auth(), "/login");
                             },
-                          ))),
-            ])
+                          ),),),
+            ],),
           ],
-        ));
+        ),);
   }
 
   void deleteCache(WidgetRef ref, BuildContext context) {
@@ -209,13 +194,13 @@ class _SettingsState extends ConsumerState<Settings> {
         acceptText: "Delete",
         title: "Delete Cache",
         cancelText: "Cancel",
-        child: Text(
+        child: const Text(
             "Deleting the cache can fix wrong states of the app caused by outdated data. This does not log you out and an automatic refresh of all deleted data is performed. IMPORTANT: Posts that are not synced to the server will be lost forever.",
-            maxLines: 10), onPressed: () async {
+            maxLines: 10,), onPressed: () async {
           await invalidateCache();
           ref.invalidate(syncingServiceProvider);
           Navigator.of(context).pop();
-        }
+        },
     );
   }
 
@@ -225,14 +210,14 @@ class _SettingsState extends ConsumerState<Settings> {
       builder: (context) => Dialog(
         child: SizedBox(
           width: MediaQuery.of(context).size.width - 40,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
+          child: const Padding(
+            padding: EdgeInsets.all(20.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const CircularProgressIndicator(),
-                const SizedBox(height: 15),
-                const Text(
+                CircularProgressIndicator(),
+                SizedBox(height: 15),
+                Text(
                   "Please don't close this screen, this can take a few seconds",
                   textAlign: TextAlign.center,
                 ),
@@ -258,7 +243,7 @@ class _SettingsState extends ConsumerState<Settings> {
     await ref.read(userLikeRepositoryProvider).deleteAll();
     await ref.read(userRepositoryProvider).deleteAll();
     await ref.read(userPinsRepositoryProvider).deleteAll();
-    final mgmt = FMTCStore('tileStore').manage;
+    final mgmt = const FMTCStore('tileStore').manage;
     await mgmt.reset();
     final sharedPreferences = ref.watch(sharedPreferencesProvider);
     await sharedPreferences.clear();

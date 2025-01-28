@@ -1,5 +1,6 @@
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:buff_lisa/data/service/geojson_service.dart';
 import 'package:buff_lisa/features/ranking/data/ranking_state.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/group_ranking_tile.dart';
@@ -9,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:openapi/api.dart';
-
-import '../../../data/service/geojson_service.dart';
 
 
 class Ranking extends ConsumerStatefulWidget {
@@ -46,35 +45,33 @@ class _RankingState extends ConsumerState<Ranking> {
     final map = ref.watch(rankingMapProvider);
     final type = ref.watch(rankingTypeProvider);
     return CustomScaffold(
-        title: Text("Ranking"),
+        title: const Text("Ranking"),
         boxes: [
          ListTile(
-            title: Text("Change between country, state and city:"),
+            title: const Text("Change between country, state and city:"),
             subtitle: InlineChoice.single(
-              clearable: false,
               itemCount: 4,
               itemBuilder: (state, index) => ChoiceChip(
                 label: Text(getText(index, loc)),
                 onSelected: (bool val) => val ? ref.read(rankingMapProvider.notifier).update(index) : null,
                 selected: map == index,
-              )
+              ),
               ),
             ),
           ListTile(
-            title: Text("Change between group and user:"),
+            title: const Text("Change between group and user:"),
             subtitle: InlineChoice.single(
-                clearable: false,
                 itemCount: 2,
                 itemBuilder: (state, index) => ChoiceChip(
                   label: Text(index == 0 ? "Group" : "User"),
                   onSelected: (bool val) => val ? ref.read(rankingTypeProvider.notifier).update(index) : null,
                   selected: type == index,
-                )
+                ),
             ),
-          )
+          ),
         ],
         listBuilder: listBuilder,
-        pagingController: _pagingController
+        pagingController: _pagingController,
     );
   }
 

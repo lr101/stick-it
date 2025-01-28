@@ -1,12 +1,11 @@
+import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
-
-import '../../../features/navigation/data/navigation_provider.dart';
 
 class CustomErrorSnackBar {
   static void message(
       {required String message,
-      CustomErrorSnackBarType type = CustomErrorSnackBarType.info}) {
+      CustomErrorSnackBarType type = CustomErrorSnackBarType.info,}) {
     floatingSnackBar(
       message: message,
       context: NavigationService.navigatorKey.currentContext!,

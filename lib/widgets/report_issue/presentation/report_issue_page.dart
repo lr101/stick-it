@@ -1,5 +1,4 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
@@ -64,7 +63,7 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
   Widget build(BuildContext context) {
     return CustomCloseKeyboardScaffold(
       appBar: AppBar(
-        title: Text('Report Issue'),
+        title: const Text('Report Issue'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -74,11 +73,11 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Select Issue Type'),
-                SizedBox(height: 8.0),
+                const Text('Select Issue Type'),
+                const SizedBox(height: 8.0),
                 DropdownButtonFormField<String>(
                   value: _selectedIssueType,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
                   items: widget.issueTypes.map((String type) {
@@ -93,24 +92,24 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
                     });
                   },
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Message TextField
-                Text('Write your message'),
-                SizedBox(height: 8.0),
+                const Text('Write your message'),
+                const SizedBox(height: 8.0),
                 TextFormField(
                   controller: _messageController,
                   maxLines: 6,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Describe your issue or suggestion...',
                     border: OutlineInputBorder(),
                   ),
                   validator: _validateMessage,
                 ),
-                SizedBox(height: 24.0),
+                const SizedBox(height: 24.0),
 
                 // Submit Button
-                SubmitButton(onPressed: _submitReport, text: 'Submit', icon: Icons.send),
+                SubmitButton(onPressed: _submitReport, icon: Icons.send),
 
               ],
             ),

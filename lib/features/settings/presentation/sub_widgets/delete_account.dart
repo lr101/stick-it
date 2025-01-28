@@ -1,5 +1,4 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
@@ -27,7 +26,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
       final result = await ref.watch(authServiceProvider.notifier).getDeleteCode();
       if (result != null) {
         CustomErrorSnackBar.message(
-            message: "Error while sending code: $result");
+            message: "Error while sending code: $result",);
       }
     });
   }
@@ -36,7 +35,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
   Widget build(BuildContext context) {
     return CustomCloseKeyboardScaffold(
         appBar: AppBar(
-          title: Text("Delete Account"),
+          title: const Text("Delete Account"),
         ),
         body: Padding(padding: const EdgeInsets.all(16), child: Form(
           key: _formKey,
@@ -54,19 +53,18 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.number,
                   style: const TextStyle(fontSize: 20),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: '6 Digit Code',
                     border: OutlineInputBorder(),
                   ),
                   validator: (v) => v != null && v.length == 6 ? null: "Code must have 6 digits",
-                  maxLines: 1,
                 ),
               ),
-              SizedBox(height: 50,),
-              SubmitButton(onPressed: _submitDelete, text: "Delete Account")
+              const SizedBox(height: 50,),
+              SubmitButton(onPressed: _submitDelete, text: "Delete Account"),
             ],
           ),
-        )));
+        ),),);
   }
 
   Future<void> _submitDelete() async {
@@ -76,7 +74,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
       if (result != null) {
         CustomErrorSnackBar.message(message: result);
       } else {
-        Routing.toAndDelete(context, Auth(), "/login");
+        Routing.toAndDelete(context, const Auth(), "/login");
       }
     }
   }

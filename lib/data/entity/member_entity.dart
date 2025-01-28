@@ -39,7 +39,7 @@ class MembersEntity extends CacheEntity {
     required this.members,
     super.keepAlive,
     super.hits,
-    super.ttl
+    super.ttl,
   });
 
   @override

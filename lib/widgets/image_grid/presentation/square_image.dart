@@ -14,7 +14,7 @@ class SquareImage extends ConsumerWidget {
       required this.pinId,
       required this.index,
       required this.groupId,
-      required this.onTap});
+      required this.onTap,});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,12 +25,12 @@ class SquareImage extends ConsumerWidget {
             : GestureDetector(
                 onTap: () => onTap(index),
                 child: FadeInImage(
-                    fadeInDuration: Duration(milliseconds: 100),
+                    fadeInDuration: const Duration(milliseconds: 100),
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
                     placeholder: MemoryImage(kTransparentImage),
-                    image: MemoryImage(data))),
+                    image: MemoryImage(data),),),
         error: (_, __) => const Center(child: Icon(Icons.error)),
-        loading: () => SizedBox.shrink());
+        loading: () => const SizedBox.shrink(),);
   }
 }

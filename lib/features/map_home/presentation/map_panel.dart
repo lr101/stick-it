@@ -1,5 +1,7 @@
 
-import 'package:buff_lisa/features/map_home/presentation/map_panel_draggable.dart';
+import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/service/pin_service.dart';
+import 'package:buff_lisa/features/map_home/data/marker_window_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_panel_feed_card.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_item_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_distance.dart';
@@ -7,11 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:latlong2/latlong.dart';
-
-import '../../../data/dto/pin_dto.dart';
-import '../../../data/service/pin_service.dart';
-import '../../../widgets/custom_feed/presentation/feed_card.dart';
-import '../data/marker_window_state.dart';
 
 class MapPanel extends ConsumerStatefulWidget {
   const MapPanel({super.key, required this.tabController, required this.setLocation});
@@ -55,17 +52,16 @@ class _MapPanelState extends ConsumerState<MapPanel> {
       _pagingController.refresh();
     });
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        TabBar(controller: widget.tabController, tabs: [
+        TabBar(controller: widget.tabController, tabs: const [
           Tab(
             text: 'Closest Pins',
           ),
           Tab(
             text: 'Recently seen',
           ),
-        ]),
+        ],),
         Expanded(child:
         TabBarView(controller: widget.tabController, children: [
           PagedListView<int, MapEntry<LocalPinDto, double>>(
@@ -77,21 +73,19 @@ class _MapPanelState extends ConsumerState<MapPanel> {
                   distance: item.value,
                   onTab: widget.setLocation,
                 ),
-              )),
-          windowsState == null
-              ? Center(child: Text('Click on a pin to see details here'))
-              : ProviderScope(
+              ),),
+          if (windowsState == null) const Center(child: Text('Click on a pin to see details here')) else ProviderScope(
                 overrides: [
-                  feedItemProvider.overrideWithValue(windowsState)
+                  feedItemProvider.overrideWithValue(windowsState),
                 ],
-                  child: const MapPanelFeedCard()
-            )
-        ]))
+                  child: const MapPanelFeedCard(),
+            ),
+        ],),),
       ],
     );
   }
 
-  Future<void> _fetchPage(pageKey, {pageSize = 5}) async {
+  Future<void> _fetchPage(int pageKey, {int pageSize = 5}) async {
     try {
       int end;
       if (pageKey + pageSize > _pins.length) {

@@ -28,7 +28,7 @@ class MapStates extends _$MapStates {
   MapState build() {
     return MapState(
       markers: ref.watch(activatedPinsWithoutLoadingProvider)
-          .map((e) => CustomMarkerWidget(pinDto: e, withAnimation: false)).toList()
+          .map((e) => CustomMarkerWidget(pinDto: e)).toList(),
     );
   }
 }

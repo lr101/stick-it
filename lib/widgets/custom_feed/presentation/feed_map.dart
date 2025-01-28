@@ -1,16 +1,15 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_map_state.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
+import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
+import 'package:buff_lisa/widgets/custom_marker/presentation/custom_marker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
-
-import '../../../data/service/global_data_service.dart';
-import '../../../features/map_home/presentation/osm_copyright.dart';
-import '../../custom_map_setup/presentation/custom_tile_layer.dart';
-import '../../custom_marker/presentation/custom_marker.dart';
-import '../data/like_service.dart';
 
 class FeedMap extends ConsumerStatefulWidget {
 
@@ -44,7 +43,7 @@ class FeedMapState extends ConsumerState<FeedMap> {
       children: [
         GestureDetector(
             onTap: isExpanded ? null : switchFun,
-            onDoubleTap: (isExpanded) ? like : null,
+            onDoubleTap: isExpanded ? like : null,
             child: AbsorbPointer(child: FlutterMap(
           mapController: _mapController,
           options: MapOptions(
@@ -53,15 +52,15 @@ class FeedMapState extends ConsumerState<FeedMap> {
             initialZoom: _zoom,
             initialCenter: center,
             keepAlive: true,
-            interactionOptions: InteractionOptions(
-                flags: InteractiveFlag.pinchZoom),
+            interactionOptions: const InteractionOptions(
+                flags: InteractiveFlag.pinchZoom,),
           ),
           children: [
             CustomTileLayer(),
             MarkerLayer(markers: [CustomMarkerWidget(pinDto: widget.item),]),
-            if(isExpanded) OsmCopyright()
+            if(isExpanded) const OsmCopyright(),
           ],
-        ),)),
+        ),),),
         if(isExpanded) Align(
             alignment: Alignment.bottomLeft,
             child: Padding(
@@ -75,8 +74,8 @@ class FeedMapState extends ConsumerState<FeedMap> {
                       onPressed: () => zoomIn(center),
                       backgroundColor:
                       Colors.grey.withOpacity(0.5),
-                      child: const Icon(Icons.zoom_in)),
-                  SizedBox(height: 5,),
+                      child: const Icon(Icons.zoom_in),),
+                  const SizedBox(height: 5,),
                   FloatingActionButton(
                     onPressed: () => zoomOut(center),
                     heroTag: "${widget.item.id}zoomOut",
@@ -84,11 +83,11 @@ class FeedMapState extends ConsumerState<FeedMap> {
                     Colors.grey.withOpacity(0.5),
                     child: const Icon(Icons.zoom_out),
                   ),
-                  SizedBox(height: 30,),
+                  const SizedBox(height: 30,),
                 ],
               ),
-            ))
-      ]);
+            ),),
+      ],);
   }
 
   void zoomIn(LatLng center) {

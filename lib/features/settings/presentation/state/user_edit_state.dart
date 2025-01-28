@@ -1,9 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../../data/service/global_data_service.dart';
 
 part 'user_edit_state.g.dart';
 

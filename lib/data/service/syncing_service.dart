@@ -1,19 +1,18 @@
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/entity/group_entity.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/repository/pin_image_repository.dart';
 import 'package:buff_lisa/data/repository/pin_repository.dart';
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../entity/pin_entity.dart';
-import '../repository/global_data_repository.dart';
-import 'global_data_service.dart';
 
 part 'syncing_service.g.dart';
 
@@ -39,7 +38,7 @@ class SyncingService extends _$SyncingService {
   Future<void> syncGroups() async {
     if (_mutex.isLocked) return;
     await _mutex.acquire();
-    final key = GlobalDataRepository.lastSeenKey;
+    const key = GlobalDataRepository.lastSeenKey;
     final lastSeen = ref.read(lastSeenProvider(key));
     final userId = ref.watch(userIdProvider);
     try {

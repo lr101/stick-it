@@ -1,11 +1,9 @@
 import 'package:buff_lisa/widgets/custom_feed/data/feed_description.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/feed_item_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_timeline_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../data/dto/pin_dto.dart';
-import '../data/feed_item_service.dart';
 
 class FeedCard extends ConsumerWidget {
   const FeedCard({super.key});
@@ -30,10 +28,10 @@ class FeedCard extends ConsumerWidget {
         children: [
           FeedTimelineHeader(groupId: item.groupId, creationDate: item.creationDate, height: maxHeight + ref.watch(feedDescriptionHeightProvider(item))),
           const SizedBox(width: 16),
-          FeedCardImage(item: item, maxHeight: maxHeight, maxWidth: maxWidth - 55, )
+          FeedCardImage(item: item, maxHeight: maxHeight, maxWidth: maxWidth - 55, ),
         ],
       ),
-    );});
+    );},);
   }
 
 

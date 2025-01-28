@@ -19,7 +19,7 @@ class MemberDto {
       username: ranking.username,
       groupId: groupId,
       points: ranking.ranking,
-      selectedBatch: ranking.selectedBatch
+      selectedBatch: ranking.selectedBatch,
     );
   }
 
@@ -29,7 +29,7 @@ class MemberDto {
         username: memberEntity.username,
         groupId: groupId,
         points: memberEntity.points,
-        selectedBatch: memberEntity.selectedBatch
+        selectedBatch: memberEntity.selectedBatch,
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
+import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
@@ -143,7 +143,7 @@ Future<LocalGroupDto?> groupById(Ref ref, String groupId) async {
 @riverpod
 Future<Set<LocalGroupDto>> activeGroups(Ref ref) async {
   return await ref.watch(userGroupServiceProvider.selectAsync(
-      (groups) => groups.where((t) => t.isActivated == true).toSet()));
+      (groups) => groups.where((t) => t.isActivated == true).toSet(),),);
 }
 
 @riverpod
