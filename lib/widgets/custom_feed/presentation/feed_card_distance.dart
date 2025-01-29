@@ -1,10 +1,9 @@
+import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_timeline_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
-
-import '../../../data/dto/pin_dto.dart';
 
 class FeedCardDistance extends ConsumerStatefulWidget {
 
@@ -42,10 +41,10 @@ class FeedCardDistanceState extends ConsumerState<FeedCardDistance> {
         children: [
           FeedTimelineHeader(groupId: widget.item.groupId, creationDate: widget.item.creationDate, height: maxWidth, isRotated: true,),
           const SizedBox(height: 16),
-          FeedCardImage(item: widget.item, maxHeight: maxHeight - 70, maxWidth: maxWidth - 20, rotateHeader: true, distance: widget.distance, onTab: widget.onTab,)
+          FeedCardImage(item: widget.item, maxHeight: maxHeight - 70, maxWidth: maxWidth - 20, rotateHeader: true, distance: widget.distance, onTab: widget.onTab,),
         ],
       ),
-    ));});
+    ),);},);
   }
 
 

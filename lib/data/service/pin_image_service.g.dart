@@ -7,7 +7,7 @@ part of 'pin_image_service.dart';
 // **************************************************************************
 
 String _$getPinImageAndFetchHash() =>
-    r'6833dfdc098ff777902ac3568f08f8d19185de8b';
+    r'97df963630e1f177a5cfbfd2f4af765d54008235';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -35,7 +35,7 @@ class _SystemHash {
 const getPinImageAndFetchProvider = GetPinImageAndFetchFamily();
 
 /// See also [getPinImageAndFetch].
-class GetPinImageAndFetchFamily extends Family<AsyncValue<Uint8List?>> {
+class GetPinImageAndFetchFamily extends Family<AsyncValue<Uint8List>> {
   /// See also [getPinImageAndFetch].
   const GetPinImageAndFetchFamily();
 
@@ -73,8 +73,7 @@ class GetPinImageAndFetchFamily extends Family<AsyncValue<Uint8List?>> {
 }
 
 /// See also [getPinImageAndFetch].
-class GetPinImageAndFetchProvider
-    extends AutoDisposeFutureProvider<Uint8List?> {
+class GetPinImageAndFetchProvider extends AutoDisposeFutureProvider<Uint8List> {
   /// See also [getPinImageAndFetch].
   GetPinImageAndFetchProvider(
     String pinId,
@@ -109,7 +108,7 @@ class GetPinImageAndFetchProvider
 
   @override
   Override overrideWith(
-    FutureOr<Uint8List?> Function(GetPinImageAndFetchRef provider) create,
+    FutureOr<Uint8List> Function(GetPinImageAndFetchRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -126,7 +125,7 @@ class GetPinImageAndFetchProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<Uint8List?> createElement() {
+  AutoDisposeFutureProviderElement<Uint8List> createElement() {
     return _GetPinImageAndFetchProviderElement(this);
   }
 
@@ -146,35 +145,18 @@ class GetPinImageAndFetchProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetPinImageAndFetchRef on AutoDisposeFutureProviderRef<Uint8List?> {
+mixin GetPinImageAndFetchRef on AutoDisposeFutureProviderRef<Uint8List> {
   /// The parameter `pinId` of this provider.
   String get pinId;
 }
 
 class _GetPinImageAndFetchProviderElement
-    extends AutoDisposeFutureProviderElement<Uint8List?>
+    extends AutoDisposeFutureProviderElement<Uint8List>
     with GetPinImageAndFetchRef {
   _GetPinImageAndFetchProviderElement(super.provider);
 
   @override
   String get pinId => (origin as GetPinImageAndFetchProvider).pinId;
 }
-
-String _$pinImageServiceHash() => r'a212910a72891c5988f9bd93c6097afd1955c645';
-
-/// See also [PinImageService].
-@ProviderFor(PinImageService)
-final pinImageServiceProvider =
-    AsyncNotifierProvider<PinImageService, Map<String, Uint8List>>.internal(
-  PinImageService.new,
-  name: r'pinImageServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$pinImageServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$PinImageService = AsyncNotifier<Map<String, Uint8List>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

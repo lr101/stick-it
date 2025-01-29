@@ -22,7 +22,7 @@ final roundGroupIdProvider = AutoDisposeProvider<String>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef RoundGroupIdRef = AutoDisposeProviderRef<String>;
-String _$groupOrderServiceHash() => r'd735560810958bccb872bb120fb62bc73e887951';
+String _$groupOrderServiceHash() => r'ba479075075e9341e20995b380fc82f7140b9bda';
 
 /// See also [GroupOrderService].
 @ProviderFor(GroupOrderService)

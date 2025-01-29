@@ -24,7 +24,7 @@ class GroupJoinActionButton extends ConsumerWidget {
               .joinGroup(groupDto.groupId);
           if (result != null) {
             CustomErrorSnackBar.message(message: result);
-          } else {
+          } else if (context.mounted){
             Navigator.of(context).pop();
           }
         } else {
@@ -32,7 +32,7 @@ class GroupJoinActionButton extends ConsumerWidget {
               acceptText: "Join",
               title: "Join Group",
               child: TextFormField(
-                decoration: InputDecoration(hintText: "Invite code"),
+                decoration: const InputDecoration(hintText: "Invite code"),
                 controller: _textController,
               ), onPressed: () async {
             final result = await ref
@@ -40,10 +40,10 @@ class GroupJoinActionButton extends ConsumerWidget {
                 .joinGroup(groupDto.groupId, inviteUrl: _textController.text);
             if (result != null) {
               CustomErrorSnackBar.message(message: result);
-            } else {
+            } else if (context.mounted) {
               Navigator.of(context).pop();
             }
-          });
+          },);
         }
       },
     );

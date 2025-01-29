@@ -1,4 +1,5 @@
 
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
 import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
@@ -18,8 +19,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:snapping_page_scroll/snapping_page_scroll.dart';
-
-import '../../../data/service/global_data_service.dart';
 
 class Camera extends ConsumerStatefulWidget {
   const Camera({super.key});
@@ -55,10 +54,7 @@ class _CameraState extends ConsumerState<Camera> {
     final cameras = ref.watch(globalDataServiceProvider.select((t) => t.cameras));
     final cameraFlashMode = ref.watch(cameraTorchProvider);
     final groupIds = ref.watch(groupOrderServiceProvider);
-    return Scaffold(appBar: null,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
+    return Scaffold(body: Column(
         children: [
           Expanded(
             child: Stack(
@@ -73,11 +69,11 @@ class _CameraState extends ConsumerState<Camera> {
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: CameraPreview(controller),
-                            )
+                            ),
                         ),
                       error: (error, stackTrace) => Text(error.toString()),
-                      loading: () =>  const Center(child: CircularProgressIndicator())
-                  )
+                      loading: () =>  const Center(child: CircularProgressIndicator()),
+                  ),
                 ),
                 Align(
                   alignment: FractionalOffset.bottomCenter,
@@ -88,11 +84,11 @@ class _CameraState extends ConsumerState<Camera> {
                         color: Theme.of(context).highlightColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Padding(padding: const EdgeInsets.all(5),
+                      child: const Padding(padding: EdgeInsets.all(5),
                       child:  Text("Hold steady capturing ...") ,
-                      )
-                    ) : SizedBox.shrink()
-                )),
+                      ),
+                    ) : const SizedBox.shrink(),
+                ),),
                 Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: Padding(
@@ -106,12 +102,12 @@ class _CameraState extends ConsumerState<Camera> {
                                     padding: const EdgeInsets.all(2.5),
                                     child: CircleAvatar(
                                         radius: 20,
-                                        backgroundColor: Colors.grey.withOpacity(0.5),
+                                        backgroundColor: Colors.grey.withValues(alpha: 0.5),
                                         child: Center(child: IconButton(
                                             onPressed: () => handleFlashChange(!cameraFlashMode),
-                                            icon: cameraFlashMode ? const Icon(Icons.flash_off) : const Icon(Icons.flash_auto)
-                                        ),)
-                                    )),
+                                            icon: cameraFlashMode ? const Icon(Icons.flash_off) : const Icon(Icons.flash_auto),
+                                        ),),
+                                    ),),
                               ListView.builder(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
@@ -120,29 +116,29 @@ class _CameraState extends ConsumerState<Camera> {
                                       padding: const EdgeInsets.all(2.5),
                                       child: CircleAvatar(
                                           radius: 20,
-                                          backgroundColor: cameraIndex == index ? Colors.grey.withOpacity(0.8) : Colors.grey.withOpacity(0.5),
+                                          backgroundColor: cameraIndex == index ? Colors.grey.withValues(alpha: 0.8) : Colors.grey.withValues(alpha: 0.5),
                                           child: Center(child: IconButton(
                                               onPressed: () => handleCameraChange(index),
-                                              icon: cameras[index].lensDirection == CameraLensDirection.back ? const Icon(Icons.landscape) : const Icon(Icons.person)
-                                          ),)
-                                      ))
+                                              icon: cameras[index].lensDirection == CameraLensDirection.back ? const Icon(Icons.landscape) : const Icon(Icons.person),
+                                          ),),
+                                      ),),
                               ),
                               Padding(
                                   padding: const EdgeInsets.all(2.5),
                                   child:CircleAvatar(
                                       radius: 20,
-                                      backgroundColor: Colors.grey.withOpacity(0.5),
+                                      backgroundColor: Colors.grey.withValues(alpha: 0.5),
                                       child: Center(
                                           child: GestureDetector(
                                              onTap: uploadFileImage,
-                                             child: Container(child: const Icon(Icons.upload)),
-                                             ),)
-                                  )
-                              )
+                                             child: const Icon(Icons.upload),
+                                             ),),
+                                  ),
+                              ),
                             ],
                           ),
-                        ))
-                )
+                        ),),
+                ),
               ],
             ),
           ),
@@ -159,21 +155,21 @@ class _CameraState extends ConsumerState<Camera> {
                   ),
                 Center(child: IgnorePointer(
                   child: Container(
-                    padding: EdgeInsets.all(2.0),
+                    padding: const EdgeInsets.all(2.0),
                     decoration: BoxDecoration(
                       border: Border.all(
                           width: 5.0,
-                        color: Theme.of(context).colorScheme.primary
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       shape: BoxShape.circle,
                     ),
                     height: (MediaQuery.of(context).size.height) * 0.07 * 2,
                   ),
-                ))
+                ),),
               ],
             ),
           ),
-          const SizedBox(height: 5,)
+          const SizedBox(height: 5,),
         ],
       ),
     );
@@ -197,7 +193,7 @@ class _CameraState extends ConsumerState<Camera> {
         final croppedImage = await CustomImagePicker.crop(res: pickedFile, minHeight: 500, minWidth: 500, context: context, initAspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4));
         final exif = await Exif.fromPath(pickedFile.path);
         final coord = await exif.getLatLong();
-
+        if (!mounted) return;
         Routing.to(context, SelectLocation(image: croppedImage!, center:  coord != null ? LatLng(coord.latitude, coord.longitude) : null,));
       } catch (e) {
         CustomErrorSnackBar.message(message: "Could not load or crop image");
@@ -214,7 +210,7 @@ class _CameraState extends ConsumerState<Camera> {
     ref.read(cameraTorchProvider.notifier).setTorch(value);
   }
 
-  void onPageChange(index) {
+  void onPageChange(int index) {
     ref.read(cameraGroupIndexProvider.notifier).updateIndex(index);
   }
 
@@ -226,10 +222,9 @@ class _CameraState extends ConsumerState<Camera> {
             child:  RoundImage(
               size: (MediaQuery.of(context).size.height) * 0.06,
               imageCallback: ref.watch(groupProfilePictureByIdProvider(groupId)),
-              clickable: false,
               child: Container(),
-            )
-        ))
+            ),
+        ),),
     );
   }
 
@@ -244,9 +239,10 @@ class _CameraState extends ConsumerState<Camera> {
     ref.read(cameraCapturingProvider.notifier).setCapturing(true);
       try {
         final image = await controller.takePicture();
-        Uint8List bytes = await image.readAsBytes();
-        Position position = await Geolocator.getCurrentPosition();
+        final Uint8List bytes = await image.readAsBytes();
+        final Position position = await Geolocator.getCurrentPosition();
         final pos = LatLng(position.latitude, position.longitude);
+        if (!mounted) return;
         Routing.to(context, ImageUpload(image: bytes, position: pos));
       } catch (e) {
         if(kDebugMode) print(e);

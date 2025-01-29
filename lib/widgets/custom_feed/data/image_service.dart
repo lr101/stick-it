@@ -4,7 +4,6 @@ import 'dart:ui' as ui;
 
 import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -26,6 +25,5 @@ Future<PinImageInfo?> getPinImageInfo(Ref ref, LocalPinDto pinDto) async {
     completer.complete(img);
   });
   final res = await completer.future;
-  ref.watch(userByIdProvider(pinDto.creatorId));
   return PinImageInfo(image: imageData.value!, width: res.width, height: res.height);
 }

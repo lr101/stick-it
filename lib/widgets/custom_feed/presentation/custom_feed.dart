@@ -1,11 +1,12 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/pin_image_service.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/feed_item_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
-import '../data/feed_item_service.dart';
-import 'feed_card.dart';
 
 class CustomFeed extends ConsumerStatefulWidget {
   const CustomFeed({super.key, required this.pinProvider, this.index, required this.pagingController});
@@ -68,13 +69,13 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
                 overrides: [
                   feedItemProvider.overrideWithValue(item),
                 ],
-                child: const FeedCard())
+                child: const FeedCard(),),
         ),
       ),
     );
   }
 
-  Future<void> _fetchPage(pageKey, {pageSize = _pageSize}) async {
+  Future<void> _fetchPage(int pageKey, {int pageSize = _pageSize}) async {
     try {
       int end;
       if (pageKey + pageSize > _pins.length) {
@@ -83,8 +84,11 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
         end = pageKey + pageSize;
       }
       final idList = _pins.getRange(pageKey, end).toList();
-      for (var pin in idList) {
-        ref.watch(getPinImageAndFetchProvider(pin.id));
+      for (final pin in idList) {
+        // prefetch data
+        ref.read(getPinImageAndFetchProvider(pin.id));
+        ref.read(userServiceProvider(pin.creatorId));
+        ref.read(getUserProfileSmallProvider(pin.creatorId));
       }
       if (end == _pins.length) {
         widget.pagingController.appendLastPage(idList);

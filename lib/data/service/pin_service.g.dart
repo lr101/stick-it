@@ -6,12 +6,12 @@ part of 'pin_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$activatedPinsHash() => r'608477fefb1d49e0e83bee1a906a7ba77f93552f';
+String _$activatedPinsHash() => r'9573209725906800de2b5007857da8873c02f5b6';
 
 /// See also [activatedPins].
 @ProviderFor(activatedPins)
 final activatedPinsProvider =
-    AutoDisposeProvider<AsyncValue<List<LocalPinDto>>>.internal(
+    AutoDisposeFutureProvider<Set<LocalPinDto>>.internal(
   activatedPins,
   name: r'activatedPinsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,15 +23,14 @@ final activatedPinsProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef ActivatedPinsRef
-    = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
+typedef ActivatedPinsRef = AutoDisposeFutureProviderRef<Set<LocalPinDto>>;
 String _$activatedPinsWithoutLoadingHash() =>
-    r'a5c1c8d7fdd31cac7c180c2fa402e63f26a0f9f1';
+    r'963dd78336b37523f60edb3a6781a0fca960ef4a';
 
 /// See also [activatedPinsWithoutLoading].
 @ProviderFor(activatedPinsWithoutLoading)
 final activatedPinsWithoutLoadingProvider =
-    AutoDisposeProvider<AsyncValue<List<LocalPinDto>>>.internal(
+    AutoDisposeProvider<Set<LocalPinDto>>.internal(
   activatedPinsWithoutLoading,
   name: r'activatedPinsWithoutLoadingProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -44,9 +43,9 @@ final activatedPinsWithoutLoadingProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ActivatedPinsWithoutLoadingRef
-    = AutoDisposeProviderRef<AsyncValue<List<LocalPinDto>>>;
+    = AutoDisposeProviderRef<Set<LocalPinDto>>;
 String _$sortedActivatedPinsHash() =>
-    r'21b177ae50c64702d9791d100dc58370036bf1e6';
+    r'b7ae537c50ec211ab28a4700ca28060c8891fc88';
 
 /// See also [sortedActivatedPins].
 @ProviderFor(sortedActivatedPins)
@@ -65,7 +64,7 @@ final sortedActivatedPinsProvider =
 // ignore: unused_element
 typedef SortedActivatedPinsRef
     = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
-String _$sortedGroupPinsHash() => r'3c280fe3d40dd8433f37d5ca7a1b22908e5be37d';
+String _$sortedGroupPinsHash() => r'23dbccfee5ac1e9dd3c262c0bcb63e500539867a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -218,26 +217,8 @@ class _SortedGroupPinsProviderElement
   String get groupId => (origin as SortedGroupPinsProvider).groupId;
 }
 
-String _$sortedUserPinsHash() => r'd8d8d0f626f5086019d0fcddaf32e383b3d56652';
-
-/// See also [sortedUserPins].
-@ProviderFor(sortedUserPins)
-final sortedUserPinsProvider =
-    AutoDisposeFutureProvider<List<LocalPinDto>>.internal(
-  sortedUserPins,
-  name: r'sortedUserPinsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$sortedUserPinsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SortedUserPinsRef = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
 String _$pinsSortedByDistanceHash() =>
-    r'd912d94aa138bd53d85e92bf06f7ad9357be6667';
+    r'bc056691a0787e10359700bd7ac8645c4a89e2ef';
 
 /// See also [pinsSortedByDistance].
 @ProviderFor(pinsSortedByDistance)
@@ -256,12 +237,13 @@ final pinsSortedByDistanceProvider = AutoDisposeProvider<
 // ignore: unused_element
 typedef PinsSortedByDistanceRef
     = AutoDisposeProviderRef<AsyncValue<List<MapEntry<LocalPinDto, double>>>>;
-String _$pinServiceHash() => r'732ab195a045dfeb56e152337caf5cc9371c9fd0';
+String _$pinServiceHash() => r'fcea777b3eb4d86e57ad2d734529f41f1d48be5c';
 
-abstract class _$PinService extends BuildlessAsyncNotifier<List<LocalPinDto>> {
+abstract class _$PinService
+    extends BuildlessAutoDisposeAsyncNotifier<Set<LocalPinDto>> {
   late final String groupId;
 
-  FutureOr<List<LocalPinDto>> build(
+  FutureOr<Set<LocalPinDto>> build(
     String groupId,
   );
 }
@@ -271,7 +253,7 @@ abstract class _$PinService extends BuildlessAsyncNotifier<List<LocalPinDto>> {
 const pinServiceProvider = PinServiceFamily();
 
 /// See also [PinService].
-class PinServiceFamily extends Family<AsyncValue<List<LocalPinDto>>> {
+class PinServiceFamily extends Family<AsyncValue<Set<LocalPinDto>>> {
   /// See also [PinService].
   const PinServiceFamily();
 
@@ -310,7 +292,7 @@ class PinServiceFamily extends Family<AsyncValue<List<LocalPinDto>>> {
 
 /// See also [PinService].
 class PinServiceProvider
-    extends AsyncNotifierProviderImpl<PinService, List<LocalPinDto>> {
+    extends AutoDisposeAsyncNotifierProviderImpl<PinService, Set<LocalPinDto>> {
   /// See also [PinService].
   PinServiceProvider(
     String groupId,
@@ -341,7 +323,7 @@ class PinServiceProvider
   final String groupId;
 
   @override
-  FutureOr<List<LocalPinDto>> runNotifierBuild(
+  FutureOr<Set<LocalPinDto>> runNotifierBuild(
     covariant PinService notifier,
   ) {
     return notifier.build(
@@ -366,7 +348,8 @@ class PinServiceProvider
   }
 
   @override
-  AsyncNotifierProviderElement<PinService, List<LocalPinDto>> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<PinService, Set<LocalPinDto>>
+      createElement() {
     return _PinServiceProviderElement(this);
   }
 
@@ -386,14 +369,14 @@ class PinServiceProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin PinServiceRef on AsyncNotifierProviderRef<List<LocalPinDto>> {
+mixin PinServiceRef on AutoDisposeAsyncNotifierProviderRef<Set<LocalPinDto>> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
 class _PinServiceProviderElement
-    extends AsyncNotifierProviderElement<PinService, List<LocalPinDto>>
-    with PinServiceRef {
+    extends AutoDisposeAsyncNotifierProviderElement<PinService,
+        Set<LocalPinDto>> with PinServiceRef {
   _PinServiceProviderElement(super.provider);
 
   @override

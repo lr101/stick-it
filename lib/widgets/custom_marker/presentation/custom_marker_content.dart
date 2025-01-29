@@ -14,7 +14,7 @@ class CustomMarkerContent extends ConsumerStatefulWidget {
   const CustomMarkerContent({
     super.key,
     required this.pinDto,
-    required this.withAnimation
+    required this.withAnimation,
   });
 
   @override
@@ -23,7 +23,7 @@ class CustomMarkerContent extends ConsumerStatefulWidget {
 
 class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  final Distance _distance = Distance();
+  final Distance _distance = const Distance();
 
   @override
   void initState() {
@@ -42,14 +42,14 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
 
   bool _isWithinDistance(Position userPosition) {
     return _distance.as(LengthUnit.Meter, LatLng(userPosition.latitude, userPosition.longitude),
-        LatLng(widget.pinDto.latitude, widget.pinDto.longitude)) <= 50.0;
+        LatLng(widget.pinDto.latitude, widget.pinDto.longitude),) <= 50.0;
   }
 
   @override
   Widget build(BuildContext context) {
     final isInRange = ref.watch(currentLocationProvider.select((e) => e.whenOrNull(data: (data) => _isWithinDistance(data))));
     final markerImage = ref.watch(groupPinImageByIdProvider(widget.pinDto.groupId)).when(
-      data: (data) => Image.memory(data ?? ref.read(defaultGroupPinImageProvider)),
+      data: (data) => Image.memory(data),
       error: (e, s) => Image.memory(ref.read(defaultGroupPinImageProvider)),
       loading: () => Image.memory(ref.read(defaultGroupPinImageProvider)),
     );
@@ -62,7 +62,7 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
             width: 30,
             child: markerImage,
           ),
-          SizedBox.square(dimension: 30)
+          const SizedBox.square(dimension: 30),
         ],
       );
     }
@@ -80,7 +80,7 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
                 height: 50 + scale * 50,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.tertiary.withOpacity(0.8 - (scale - 0.2)),
+                  color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.8 - (scale - 0.2)),
                 ),
               );
             },
@@ -89,7 +89,7 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
           height: 30,
           width: 30,
           child: markerImage,
-        )
+        ),
       ],
     );
   }

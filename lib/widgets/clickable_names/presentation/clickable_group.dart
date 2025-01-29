@@ -1,11 +1,10 @@
 
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_overview.dart';
 import 'package:buff_lisa/features/group_overview/presentation/user_group_overview.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../features/group_overview/presentation/sub_widgets/group_overview.dart';
-import '../../../util/routing/routing.dart';
 
 class ClickableGroup extends ConsumerWidget {
 
@@ -21,15 +20,14 @@ class ClickableGroup extends ConsumerWidget {
     if (isMember) {
       return GestureDetector(
         onTap: () => Routing.to(context, UserGroupOverview(groupId: groupId)),
-        child: child
+        child: child,
       );
     } else {
       return GestureDetector(
         onTap: () => Routing.to(context, GroupOverview(groupId: groupId)),
-        child: child
+        child: child,
       );
     }
   }
-
 
 }

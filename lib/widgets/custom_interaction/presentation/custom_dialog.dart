@@ -62,7 +62,7 @@ class CustomDialog extends StatelessWidget {
   }
 
   static Future<void> show(BuildContext context, {String? cancelText, required String acceptText,
-      required String title, required VoidCallback onPressed, Widget? child}) async {
+      required String title, required VoidCallback onPressed, Widget? child,}) async {
     await showDialog(
         context: context,
         builder: (context) => CustomDialog(
@@ -70,6 +70,6 @@ class CustomDialog extends StatelessWidget {
             text1: cancelText,
             text2: acceptText,
             onPressed: onPressed,
-            child: child));
+            child: child,),);
   }
 }

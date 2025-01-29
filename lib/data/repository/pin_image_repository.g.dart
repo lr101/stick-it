@@ -7,7 +7,7 @@ part of 'pin_image_repository.dart';
 // **************************************************************************
 
 String _$pinImageRepositoryHash() =>
-    r'b737951cbda853bd49994fc13aa496cceea8ce88';
+    r'5fb27c3bc04e18cc380f3c44531a25b6e6592b44';
 
 /// See also [pinImageRepository].
 @ProviderFor(pinImageRepository)

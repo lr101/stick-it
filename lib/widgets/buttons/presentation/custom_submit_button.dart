@@ -12,7 +12,7 @@ class SubmitButton extends StatefulWidget {
     required this.onPressed,
     this.text = 'Submit',
     this.height = 50,
-    this.icon = Icons.arrow_forward
+    this.icon = Icons.arrow_forward,
   });
 
   @override
@@ -59,9 +59,7 @@ class _SubmitButtonState extends State<SubmitButton> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _isLoading
-                  ? const CircularProgressIndicator()
-                  : Text(widget.text),
+              if (_isLoading) const CircularProgressIndicator() else Text(widget.text),
               const SizedBox(width: 5),
               Icon(widget.icon),
             ],

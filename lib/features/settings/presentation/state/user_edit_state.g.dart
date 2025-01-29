@@ -6,7 +6,7 @@ part of 'user_edit_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userEditStateHash() => r'072bc343df40e17cfa0551e40988fb05590b928c';
+String _$userEditStateHash() => r'a36832e8d0a81592ade3d821a95f182ff03f5ba0';
 
 /// See also [UserEditState].
 @ProviderFor(UserEditState)

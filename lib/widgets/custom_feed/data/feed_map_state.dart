@@ -11,9 +11,8 @@ class FeedMapState extends _$FeedMapState {
   }
 
   void update() {
-  state = !state;
-  ref.notifyListeners();
-}
-
+    state = !state;
+    ref.notifyListeners();
+  }
 
 }

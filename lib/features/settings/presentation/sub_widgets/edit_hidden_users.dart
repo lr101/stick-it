@@ -12,11 +12,11 @@ class EditHiddenUsers extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final hiddenUsers = ref.watch(hiddenUserServiceProvider);
     return Scaffold(
-      appBar: AppBar(title: Text("Edit hidden users")),
+      appBar: AppBar(title: const Text("Edit hidden users", style: TextStyle(fontWeight: FontWeight.bold))),
       body: ListView.builder(
         itemBuilder: (context, index) => UserTile(userId: hiddenUsers[index]),
         itemCount: hiddenUsers.length,
-      )
+      ),
     );
   }
 

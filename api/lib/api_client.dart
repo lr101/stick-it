@@ -208,6 +208,8 @@ class ApiClient {
           return PinWithOptionalImageDto.fromJson(value);
         case 'PinsSyncDto':
           return PinsSyncDto.fromJson(value);
+        case 'RankingSearchDtoInner':
+          return RankingSearchDtoInner.fromJson(value);
         case 'RefreshTokenRequestDto':
           return RefreshTokenRequestDto.fromJson(value);
         case 'ReportDto':

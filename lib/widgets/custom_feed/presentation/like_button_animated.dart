@@ -1,13 +1,14 @@
-///
-///  create by zmtzawqlp on 2019/5/27
-///
-library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/painter/bubbles_painter.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/painter/circle_painter.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/utils/like_button_model.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/utils/like_button_typedef.dart';
+// ignore: implementation_imports
 import 'package:like_button/src/utils/like_button_util.dart';
 
 
@@ -152,7 +153,7 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
     _controller =
         AnimationController(duration: widget.animationDuration, vsync: this);
     _likeCountController = AnimationController(
-        duration: widget.likeCountAnimationDuration, vsync: this);
+        duration: widget.likeCountAnimationDuration, vsync: this,);
 
     _initAnimations();
 
@@ -181,7 +182,7 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
     if (_likeCountController?.duration != widget.likeCountAnimationDuration) {
       _likeCountController?.dispose();
       _likeCountController = AnimationController(
-          duration: widget.likeCountAnimationDuration, vsync: this);
+          duration: widget.likeCountAnimationDuration, vsync: this,);
       _initLikeCountControllerAnimation();
     }
 
@@ -267,7 +268,7 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
           );
         },
       ),
-      likeCountWidget
+      likeCountWidget,
     ];
 
     if (widget.countPostion == CountPostion.left ||
@@ -324,7 +325,7 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
     if (widget.likeCountAnimationType == LikeCountAnimationType.none ||
         _likeCount == _preLikeCount) {
       result = _createLikeCountWidget(
-          _likeCount, _isLiked ?? true, _likeCount.toString());
+          _likeCount, _isLiked ?? true, _likeCount.toString(),);
     } else if (widget.likeCountAnimationType == LikeCountAnimationType.part &&
         !allChange) {
       final String samePart = likeCount.substring(0, didIndex);
@@ -347,11 +348,9 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
               textDirection: TextDirection.ltr,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Stack(
                     fit: StackFit.passthrough,
-                    clipBehavior: Clip.hardEdge,
                     children: <Widget>[
                       Opacity(
                         opacity: _opacityAnimation.value,
@@ -365,56 +364,52 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
                   ),
                   Stack(
                     fit: StackFit.passthrough,
-                    clipBehavior: Clip.hardEdge,
                     children: <Widget>[
                       FractionalTranslation(
                           translation: _preLikeCount! > _likeCount!
                               ? _slideCurrentValueAnimation.value
                               : -_slideCurrentValueAnimation.value,
-                          child: currentWidget),
+                          child: currentWidget,),
                       FractionalTranslation(
                           translation: _preLikeCount! > _likeCount!
                               ? _slidePreValueAnimation.value
                               : -_slidePreValueAnimation.value,
-                          child: preWidget),
+                          child: preWidget,),
                     ],
-                  )
+                  ),
                 ],
               ),
             );
-          });
+          },);
     } else {
       result = AnimatedBuilder(
         animation: _likeCountController!,
         builder: (BuildContext b, Widget? w) {
           return Stack(
             fit: StackFit.passthrough,
-            clipBehavior: Clip.hardEdge,
             children: <Widget>[
               FractionalTranslation(
                   translation: _preLikeCount! > _likeCount!
                       ? _slideCurrentValueAnimation.value
                       : -_slideCurrentValueAnimation.value,
                   child: _createLikeCountWidget(
-                      _likeCount, _isLiked ?? true, _likeCount.toString())),
+                      _likeCount, _isLiked ?? true, _likeCount.toString(),),),
               FractionalTranslation(
                   translation: _preLikeCount! > _likeCount!
                       ? _slidePreValueAnimation.value
                       : -_slidePreValueAnimation.value,
                   child: _createLikeCountWidget(_preLikeCount,
-                      !(_isLiked ?? true), _preLikeCount.toString())),
+                      !(_isLiked ?? true), _preLikeCount.toString(),),),
             ],
           );
         },
       );
     }
 
-    result = ClipRect(
+    return ClipRect(
       clipper: LikeCountClip(),
       child: result,
     );
-
-    return result;
   }
 
   Widget _createLikeCountWidget(int? likeCount, bool isLiked, String text) {
@@ -487,16 +482,16 @@ class LikeButtonAnimatedState extends ConsumerState<LikeButtonAnimated> with Tic
     _slidePreValueAnimation = _likeCountController!.drive(Tween<Offset>(
       begin: Offset.zero,
       end: const Offset(0.0, 1.0),
-    ));
+    ),);
     _slideCurrentValueAnimation = _likeCountController!.drive(Tween<Offset>(
       begin: const Offset(0.0, -1.0),
       end: Offset.zero,
-    ));
+    ),);
 
     _opacityAnimation = _likeCountController!.drive(Tween<double>(
       begin: 0.0,
       end: 1.0,
-    ));
+    ),);
   }
 
   void _initControlAnimation() {

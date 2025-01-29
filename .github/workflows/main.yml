@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
     - name: Clone repository
       uses: actions/checkout@v4
@@ -24,7 +26,30 @@ jobs:
       with:
         channel: any
         flutter-version: 3.x
-    - run: flutter --version
-    - run: flutter pub get
-    - run: flutter test
-    - run: flutter build apk --debug
+    - name: Install dependencies
+      run: |
+        flutter --version
+        flutter pub get
+
+    - name: Lint code
+      id: lint
+      run: |
+        flutter analyze > analysis_results.txt || true
+        echo "::set-output name=results::$(cat analysis_results.txt)"
+
+    - name: Format analysis results
+      run: |
+        echo "### Flutter Analyze Results" > formatted_results.txt
+        cat analysis_results.txt | sed 's/^   info • /- [ ] /' >> formatted_results.txt
+        cat formatted_results.txt
+
+    - uses: mshick/add-pr-comment@v2
+      with:
+        message-id: "flutter_analyze"
+        message-path: formatted_results.txt
+
+    - name: Run tests
+      run: flutter test
+
+    - name: Build APK
+      run: flutter build apk --debug
