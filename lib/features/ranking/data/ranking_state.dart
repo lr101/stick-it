@@ -1,29 +1,42 @@
+import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'ranking_state.g.dart';
 
 @riverpod
-class RankingMap extends _$RankingMap {
+class RankingGid extends _$RankingGid {
   @override
-  int build() {
-    return 2;
+  RankingSearchDtoInner? build() {
+    return null;
   }
 
   // ignore: use_setters_to_change_properties
-  void update(int index) {
-    state = index;
+  void update(RankingSearchDtoInner? gid) {
+    state = gid;
   }
 }
 
+@Riverpod(keepAlive: true)
+class RankingSearch extends _$RankingSearch {
+
+  @override
+  Future<List<RankingSearchDtoInner>> build() async {
+    final rankingApi = ref.watch(rankingApiProvider);
+    return await rankingApi.searchRanking() ?? [];
+  }
+
+}
+
 @riverpod
-class RankingType extends _$RankingType {
+class RankingTimeSelector extends _$RankingTimeSelector{
   @override
   int build() {
     return 0;
   }
 
   // ignore: use_setters_to_change_properties
-  void update(int index) {
+  void updateIndex(int index) {
     state = index;
   }
 }

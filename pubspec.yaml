@@ -11,13 +11,14 @@ environment:
 dependencies:
   cached_network_image: ^3.4.1
   camera: 0.10.6
+  choice: ^2.3.2
   collection:
   connectivity_plus: ^6.1.2
-  choice: ^2.3.2
   custom_lint: ^0.7.0
   drift: ^2.24.0
   drift_dev: ^2.20.1
   drift_flutter: ^0.2.4
+  dropdown_search: ^6.0.2
   easy_localization: ^3.0.7+1
   exif: ^3.3.0
   floating_snackbar:

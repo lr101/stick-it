@@ -41,9 +41,9 @@ class UserEntity extends CacheEntity {
   UserEntity copyUserWith(UserUpdateResponseDto userDto, int? selectedBatch) {
     return UserEntity(
       userId: userId,
-      username: userDto.username ?? username,
+      username: userDto.userInfoDto!.username,
       selectedBatch: selectedBatch ?? this.selectedBatch,
-      description: userDto.description ?? description,
+      description: userDto.userInfoDto!.description ?? description,
       keepAlive: keepAlive,
       ttl: ttl,
       hits: hits,

@@ -97,6 +97,7 @@ Class | Method | HTTP request | Description
 *RankingApi* | [**getGeoJson**](doc//RankingApi.md#getgeojson) | **GET** /api/v2/map/geojson | 
 *RankingApi* | [**getMapInfo**](doc//RankingApi.md#getmapinfo) | **GET** /api/v2/map | 
 *RankingApi* | [**groupRanking**](doc//RankingApi.md#groupranking) | **GET** /api/v2/ranking/group | 
+*RankingApi* | [**searchRanking**](doc//RankingApi.md#searchranking) | **GET** /api/v2/ranking/search | Search for a location
 *RankingApi* | [**userRanking**](doc//RankingApi.md#userranking) | **GET** /api/v2/ranking/user | 
 *ReportApi* | [**createReport**](doc//ReportApi.md#createreport) | **POST** /api/v2/report | Report content
 *UsersApi* | [**claimUserAchievement**](doc//UsersApi.md#claimuserachievement) | **POST** /api/v2/users/{userId}/achievements/{achievementId} | Claim an achievement
@@ -124,6 +125,7 @@ Class | Method | HTTP request | Description
  - [PinRequestDto](doc//PinRequestDto.md)
  - [PinWithOptionalImageDto](doc//PinWithOptionalImageDto.md)
  - [PinsSyncDto](doc//PinsSyncDto.md)
+ - [RankingSearchDtoInner](doc//RankingSearchDtoInner.md)
  - [RefreshTokenRequestDto](doc//RefreshTokenRequestDto.md)
  - [ReportDto](doc//ReportDto.md)
  - [Status](doc//Status.md)

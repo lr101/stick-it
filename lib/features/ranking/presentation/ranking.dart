@@ -1,16 +1,14 @@
-
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/service/geojson_service.dart';
 import 'package:buff_lisa/features/ranking/data/ranking_state.dart';
-import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
+import 'package:buff_lisa/features/ranking/presentation/ranking_list_wrapper.dart';
+import 'package:buff_lisa/features/ranking/presentation/ranking_tab_button.dart';
+import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/group_ranking_tile.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/user_ranking_tile.dart';
-import 'package:choice/choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:openapi/api.dart';
-
 
 class Ranking extends ConsumerStatefulWidget {
   const Ranking({super.key});
@@ -19,113 +17,200 @@ class Ranking extends ConsumerStatefulWidget {
   ConsumerState<Ranking> createState() => _RankingState();
 }
 
-class _RankingState extends ConsumerState<Ranking> {
-
-  final _pagingController = PagingController<int, dynamic>(firstPageKey: 0);
+class _RankingState extends ConsumerState<Ranking>
+    with TickerProviderStateMixin {
+  final _pagingControllerGroup =
+      PagingController<int, GroupRankingDtoInner>(firstPageKey: 0);
+  final _pagingControllerUser =
+      PagingController<int, UserRankingDtoInner>(firstPageKey: 0);
+  late final _tabController = TabController(length: 2, vsync: this,initialIndex: 1);
 
   static const int _pageSize = 40;
 
   @override
   void initState() {
     super.initState();
-    _pagingController.addPageRequestListener(updatePage);
+    _pagingControllerGroup.addPageRequestListener(updatePageGroup);
+    _pagingControllerUser.addPageRequestListener(updatePageUser);
   }
 
   @override
   void dispose() {
-    _pagingController.dispose();
+    _pagingControllerGroup.dispose();
+    _pagingControllerUser.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(rankingMapProvider, (_, next) => _pagingController.refresh());
-    ref.listen(rankingTypeProvider, (_, next) => _pagingController.refresh());
-    final loc = ref.watch(districtServiceProvider);
-    final map = ref.watch(rankingMapProvider);
-    final type = ref.watch(rankingTypeProvider);
-    return CustomScaffold(
-        title: const Text("Ranking"),
-        boxes: [
-         ListTile(
-            title: const Text("Change between country, state and city:"),
-            subtitle: InlineChoice.single(
-              itemCount: 4,
-              itemBuilder: (state, index) => ChoiceChip(
-                label: Text(getText(index, loc)),
-                onSelected: (bool val) => val ? ref.read(rankingMapProvider.notifier).update(index) : null,
-                selected: map == index,
-              ),
+    ref.listen(rankingGidProvider, (_, next) {
+      _pagingControllerGroup.refresh();
+      _pagingControllerUser.refresh();
+    });
+    ref.listen(rankingTimeSelectorProvider, (_, next) {
+      _pagingControllerGroup.refresh();
+      _pagingControllerUser.refresh();
+    });
+    return CustomCloseKeyboardScaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(150.0),
+        // here the desired height
+        child: AppBar(
+          shape: const ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(50),
+              bottomRight: Radius.circular(50),
+            ),
+          ),
+          elevation: 0,
+          backgroundColor: Theme.of(context).focusColor,
+          title: const Text(
+            'Leaderboard',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(100),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RankingTabButton(
+                    label: "Groups",
+                    index: 0,
+                    tabController: _tabController,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  RankingTabButton(
+                    label: "Users",
+                    index: 1,
+                    tabController: _tabController,
+                  ),
+                ],
               ),
             ),
-          ListTile(
-            title: const Text("Change between group and user:"),
-            subtitle: InlineChoice.single(
-                itemCount: 2,
-                itemBuilder: (state, index) => ChoiceChip(
-                  label: Text(index == 0 ? "Group" : "User"),
-                  onSelected: (bool val) => val ? ref.read(rankingTypeProvider.notifier).update(index) : null,
-                  selected: type == index,
-                ),
+          ),
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          RankingListWrapper(
+            child: PagedListView<int, GroupRankingDtoInner>(
+              pagingController: _pagingControllerGroup,
+              builderDelegate: PagedChildBuilderDelegate(
+                itemBuilder: listBuilderGroup,
+              ),
+            ),
+          ),
+          RankingListWrapper(
+            child: PagedListView<int, UserRankingDtoInner>(
+              pagingController: _pagingControllerUser,
+              builderDelegate: PagedChildBuilderDelegate(
+                itemBuilder: listBuilderUser,
+              ),
             ),
           ),
         ],
-        listBuilder: listBuilder,
-        pagingController: _pagingController,
+      ),
     );
   }
 
-  Widget listBuilder(BuildContext context, dynamic item, int index) {
-    if (item is GroupRankingDtoInner) {
-      return GroupRankingTile(groupDto: item);
-    } else {
-      return UserRankingTile(user: item as UserRankingDtoInner);
-    }
+  Widget listBuilderGroup(
+    BuildContext context,
+    GroupRankingDtoInner item,
+    int index,
+  ) {
+    return GroupRankingTile(
+      groupDto: item,
+      height: 40,
+    );
   }
 
-  Future<void> updatePage(int pageKey) async {
+  Widget listBuilderUser(
+    BuildContext context,
+    UserRankingDtoInner item,
+    int index,
+  ) {
+    return UserRankingTile(
+      user: item,
+      height: 40,
+    );
+  }
+
+  Future<void> updatePageUser(int pageKey) async {
     try {
-      final districts = ref.watch(districtServiceProvider);
-      final type = ref.watch(rankingTypeProvider);
-      final map = ref.watch(rankingMapProvider);
-      if (districts == null) return;
-      final gid0 = map == 0 ? districts.gid0 : null;
-      final gid1 = map == 1 ? districts.gid1 : null;
-      final gid2 = map == 2 ? districts.gid2! : null;
-      List<dynamic>? items;
-      if (type == 0) {
-        items = await ref.watch(rankingApiProvider).groupRanking(gid0: gid0, gid1: gid1, gid2: gid2, page: pageKey, size: _pageSize);
-      } else {
-        items = await ref.watch(rankingApiProvider).userRanking(gid0: gid0, gid1: gid1, gid2: gid2, page: pageKey, size: _pageSize);
-      }
+      final districts = ref.read(rankingGidProvider);
+      final rankingTime = ref.read(rankingTimeSelectorProvider);
+      final gid0 = districts?.adminLevel == 0 ? districts?.gid : null;
+      final gid1 = districts?.adminLevel == 1 ? districts?.gid : null;
+      final gid2 = districts?.adminLevel == 2 ? districts?.gid : null;
+      final since = rankingTime == 1
+          ? null
+          : DateTime.now().subtract(const Duration(days: 7));
+      List<UserRankingDtoInner>? items;
+      items = await ref.read(rankingApiProvider).userRanking(
+            gid0: gid0,
+            gid1: gid1,
+            gid2: gid2,
+            page: pageKey,
+            size: _pageSize,
+            since: since,
+          );
       if (items == null) {
-        _pagingController.error = "Ranking could not be fetched";
+        _pagingControllerUser.error = "Ranking could not be fetched";
         return;
       }
       if (items.length < _pageSize) {
-        _pagingController.appendLastPage(items);
+        _pagingControllerUser.appendLastPage(items);
       } else {
-        _pagingController.appendPage(items, pageKey + 1);
+        _pagingControllerUser.appendPage(items, pageKey + 1);
       }
-    } on ApiException catch(e) {
-      _pagingController.error = e.message;
-    }
-
-  }
-
-  String getText(int index, MapInfoDto? mapInfoDto) {
-    switch (index) {
-      case 0:
-        return mapInfoDto?.name0 ?? "Country";
-      case 1:
-        return mapInfoDto?.name1 ?? "State";
-      case 2:
-        return mapInfoDto?.name2 ?? "Country/City";
-      case 3:
-        return "World";
-      default:
-        return "";
+    } on ApiException catch (e) {
+      _pagingControllerUser.error = e.message;
     }
   }
-  
+
+  bool compareFn(RankingSearchDtoInner i1, RankingSearchDtoInner i2) {
+    return i1.gid == i2.gid;
+  }
+
+  Future<void> updatePageGroup(int pageKey) async {
+    try {
+      final districts = ref.read(rankingGidProvider);
+      final rankingTime = ref.read(rankingTimeSelectorProvider);
+      final gid0 = districts?.adminLevel == 0 ? districts?.gid : null;
+      final gid1 = districts?.adminLevel == 1 ? districts?.gid : null;
+      final gid2 = districts?.adminLevel == 2 ? districts?.gid : null;
+      final since = rankingTime == 1
+          ? null
+          : DateTime.now().subtract(const Duration(days: 7));
+      List<GroupRankingDtoInner>? items;
+      items = await ref.read(rankingApiProvider).groupRanking(
+            gid0: gid0,
+            gid1: gid1,
+            gid2: gid2,
+            page: pageKey,
+            size: _pageSize,
+            since: since,
+          );
+      if (items == null) {
+        _pagingControllerGroup.error = "Ranking could not be fetched";
+        return;
+      }
+      if (items.length < _pageSize) {
+        _pagingControllerGroup.appendLastPage(items);
+      } else {
+        _pagingControllerGroup.appendPage(items, pageKey + 1);
+      }
+    } on ApiException catch (e) {
+      _pagingControllerGroup.error = e.message;
+    }
+  }
 }
