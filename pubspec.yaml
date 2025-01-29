@@ -12,8 +12,8 @@ dependencies:
   cached_network_image: ^3.4.1
   camera: 0.10.6
   collection:
-  choice: ^2.3.2
   connectivity_plus: ^6.1.2
+  choice: ^2.3.2
   custom_lint: ^0.7.0
   drift: ^2.24.0
   drift_dev: ^2.20.1
