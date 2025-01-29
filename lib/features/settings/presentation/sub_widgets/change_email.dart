@@ -40,7 +40,7 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
   Widget build(BuildContext context) {
     return CustomCloseKeyboardScaffold(
       appBar: AppBar(
-        title: const Text('Change Email'),
+        title: const Text('Change Email', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(

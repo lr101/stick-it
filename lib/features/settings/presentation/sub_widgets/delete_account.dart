@@ -35,7 +35,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
   Widget build(BuildContext context) {
     return CustomCloseKeyboardScaffold(
         appBar: AppBar(
-          title: const Text("Delete Account"),
+          title: const Text("Delete Account", style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         body: Padding(padding: const EdgeInsets.all(16), child: Form(
           key: _formKey,

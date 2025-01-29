@@ -60,7 +60,14 @@ class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
               actions: widget.actions,
               expandedHeight: (width / 2) + kToolbarHeight + 20,
               centerTitle: false,
+              shape: const ContinuousRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
+                ),
+              ),
               title: widget.title,
+              backgroundColor: Theme.of(context).focusColor,
               flexibleSpace: FlexibleSpaceBar(
                 background: SafeArea(
                     child: Padding(

@@ -47,7 +47,7 @@ class _ChangeProfileState extends ConsumerState<ChangeProfile> {
   Widget build(BuildContext context) {
     return CustomCloseKeyboardScaffold(
         appBar: AppBar(
-          title: const Text('Edit profile'),
+          title: const Text('Edit profile', style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         body: SingleChildScrollView(
             child: Padding(

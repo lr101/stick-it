@@ -28,7 +28,7 @@ class UserProfile extends ConsumerWidget {
     return CustomAvatarScaffold(
       avatar: profileImage,
       title: Row(children: [
-        Text(currentUser.value?.username ?? ""),
+        Text(currentUser.value?.username ?? "", style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(width: 10,),
         if (currentUser.value?.selectedBatch != null) GestureDetector(
           child: Batch(batchId: currentUser.value!.selectedBatch!, fontSize: 10,),

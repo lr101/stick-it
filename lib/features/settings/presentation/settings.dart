@@ -43,7 +43,7 @@ class _SettingsState extends ConsumerState<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Settings"),
+          title: const Text("Settings", style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         body: SettingsList(
           sections: [

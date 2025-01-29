@@ -44,7 +44,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Select Location"),
+          title: const Text("Select Location", style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         body: Padding(
             padding: const EdgeInsets.all(10.0),

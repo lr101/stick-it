@@ -11,6 +11,7 @@ import 'package:buff_lisa/widgets/tiles/presentation/member_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class GroupOverview extends ConsumerStatefulWidget {
   const GroupOverview(
@@ -47,11 +48,14 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
     return CustomAvatarScaffold(
         floatingActionButton: widget.floatingActionButton,
         avatar: ref.watch(groupProfilePictureByIdProvider(widget.groupId)),
-        title: Text(group?.name ?? ""),
+        title: Text(group?.name ?? "", style: const TextStyle(fontWeight: FontWeight.bold),),
         actions: widget.actions,
-        bottom: TabBar(controller: _tabController, tabs: const [
-          Tab(icon: Icon(Icons.groups)),
-          Tab(icon: Icon(Icons.image)),
+        bottom: TabBar(
+          controller: _tabController,
+          dividerColor: Colors.transparent,
+          tabs: const [
+            Tab(icon: Icon(Icons.groups)),
+            Tab(icon: Icon(Icons.image)),
         ],),
         boxes: [
           SliverToBoxAdapter(

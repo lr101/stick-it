@@ -29,7 +29,7 @@ class OtherUserProfile extends ConsumerWidget {
     return CustomAvatarScaffold(
       avatar: AsyncData(profileImage.value),
       title: Row(children: [
-          Text(username.value ?? ""),
+          Text(username.value ?? "", style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(width: 10,),
           if (selectedBatch.value != null) Batch(batchId: selectedBatch.value!, fontSize: 10,),
       ],),

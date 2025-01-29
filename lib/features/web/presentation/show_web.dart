@@ -34,7 +34,7 @@ class ShowWebWidgetState extends ConsumerState<ShowWebWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title),),
+      appBar: AppBar(title: Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold)),),
         body: Column(children: [
           Expanded(child: WebViewWidget(controller: ini())),
         ],),

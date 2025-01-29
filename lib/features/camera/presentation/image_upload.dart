@@ -53,7 +53,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
     final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return CustomCloseKeyboardScaffold(
       appBar: AppBar(
-        title: const Text("Approve"),
+        title: const Text("Approve", style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: Column(
         children: [

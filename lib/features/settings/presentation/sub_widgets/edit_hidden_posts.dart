@@ -18,7 +18,7 @@ class _EditHiddenPostsState extends ConsumerState<EditHiddenPosts> {
   Widget build(BuildContext context) {
     final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
     return Scaffold(
-        appBar: AppBar(title: const Text("Edit hidden Posts")),
+        appBar: AppBar(title: const Text("Edit hidden Posts", style: TextStyle(fontWeight: FontWeight.bold))),
         body: CustomScrollView(slivers: [
           const SliverToBoxAdapter(
             child: Text("Tap on the post to remove it from the list"),

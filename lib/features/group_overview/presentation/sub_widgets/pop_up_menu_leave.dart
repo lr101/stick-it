@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/group_edit/presentation/group_edit.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
+import 'package:buff_lisa/widgets/buttons/presentation/custom_menu_item.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
@@ -23,17 +24,20 @@ class PopUpMenuLeave extends ConsumerWidget {
     return PopupMenuButton(
         itemBuilder: (context) {
           return [
-            const PopupMenuItem<int>(
+            CustomMenuItem<int>(
                 value: 0,
-                child: Text("Leave Group"),
+                title: "Leave Group",
+              icon: Icons.group_remove,
             ),
-            const PopupMenuItem<int>(
+            CustomMenuItem<int>(
                 value: 1,
-                child: Text("Report Group"),
+                title: "Report Group",
+              icon: Icons.report,
             ),
-            if (isAdmin) const PopupMenuItem<int>(
+            if (isAdmin) CustomMenuItem<int>(
                 value: 2,
-                child: Text("Edit Group (as admin)"),
+                title: "Edit Group (as admin)",
+              icon: Icons.edit,
             ),
           ];
         },

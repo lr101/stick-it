@@ -29,7 +29,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
   Widget build(BuildContext context) {
     return CustomCloseKeyboardScaffold(
       appBar: AppBar(
-        title: const Text('Change Password'),
+        title: const Text('Change Password', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(

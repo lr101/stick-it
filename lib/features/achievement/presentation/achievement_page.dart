@@ -22,7 +22,7 @@ class AchievementsPage extends ConsumerWidget {
     final selectedBatch = ref.watch(userByIdSelectedBatchProvider(userId));
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Achievements'),
+        title: const Text('Achievements', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 8.0, mainAxisSpacing: 8.0),
