@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class CustomImagePicker {
@@ -12,12 +11,6 @@ class CustomImagePicker {
 
 
     try {
-      if (!(await Permission.photos.isGranted)) {
-        await Permission.photos.request();
-      }
-      if (!(await Permission.accessMediaLocation.isGranted)) {
-        await Permission.accessMediaLocation.request();
-      }
       final picker = ImagePicker();
       XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
       final LostDataResponse response = await picker.retrieveLostData();

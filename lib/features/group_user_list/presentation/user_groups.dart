@@ -18,7 +18,7 @@ class UserGroups extends ConsumerStatefulWidget {
 
 class _UserGroupsState extends ConsumerState<UserGroups> {
 
-  final _pagingController = PagingController(firstPageKey: 0);
+  final _pagingController = PagingController<int, LocalGroupDto>(firstPageKey: 0);
 
   @override
   void initState() {

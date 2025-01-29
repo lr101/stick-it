@@ -12,6 +12,7 @@ class CustomCloseKeyboardScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      onVerticalDragDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: appBar,
         body: body,

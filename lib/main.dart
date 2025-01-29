@@ -71,7 +71,7 @@ Future<void> main() async {
   final globalData = await GlobalDataRepository.get(sharedPreferences, storage);
   final globalUserData = await GlobalDataRepository.getUser(sharedPreferences, storage);
   final defaultGroupImage =  (await rootBundle.load('assets/image/pin_border.png')).buffer.asUint8List();
-  final defaultErrorImage =  (await rootBundle.load('assets/image/profile.jpg')).buffer.asUint8List();
+  final defaultErrorImage =  (await rootBundle.load('assets/image/profile_blank.jpg')).buffer.asUint8List();
 
   runApp(
     ProviderScope(

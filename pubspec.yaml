@@ -94,6 +94,10 @@ flutter:
     - .env
     - .env.dev
   uses-material-design: true
+  fonts:
+    - family: Signika
+      fonts:
+        - asset: assets/fonts/Signika-VariableFont.ttf
 
 flutter_icons:
   android: true
