@@ -18,10 +18,10 @@ class LikeItem extends StatelessWidget {
           color: liked ? Colors.red : Colors.grey,
           size: 30,
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
           count.toString(),
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
       ],
     );

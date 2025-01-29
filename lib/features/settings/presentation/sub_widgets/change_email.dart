@@ -1,7 +1,9 @@
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/data/login_service.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,20 +21,26 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
 
   Future<void> _changeEmail() async {
     if (_formKey.currentState!.validate()) {
-      final result = await ref.read(userServiceProvider.notifier).changeUser(email: _newEmailController.text);
+      final userId = ref.watch(userIdProvider);
+      final result = await ref
+          .read(userServiceProvider(userId).notifier)
+          .changeUser(email: _newEmailController.text);
       if (result != null) {
-        CustomErrorSnackBar.message(message: result, type: CustomErrorSnackBarType.error);
-      } else {
-        Navigator.pop(context);
+        CustomErrorSnackBar.message(
+            message: result, type: CustomErrorSnackBarType.error,);
+      } else if (mounted) {
+        {
+          Navigator.pop(context);
+        }
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomCloseKeyboardScaffold(
       appBar: AppBar(
-        title: Text('Change Email'),
+        title: const Text('Change Email', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -43,13 +51,13 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
               children: [
                 TextFormField(
                   controller: _newEmailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'New Email',
                     border: OutlineInputBorder(),
                   ),
                   validator: LoginService.emailValidatorWithErrorMessage,
                 ),
-                SizedBox(height: 50.0),
+                const SizedBox(height: 50.0),
                 SubmitButton(onPressed: _changeEmail, text: 'Change Email'),
               ],
             ),

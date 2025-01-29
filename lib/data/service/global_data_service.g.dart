@@ -22,7 +22,7 @@ final userIdProvider = AutoDisposeProvider<String>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserIdRef = AutoDisposeProviderRef<String>;
-String _$lastKnownLocationHash() => r'a7747ffd98bed64169822ee672ea88adadc7fcf5';
+String _$lastKnownLocationHash() => r'32bf99245b9bc078cb9ab20675d6db2f5b6f0191';
 
 /// See also [lastKnownLocation].
 @ProviderFor(lastKnownLocation)
@@ -39,23 +39,7 @@ final lastKnownLocationProvider = AutoDisposeProvider<LatLng>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LastKnownLocationRef = AutoDisposeProviderRef<LatLng>;
-String _$xpHash() => r'375343c54646153bc3b7ef15ff57c4d5f7baed4c';
-
-/// See also [xp].
-@ProviderFor(xp)
-final xpProvider = AutoDisposeProvider<UserXpDto>.internal(
-  xp,
-  name: r'xpProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$xpHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef XpRef = AutoDisposeProviderRef<UserXpDto>;
-String _$globalDataServiceHash() => r'686c0c129e37824f5a21ef8e4c80ad41ff277116';
+String _$globalDataServiceHash() => r'e4281575bf51ae5456daf4e3694243ac85d3ae31';
 
 /// See also [GlobalDataService].
 @ProviderFor(GlobalDataService)
@@ -71,23 +55,21 @@ final globalDataServiceProvider =
 );
 
 typedef _$GlobalDataService = Notifier<GlobalDataDto>;
-String _$currentUserServiceHash() =>
-    r'7efcd9109abaeb86550ac8acfd0f36f7dfaa3645';
+String _$authServiceHash() => r'c5e69c64abcaabf82fb42dc9d93e6305cba96df0';
 
-/// See also [CurrentUserService].
-@ProviderFor(CurrentUserService)
-final currentUserServiceProvider =
-    NotifierProvider<CurrentUserService, CurrentUserDto>.internal(
-  CurrentUserService.new,
-  name: r'currentUserServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentUserServiceHash,
+/// See also [AuthService].
+@ProviderFor(AuthService)
+final authServiceProvider =
+    AutoDisposeAsyncNotifierProvider<AuthService, bool>.internal(
+  AuthService.new,
+  name: r'authServiceProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$authServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CurrentUserService = Notifier<CurrentUserDto>;
+typedef _$AuthService = AutoDisposeAsyncNotifier<bool>;
 String _$cameraTorchHash() => r'd9b867808565232d7ea3ccb93b3f588211414af4';
 
 /// See also [CameraTorch].

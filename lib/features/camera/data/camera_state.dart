@@ -2,11 +2,10 @@
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../widgets/group_selector/service/group_order_service.dart';
 
 part 'camera_state.g.dart';
 
@@ -31,6 +30,7 @@ class CameraIndex extends _$CameraIndex {
     state = (state + 1) % ref.watch(globalDataServiceProvider.select((t) => t.cameras)).length;
   }
 
+  // ignore: use_setters_to_change_properties
   void setIndex(int index) {
     state = index;
   }
@@ -49,19 +49,19 @@ class CameraValues extends _$CameraValues {
     return CameraState(
         ratio: _controller.value.aspectRatio,
         minZoom: await _controller.getMinZoomLevel(),
-        maxZoom: await _controller.getMaxZoomLevel()
+        maxZoom: await _controller.getMaxZoomLevel(),
     );
   }
 
   Future<void> updateCamera(int cameraIndex) async {
-    state = AsyncLoading();
+    state = const AsyncLoading();
     await _controller.setDescription(ref.read(globalDataServiceProvider).cameras[cameraIndex]);
     await _controller.initialize();
     state = AsyncData(CameraState(
         ratio: controller.value.aspectRatio,
         minZoom: await controller.getMinZoomLevel(),
-        maxZoom: await controller.getMaxZoomLevel()
-    ));
+        maxZoom: await controller.getMaxZoomLevel(),
+    ),);
   }
 
 }
@@ -72,17 +72,18 @@ class CameraGroupIndex extends _$CameraGroupIndex {
   @override
   int build() => 0;
 
+  // ignore: use_setters_to_change_properties
   void updateIndex(int index) {
     state = index;
   }
 
 }
 
-@Riverpod(keepAlive: true)
-LocalGroupDto cameraSelectedGroup(Ref ref) {
-  final groups = ref.watch(userGroupServiceProvider).value ?? [];
+@riverpod
+Future<LocalGroupDto> cameraSelectedGroup(Ref ref) async {
   final groupIds = ref.watch(groupOrderServiceProvider);
-  return groups.firstWhere((e) => e.groupId == groupIds[ref.watch(cameraGroupIndexProvider)]);
+  final groupCameraIndex = ref.watch(cameraGroupIndexProvider);
+  return await ref.watch(groupByIdWithoutStateProvider(groupIds[groupCameraIndex]).future);
 }
 
 @riverpod
@@ -93,6 +94,7 @@ class CameraCapturing extends _$CameraCapturing {
     return false;
   }
 
+  // ignore: use_setters_to_change_properties
   void setCapturing(bool value) {
     state = value;
   }

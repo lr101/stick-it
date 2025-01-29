@@ -1,35 +1,90 @@
-import 'package:buff_lisa/data/entity/group_entity.dart';
-import 'package:buff_lisa/data/entity/user_entity.dart';
-import 'package:drift/drift.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
-// Define the Drift table for PinDTO
-class PinEntity extends Table {
+import 'package:buff_lisa/data/entity/cache_entity.dart';
+import 'package:hive/hive.dart';
+import 'package:openapi/api.dart';
 
-  // Unique ID of the pin - Primary Key
-  TextColumn get pinId => text()();
-  // Latitude position of the pin
-  RealColumn get latitude => real()();
+part 'pin_entity.g.dart'; // This will be generated
 
-  // Longitude position of the pin
-  RealColumn get longitude => real()();
+@HiveType(typeId: 5) // Unique type ID for this entity
+class PinEntity extends CacheEntity {
+  @HiveField(3)
+  final String pinId;
 
-  // Date of creation of the pin
-  DateTimeColumn get creationDate => dateTime()();
+  @HiveField(4)
+  final double latitude;
 
-  // Pin description
-  TextColumn get description => text().nullable()();
+  @HiveField(5)
+  final double longitude;
 
-  // Username of the creator
-  TextColumn get creator => text().references(UserEntity, #userId)();
+  @HiveField(6)
+  final DateTime creationDate;
 
-  // Group ID the pin belongs to (foreign key)
-  TextColumn get group => text().references(GroupEntity, #groupId)();
+  @HiveField(7)
+  final String? description;
 
-  BoolColumn get isHidden => boolean().withDefault(const Constant(false))();
+  @HiveField(8)
+  final String creator; // Assuming this is a userId
 
-  DateTimeColumn get lastSynced => dateTime().nullable()();
+  @HiveField(9)
+  final String group; // Assuming this is a groupId
 
-  // Specify the primary key
+  @HiveField(10)
+  final bool isHidden;
+
+  @HiveField(11)
+  final DateTime? lastSynced;
+
+  PinEntity({
+    required this.pinId,
+    required this.latitude,
+    required this.longitude,
+    required this.creationDate,
+    this.description,
+    required this.creator,
+    required this.group,
+    this.isHidden = false,
+    this.lastSynced,
+    super.keepAlive,
+    super.hits,
+    super.ttl,
+  });
+
+  factory PinEntity.fromDto(PinWithOptionalImageDto pinDto, {bool keepAlive = false}) {
+    return PinEntity(
+      pinId: pinDto.id,
+      latitude: pinDto.latitude as double,
+      longitude: pinDto.longitude as double,
+      creationDate: pinDto.creationDate,
+      creator: pinDto.creationUser,
+      group: pinDto.groupId,
+      description: pinDto.description,
+      lastSynced: DateTime.now(),
+      keepAlive: keepAlive,
+    );
+  }
+
+  PinRequestDto toRequestDto(Uint8List image) {
+    return PinRequestDto(image: base64Encode(image), latitude: latitude, longitude: longitude, userId: creator, groupId: group);
+  }
+
   @override
-  Set<Column> get primaryKey => {pinId};
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+    return PinEntity(
+      pinId: pinId,
+      latitude: latitude,
+      longitude: longitude,
+      creationDate: creationDate,
+      description: description,
+      creator: creator,
+      group: group,
+      isHidden: isHidden,
+      lastSynced: lastSynced,
+      hits: hits ?? this.hits,
+      ttl: ttl ?? this.ttl,
+      keepAlive: keepAlive ?? this.keepAlive,
+    );
+  }
+
 }

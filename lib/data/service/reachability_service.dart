@@ -8,7 +8,7 @@ part 'reachability_service.g.dart';
 
 @Riverpod(keepAlive: true)
 Stream<bool> reachabilityService(Ref ref) {
-  return Stream<Future<bool>>.periodic(Duration(seconds: 10), (_) async {
+  return Stream<Future<bool>>.periodic(const Duration(seconds: 10), (_) async {
     try {
       final result = await ref.watch(userApiProvider).getUser(ref.watch(globalDataServiceProvider).userId!);
       return result != null;

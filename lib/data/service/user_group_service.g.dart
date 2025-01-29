@@ -156,11 +156,12 @@ class _GroupByIdProviderElement
   String get groupId => (origin as GroupByIdProvider).groupId;
 }
 
-String _$activeGroupsHash() => r'c7c3fd034baba1f433d87e91fadb1f8cff1b798c';
+String _$activeGroupsHash() => r'51791894bb2bc2701a868d5fde855c52b87dd383';
 
 /// See also [activeGroups].
 @ProviderFor(activeGroups)
-final activeGroupsProvider = FutureProvider<List<LocalGroupDto>>.internal(
+final activeGroupsProvider =
+    AutoDisposeFutureProvider<Set<LocalGroupDto>>.internal(
   activeGroups,
   name: r'activeGroupsProvider',
   debugGetCreateSourceHash:
@@ -171,8 +172,8 @@ final activeGroupsProvider = FutureProvider<List<LocalGroupDto>>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef ActiveGroupsRef = FutureProviderRef<List<LocalGroupDto>>;
-String _$orderedGroupsHash() => r'48c9eee30ca02e5cf0f76eadfe50bc450461c945';
+typedef ActiveGroupsRef = AutoDisposeFutureProviderRef<Set<LocalGroupDto>>;
+String _$orderedGroupsHash() => r'd6c9fb1bad23f80f667fc0677a6ae12626fe8a8d';
 
 /// See also [orderedGroups].
 @ProviderFor(orderedGroups)
@@ -321,12 +322,145 @@ class _GroupByIdActivatedProviderElement
   String get groupId => (origin as GroupByIdActivatedProvider).groupId;
 }
 
-String _$userGroupServiceHash() => r'4862044001170ff9f148258e1d41833e350e7477';
+String _$groupByIdWithoutStateHash() =>
+    r'8dbd0d6024cc1243e0e5637c99a058c7a3d0afdc';
+
+/// See also [groupByIdWithoutState].
+@ProviderFor(groupByIdWithoutState)
+const groupByIdWithoutStateProvider = GroupByIdWithoutStateFamily();
+
+/// See also [groupByIdWithoutState].
+class GroupByIdWithoutStateFamily extends Family<AsyncValue<LocalGroupDto>> {
+  /// See also [groupByIdWithoutState].
+  const GroupByIdWithoutStateFamily();
+
+  /// See also [groupByIdWithoutState].
+  GroupByIdWithoutStateProvider call(
+    String groupId,
+  ) {
+    return GroupByIdWithoutStateProvider(
+      groupId,
+    );
+  }
+
+  @override
+  GroupByIdWithoutStateProvider getProviderOverride(
+    covariant GroupByIdWithoutStateProvider provider,
+  ) {
+    return call(
+      provider.groupId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'groupByIdWithoutStateProvider';
+}
+
+/// See also [groupByIdWithoutState].
+class GroupByIdWithoutStateProvider
+    extends AutoDisposeFutureProvider<LocalGroupDto> {
+  /// See also [groupByIdWithoutState].
+  GroupByIdWithoutStateProvider(
+    String groupId,
+  ) : this._internal(
+          (ref) => groupByIdWithoutState(
+            ref as GroupByIdWithoutStateRef,
+            groupId,
+          ),
+          from: groupByIdWithoutStateProvider,
+          name: r'groupByIdWithoutStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$groupByIdWithoutStateHash,
+          dependencies: GroupByIdWithoutStateFamily._dependencies,
+          allTransitiveDependencies:
+              GroupByIdWithoutStateFamily._allTransitiveDependencies,
+          groupId: groupId,
+        );
+
+  GroupByIdWithoutStateProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.groupId,
+  }) : super.internal();
+
+  final String groupId;
+
+  @override
+  Override overrideWith(
+    FutureOr<LocalGroupDto> Function(GroupByIdWithoutStateRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GroupByIdWithoutStateProvider._internal(
+        (ref) => create(ref as GroupByIdWithoutStateRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        groupId: groupId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<LocalGroupDto> createElement() {
+    return _GroupByIdWithoutStateProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GroupByIdWithoutStateProvider && other.groupId == groupId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, groupId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin GroupByIdWithoutStateRef on AutoDisposeFutureProviderRef<LocalGroupDto> {
+  /// The parameter `groupId` of this provider.
+  String get groupId;
+}
+
+class _GroupByIdWithoutStateProviderElement
+    extends AutoDisposeFutureProviderElement<LocalGroupDto>
+    with GroupByIdWithoutStateRef {
+  _GroupByIdWithoutStateProviderElement(super.provider);
+
+  @override
+  String get groupId => (origin as GroupByIdWithoutStateProvider).groupId;
+}
+
+String _$userGroupServiceHash() => r'66e35b95bf0d9b390a65ab6de55bd6d10476a437';
 
 /// See also [UserGroupService].
 @ProviderFor(UserGroupService)
-final userGroupServiceProvider =
-    AsyncNotifierProvider<UserGroupService, List<LocalGroupDto>>.internal(
+final userGroupServiceProvider = AutoDisposeAsyncNotifierProvider<
+    UserGroupService, Set<LocalGroupDto>>.internal(
   UserGroupService.new,
   name: r'userGroupServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -336,6 +470,6 @@ final userGroupServiceProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$UserGroupService = AsyncNotifier<List<LocalGroupDto>>;
+typedef _$UserGroupService = AutoDisposeAsyncNotifier<Set<LocalGroupDto>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

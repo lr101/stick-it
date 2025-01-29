@@ -1,4 +1,5 @@
-import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,7 @@ class LoginService {
 
   /// Navigates to the NavBar Widget when authentication was successful
   void handleLoginComplete(BuildContext context) {
+    ref.invalidate(syncingServiceProvider);
     Routing.toAndDelete(context, const Navigation(), "/home");
   }
 
@@ -24,7 +26,7 @@ class LoginService {
   /// return returns null when login was successful and an error message on errors
   Future<String?> authUser(LoginData data) async {
     try {
-      return await ref.read(userServiceProvider.notifier).auth(data.name, data.password);
+      return await ref.read(authServiceProvider.notifier).login(data.name, data.password);
     } catch (e) {
       return "cannot connect to server";
     }
@@ -40,9 +42,9 @@ class LoginService {
         return Future<String>.value("email does not have the correct format");
       } else {
         return await ref
-            .read(userServiceProvider.notifier)
+            .read(authServiceProvider.notifier)
             .signupNewUser(data.name!, data.password!,
-                data.additionalSignupData!["email"]!);
+                data.additionalSignupData!["email"]!,);
       }
     } catch (e) {
       return "cannot connect to server";
@@ -53,12 +55,13 @@ class LoginService {
   /// Returns null on a successful call to the server or an error message on errors
   Future<String?> recoverPassword(String name) {
     try {
-      return ref.read(userServiceProvider.notifier).recover(name).then((value) {
+      return ref.read(authServiceProvider.notifier).recover(name).then((value) {
         return value ? null : 'User does not have an email address';
       });
     } catch (e) {
       return Future<String>.value("cannot connect to server");
     }
+
   }
 
   /// Validator Method for validating password

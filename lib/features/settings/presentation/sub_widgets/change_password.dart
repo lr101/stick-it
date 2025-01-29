@@ -1,7 +1,9 @@
+import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/auth/data/login_service.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,9 +27,9 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomCloseKeyboardScaffold(
       appBar: AppBar(
-        title: Text('Change Password'),
+        title: const Text('Change Password', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -42,7 +44,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   obscureText: _obscureCurrentPassword,
                   decoration: InputDecoration(
                     labelText: 'Current Password',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureCurrentPassword ? Icons.visibility_off : Icons.visibility,
@@ -56,7 +58,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   ),
                   validator: LoginService.passwordValidator,
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // New Password Field
                 TextFormField(
@@ -64,7 +66,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   obscureText: _obscureNewPassword,
                   decoration: InputDecoration(
                     labelText: 'New Password',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureNewPassword ? Icons.visibility_off : Icons.visibility,
@@ -78,7 +80,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   ),
                   validator: LoginService.passwordValidator,
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Confirm New Password Field
                 TextFormField(
@@ -86,7 +88,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   obscureText: _obscureConfirmPassword,
                   decoration: InputDecoration(
                     labelText: 'Confirm New Password',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
@@ -100,7 +102,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
                   ),
                   validator: _validateConfirmPassword,
                 ),
-                SizedBox(height: 50.0),
+                const SizedBox(height: 50.0),
                 SubmitButton(onPressed: _changePassword, text: 'Change Password'),
               ],
             ),
@@ -119,10 +121,11 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
 
   Future<void> _changePassword() async {
     if (_formKey.currentState!.validate()) {
-      final result = await ref.read(userServiceProvider.notifier).changeUser(password: _newPasswordController.text);
-      if (result == null) {
+      final userId = ref.watch(userIdProvider);
+      final result = await ref.read(userServiceProvider(userId).notifier).changeUser(password: _newPasswordController.text);
+      if (result == null && mounted) {
         Navigator.pop(context);
-      } else {
+      } else if (result != null) {
         CustomErrorSnackBar.message(message: result, type: CustomErrorSnackBarType.error);
       }
     }

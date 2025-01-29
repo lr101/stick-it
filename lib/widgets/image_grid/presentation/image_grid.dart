@@ -46,7 +46,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
     ref.listen(widget.pinProvider, (previous, next) {
       if (next.value != null && next.value!.isEmpty) isInitial = false;
       _images = next.value ?? [];
-      _pagingController.notifyPageRequestListeners(0);
+      _pagingController.refresh();
     });
     return PagedGridView<int, LocalPinDto>(
       pagingController: _pagingController,
@@ -60,17 +60,16 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
         ),
         noItemsFoundIndicatorBuilder: (context) => Center(
           child: isInitial ? const CircularProgressIndicator() : const Text("No images found"),
-        )
+        ),
       ),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          childAspectRatio: 1.0,
           crossAxisSpacing: 5.0,
-          mainAxisSpacing: 5.0),
+          mainAxisSpacing: 5.0,),
     );
   }
 
-  Future<void> _fetchPage(pageKey) async {
+  Future<void> _fetchPage(int pageKey) async {
     try {
       int end;
       final images = _images;

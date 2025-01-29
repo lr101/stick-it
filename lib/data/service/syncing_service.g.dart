@@ -1,29 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'group_image_repository.dart';
+part of 'syncing_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupImageRepositoryHash() =>
-    r'b9a796ad379eff4703858fda96b86c61fb70cc18';
+String _$syncingServiceHash() => r'a76fd89428f02cf7d4196bacdec68a5fe0c71863';
 
-/// See also [groupImageRepository].
-@ProviderFor(groupImageRepository)
-final groupImageRepositoryProvider =
-    AutoDisposeProvider<GroupImageRepository>.internal(
-  groupImageRepository,
-  name: r'groupImageRepositoryProvider',
+/// See also [SyncingService].
+@ProviderFor(SyncingService)
+final syncingServiceProvider =
+    AsyncNotifierProvider<SyncingService, bool>.internal(
+  SyncingService.new,
+  name: r'syncingServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$groupImageRepositoryHash,
+      : _$syncingServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GroupImageRepositoryRef = AutoDisposeProviderRef<GroupImageRepository>;
+typedef _$SyncingService = AsyncNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

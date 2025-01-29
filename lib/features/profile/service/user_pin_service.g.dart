@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'other_user_pin_service.dart';
+part of 'user_pin_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$otherUserPinHash() => r'af3ccbd4c816d1319ba7c2cd1e4e5b4c691e5107';
+String _$userPinHash() => r'10ba1e091ad1706792ca0b575a2e622d01cba5ce';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,27 +29,27 @@ class _SystemHash {
   }
 }
 
-/// See also [otherUserPin].
-@ProviderFor(otherUserPin)
-const otherUserPinProvider = OtherUserPinFamily();
+/// See also [userPin].
+@ProviderFor(userPin)
+const userPinProvider = UserPinFamily();
 
-/// See also [otherUserPin].
-class OtherUserPinFamily extends Family<AsyncValue<List<LocalPinDto>>> {
-  /// See also [otherUserPin].
-  const OtherUserPinFamily();
+/// See also [userPin].
+class UserPinFamily extends Family<AsyncValue<List<LocalPinDto>>> {
+  /// See also [userPin].
+  const UserPinFamily();
 
-  /// See also [otherUserPin].
-  OtherUserPinProvider call(
+  /// See also [userPin].
+  UserPinProvider call(
     String userId,
   ) {
-    return OtherUserPinProvider(
+    return UserPinProvider(
       userId,
     );
   }
 
   @override
-  OtherUserPinProvider getProviderOverride(
-    covariant OtherUserPinProvider provider,
+  UserPinProvider getProviderOverride(
+    covariant UserPinProvider provider,
   ) {
     return call(
       provider.userId,
@@ -68,33 +68,31 @@ class OtherUserPinFamily extends Family<AsyncValue<List<LocalPinDto>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'otherUserPinProvider';
+  String? get name => r'userPinProvider';
 }
 
-/// See also [otherUserPin].
-class OtherUserPinProvider
-    extends AutoDisposeFutureProvider<List<LocalPinDto>> {
-  /// See also [otherUserPin].
-  OtherUserPinProvider(
+/// See also [userPin].
+class UserPinProvider extends AutoDisposeFutureProvider<List<LocalPinDto>> {
+  /// See also [userPin].
+  UserPinProvider(
     String userId,
   ) : this._internal(
-          (ref) => otherUserPin(
-            ref as OtherUserPinRef,
+          (ref) => userPin(
+            ref as UserPinRef,
             userId,
           ),
-          from: otherUserPinProvider,
-          name: r'otherUserPinProvider',
+          from: userPinProvider,
+          name: r'userPinProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$otherUserPinHash,
-          dependencies: OtherUserPinFamily._dependencies,
-          allTransitiveDependencies:
-              OtherUserPinFamily._allTransitiveDependencies,
+                  : _$userPinHash,
+          dependencies: UserPinFamily._dependencies,
+          allTransitiveDependencies: UserPinFamily._allTransitiveDependencies,
           userId: userId,
         );
 
-  OtherUserPinProvider._internal(
+  UserPinProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -108,12 +106,12 @@ class OtherUserPinProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<LocalPinDto>> Function(OtherUserPinRef provider) create,
+    FutureOr<List<LocalPinDto>> Function(UserPinRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: OtherUserPinProvider._internal(
-        (ref) => create(ref as OtherUserPinRef),
+      override: UserPinProvider._internal(
+        (ref) => create(ref as UserPinRef),
         from: from,
         name: null,
         dependencies: null,
@@ -126,12 +124,12 @@ class OtherUserPinProvider
 
   @override
   AutoDisposeFutureProviderElement<List<LocalPinDto>> createElement() {
-    return _OtherUserPinProviderElement(this);
+    return _UserPinProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is OtherUserPinProvider && other.userId == userId;
+    return other is UserPinProvider && other.userId == userId;
   }
 
   @override
@@ -145,25 +143,41 @@ class OtherUserPinProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin OtherUserPinRef on AutoDisposeFutureProviderRef<List<LocalPinDto>> {
+mixin UserPinRef on AutoDisposeFutureProviderRef<List<LocalPinDto>> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
-class _OtherUserPinProviderElement
+class _UserPinProviderElement
     extends AutoDisposeFutureProviderElement<List<LocalPinDto>>
-    with OtherUserPinRef {
-  _OtherUserPinProviderElement(super.provider);
+    with UserPinRef {
+  _UserPinProviderElement(super.provider);
 
   @override
-  String get userId => (origin as OtherUserPinProvider).userId;
+  String get userId => (origin as UserPinProvider).userId;
 }
 
-String _$otherUserPinServiceHash() =>
-    r'8c85c35e3d2cb3cb9f1df98385e1ebfa8b6c4a98';
+String _$numberOfGroupHash() => r'b5f98ff278a0ff7caef2bbe9ddb4be94a2e68d31';
 
-abstract class _$OtherUserPinService
-    extends BuildlessAsyncNotifier<List<LocalPinDto>> {
+/// See also [numberOfGroup].
+@ProviderFor(numberOfGroup)
+final numberOfGroupProvider = AutoDisposeProvider<int?>.internal(
+  numberOfGroup,
+  name: r'numberOfGroupProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$numberOfGroupHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef NumberOfGroupRef = AutoDisposeProviderRef<int?>;
+String _$userPinServiceHash() => r'6d79285f8eb8e6422af5d966aa73b003a734e714';
+
+abstract class _$UserPinService
+    extends BuildlessAutoDisposeAsyncNotifier<List<LocalPinDto>> {
   late final String userId;
 
   FutureOr<List<LocalPinDto>> build(
@@ -171,27 +185,27 @@ abstract class _$OtherUserPinService
   );
 }
 
-/// See also [OtherUserPinService].
-@ProviderFor(OtherUserPinService)
-const otherUserPinServiceProvider = OtherUserPinServiceFamily();
+/// See also [UserPinService].
+@ProviderFor(UserPinService)
+const userPinServiceProvider = UserPinServiceFamily();
 
-/// See also [OtherUserPinService].
-class OtherUserPinServiceFamily extends Family<AsyncValue<List<LocalPinDto>>> {
-  /// See also [OtherUserPinService].
-  const OtherUserPinServiceFamily();
+/// See also [UserPinService].
+class UserPinServiceFamily extends Family<AsyncValue<List<LocalPinDto>>> {
+  /// See also [UserPinService].
+  const UserPinServiceFamily();
 
-  /// See also [OtherUserPinService].
-  OtherUserPinServiceProvider call(
+  /// See also [UserPinService].
+  UserPinServiceProvider call(
     String userId,
   ) {
-    return OtherUserPinServiceProvider(
+    return UserPinServiceProvider(
       userId,
     );
   }
 
   @override
-  OtherUserPinServiceProvider getProviderOverride(
-    covariant OtherUserPinServiceProvider provider,
+  UserPinServiceProvider getProviderOverride(
+    covariant UserPinServiceProvider provider,
   ) {
     return call(
       provider.userId,
@@ -210,30 +224,30 @@ class OtherUserPinServiceFamily extends Family<AsyncValue<List<LocalPinDto>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'otherUserPinServiceProvider';
+  String? get name => r'userPinServiceProvider';
 }
 
-/// See also [OtherUserPinService].
-class OtherUserPinServiceProvider
-    extends AsyncNotifierProviderImpl<OtherUserPinService, List<LocalPinDto>> {
-  /// See also [OtherUserPinService].
-  OtherUserPinServiceProvider(
+/// See also [UserPinService].
+class UserPinServiceProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    UserPinService, List<LocalPinDto>> {
+  /// See also [UserPinService].
+  UserPinServiceProvider(
     String userId,
   ) : this._internal(
-          () => OtherUserPinService()..userId = userId,
-          from: otherUserPinServiceProvider,
-          name: r'otherUserPinServiceProvider',
+          () => UserPinService()..userId = userId,
+          from: userPinServiceProvider,
+          name: r'userPinServiceProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$otherUserPinServiceHash,
-          dependencies: OtherUserPinServiceFamily._dependencies,
+                  : _$userPinServiceHash,
+          dependencies: UserPinServiceFamily._dependencies,
           allTransitiveDependencies:
-              OtherUserPinServiceFamily._allTransitiveDependencies,
+              UserPinServiceFamily._allTransitiveDependencies,
           userId: userId,
         );
 
-  OtherUserPinServiceProvider._internal(
+  UserPinServiceProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -247,7 +261,7 @@ class OtherUserPinServiceProvider
 
   @override
   FutureOr<List<LocalPinDto>> runNotifierBuild(
-    covariant OtherUserPinService notifier,
+    covariant UserPinService notifier,
   ) {
     return notifier.build(
       userId,
@@ -255,10 +269,10 @@ class OtherUserPinServiceProvider
   }
 
   @override
-  Override overrideWith(OtherUserPinService Function() create) {
+  Override overrideWith(UserPinService Function() create) {
     return ProviderOverride(
       origin: this,
-      override: OtherUserPinServiceProvider._internal(
+      override: UserPinServiceProvider._internal(
         () => create()..userId = userId,
         from: from,
         name: null,
@@ -271,14 +285,14 @@ class OtherUserPinServiceProvider
   }
 
   @override
-  AsyncNotifierProviderElement<OtherUserPinService, List<LocalPinDto>>
+  AutoDisposeAsyncNotifierProviderElement<UserPinService, List<LocalPinDto>>
       createElement() {
-    return _OtherUserPinServiceProviderElement(this);
+    return _UserPinServiceProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is OtherUserPinServiceProvider && other.userId == userId;
+    return other is UserPinServiceProvider && other.userId == userId;
   }
 
   @override
@@ -292,18 +306,19 @@ class OtherUserPinServiceProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin OtherUserPinServiceRef on AsyncNotifierProviderRef<List<LocalPinDto>> {
+mixin UserPinServiceRef
+    on AutoDisposeAsyncNotifierProviderRef<List<LocalPinDto>> {
   /// The parameter `userId` of this provider.
   String get userId;
 }
 
-class _OtherUserPinServiceProviderElement
-    extends AsyncNotifierProviderElement<OtherUserPinService, List<LocalPinDto>>
-    with OtherUserPinServiceRef {
-  _OtherUserPinServiceProviderElement(super.provider);
+class _UserPinServiceProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<UserPinService,
+        List<LocalPinDto>> with UserPinServiceRef {
+  _UserPinServiceProviderElement(super.provider);
 
   @override
-  String get userId => (origin as OtherUserPinServiceProvider).userId;
+  String get userId => (origin as UserPinServiceProvider).userId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

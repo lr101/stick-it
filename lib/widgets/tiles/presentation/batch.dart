@@ -15,7 +15,7 @@ class Batch extends StatelessWidget {
     final achievement = Achievement.getById(batchId);
     return Container(
       decoration: BoxDecoration(
-        color: achievement.color.withOpacity(0.5),
+        color: achievement.color.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(5),
       ),
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: padding),

@@ -28,7 +28,7 @@ class RoundImagePicker extends ConsumerWidget {
                 alignment: Alignment.bottomRight,
                 child: GestureDetector(
                     onTap: () async {
-                      Uint8List? pickedImage = await CustomImagePicker.pickAndCrop(minHeight: 100, minWidth: 100, context: context);
+                      final Uint8List? pickedImage = await CustomImagePicker.pickAndCrop(minHeight: 100, minWidth: 100, context: context);
                       if (pickedImage != null) {
                         ref.read(imagePickerStateProvider.notifier).setImage(imageUpload, pickedImage);
                       }
@@ -36,14 +36,13 @@ class RoundImagePicker extends ConsumerWidget {
                     child: CircleAvatar(
                       radius: editSize ?? size / 2.5,
                       child: const Icon(Icons.edit),
-                    )
+                    ),
                 ),
               ),
-            ]
+            ],
         ),
 
     );
   }
-
 
 }

@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**getGeoJson**](RankingApi.md#getgeojson) | **GET** /api/v2/map/geojson | 
 [**getMapInfo**](RankingApi.md#getmapinfo) | **GET** /api/v2/map | 
 [**groupRanking**](RankingApi.md#groupranking) | **GET** /api/v2/ranking/group | 
+[**searchRanking**](RankingApi.md#searchranking) | **GET** /api/v2/ranking/search | Search for a location
 [**userRanking**](RankingApi.md#userranking) | **GET** /api/v2/ranking/user | 
 
 
@@ -114,7 +115,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **groupRanking**
-> List<GroupRankingDtoInner> groupRanking(gid0, gid1, gid2, page, size)
+> List<GroupRankingDtoInner> groupRanking(gid0, gid1, gid2, since, page, size)
 
 
 
@@ -132,11 +133,12 @@ final api_instance = RankingApi();
 final gid0 = gid0_example; // String | Country ID. When not null the ranking by country is returned.
 final gid1 = gid1_example; // String | State ID. When not null the ranking by country is returned.
 final gid2 = gid2_example; // String | County ID. When not null the ranking by country is returned.
+final since = 2013-10-20T19:20:30+01:00; // DateTime | Only include pins added since this point in time. When null all pins are included
 final page = 56; // int | page number
 final size = 56; // int | page size. Defaults to 20
 
 try {
-    final result = api_instance.groupRanking(gid0, gid1, gid2, page, size);
+    final result = api_instance.groupRanking(gid0, gid1, gid2, since, page, size);
     print(result);
 } catch (e) {
     print('Exception when calling RankingApi->groupRanking: $e\n');
@@ -150,6 +152,7 @@ Name | Type | Description  | Notes
  **gid0** | **String**| Country ID. When not null the ranking by country is returned. | [optional] 
  **gid1** | **String**| State ID. When not null the ranking by country is returned. | [optional] 
  **gid2** | **String**| County ID. When not null the ranking by country is returned. | [optional] 
+ **since** | **DateTime**| Only include pins added since this point in time. When null all pins are included | [optional] 
  **page** | **int**| page number | [optional] 
  **size** | **int**| page size. Defaults to 20 | [optional] [default to 20]
 
@@ -168,8 +171,53 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **searchRanking**
+> List<RankingSearchDtoInner> searchRanking(search, page, size)
+
+Search for a location
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api_instance = RankingApi();
+final search = search_example; // String | 
+final page = 56; // int | page number
+final size = 56; // int | page size. Defaults to 20
+
+try {
+    final result = api_instance.searchRanking(search, page, size);
+    print(result);
+} catch (e) {
+    print('Exception when calling RankingApi->searchRanking: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **search** | **String**|  | [optional] 
+ **page** | **int**| page number | [optional] 
+ **size** | **int**| page size. Defaults to 20 | [optional] [default to 20]
+
+### Return type
+
+[**List<RankingSearchDtoInner>**](RankingSearchDtoInner.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **userRanking**
-> List<UserRankingDtoInner> userRanking(gid0, gid1, gid2, page, size)
+> List<UserRankingDtoInner> userRanking(gid0, gid1, gid2, since, page, size)
 
 
 
@@ -187,11 +235,12 @@ final api_instance = RankingApi();
 final gid0 = gid0_example; // String | Country ID. When not null the ranking by country is returned.
 final gid1 = gid1_example; // String | State ID. When not null the ranking by country is returned.
 final gid2 = gid2_example; // String | County ID. When not null the ranking by country is returned.
+final since = 2013-10-20T19:20:30+01:00; // DateTime | Only include pins added since this point in time. When null all pins are included
 final page = 56; // int | page number
 final size = 56; // int | page size. Defaults to 20
 
 try {
-    final result = api_instance.userRanking(gid0, gid1, gid2, page, size);
+    final result = api_instance.userRanking(gid0, gid1, gid2, since, page, size);
     print(result);
 } catch (e) {
     print('Exception when calling RankingApi->userRanking: $e\n');
@@ -205,6 +254,7 @@ Name | Type | Description  | Notes
  **gid0** | **String**| Country ID. When not null the ranking by country is returned. | [optional] 
  **gid1** | **String**| State ID. When not null the ranking by country is returned. | [optional] 
  **gid2** | **String**| County ID. When not null the ranking by country is returned. | [optional] 
+ **since** | **DateTime**| Only include pins added since this point in time. When null all pins are included | [optional] 
  **page** | **int**| page number | [optional] 
  **size** | **int**| page size. Defaults to 20 | [optional] [default to 20]
 

@@ -15,7 +15,7 @@ class CustomAvatarScaffold extends ConsumerStatefulWidget {
       this.floatingActionButton,
       this.profileQuickViewBoxes,
       this.hasBackButton = true,
-      required this.body});
+      required this.body,});
 
   final AsyncValue<Uint8List?> avatar;
   final Widget title;
@@ -50,36 +50,39 @@ class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width * 0.8;
-    double leftPadding = widget.hasBackButton ? 66.0 : 16.0;
+    final double leftPadding = widget.hasBackButton ? 66.0 : 16.0;
     return Scaffold(
       body: NestedScrollView(
         controller: controller,
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
-              pinned: false,
               floating: true,
-              snap: false,
               actions: widget.actions,
               expandedHeight: (width / 2) + kToolbarHeight + 20,
               centerTitle: false,
+              shape: const ContinuousRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
+                ),
+              ),
               title: widget.title,
+              backgroundColor: Theme.of(context).focusColor,
               flexibleSpace: FlexibleSpaceBar(
                 background: SafeArea(
                     child: Padding(
                         padding: EdgeInsets.only(left: leftPadding, top: 10, right: 10), child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           RoundImage(
                             imageCallback: widget.avatar,
                             size: (width/4) - 20,
                           ),
-                          SizedBox(width: 10,),
-                          SizedBox(width: MediaQuery.of(context).size.width - width/2 - leftPadding - 10, height: (width/2) - leftPadding - 10, child: widget.profileQuickViewBoxes ?? SizedBox.shrink()),
-                ]))),
+                          const SizedBox(width: 10,),
+                          SizedBox(width: MediaQuery.of(context).size.width - width/2 - leftPadding - 10, height: (width/2) - leftPadding - 10, child: widget.profileQuickViewBoxes ?? const SizedBox.shrink()),
+                ],),),),
               ),
-              bottom: widget.bottom),
-          ...?widget.boxes
+              bottom: widget.bottom,),
+          ...?widget.boxes,
         ],
         body: widget.body,
       ),

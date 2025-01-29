@@ -21,7 +21,7 @@ class GroupCreateState {
   factory GroupCreateState.fromLocalGroupDto(LocalGroupDto localGroupDto, Uint8List? profileImage) {
     return GroupCreateState(
       visibility: localGroupDto.visibility,
-      profileImage: profileImage
+      profileImage: profileImage,
     );
   }
 

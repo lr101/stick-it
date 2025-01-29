@@ -10,8 +10,8 @@ class MapPanelState extends _$MapPanelState {
     return false;
   }
 
+  // ignore: use_setters_to_change_properties
   void set(bool val) {
-    print(val);
     state = val;
   }
 }

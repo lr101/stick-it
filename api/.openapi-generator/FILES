@@ -23,6 +23,7 @@ doc/PinsApi.md
 doc/PinsSyncDto.md
 doc/PublicApi.md
 doc/RankingApi.md
+doc/RankingSearchDtoInner.md
 doc/RefreshTokenRequestDto.md
 doc/ReportApi.md
 doc/ReportDto.md
@@ -72,6 +73,7 @@ lib/model/pin_like_dto.dart
 lib/model/pin_request_dto.dart
 lib/model/pin_with_optional_image_dto.dart
 lib/model/pins_sync_dto.dart
+lib/model/ranking_search_dto_inner.dart
 lib/model/refresh_token_request_dto.dart
 lib/model/report_dto.dart
 lib/model/status.dart

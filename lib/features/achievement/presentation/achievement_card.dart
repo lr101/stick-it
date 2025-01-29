@@ -20,7 +20,7 @@ class AchievementCard extends StatelessWidget {
     required this.isSelected,
     this.color,
     this.borderWidth = 2.0,
-    this.margin
+    this.margin,
   });
 
   @override
@@ -42,20 +42,19 @@ class AchievementCard extends StatelessWidget {
         painter: ProgressBorderPainter(
           progress: progress,
           progressColor: progressColor,
-          borderWidth: borderWidth
+          borderWidth: borderWidth,
         ),
         child: Padding(
           padding: EdgeInsets.all(borderWidth), child:
         Card(
           color: color,
-          borderOnForeground: true,
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
           ),
           child: child,
         ),
-      )));
+      ),),);
   }
 }
 
@@ -68,7 +67,7 @@ class ProgressBorderPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final radius = 12.0;
+    const radius = 12.0;
 
     // Adjust the drawing rect to account for the stroke width
     final rect = Rect.fromLTWH(
@@ -91,17 +90,16 @@ class ProgressBorderPainter extends CustomPainter {
 
     // Draw full border as a transparent background
     canvas.drawRRect(
-      RRect.fromRectAndRadius(rect, Radius.circular(radius)),
+      RRect.fromRectAndRadius(rect, const Radius.circular(radius)),
       paintBackground,
     );
 
     // Draw the progress border
     final progressPath = Path()
-      ..addRRect(RRect.fromRectAndRadius(rect, Radius.circular(radius)));
+      ..addRRect(RRect.fromRectAndRadius(rect, const Radius.circular(radius)));
 
     for (final metric in progressPath.computeMetrics()) {
       final length = metric.length * progress; // Adjust length based on progress
-      print(length);
       canvas.drawPath(
         metric.extractPath(0, length),
         paintProgress,
@@ -114,4 +112,3 @@ class ProgressBorderPainter extends CustomPainter {
     return true; // Redraw when progress changes
   }
 }
-

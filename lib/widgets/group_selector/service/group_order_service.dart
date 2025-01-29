@@ -23,7 +23,7 @@ class GroupOrderService extends _$GroupOrderService {
     final sharedPrefs = ref.watch(sharedPreferencesProvider);
     final orderedGroups = sharedPrefs.getStringList('groupOrder') ?? [];
     final userGroupSet = Set<String>.from(userGroupList);
-    List<String> updatedGroups = orderedGroups.where(userGroupSet.contains).toList();
+    final List<String> updatedGroups = orderedGroups.where(userGroupSet.contains).toList();
     updatedGroups.addAll(userGroupList.where((id) => !updatedGroups.contains(id)));
     sharedPrefs.setStringList('groupOrder', updatedGroups);
     return updatedGroups;

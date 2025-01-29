@@ -1,9 +1,9 @@
 
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
+// ignore: avoid_classes_with_only_static_members
 class Routing {
 
   static Future<dynamic> to(BuildContext context, Widget to, [bool transition = true]) async {
@@ -14,13 +14,13 @@ class Routing {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.ease;
-            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
             return SlideTransition(
               position: animation.drive(tween),
               child: child,
             );
           },
-        )
+        ),
     );
   }
 
@@ -33,14 +33,14 @@ class Routing {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
             const curve = Curves.ease;
-            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
             return SlideTransition(
               position: animation.drive(tween),
               child: child,
             );
           },
         ),
-        ModalRoute.withName(routeName)
+        ModalRoute.withName(routeName),
     );
   }
 
@@ -48,7 +48,7 @@ class Routing {
     if (link != null) {
       try {
         await launchUrl(Uri.parse(link),
-            mode: LaunchMode.externalApplication);
+            mode: LaunchMode.externalApplication,);
       } catch (e) {
         CustomErrorSnackBar.message(message: "No app to open link found", type: CustomErrorSnackBarType.error);
       }

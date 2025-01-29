@@ -1,3 +1,4 @@
+import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -10,10 +11,10 @@ class CustomScaffold<T> extends ConsumerWidget {
   final List<Widget> boxes;
   final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
-  final ItemWidgetBuilder listBuilder;
-  final PagingController pagingController;
+  final ItemWidgetBuilder<T> listBuilder;
+  final PagingController<int, T> pagingController;
 
-  const CustomScaffold({super.key, 
+  const CustomScaffold({super.key,
     required this.title,
     required this.listBuilder,
     required this.pagingController,
@@ -26,13 +27,12 @@ class CustomScaffold<T> extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
+    return CustomCloseKeyboardScaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            pinned: false,
+            snap: true,
             floating: true,
-            snap: false,
             actions: actions,
             title: title,
             expandedHeight: headerHeight,
@@ -40,13 +40,12 @@ class CustomScaffold<T> extends ConsumerWidget {
             bottom: bottom,
           ),
           ...boxes.map((e) => SliverToBoxAdapter(child: e)),
-          PagedSliverList(
+          PagedSliverList<int, T>(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<T>(
-                animateTransitions: false,
-                itemBuilder: listBuilder
+                itemBuilder: listBuilder,
             ),
-          )
+          ),
         ],
       ),
     );

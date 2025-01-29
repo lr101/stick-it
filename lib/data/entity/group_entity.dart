@@ -1,35 +1,84 @@
-import 'package:buff_lisa/data/entity/user_entity.dart';
-import 'package:drift/drift.dart';
+import 'package:buff_lisa/data/entity/cache_entity.dart';
+import 'package:hive/hive.dart';
+import 'package:openapi/api.dart';
 
-// Define the Drift table for GroupDTO
-class GroupEntity extends Table {
-  // Group Id - primary key
-  TextColumn get groupId => text()();
+part 'group_entity.g.dart'; // This will be generated
 
-  // Name of the group
-  TextColumn get name => text()();
+@HiveType(typeId: 1) // Unique type ID for this entity
+class GroupEntity extends CacheEntity {
 
-  // Visibility of the group
-  IntColumn get visibility => integer()();
+  @HiveField(3)
+  final String groupId;
 
-  // Invite URL (nullable)
-  TextColumn get inviteUrl => text().nullable()();
+  @HiveField(4)
+  final String name;
 
-  // Group admin (nullable)
-  TextColumn get groupAdmin => text().references(UserEntity, #userId).nullable()();
+  @HiveField(5)
+  final int visibility;
 
-  // Description of the group (nullable)
-  TextColumn get description => text().nullable()();
+  @HiveField(6)
+  final String? inviteUrl;
 
-  // Is the group activated?
-  BoolColumn get isActivated => boolean().withDefault(const Constant(false))();
+  @HiveField(7)
+  final String? groupAdmin;
 
-  // Last updated timestamp (nullable)
-  DateTimeColumn get lastUpdated => dateTime().nullable()();
+  @HiveField(8)
+  final String? description;
 
-  TextColumn get link => text().nullable()();
+  @HiveField(9)
+  final bool isActivated;
 
-  // Specify the primary key
+  @HiveField(10)
+  final DateTime? lastUpdated;
+
+  @HiveField(11)
+  final String? link;
+
+  GroupEntity({
+    required this.groupId,
+    required this.name,
+    required this.visibility,
+    this.inviteUrl,
+    this.groupAdmin,
+    this.description,
+    this.isActivated = false,
+    this.lastUpdated,
+    this.link,
+    super.keepAlive,
+    super.hits,
+    super.ttl,
+  });
+  
+  factory GroupEntity.fromGroupDto(GroupDto groupDto, {bool keepAlive = false, bool isActivated = false}) {
+    return GroupEntity(
+      groupId: groupDto.id,
+      name: groupDto.name,
+      visibility: groupDto.visibility,
+      isActivated: isActivated,
+      description: groupDto.description,
+      inviteUrl: groupDto.inviteUrl,
+      groupAdmin: groupDto.groupAdmin,
+      lastUpdated: groupDto.lastUpdated,
+      link: groupDto.link,
+      keepAlive: keepAlive,
+    );
+  }
+
   @override
-  Set<Column> get primaryKey => {groupId};
+  GroupEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+    return GroupEntity(
+      groupId: groupId,
+      name: name,
+      visibility: visibility,
+      description: description,
+      inviteUrl: inviteUrl,
+      groupAdmin: groupAdmin,
+      lastUpdated: lastUpdated,
+      isActivated: isActivated,
+      link: link,
+      keepAlive: keepAlive ?? this.keepAlive,
+      hits: hits ?? this.hits,
+      ttl: ttl,
+    );
+  }
 }

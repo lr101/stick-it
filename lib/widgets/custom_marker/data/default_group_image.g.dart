@@ -7,7 +7,7 @@ part of 'default_group_image.dart';
 // **************************************************************************
 
 String _$defaultGroupPinImageHash() =>
-    r'194ddb02333cb94aeed7f17b1d5656007def05dc';
+    r'20d42006401a57704eb4c7d13b7e6db5f436e4cb';
 
 /// See also [defaultGroupPinImage].
 @ProviderFor(defaultGroupPinImage)
@@ -24,7 +24,7 @@ final defaultGroupPinImageProvider = AutoDisposeProvider<Uint8List>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef DefaultGroupPinImageRef = AutoDisposeProviderRef<Uint8List>;
-String _$defaultErrorImageHash() => r'aca4ac1d2da5c65163db447012a39d7a9d9b1e75';
+String _$defaultErrorImageHash() => r'fed1f6c9468318343ea088a6aa9ef9cb65d4b972';
 
 /// See also [defaultErrorImage].
 @ProviderFor(defaultErrorImage)

@@ -1,17 +1,15 @@
 
 
-import 'dart:typed_data';
-
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/dto/current_user_dto.dart';
+import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../dto/global_data_dto.dart';
 
 part 'global_data_service.g.dart';
 
@@ -21,66 +19,115 @@ class GlobalDataService  extends _$GlobalDataService {
   @override
   GlobalDataDto build() => ref.watch(globalDataOnceProvider);
 
-  Future<void> login(String username, String userId, String token) async {
-    await ref.watch(globalDataRepositoryProvider).login(username, userId, token);
-    state.refreshToken = token;
-    state.userId = userId;
-    ref.notifyListeners();
-    await ref.read(currentUserServiceProvider.notifier).updateFromRemote();
-  }
-
   Future<void> logout() async {
     await ref.watch(flutterSecureStorageProvider).deleteAll();
     state = GlobalDataDto(userId: null, refreshToken: null, cameras: state.cameras);
   }
 
-
+  Future<void> updateData(TokenResponseDto refreshToken, String username) async {
+    state = state.copyWith(refreshToken: refreshToken.refreshToken, userId: refreshToken.userId);
+    await ref.read(globalDataRepositoryProvider).login(username, refreshToken.userId, refreshToken.refreshToken);
+  }
 
 }
 
 @riverpod
-String userId(Ref ref) => ref.watch(globalDataServiceProvider).userId!;
-
-
-@Riverpod(keepAlive: true)
-class CurrentUserService extends _$CurrentUserService {
+class AuthService extends _$AuthService {
 
   @override
-  CurrentUserDto build() => ref.watch(currentUserOnceProvider);
-
-  Future<void> updateFromRemote() async {
-    final userId = ref.watch(globalDataServiceProvider).userId!;
-    final user = await ref.watch(userApiProvider).getUser(userId);
-    if (user == null) return;
-    await update(username: user.username, description: user.description, selectedBatch: user.selectedBatch);
+  FutureOr<bool> build() async {
+    return true;
   }
 
-  Future<void> update({String? description, String? username, Uint8List? profileImage, Uint8List? profileImageSmall, int? selectedBatch}) async {
-    state = CurrentUserDto(
-        username: username ?? state.username,
-        description: description ?? state.description,
-        profileImage: profileImage ?? state.profileImage,
-        profileImageSmall: profileImageSmall ?? state.profileImageSmall,
-      selectedBatch: selectedBatch ?? state.selectedBatch,
-     xp: state.xp);
-    await ref.read(globalDataRepositoryProvider).updateCurrentUser(description: description, username: username, profileImage: profileImage, profileImageSmall: profileImageSmall, selectedBatch: selectedBatch);
+  Future<String?> login(String name, String password) async {
+    final authApi = ref.read(authApiProvider);
+    final global = ref.read(globalDataServiceProvider.notifier);
+    try {
+      final response = await authApi.userLogin(UserLoginRequest(username: name, password: password));
+      if (response != null) {
+        await global.updateData(response, name);
+        return null;
+      }
+      return "Something unexpected happened";
+    } on ApiException catch (e) {
+      return e.message == null || e.message!.isEmpty
+          ? "Something unexpected happened"
+          : e.message;
+    }
   }
 
-  Future<void> runXpUpdate() async {
-    final global = ref.watch(globalDataServiceProvider);
-    final xp = await ref.watch(userApiProvider).getUserXp(global.userId!);
-    ref.read(globalDataRepositoryProvider).setXp(xp!);
-    state = CurrentUserDto(
-        username: state.username,
-        description: state.description,
-        profileImage: state.profileImage,
-        profileImageSmall: state.profileImageSmall,
-        selectedBatch: state.selectedBatch,
-        xp: xp
-    );
+  Future<bool> recover(String? name) async {
+    final authApi = ref.read(authApiProvider);
+    try {
+      await authApi.requestPasswordRecovery(name!);
+      return true;
+    } catch (e) {
+      if (kDebugMode) print('Error during password recovery: $e');
+      return false;
+    }
   }
 
+  Future<String?> signupNewUser(String username, String password, String email) async {
+    final authApi = ref.read(authApiProvider);
+    final global = ref.read(globalDataServiceProvider.notifier);
+    try {
+      final request = UserRequestDto(name: username, password: password, email: email);
+      final response = await authApi.createUser(request);
+      if (response != null) {
+        await global.updateData(response, username);
+        return null;
+      } else {
+        return "Something unexpected happened";
+      }
+    } on ApiException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> report(String reportedReferences, String reportMessage) async {
+    final reportApi = ref.watch(reportApiProvider);
+    final userId = ref.read(userIdProvider);
+    try {
+      final request = ReportDto(
+        report: reportedReferences,
+        userId: userId,
+        message: reportMessage,
+      );
+      await reportApi.createReport(request);
+      return null;
+    } on ApiException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> getDeleteCode() async {
+    final authApi = ref.read(authApiProvider);
+    try {
+      final username = await ref.read(userServiceProvider(ref.read(userIdProvider)).future);
+      await authApi.generateDeleteCode(username.username);
+      return null;
+    } on ApiException catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> deleteAccount(int code) async {
+    final userApi = ref.watch(userApiProvider);
+    final userId = ref.read(userIdProvider);
+    final global = ref.read(globalDataServiceProvider.notifier);
+    try {
+      await userApi.deleteUser(userId, body: code);
+      await global.logout();
+      return null;
+    } on ApiException catch (e) {
+      if(kDebugMode) print('Error deleting account: $e');
+      return e.message;
+    }
+  }
 }
+
+@riverpod
+String userId(Ref ref) => ref.watch(globalDataServiceProvider).userId!;
 
 @riverpod
 class CameraTorch extends _$CameraTorch {
@@ -120,11 +167,6 @@ class LastSeen extends _$LastSeen {
 LatLng lastKnownLocation(Ref ref) {
   final lat = ref.watch(sharedPreferencesProvider).getDouble(GlobalDataRepository.lastKnownLat);
   final lng = ref.watch(sharedPreferencesProvider).getDouble(GlobalDataRepository.lastKnownLong);
-  if (lat == null || lng == null) return LatLng(49.01105, 8.25190);
+  if (lat == null || lng == null) return const LatLng(49.01105, 8.25190);
   return LatLng(lat, lng);
-}
-
-@riverpod
-UserXpDto xp(Ref ref) {
-  return ref.watch(currentUserServiceProvider.select((e) => e.xp));
 }

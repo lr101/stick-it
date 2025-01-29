@@ -27,8 +27,8 @@ class MapStates extends _$MapStates {
   @override
   MapState build() {
     return MapState(
-      markers: ref.watch(activatedPinsWithoutLoadingProvider).whenOrNull(
-          data: (data) => data.map((e) => CustomMarkerWidget(pinDto: e, withAnimation: false)).toList()) ?? [],
+      markers: ref.watch(activatedPinsWithoutLoadingProvider)
+          .map((e) => CustomMarkerWidget(pinDto: e)).toList(),
     );
   }
 }
@@ -41,8 +41,7 @@ Stream<Position> currentLocation(Ref ref) async* {
     await Geolocator.requestPermission();
   }
   final rePermission  = await Geolocator.checkPermission();
-  if (rePermission != LocationPermission &&
-      rePermission != LocationPermission.deniedForever) {
+  if (rePermission != LocationPermission.deniedForever) {
     final positionStream = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
