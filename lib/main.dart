@@ -6,6 +6,7 @@ import 'package:buff_lisa/data/entity/image_entity.dart';
 import 'package:buff_lisa/data/entity/member_entity.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/entity/pin_like_entity.dart';
+import 'package:buff_lisa/data/entity/season_entity.dart';
 import 'package:buff_lisa/data/entity/user_entity.dart';
 import 'package:buff_lisa/data/entity/user_like_entity.dart';
 import 'package:buff_lisa/data/entity/user_pins_entity.dart';
@@ -46,6 +47,7 @@ Future<void> main() async {
   Hive.registerAdapter(UserLikeEntityAdapter());
   Hive.registerAdapter(PinLikeEntityAdapter());
   Hive.registerAdapter(UserPinsEntityAdapter());
+  Hive.registerAdapter(SeasonEntityAdapter());
   const bool isProduction = bool.fromEnvironment('dart.vm.product');
   if (isProduction) {
     await dotenv.load();

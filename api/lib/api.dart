@@ -55,6 +55,8 @@ part 'model/pins_sync_dto.dart';
 part 'model/ranking_search_dto_inner.dart';
 part 'model/refresh_token_request_dto.dart';
 part 'model/report_dto.dart';
+part 'model/season_dto.dart';
+part 'model/season_item_dto.dart';
 part 'model/status.dart';
 part 'model/token_response_dto.dart';
 part 'model/update_group_dto.dart';

@@ -23,7 +23,7 @@ class RankingListWrapper extends StatelessWidget {
              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  RankingTimeButton(label: "weekly", index: 0),
+                  RankingTimeButton(label: "season", index: 0),
                   RankingLocationSelector(),
                   RankingTimeButton(label: "all-time", index: 1),
                 ],

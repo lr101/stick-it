@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:buff_lisa/data/entity/group_entity.dart';
+import 'package:buff_lisa/data/entity/season_entity.dart';
 import 'package:drift/drift.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:openapi/api.dart';
@@ -16,6 +17,7 @@ class LocalGroupDto {
   final String? description;
   final DateTime? lastUpdated;
   final bool isActivated;
+  final SeasonItemDto? bestSeason;
 
   const LocalGroupDto({
     required this.groupId,
@@ -26,6 +28,7 @@ class LocalGroupDto {
     this.groupAdmin,
     this.description,
     this.lastUpdated,
+    this.bestSeason,
     required this.isActivated,
   });
 
@@ -40,6 +43,7 @@ class LocalGroupDto {
       description: entityData.description,
       lastUpdated: entityData.lastUpdated,
       isActivated: entityData.isActivated,
+      bestSeason: entityData.bestSeason?.toDto(),
     );
   }
 
@@ -55,20 +59,22 @@ class LocalGroupDto {
       lastUpdated: lastUpdated,
       isActivated: isActivated,
       keepAlive: keepAlive,
+      bestSeason: bestSeason != null ? SeasonEntity.fromDto(bestSeason!) : null,
     );
   }
 
   factory LocalGroupDto.fromDto(GroupDto dto, {bool isActivated = false}) {
     return LocalGroupDto(
-        groupId: dto.id,
-        name:  dto.name,
-        visibility: dto.visibility,
-        inviteUrl: dto.inviteUrl,
-        description: dto.description,
-        groupAdmin:  dto.groupAdmin,
-        link: dto.link,
-        lastUpdated: dto.lastUpdated,
-        isActivated: isActivated,
+      groupId: dto.id,
+      name:  dto.name,
+      visibility: dto.visibility,
+      inviteUrl: dto.inviteUrl,
+      description: dto.description,
+      groupAdmin:  dto.groupAdmin,
+      link: dto.link,
+      lastUpdated: dto.lastUpdated,
+      isActivated: isActivated,
+      bestSeason: dto.bestSeason,
     );
   }
 
@@ -104,6 +110,7 @@ class LocalGroupDto {
     String? description,
     DateTime? lastUpdated,
     bool? isActivated,
+    SeasonItemDto? bestSeason,
   }) {
     return LocalGroupDto(
       groupId: groupId ?? this.groupId,
@@ -115,6 +122,7 @@ class LocalGroupDto {
       description: description ?? this.description,
       lastUpdated: lastUpdated ?? this.lastUpdated,
       isActivated: isActivated ?? this.isActivated,
+      bestSeason: bestSeason ?? this.bestSeason,
     );
   }
 

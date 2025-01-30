@@ -115,7 +115,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **groupRanking**
-> List<GroupRankingDtoInner> groupRanking(gid0, gid1, gid2, since, page, size)
+> List<GroupRankingDtoInner> groupRanking(gid0, gid1, gid2, since, season, page, size)
 
 
 
@@ -134,11 +134,12 @@ final gid0 = gid0_example; // String | Country ID. When not null the ranking by 
 final gid1 = gid1_example; // String | State ID. When not null the ranking by country is returned.
 final gid2 = gid2_example; // String | County ID. When not null the ranking by country is returned.
 final since = 2013-10-20T19:20:30+01:00; // DateTime | Only include pins added since this point in time. When null all pins are included
+final season = true; // bool | Only include pins from this season. When null all pins are included
 final page = 56; // int | page number
 final size = 56; // int | page size. Defaults to 20
 
 try {
-    final result = api_instance.groupRanking(gid0, gid1, gid2, since, page, size);
+    final result = api_instance.groupRanking(gid0, gid1, gid2, since, season, page, size);
     print(result);
 } catch (e) {
     print('Exception when calling RankingApi->groupRanking: $e\n');
@@ -153,6 +154,7 @@ Name | Type | Description  | Notes
  **gid1** | **String**| State ID. When not null the ranking by country is returned. | [optional] 
  **gid2** | **String**| County ID. When not null the ranking by country is returned. | [optional] 
  **since** | **DateTime**| Only include pins added since this point in time. When null all pins are included | [optional] 
+ **season** | **bool**| Only include pins from this season. When null all pins are included | [optional] [default to false]
  **page** | **int**| page number | [optional] 
  **size** | **int**| page size. Defaults to 20 | [optional] [default to 20]
 
@@ -217,7 +219,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **userRanking**
-> List<UserRankingDtoInner> userRanking(gid0, gid1, gid2, since, page, size)
+> List<UserRankingDtoInner> userRanking(gid0, gid1, gid2, since, season, page, size)
 
 
 
@@ -236,11 +238,12 @@ final gid0 = gid0_example; // String | Country ID. When not null the ranking by 
 final gid1 = gid1_example; // String | State ID. When not null the ranking by country is returned.
 final gid2 = gid2_example; // String | County ID. When not null the ranking by country is returned.
 final since = 2013-10-20T19:20:30+01:00; // DateTime | Only include pins added since this point in time. When null all pins are included
+final season = true; // bool | Only include pins from this season. When null all pins are included
 final page = 56; // int | page number
 final size = 56; // int | page size. Defaults to 20
 
 try {
-    final result = api_instance.userRanking(gid0, gid1, gid2, since, page, size);
+    final result = api_instance.userRanking(gid0, gid1, gid2, since, season, page, size);
     print(result);
 } catch (e) {
     print('Exception when calling RankingApi->userRanking: $e\n');
@@ -255,6 +258,7 @@ Name | Type | Description  | Notes
  **gid1** | **String**| State ID. When not null the ranking by country is returned. | [optional] 
  **gid2** | **String**| County ID. When not null the ranking by country is returned. | [optional] 
  **since** | **DateTime**| Only include pins added since this point in time. When null all pins are included | [optional] 
+ **season** | **bool**| Only include pins from this season. When null all pins are included | [optional] [default to false]
  **page** | **int**| page number | [optional] 
  **size** | **int**| page size. Defaults to 20 | [optional] [default to 20]
 

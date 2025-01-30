@@ -151,9 +151,7 @@ class _RankingState extends ConsumerState<Ranking>
       final gid0 = districts?.adminLevel == 0 ? districts?.gid : null;
       final gid1 = districts?.adminLevel == 1 ? districts?.gid : null;
       final gid2 = districts?.adminLevel == 2 ? districts?.gid : null;
-      final since = rankingTime == 1
-          ? null
-          : DateTime.now().subtract(const Duration(days: 7));
+      final season = rankingTime == 0;
       List<UserRankingDtoInner>? items;
       items = await ref.read(rankingApiProvider).userRanking(
             gid0: gid0,
@@ -161,7 +159,7 @@ class _RankingState extends ConsumerState<Ranking>
             gid2: gid2,
             page: pageKey,
             size: _pageSize,
-            since: since,
+            season: season,
           );
       if (items == null) {
         _pagingControllerUser.error = "Ranking could not be fetched";
@@ -188,9 +186,7 @@ class _RankingState extends ConsumerState<Ranking>
       final gid0 = districts?.adminLevel == 0 ? districts?.gid : null;
       final gid1 = districts?.adminLevel == 1 ? districts?.gid : null;
       final gid2 = districts?.adminLevel == 2 ? districts?.gid : null;
-      final since = rankingTime == 1
-          ? null
-          : DateTime.now().subtract(const Duration(days: 7));
+      final season = rankingTime == 0;
       List<GroupRankingDtoInner>? items;
       items = await ref.read(rankingApiProvider).groupRanking(
             gid0: gid0,
@@ -198,7 +194,7 @@ class _RankingState extends ConsumerState<Ranking>
             gid2: gid2,
             page: pageKey,
             size: _pageSize,
-            since: since,
+            season: season,
           );
       if (items == null) {
         _pagingControllerGroup.error = "Ranking could not be fetched";

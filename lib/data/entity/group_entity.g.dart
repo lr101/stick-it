@@ -26,6 +26,7 @@ class GroupEntityAdapter extends TypeAdapter<GroupEntity> {
       isActivated: fields[9] as bool,
       lastUpdated: fields[10] as DateTime?,
       link: fields[11] as String?,
+      bestSeason: fields[12] as SeasonEntity?,
       keepAlive: fields[2] as bool,
       hits: fields[1] as int,
       ttl: fields[0] as DateTime?,
@@ -35,7 +36,7 @@ class GroupEntityAdapter extends TypeAdapter<GroupEntity> {
   @override
   void write(BinaryWriter writer, GroupEntity obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(3)
       ..write(obj.groupId)
       ..writeByte(4)
@@ -54,6 +55,8 @@ class GroupEntityAdapter extends TypeAdapter<GroupEntity> {
       ..write(obj.lastUpdated)
       ..writeByte(11)
       ..write(obj.link)
+      ..writeByte(12)
+      ..write(obj.bestSeason)
       ..writeByte(0)
       ..write(obj.ttl)
       ..writeByte(1)

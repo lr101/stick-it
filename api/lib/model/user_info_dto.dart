@@ -17,6 +17,7 @@ class UserInfoDto {
     required this.userId,
     this.description,
     this.selectedBatch,
+    this.bestSeason,
   });
 
   String username;
@@ -33,12 +34,21 @@ class UserInfoDto {
 
   int? selectedBatch;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  SeasonItemDto? bestSeason;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is UserInfoDto &&
     other.username == username &&
     other.userId == userId &&
     other.description == description &&
-    other.selectedBatch == selectedBatch;
+    other.selectedBatch == selectedBatch &&
+    other.bestSeason == bestSeason;
 
   @override
   int get hashCode =>
@@ -46,10 +56,11 @@ class UserInfoDto {
     (username.hashCode) +
     (userId.hashCode) +
     (description == null ? 0 : description!.hashCode) +
-    (selectedBatch == null ? 0 : selectedBatch!.hashCode);
+    (selectedBatch == null ? 0 : selectedBatch!.hashCode) +
+    (bestSeason == null ? 0 : bestSeason!.hashCode);
 
   @override
-  String toString() => 'UserInfoDto[username=$username, userId=$userId, description=$description, selectedBatch=$selectedBatch]';
+  String toString() => 'UserInfoDto[username=$username, userId=$userId, description=$description, selectedBatch=$selectedBatch, bestSeason=$bestSeason]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -64,6 +75,11 @@ class UserInfoDto {
       json[r'selectedBatch'] = this.selectedBatch;
     } else {
       json[r'selectedBatch'] = null;
+    }
+    if (this.bestSeason != null) {
+      json[r'bestSeason'] = this.bestSeason;
+    } else {
+      json[r'bestSeason'] = null;
     }
     return json;
   }
@@ -91,6 +107,7 @@ class UserInfoDto {
         userId: mapValueOfType<String>(json, r'userId')!,
         description: mapValueOfType<String>(json, r'description'),
         selectedBatch: mapValueOfType<int>(json, r'selectedBatch'),
+        bestSeason: SeasonItemDto.fromJson(json[r'bestSeason']),
       );
     }
     return null;
