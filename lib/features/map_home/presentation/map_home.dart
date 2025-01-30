@@ -39,8 +39,11 @@ class _MapHomeState extends ConsumerState<MapHome>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _animateController = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this,);
-    WidgetsBinding.instance.addPostFrameCallback((_) => moveToCurrentPosition());
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => moveToCurrentPosition());
   }
 
   @override
@@ -57,64 +60,83 @@ class _MapHomeState extends ConsumerState<MapHome>
     final mapState = ref.watch(mapStatesProvider);
     final panelState = ref.watch(mapPanelStateProvider);
     ref.watch(markerWindowStateProvider);
-    return LayoutBuilder(builder: (context, constraints) => Scaffold(
-      body: SlidingUpPanel(
-            controller: _panelController,
-            color: Theme.of(context).scaffoldBackgroundColor,
-            onPanelOpened: () => ref.watch(mapPanelStateProvider.notifier).set(true),
-            onPanelClosed: () => ref.watch(mapPanelStateProvider.notifier).set(false),
-            panelSnapping: false,
-            boxShadow: const [],
-            minHeight: 20,
-            maxHeight: constraints.maxHeight * 0.7,
-            border: Border.all(color: Colors.grey),
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0),),
-            onPanelSlide: (position) => panelPosition.value = position,
-            body: Column(
-              children: [SizedBox(
-                  height: constraints.maxHeight,
-                  child:
-                  FlutterMap(
-                    mapController: _controller,
-                    options: MapOptions(
-                      onLongPress: onMapEvent,
-                      minZoom: 2,
-                      maxZoom: 18,
-                      initialZoom: 5,
-                      keepAlive: true,
-                      initialCenter: ref.watch(lastKnownLocationProvider),
-                      onPositionChanged: (position, hasGesture) => mapZoom.value = position.zoom,
-                      interactionOptions: const InteractionOptions(
-                          flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,),
+    return LayoutBuilder(
+      builder: (context, constraints) => Scaffold(
+        body: SlidingUpPanel(
+          controller: _panelController,
+          color: Theme.of(context).scaffoldBackgroundColor,
+          onPanelOpened: () => ref.watch(mapPanelStateProvider.notifier).set(true),
+          onPanelClosed: () => ref.watch(mapPanelStateProvider.notifier).set(false),
+          panelSnapping: false,
+          boxShadow: const [],
+          minHeight: 20,
+          maxHeight: constraints.maxHeight * 0.7,
+          border: Border.all(color: Colors.grey),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+          onPanelSlide: (position) => panelPosition.value = position,
+          body: Column(
+            children: [
+              SizedBox(
+                height: constraints.maxHeight,
+                child: FlutterMap(
+                  mapController: _controller,
+                  options: MapOptions(
+                    onLongPress: onMapEvent,
+                    minZoom: 2,
+                    maxZoom: 18,
+                    initialZoom: 5,
+                    keepAlive: true,
+                    initialCenter: ref.watch(lastKnownLocationProvider),
+                    onPositionChanged: (position, hasGesture) =>
+                        mapZoom.value = position.zoom,
+                    interactionOptions: const InteractionOptions(
+                      flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                     ),
-                    children: [
-                      CustomTileLayer(),
-                      PolygonLayer(polygons: ref.watch(geojsonServiceProvider).whenOrNull(data: (data) => data) ?? <Polygon>[]),
-                      CurrentLocationLayer(),
-                      MarkerClusterLayerWidget(
-                        options: MarkerClusterLayerOptions(
-                          disableClusteringAtZoom: 16,
-                          size: const Size(80, 80),
-                          markers: mapState.markers,
-                          polygonOptions: const PolygonOptions(color: Colors.transparent),
-                          onMarkerTap: onMarkerTab,
-                          builder: (context, markers) => CircleWithIndicator(color: Theme.of(context).highlightColor, number: markers.length),
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.only(bottom: 20), child: OsmCopyright()),
-                    ],
                   ),
-              ),],
-            ),
-            panel: Column(
-              children: [
-                MapPanelDraggable(panelController: _panelController),
-                if (panelState) Expanded(child: MapPanel(tabController: _tabController, setLocation: setLocation)),
-              ],
-            ),
+                  children: [
+                    CustomTileLayer(),
+                    PolygonLayer(
+                        polygons: ref
+                                .watch(geojsonServiceProvider)
+                                .whenOrNull(data: (data) => data) ??
+                            <Polygon>[],),
+                    CurrentLocationLayer(),
+                    MarkerClusterLayerWidget(
+                      options: MarkerClusterLayerOptions(
+                        disableClusteringAtZoom: 16,
+                        size: const Size(80, 80),
+                        markers: mapState.markers,
+                        polygonOptions:
+                            const PolygonOptions(color: Colors.transparent),
+                        onMarkerTap: onMarkerTab,
+                        builder: (context, markers) => CircleWithIndicator(
+                            color: Theme.of(context).highlightColor,
+                            number: markers.length,),
+                      ),
+                    ),
+                    const Padding(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: OsmCopyright(),),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          panel: Column(
+            children: [
+              MapPanelDraggable(panelController: _panelController),
+              if (panelState)
+                Expanded(
+                    child: MapPanel(
+                        tabController: _tabController,
+                        setLocation: setLocation,),),
+            ],
+          ),
         ),
-      floatingActionButton: Align(
+        floatingActionButton: Align(
           alignment: Alignment.bottomRight,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -134,15 +156,17 @@ class _MapHomeState extends ConsumerState<MapHome>
                 },
               ),
             ],
-          ),),
-    ),);
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> onMarkerTab(Marker marker) async {
     final m = marker as CustomMarkerWidget;
     ref.read(markerWindowStateProvider.notifier).openPopup(m.pinDto);
     ref.read(mapPanelStateProvider.notifier).set(true);
-    await _panelController.animatePanelToPosition(1.0, duration: const Duration(milliseconds: 200));
+    await _panelController.animatePanelToPosition(1.0, duration: const Duration(milliseconds: 200),);
     _tabController.animateTo(1, duration: const Duration(milliseconds: 200));
   }
 
@@ -156,22 +180,28 @@ class _MapHomeState extends ConsumerState<MapHome>
 
   Future<void> setLocation(LatLng location, double zoom) async {
     final latTween = Tween<double>(
-        begin: _controller.camera.center.latitude, end: location.latitude,);
+      begin: _controller.camera.center.latitude,
+      end: location.latitude,
+    );
     final lngTween = Tween<double>(
-        begin: _controller.camera.center.longitude, end: location.longitude,);
+      begin: _controller.camera.center.longitude,
+      end: location.longitude,
+    );
     final zoomTween = Tween<double>(begin: _controller.camera.zoom, end: zoom);
 
-    final Animation<double> animation =
-        CurvedAnimation(parent: _animateController, curve: Curves.fastOutSlowIn);
+    final Animation<double> animation = CurvedAnimation(
+        parent: _animateController, curve: Curves.fastOutSlowIn,);
 
     _animateController.addListener(() {
       _controller.move(
-          LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
-          zoomTween.evaluate(animation),);
+        LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
+        zoomTween.evaluate(animation),
+      );
     });
     _animateController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        ref.read(districtServiceProvider.notifier).updateLatLong(latTween.evaluate(animation), lngTween.evaluate(animation));
+        ref.read(districtServiceProvider.notifier).updateLatLong(
+            latTween.evaluate(animation), lngTween.evaluate(animation),);
       }
     });
 
@@ -179,9 +209,10 @@ class _MapHomeState extends ConsumerState<MapHome>
   }
 
   void onMapEvent(TapPosition event, LatLng pos) {
-    ref.read(districtServiceProvider.notifier).updateLatLong(pos.latitude, pos.longitude);
+    ref
+        .read(districtServiceProvider.notifier)
+        .updateLatLong(pos.latitude, pos.longitude);
   }
-
 
   @override
   bool get wantKeepAlive => true;

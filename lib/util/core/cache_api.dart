@@ -6,6 +6,7 @@ abstract class CacheApi<T> {
   Future<List<T>> getAll();
   Future<Map<String, T>> getAllAsMap();
   Future<void> deleteAll();
+  Future<void> deleteByFilter(bool Function(T) filter);
   Future<void> putMultiple(Map<String, T> items);
   Future<void> deleteOldestItems();
 }

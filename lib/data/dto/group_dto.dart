@@ -58,7 +58,7 @@ class LocalGroupDto {
     );
   }
 
-  factory LocalGroupDto.fromDto(GroupDto dto) {
+  factory LocalGroupDto.fromDto(GroupDto dto, {bool isActivated = false}) {
     return LocalGroupDto(
         groupId: dto.id,
         name:  dto.name,
@@ -68,7 +68,7 @@ class LocalGroupDto {
         groupAdmin:  dto.groupAdmin,
         link: dto.link,
         lastUpdated: dto.lastUpdated,
-        isActivated: false,
+        isActivated: isActivated,
     );
   }
 

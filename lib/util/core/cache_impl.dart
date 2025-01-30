@@ -1,5 +1,6 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/util/core/cache_api.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
@@ -67,6 +68,15 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
   Future<void> deleteAll() async {
     final box = await openBox();
     await box.clear();
+  }
+
+  @override
+  Future<void> deleteByFilter(bool Function(T) filter) async {
+    final box = await openBox();
+    final values = box.toMap();
+    values.removeWhere((_, value) => filter(value));
+    await box.clear();
+    await box.putAll(values);
   }
 
   @override

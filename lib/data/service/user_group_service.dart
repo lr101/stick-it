@@ -3,8 +3,10 @@ import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/dto/group_dto.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/repository/image_repository.dart';
+import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/no_user_group_service.dart';
+import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -74,7 +76,7 @@ class UserGroupService extends _$UserGroupService {
       // Sync with the server
       final result = await _groupsApi.updateGroup(groupId, group);
       if (result != null) {
-        final g = LocalGroupDto.fromDto(result);
+        final g = LocalGroupDto.fromDto(result, isActivated: true);
         _updateSingleGroupById(groupId, g);
         ref.read(groupProfileRepoProvider).overrideUrl(groupId, result.profileImage!, true);
         ref.read(groupProfileSmallRepoProvider).overrideUrl(groupId, result.profileImageSmall!, true);
@@ -93,6 +95,7 @@ class UserGroupService extends _$UserGroupService {
     final currentState = {...state.value!};
     currentState.removeWhere((e) => e.groupId == groupId);
     state = AsyncData(currentState);
+    await ref.read(pinRepositoryProvider).deleteByFilter((pin) => pin.group == groupId);
   }
 
   Future<String?> joinGroup(String groupId, {String? inviteUrl}) async {
@@ -104,6 +107,7 @@ class UserGroupService extends _$UserGroupService {
         ref.read(groupProfileRepoProvider).overrideUrl(groupId, result.profileImage!, true);
         ref.read(groupProfileSmallRepoProvider).overrideUrl(groupId, result.profileImageSmall!, true);
         ref.read(groupPinImageRepoProvider).overrideUrl(groupId, result.pinImage!, true);
+        ref.read(syncingServiceProvider.notifier).syncPins(groupId, null);
       } else {
         return "Failed to join group remotely";
       }
