@@ -45,6 +45,11 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
   }
 
   @override
+  Future<void> deleteByFilter(bool Function(T) filter) async {
+    _cache.removeWhere((key, value) => filter(value));
+  }
+
+  @override
   Future<void> putMultiple(Map<String, T> items) async {
     for (final entry in items.entries) {
       await put(entry.key, entry.value);

@@ -26,7 +26,7 @@ class _TopGroupPreviewState extends ConsumerState<TopGroupsPreview> {
       child: GestureDetector(
         onTap: () => Routing.to(context, const Ranking()),
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.4, // Explicitly set the width
+          width: MediaQuery.of(context).size.width * 0.4,
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           decoration: BoxDecoration(
             color: Colors.grey.withValues(alpha: 0.4),
