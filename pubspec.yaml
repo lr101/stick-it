@@ -39,7 +39,6 @@ dependencies:
   fluttertoast:
   geolocator:
   geocoding:
-  google_mobile_ads:
   http:
   image_cropper:
   image_picker:
