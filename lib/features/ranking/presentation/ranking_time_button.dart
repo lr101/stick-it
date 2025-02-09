@@ -33,7 +33,8 @@ class RankingTimeButton extends ConsumerWidget {
           padding: const EdgeInsets.all(5.0),
           child: Text(
             label,
-            style: TextStyle(color: isSelected ? c1 : c2, fontSize: 10),
+            style: TextStyle
+              (color: isSelected ? c1 : c2, fontSize: 10),
           ),
         ),
       ),

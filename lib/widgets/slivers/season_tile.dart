@@ -15,21 +15,19 @@ class SeasonTile extends StatelessWidget {
         TextSpan(
           children: [
             TextSpan(
-              text: "#${bestSeason.rank}, ",
-              style: const TextStyle(
+              text: "#${bestSeason.rank}",
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.blue,
+                color: _getColor(bestSeason.rank),
               ),
             ),
             TextSpan(
-              text: "Season ${bestSeason.season.seasonNumber}, ",
-              style: const TextStyle(fontStyle: FontStyle.italic),
+              text: " | ${_getCurrentMonth()} Season | ",
             ),
             TextSpan(
               text: "Points: ${bestSeason.points}",
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.green,
               ),
             ),
           ],
@@ -60,5 +58,27 @@ class SeasonTile extends StatelessWidget {
         },
       ),
     );
+  }
+
+
+  Color _getColor(int rankNr) {
+    switch (rankNr) {
+      case 1:
+        return Colors.yellow;
+      case 2:
+        return Colors.grey;
+      case 3:
+        return Colors.brown;
+      default:
+        return Colors.orangeAccent;
+    }
+  }
+
+
+  String _getCurrentMonth() {
+    final now = DateTime(bestSeason.season.year, bestSeason.season.month);
+    final formatter = DateFormat('MMM. yy');
+    final currentMonth = formatter.format(now);
+    return currentMonth;
   }
 }

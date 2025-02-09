@@ -36,11 +36,14 @@ class PinService extends _$PinService {
     _pinRepository = isUserGroup ? ref.watch(pinRepositoryProvider) : ref.watch(otherPinRepositoryProvider);
     final hiddenUsers = ref.watch(hiddenUserServiceProvider);
     final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
-    Set<LocalPinDto> localPins = await _pinRepository.getPinsByGroup(groupId);
-    if (!isUserGroup && localPins.isEmpty) {
-      localPins = await _fetchOtherUserGroupPins();
-    }
-    localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
+    Set<LocalPinDto> localPins = {};
+    _mutex.protect(() async {
+      localPins = await _pinRepository.getPinsByGroup(groupId);
+      if (!isUserGroup && localPins.isEmpty) {
+        localPins = await _fetchOtherUserGroupPins();
+      }
+      localPins.removeWhere((e) => hiddenUsers.contains(e.creatorId) || hiddenPosts.contains(e.id));
+    });
     return localPins;
   }
   
@@ -103,19 +106,27 @@ class PinService extends _$PinService {
     try {
       final pin = state.value!.firstWhere((e) => e.id == pinId);
       if (pin.lastSynced != null) {
-        await pinsApi.deletePin(pinId);
         await _mutex.protect(() async {
+          await pinsApi.deletePin(pinId);
           final currentState = {...state.value!};
           currentState.remove(pin);
           state = AsyncValue.data(currentState);
+          await storage.delete(pinId);
         });
-        await storage.delete(pinId);
         await userPinRepo.removePin(pinId);
       }
     } on ApiException catch (e) {
       return e.message;
     }
     return null;
+  }
+
+  Future<void> refreshRepo() async {
+    final storage = _pinRepository;
+    await _mutex.protect(() async {
+      final data = await storage.getPinsByGroup(groupId);
+      state = AsyncData(data);
+    });
   }
 
 }

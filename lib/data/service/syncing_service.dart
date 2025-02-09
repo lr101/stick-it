@@ -74,7 +74,7 @@ class SyncingService extends _$SyncingService {
       for (final pin in remotePins.items) {
         await _pinRepository.put(pin.id, PinEntity.fromDto(pin, keepAlive: true));
       }
-      ref.invalidate(pinServiceProvider(groupId));
+      await ref.read(pinServiceProvider(groupId).notifier).refreshRepo();
     } catch (e) {
       if(kDebugMode) print(e);
     }

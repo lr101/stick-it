@@ -4,6 +4,7 @@ import 'package:buff_lisa/features/feed/presentation/active_group_feed.dart';
 import 'package:buff_lisa/features/group_user_list/presentation/user_groups.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_home.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
+import 'package:buff_lisa/features/navigation/presentation/syncing_preview.dart';
 import 'package:buff_lisa/features/navigation/presentation/tab_group_preview.dart';
 import 'package:buff_lisa/features/profile/presentation/user_profile.dart';
 import 'package:buff_lisa/widgets/group_selector/presentation/group_selector.dart';
@@ -39,7 +40,7 @@ class _NavigationState extends ConsumerState<Navigation> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 0.09;
     final groupSelector = GroupSelector(height: height);
-    ref.watch(syncingServiceProvider);
+
     final state = ref.watch(navigationStateProvider);
     return  Scaffold(
         backgroundColor: state == 2 ? Colors.transparent : null,
@@ -57,12 +58,21 @@ class _NavigationState extends ConsumerState<Navigation> {
                 ),
               ],
             ),
-            if (state == 2 || state == 3)  Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                groupSelector,
-                if (state == 2) const TopGroupsPreview(),
-              ],),
+            if (state == 2 || state == 3)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  groupSelector,
+                  if (state == 2) const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TopGroupsPreview(),
+                      SyncingPreview(),
+                    ],
+                  ),
+
+                ],),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
