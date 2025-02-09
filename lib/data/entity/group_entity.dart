@@ -1,4 +1,5 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
+import 'package:buff_lisa/data/entity/season_entity.dart';
 import 'package:hive/hive.dart';
 import 'package:openapi/api.dart';
 
@@ -34,6 +35,9 @@ class GroupEntity extends CacheEntity {
   @HiveField(11)
   final String? link;
 
+  @HiveField(12)
+  final SeasonEntity? bestSeason;
+
   GroupEntity({
     required this.groupId,
     required this.name,
@@ -44,6 +48,7 @@ class GroupEntity extends CacheEntity {
     this.isActivated = false,
     this.lastUpdated,
     this.link,
+    this.bestSeason,
     super.keepAlive,
     super.hits,
     super.ttl,
@@ -59,6 +64,7 @@ class GroupEntity extends CacheEntity {
       inviteUrl: groupDto.inviteUrl,
       groupAdmin: groupDto.groupAdmin,
       lastUpdated: groupDto.lastUpdated,
+      bestSeason: groupDto.bestSeason == null ? null : SeasonEntity.fromDto(groupDto.bestSeason!),
       link: groupDto.link,
       keepAlive: keepAlive,
     );
@@ -76,6 +82,7 @@ class GroupEntity extends CacheEntity {
       lastUpdated: lastUpdated,
       isActivated: isActivated,
       link: link,
+      bestSeason: bestSeason,
       keepAlive: keepAlive ?? this.keepAlive,
       hits: hits ?? this.hits,
       ttl: ttl,

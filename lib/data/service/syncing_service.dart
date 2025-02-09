@@ -9,6 +9,7 @@ import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
@@ -32,6 +33,7 @@ class SyncingService extends _$SyncingService {
     _groupRepository = ref.watch(groupRepositoryProvider);
     _pinRepository = ref.watch(pinRepositoryProvider);
     await syncGroups();
+    await ref.read(userServiceProvider(ref.read(userIdProvider)).notifier).updateRemote();
     return true;
   }
 
@@ -72,7 +74,7 @@ class SyncingService extends _$SyncingService {
       for (final pin in remotePins.items) {
         await _pinRepository.put(pin.id, PinEntity.fromDto(pin, keepAlive: true));
       }
-      ref.invalidate(pinServiceProvider(groupId));
+      await ref.read(pinServiceProvider(groupId).notifier).refreshRepo();
     } catch (e) {
       if(kDebugMode) print(e);
     }

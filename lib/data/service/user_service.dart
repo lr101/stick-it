@@ -105,6 +105,11 @@ Future<String?> userByIdDescription(Ref ref, String userId) async {
 }
 
 @riverpod
+Future<SeasonItemDto?> userByIdBestSeason(Ref ref, String userId) async {
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e.bestSeason));
+}
+
+@riverpod
 Future<LocalUserDto> currentUser(Ref ref) async {
   final userId = ref.watch(userIdProvider);
   return await ref.watch(userServiceProvider(userId).future);

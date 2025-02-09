@@ -27,6 +27,8 @@ doc/RankingSearchDtoInner.md
 doc/RefreshTokenRequestDto.md
 doc/ReportApi.md
 doc/ReportDto.md
+doc/SeasonDto.md
+doc/SeasonItemDto.md
 doc/Status.md
 doc/TokenResponseDto.md
 doc/UpdateGroupDto.md
@@ -76,6 +78,8 @@ lib/model/pins_sync_dto.dart
 lib/model/ranking_search_dto_inner.dart
 lib/model/refresh_token_request_dto.dart
 lib/model/report_dto.dart
+lib/model/season_dto.dart
+lib/model/season_item_dto.dart
 lib/model/status.dart
 lib/model/token_response_dto.dart
 lib/model/update_group_dto.dart
@@ -89,3 +93,5 @@ lib/model/user_update_dto.dart
 lib/model/user_update_response_dto.dart
 lib/model/user_xp_dto.dart
 pubspec.yaml
+test/season_dto_test.dart
+test/season_item_dto_test.dart

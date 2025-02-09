@@ -11,6 +11,7 @@ import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dar
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -22,6 +23,7 @@ class UserGroupService extends _$UserGroupService {
   late GroupsApi _groupsApi;
   late GlobalDataDto _data;
   late MembersApi _membersApi;
+  final Mutex _mutex = Mutex();
 
   @override
   Future<Set<LocalGroupDto>> build() async {
@@ -29,30 +31,39 @@ class UserGroupService extends _$UserGroupService {
     _groupsApi = ref.watch(groupApiProvider);
     _membersApi = ref.watch(memberApiProvider);
     _data = ref.watch(globalDataServiceProvider);
-    final groups = await _groupRepository.getAll();
-    return groups.map((e) => LocalGroupDto.fromEntityData(e)).toSet();
+    return await _readRepo();
   }
 
-  void _updateSingleGroup(LocalGroupDto? currentGroup, LocalGroupDto updateGroup) {
-    final stateVal = {...state.value!};
-    stateVal.remove(currentGroup);
-    stateVal.add(updateGroup);
-    state = AsyncData(stateVal);
-    _groupRepository.put(updateGroup.groupId, updateGroup.toEntity(keepAlive: true));
+  Future<Set<LocalGroupDto>> _readRepo() async {
+    return await _mutex.protect(() async {
+      final groups = await _groupRepository.getAll();
+      return groups.map((e) => LocalGroupDto.fromEntityData(e)).toSet();
+    });
   }
 
-  void _updateSingleGroupById(String? groupId, LocalGroupDto updateGroup) {
+  Future<void> _updateSingleGroup(LocalGroupDto? currentGroup, LocalGroupDto updateGroup) async {
+    await _mutex.protect(() async {
+      final stateVal = {...state.value!};
+      stateVal.remove(currentGroup);
+      stateVal.add(updateGroup);
+      state = AsyncData(stateVal);
+      _groupRepository.put(
+          updateGroup.groupId, updateGroup.toEntity(keepAlive: true));
+    });
+  }
+
+  Future<void> _updateSingleGroupById(String? groupId, LocalGroupDto updateGroup) async {
     final currentGroup = state.value!.where((e) => e.groupId == groupId).firstOrNull;
     if (currentGroup != null) {
-      _updateSingleGroup(currentGroup, updateGroup);
+      await _updateSingleGroup(currentGroup, updateGroup);
     }
   }
 
-  void setIsActive(String groupId, bool isActive) {
+  Future<void> setIsActive(String groupId, bool isActive) async {
     final currentGroup = state.value!.where((e) => e.groupId == groupId).firstOrNull;
     if (currentGroup != null) {
       final updateGroup = currentGroup.copyWith(isActivated: isActive);
-      _updateSingleGroup(currentGroup, updateGroup);
+      await _updateSingleGroup(currentGroup, updateGroup);
     }
   }
 
@@ -61,7 +72,7 @@ class UserGroupService extends _$UserGroupService {
       final result = await _groupsApi.addGroup(group);
       if (result != null) {
         final group = LocalGroupDto.fromDto(result);
-        _updateSingleGroup(null, group);
+        await _updateSingleGroup(null, group);
         return null;
       } else {
         return "Failed to create group remotely unexpectedly";
@@ -77,7 +88,7 @@ class UserGroupService extends _$UserGroupService {
       final result = await _groupsApi.updateGroup(groupId, group);
       if (result != null) {
         final g = LocalGroupDto.fromDto(result, isActivated: true);
-        _updateSingleGroupById(groupId, g);
+        await _updateSingleGroupById(groupId, g);
         ref.read(groupProfileRepoProvider).overrideUrl(groupId, result.profileImage!, true);
         ref.read(groupProfileSmallRepoProvider).overrideUrl(groupId, result.profileImageSmall!, true);
         ref.read(groupPinImageRepoProvider).overrideUrl(groupId, result.pinImage!, true);
@@ -91,10 +102,12 @@ class UserGroupService extends _$UserGroupService {
   }
 
   Future<void> _leaveGroup(String groupId) async {
-    await _groupRepository.delete(groupId);
-    final currentState = {...state.value!};
-    currentState.removeWhere((e) => e.groupId == groupId);
-    state = AsyncData(currentState);
+    await _mutex.protect(() async {
+      await _groupRepository.delete(groupId);
+      final currentState = {...state.value!};
+      currentState.removeWhere((e) => e.groupId == groupId);
+      state = AsyncData(currentState);
+    });
     await ref.read(pinRepositoryProvider).deleteByFilter((pin) => pin.group == groupId);
   }
 
@@ -103,7 +116,7 @@ class UserGroupService extends _$UserGroupService {
       final result = await _membersApi.joinGroup(groupId, _data.userId!, inviteUrl: inviteUrl);
       if (result != null) {
         final group = LocalGroupDto.fromDto(result);
-        _updateSingleGroup(null, group);
+        await _updateSingleGroup(null, group);
         ref.read(groupProfileRepoProvider).overrideUrl(groupId, result.profileImage!, true);
         ref.read(groupProfileSmallRepoProvider).overrideUrl(groupId, result.profileImageSmall!, true);
         ref.read(groupPinImageRepoProvider).overrideUrl(groupId, result.pinImage!, true);
@@ -129,6 +142,10 @@ class UserGroupService extends _$UserGroupService {
       }
       return e.message;
     }
+  }
+
+  Future<void> refreshRepo() async {
+    state = AsyncData(await _readRepo());
   }
 }
 
