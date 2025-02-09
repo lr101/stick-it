@@ -10,6 +10,7 @@ import 'package:buff_lisa/features/settings/presentation/settings.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
+import 'package:buff_lisa/widgets/slivers/season_tile.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,78 +28,114 @@ class UserProfile extends ConsumerWidget {
     final profileImage = ref.watch(getUserProfileProvider(userId));
     return CustomAvatarScaffold(
       avatar: profileImage,
-      title: Row(children: [
-        Text(currentUser.value?.username ?? "", style: const TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(width: 10,),
-        if (currentUser.value?.selectedBatch != null) GestureDetector(
-          child: Batch(batchId: currentUser.value!.selectedBatch!, fontSize: 10,),
-          onTap: () => Routing.to(context, const AchievementsPage()),
-        ),
-      ],),
+      title: Row(
+        children: [
+          Text(currentUser.value?.username ?? "",
+              style: const TextStyle(fontWeight: FontWeight.bold),),
+          const SizedBox(
+            width: 10,
+          ),
+          if (currentUser.value?.selectedBatch != null)
+            GestureDetector(
+              child: Batch(
+                batchId: currentUser.value!.selectedBatch!,
+                fontSize: 10,
+              ),
+              onTap: () => Routing.to(context, const AchievementsPage()),
+            ),
+        ],
+      ),
       actions: [
         IconButton(
-            onPressed: () => Routing.to(context, const AchievementsPage()),
-            icon: const Icon(Icons.emoji_events),),
+          onPressed: () => Routing.to(context, const AchievementsPage()),
+          icon: const Icon(Icons.emoji_events),
+        ),
         IconButton(
-            onPressed: () => Routing.to(context, const Settings()),
-            icon: const Icon(Icons.settings),),
+          onPressed: () => Routing.to(context, const Settings()),
+          icon: const Icon(Icons.settings),
+        ),
       ],
       hasBackButton: false,
       profileQuickViewBoxes: Column(
-          children: [
-            // First Row: Two Items
-            SizedBox(height: MediaQuery.of(context).size.width * 0.15, child:
-              Row(
+        children: [
+          // First Row: Two Items
+          SizedBox(
+            height: MediaQuery.of(context).size.width * 0.15,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
                   child: ListTile(
-                    title: const Text("Sticks", maxLines: 1,),
-                    subtitle: Text(userPins.whenOrNull(data: (data) => data.length.toString()) ?? "---"),
+                    title: const Text(
+                      "Sticks",
+                      maxLines: 1,
+                    ),
+                    subtitle: Text(userPins.whenOrNull(
+                            data: (data) => data.length.toString(),) ??
+                        "---",),
                   ),
                 ),
                 Flexible(
                   child: ListTile(
-                    title: const Text("Groups", maxLines: 1,),
-                    subtitle: Text(ref.watch(numberOfGroupProvider)?.toString() ?? "---"),
+                    title: const Text(
+                      "Groups",
+                      maxLines: 1,
+                    ),
+                    subtitle: Text(
+                        ref.watch(numberOfGroupProvider)?.toString() ?? "---",),
                   ),
                 ),
               ],
-            ),),
-            SizedBox(height: MediaQuery.of(context).size.width * 0.15, child:Row(
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.width * 0.15,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-
-                UserLikeIcon(likeCount: likes.value?.likeCount, icon: Icons.favorite),
-                UserLikeIcon(likeCount: likes.value?.likeLocationCount, icon: CupertinoIcons.location_solid),
-                UserLikeIcon(likeCount: likes.value?.likePhotographyCount, icon: Icons.photo_camera),
-                UserLikeIcon(likeCount: likes.value?.likeArtCount, icon: Icons.brush),
-
+                UserLikeIcon(
+                    likeCount: likes.value?.likeCount, icon: Icons.favorite,),
+                UserLikeIcon(
+                    likeCount: likes.value?.likeLocationCount,
+                    icon: CupertinoIcons.location_solid,),
+                UserLikeIcon(
+                    likeCount: likes.value?.likePhotographyCount,
+                    icon: Icons.photo_camera,),
+                UserLikeIcon(
+                    likeCount: likes.value?.likeArtCount, icon: Icons.brush,),
               ],
-            ),),
-          ],
-        ),
+            ),
+          ),
+        ],
+      ),
       boxes: [
         if (currentUser.value?.description != null)
           SliverToBoxAdapter(
-              child: ListTile(
-                  title: const Text("Description"),
-                  subtitle: Text(
-                    currentUser.value!.description!,
-                    softWrap: true,
-                    maxLines: 10,
-                    style: const TextStyle(fontStyle: FontStyle.italic),
-                  ),),),
+            child: ListTile(
+              title: const Text("Description", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              subtitle: Text(
+                currentUser.value!.description!,
+                softWrap: true,
+                maxLines: 10,
+                style: const TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+          ),
+        if (currentUser.value?.bestSeason != null)
+          SliverToBoxAdapter(
+            child: SeasonTile(bestSeason: currentUser.value!.bestSeason!),
+          ),
       ],
       body: ImageGrid(
         pinProvider: userPinProvider(userId),
         onTab: (index) => Routing.to(
-            context,
-            UserImageFeed(
-              index: index,
-              userId: userId,
-              userPinNotifier: userPinProvider(userId),
-            ),),
+          context,
+          UserImageFeed(
+            index: index,
+            userId: userId,
+            userPinNotifier: userPinProvider(userId),
+          ),
+        ),
       ),
     );
   }

@@ -8,6 +8,7 @@ import 'package:buff_lisa/features/profile/service/user_pin_service.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
+import 'package:buff_lisa/widgets/slivers/season_tile.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class OtherUserProfile extends ConsumerWidget {
     final userPins = ref.watch(userPinProvider(userId));
     final username = ref.watch(userByIdUsernameProvider(userId));
     final description = ref.watch(userByIdDescriptionProvider(userId));
+    final bestSeason = ref.watch(userByIdBestSeasonProvider(userId));
     final selectedBatch = ref.watch(userByIdSelectedBatchProvider(userId));
     final profileImage = ref.watch(getUserProfileProvider(userId));
     final likes = ref.watch(userLikeServiceProvider(userId));
@@ -50,18 +52,22 @@ class OtherUserProfile extends ConsumerWidget {
       boxes: [
         SliverToBoxAdapter(
             child: ListTile(
-              title: const Text("Sticks"),
+              title: const Text("Sticks", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
               subtitle: Text(
                   userPins.whenOrNull(data: (data) => data.length.toString()) ??
                       "---",),
             ),),
-    if (description.value != null) SliverToBoxAdapter(
-        child: ListTile(
-        title: const Text("Description"),
-        subtitle:  Text(description.value!,
-          softWrap: true,
-          maxLines: 10,
-          style: const TextStyle(fontStyle: FontStyle.italic),),),),
+        if (description.value != null) SliverToBoxAdapter(
+            child: ListTile(
+            title: const Text("Description", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+            subtitle:  Text(description.value!,
+              softWrap: true,
+              maxLines: 10,
+              style: const TextStyle(fontStyle: FontStyle.italic),),),),
+        if (bestSeason.value != null)
+          SliverToBoxAdapter(
+            child: SeasonTile(bestSeason: bestSeason.value!),
+          ),
       ],
       body: ImageGrid(
         pinProvider: userPinProvider(userId),

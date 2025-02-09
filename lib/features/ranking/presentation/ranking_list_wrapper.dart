@@ -1,5 +1,6 @@
 import 'package:buff_lisa/features/ranking/presentation/ranking_location_selector.dart';
 import 'package:buff_lisa/features/ranking/presentation/ranking_time_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class RankingListWrapper extends StatelessWidget {
@@ -20,12 +21,12 @@ class RankingListWrapper extends StatelessWidget {
           padding: const EdgeInsets.all(5.0),
           child: Column(
             children: [
-             const Row(
+             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  RankingTimeButton(label: "weekly", index: 0),
-                  RankingLocationSelector(),
-                  RankingTimeButton(label: "all-time", index: 1),
+                  RankingTimeButton(label: "${_getCurrentMonth()}\n season", index: 0),
+                  const RankingLocationSelector(),
+                  const RankingTimeButton(label: "all-time", index: 1),
                 ],
               ),
               RankingLocationSearch(),
@@ -35,5 +36,12 @@ class RankingListWrapper extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getCurrentMonth() {
+    final now = DateTime.now();
+    final formatter = DateFormat('MMM. yy');
+    final currentMonth = formatter.format(now);
+    return currentMonth;
   }
 }

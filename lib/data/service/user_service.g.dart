@@ -421,6 +421,139 @@ class _UserByIdDescriptionProviderElement
   String get userId => (origin as UserByIdDescriptionProvider).userId;
 }
 
+String _$userByIdBestSeasonHash() =>
+    r'53a9d7bda722a4624996914e4bcf27960eed7da1';
+
+/// See also [userByIdBestSeason].
+@ProviderFor(userByIdBestSeason)
+const userByIdBestSeasonProvider = UserByIdBestSeasonFamily();
+
+/// See also [userByIdBestSeason].
+class UserByIdBestSeasonFamily extends Family<AsyncValue<SeasonItemDto?>> {
+  /// See also [userByIdBestSeason].
+  const UserByIdBestSeasonFamily();
+
+  /// See also [userByIdBestSeason].
+  UserByIdBestSeasonProvider call(
+    String userId,
+  ) {
+    return UserByIdBestSeasonProvider(
+      userId,
+    );
+  }
+
+  @override
+  UserByIdBestSeasonProvider getProviderOverride(
+    covariant UserByIdBestSeasonProvider provider,
+  ) {
+    return call(
+      provider.userId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'userByIdBestSeasonProvider';
+}
+
+/// See also [userByIdBestSeason].
+class UserByIdBestSeasonProvider
+    extends AutoDisposeFutureProvider<SeasonItemDto?> {
+  /// See also [userByIdBestSeason].
+  UserByIdBestSeasonProvider(
+    String userId,
+  ) : this._internal(
+          (ref) => userByIdBestSeason(
+            ref as UserByIdBestSeasonRef,
+            userId,
+          ),
+          from: userByIdBestSeasonProvider,
+          name: r'userByIdBestSeasonProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$userByIdBestSeasonHash,
+          dependencies: UserByIdBestSeasonFamily._dependencies,
+          allTransitiveDependencies:
+              UserByIdBestSeasonFamily._allTransitiveDependencies,
+          userId: userId,
+        );
+
+  UserByIdBestSeasonProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+  }) : super.internal();
+
+  final String userId;
+
+  @override
+  Override overrideWith(
+    FutureOr<SeasonItemDto?> Function(UserByIdBestSeasonRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UserByIdBestSeasonProvider._internal(
+        (ref) => create(ref as UserByIdBestSeasonRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<SeasonItemDto?> createElement() {
+    return _UserByIdBestSeasonProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserByIdBestSeasonProvider && other.userId == userId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UserByIdBestSeasonRef on AutoDisposeFutureProviderRef<SeasonItemDto?> {
+  /// The parameter `userId` of this provider.
+  String get userId;
+}
+
+class _UserByIdBestSeasonProviderElement
+    extends AutoDisposeFutureProviderElement<SeasonItemDto?>
+    with UserByIdBestSeasonRef {
+  _UserByIdBestSeasonProviderElement(super.provider);
+
+  @override
+  String get userId => (origin as UserByIdBestSeasonProvider).userId;
+}
+
 String _$currentUserHash() => r'927740f606c86610d797fce1ba06c27f5f781982';
 
 /// See also [currentUser].

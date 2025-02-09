@@ -10,7 +10,6 @@ project 'Runner', {
   'Release' => :release,
 }
 
-pod 'Google-Mobile-Ads-SDK'
 use_frameworks!
 
 def flutter_root

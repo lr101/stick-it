@@ -128,6 +128,8 @@ Class | Method | HTTP request | Description
  - [RankingSearchDtoInner](doc//RankingSearchDtoInner.md)
  - [RefreshTokenRequestDto](doc//RefreshTokenRequestDto.md)
  - [ReportDto](doc//ReportDto.md)
+ - [SeasonDto](doc//SeasonDto.md)
+ - [SeasonItemDto](doc//SeasonItemDto.md)
  - [Status](doc//Status.md)
  - [TokenResponseDto](doc//TokenResponseDto.md)
  - [UpdateGroupDto](doc//UpdateGroupDto.md)

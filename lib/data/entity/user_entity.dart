@@ -1,4 +1,5 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
+import 'package:buff_lisa/data/entity/season_entity.dart';
 import 'package:hive/hive.dart';
 import 'package:openapi/api.dart';
 
@@ -18,11 +19,15 @@ class UserEntity extends CacheEntity {
   @HiveField(6)
   final String? description;
 
+  @HiveField(7)
+  final SeasonEntity? bestSeason;
+
   UserEntity({
     required this.userId,
     required this.username,
     this.selectedBatch,
     this.description,
+    this.bestSeason,
     super.keepAlive,
     super.hits,
     super.ttl,
@@ -34,6 +39,7 @@ class UserEntity extends CacheEntity {
       username: user.username,
       selectedBatch: user.selectedBatch,
       description: user.description,
+      bestSeason: user.bestSeason == null ? null : SeasonEntity.fromDto(user.bestSeason!),
       keepAlive: keepAlive,
     );
   }
@@ -44,6 +50,7 @@ class UserEntity extends CacheEntity {
       username: userDto.userInfoDto!.username,
       selectedBatch: selectedBatch ?? this.selectedBatch,
       description: userDto.userInfoDto!.description ?? description,
+      bestSeason: userDto.userInfoDto!.bestSeason == null ? bestSeason : SeasonEntity.fromDto(userDto.userInfoDto!.bestSeason!),
       keepAlive: keepAlive,
       ttl: ttl,
       hits: hits,
@@ -57,6 +64,7 @@ class UserEntity extends CacheEntity {
       username: username,
       selectedBatch: selectedBatch,
       description: description,
+      bestSeason: bestSeason,
       keepAlive: keepAlive ?? this.keepAlive,
       ttl: ttl ?? this.ttl,
       hits: hits ?? this.hits,

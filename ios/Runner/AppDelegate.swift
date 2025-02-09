@@ -11,9 +11,7 @@ import google_mobile_ads
     GeneratedPluginRegistrant.register(with: self)
       //GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [ GADSimulatorID ]
       // register ad factory
-      let listTileFactory = ListTileNativeAdFactory()
-          FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
-              self, factoryId: "adFactoryExample", nativeAdFactory: listTileFactory)
+
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

@@ -157,12 +157,15 @@ class RankingApi {
   /// * [DateTime] since:
   ///   Only include pins added since this point in time. When null all pins are included
   ///
+  /// * [bool] season:
+  ///   Only include pins from this season. When null all pins are included
+  ///
   /// * [int] page:
   ///   page number
   ///
   /// * [int] size:
   ///   page size. Defaults to 20
-  Future<Response> groupRankingWithHttpInfo({ String? gid0, String? gid1, String? gid2, DateTime? since, int? page, int? size, }) async {
+  Future<Response> groupRankingWithHttpInfo({ String? gid0, String? gid1, String? gid2, DateTime? since, bool? season, int? page, int? size, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/v2/ranking/group';
 
@@ -184,6 +187,9 @@ class RankingApi {
     }
     if (since != null) {
       queryParams.addAll(_queryParams('', 'since', since));
+    }
+    if (season != null) {
+      queryParams.addAll(_queryParams('', 'season', season));
     }
     if (page != null) {
       queryParams.addAll(_queryParams('', 'page', page));
@@ -220,13 +226,16 @@ class RankingApi {
   /// * [DateTime] since:
   ///   Only include pins added since this point in time. When null all pins are included
   ///
+  /// * [bool] season:
+  ///   Only include pins from this season. When null all pins are included
+  ///
   /// * [int] page:
   ///   page number
   ///
   /// * [int] size:
   ///   page size. Defaults to 20
-  Future<List<GroupRankingDtoInner>?> groupRanking({ String? gid0, String? gid1, String? gid2, DateTime? since, int? page, int? size, }) async {
-    final response = await groupRankingWithHttpInfo( gid0: gid0, gid1: gid1, gid2: gid2, since: since, page: page, size: size, );
+  Future<List<GroupRankingDtoInner>?> groupRanking({ String? gid0, String? gid1, String? gid2, DateTime? since, bool? season, int? page, int? size, }) async {
+    final response = await groupRankingWithHttpInfo( gid0: gid0, gid1: gid1, gid2: gid2, since: since, season: season, page: page, size: size, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -335,12 +344,15 @@ class RankingApi {
   /// * [DateTime] since:
   ///   Only include pins added since this point in time. When null all pins are included
   ///
+  /// * [bool] season:
+  ///   Only include pins from this season. When null all pins are included
+  ///
   /// * [int] page:
   ///   page number
   ///
   /// * [int] size:
   ///   page size. Defaults to 20
-  Future<Response> userRankingWithHttpInfo({ String? gid0, String? gid1, String? gid2, DateTime? since, int? page, int? size, }) async {
+  Future<Response> userRankingWithHttpInfo({ String? gid0, String? gid1, String? gid2, DateTime? since, bool? season, int? page, int? size, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/v2/ranking/user';
 
@@ -362,6 +374,9 @@ class RankingApi {
     }
     if (since != null) {
       queryParams.addAll(_queryParams('', 'since', since));
+    }
+    if (season != null) {
+      queryParams.addAll(_queryParams('', 'season', season));
     }
     if (page != null) {
       queryParams.addAll(_queryParams('', 'page', page));
@@ -398,13 +413,16 @@ class RankingApi {
   /// * [DateTime] since:
   ///   Only include pins added since this point in time. When null all pins are included
   ///
+  /// * [bool] season:
+  ///   Only include pins from this season. When null all pins are included
+  ///
   /// * [int] page:
   ///   page number
   ///
   /// * [int] size:
   ///   page size. Defaults to 20
-  Future<List<UserRankingDtoInner>?> userRanking({ String? gid0, String? gid1, String? gid2, DateTime? since, int? page, int? size, }) async {
-    final response = await userRankingWithHttpInfo( gid0: gid0, gid1: gid1, gid2: gid2, since: since, page: page, size: size, );
+  Future<List<UserRankingDtoInner>?> userRanking({ String? gid0, String? gid1, String? gid2, DateTime? since, bool? season, int? page, int? size, }) async {
+    final response = await userRankingWithHttpInfo( gid0: gid0, gid1: gid1, gid2: gid2, since: since, season: season, page: page, size: size, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

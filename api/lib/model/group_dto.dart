@@ -24,6 +24,7 @@ class GroupDto {
     this.profileImage,
     this.profileImageSmall,
     this.pinImage,
+    this.bestSeason,
   });
 
   String id;
@@ -97,6 +98,14 @@ class GroupDto {
   ///
   String? pinImage;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  SeasonItemDto? bestSeason;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is GroupDto &&
     other.id == id &&
@@ -109,7 +118,8 @@ class GroupDto {
     other.lastUpdated == lastUpdated &&
     other.profileImage == profileImage &&
     other.profileImageSmall == profileImageSmall &&
-    other.pinImage == pinImage;
+    other.pinImage == pinImage &&
+    other.bestSeason == bestSeason;
 
   @override
   int get hashCode =>
@@ -124,10 +134,11 @@ class GroupDto {
     (lastUpdated == null ? 0 : lastUpdated!.hashCode) +
     (profileImage == null ? 0 : profileImage!.hashCode) +
     (profileImageSmall == null ? 0 : profileImageSmall!.hashCode) +
-    (pinImage == null ? 0 : pinImage!.hashCode);
+    (pinImage == null ? 0 : pinImage!.hashCode) +
+    (bestSeason == null ? 0 : bestSeason!.hashCode);
 
   @override
-  String toString() => 'GroupDto[id=$id, description=$description, inviteUrl=$inviteUrl, name=$name, visibility=$visibility, groupAdmin=$groupAdmin, link=$link, lastUpdated=$lastUpdated, profileImage=$profileImage, profileImageSmall=$profileImageSmall, pinImage=$pinImage]';
+  String toString() => 'GroupDto[id=$id, description=$description, inviteUrl=$inviteUrl, name=$name, visibility=$visibility, groupAdmin=$groupAdmin, link=$link, lastUpdated=$lastUpdated, profileImage=$profileImage, profileImageSmall=$profileImageSmall, pinImage=$pinImage, bestSeason=$bestSeason]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -174,6 +185,11 @@ class GroupDto {
     } else {
       json[r'pinImage'] = null;
     }
+    if (this.bestSeason != null) {
+      json[r'bestSeason'] = this.bestSeason;
+    } else {
+      json[r'bestSeason'] = null;
+    }
     return json;
   }
 
@@ -207,6 +223,7 @@ class GroupDto {
         profileImage: mapValueOfType<String>(json, r'profileImage'),
         profileImageSmall: mapValueOfType<String>(json, r'profileImageSmall'),
         pinImage: mapValueOfType<String>(json, r'pinImage'),
+        bestSeason: SeasonItemDto.fromJson(json[r'bestSeason']),
       );
     }
     return null;

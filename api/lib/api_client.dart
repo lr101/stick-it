@@ -214,6 +214,10 @@ class ApiClient {
           return RefreshTokenRequestDto.fromJson(value);
         case 'ReportDto':
           return ReportDto.fromJson(value);
+        case 'SeasonDto':
+          return SeasonDto.fromJson(value);
+        case 'SeasonItemDto':
+          return SeasonItemDto.fromJson(value);
         case 'Status':
           return Status.fromJson(value);
         case 'TokenResponseDto':
