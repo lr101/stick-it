@@ -1,6 +1,5 @@
 import UIKit
 import Flutter
-import google_mobile_ads
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
