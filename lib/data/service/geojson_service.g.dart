@@ -22,7 +22,7 @@ final geojsonServiceProvider =
 );
 
 typedef _$GeojsonService = AsyncNotifier<List<Polygon>>;
-String _$districtServiceHash() => r'179010bf6a5e64bede9336957cf082024f686281';
+String _$districtServiceHash() => r'678bc9955ea9e95fa76abdefac0b3e6de02761be';
 
 /// See also [DistrictService].
 @ProviderFor(DistrictService)
