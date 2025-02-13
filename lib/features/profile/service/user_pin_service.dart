@@ -55,6 +55,7 @@ class UserPinService extends _$UserPinService {
   }
 
   Future<void> removePin(String pinId) async {
+    if (state.value == null) return;
     final pins = state.value!.where((e) => e.id != pinId).toList();
     state = AsyncData(pins);
     final pinEntities = pins.map((e) => e.toEntityCompanion()).toList();

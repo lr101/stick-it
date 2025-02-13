@@ -17,7 +17,7 @@ class ImageEntityAdapter extends TypeAdapter<ImageEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ImageEntity(
-      blob1: fields[3] as Uint8List?,
+      filePath: fields[3] as String,
       keepAlive: fields[2] as bool,
       hits: fields[1] as int,
       ttl: fields[0] as DateTime?,
@@ -29,7 +29,7 @@ class ImageEntityAdapter extends TypeAdapter<ImageEntity> {
     writer
       ..writeByte(4)
       ..writeByte(3)
-      ..write(obj.blob1)
+      ..write(obj.filePath)
       ..writeByte(0)
       ..write(obj.ttl)
       ..writeByte(1)
