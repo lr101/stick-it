@@ -9,9 +9,16 @@ class SyncingPreview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final syncing = ref.watch(syncingServiceProvider);
-    return syncing.value == true
-        ? const SizedBox.shrink()
-        : Padding(
+    return syncing
+        .when(
+          data: (_) =>  const SizedBox.shrink(), 
+          error: (_,__) => _content(false), 
+          loading: () => _content(true),
+    );
+  }
+  
+  Widget _content(bool loading) {
+    return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
         decoration: BoxDecoration(
@@ -19,10 +26,11 @@ class SyncingPreview extends ConsumerWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
         padding: const EdgeInsets.all(10),
-        child: syncing.when(
-          data: (data) => const SizedBox.shrink(),
-          error: (_, __) => const Text("Error"),
-          loading: () => const LoadingTextAnimation(),
+        child: loading ? const LoadingTextAnimation() : Text("Offline", style: TextStyle(
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.bold,
+          color: Colors.blueGrey.shade600,
+        ),
         ),
       ),
     );

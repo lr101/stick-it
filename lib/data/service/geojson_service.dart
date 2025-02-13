@@ -51,9 +51,16 @@ class DistrictService extends _$DistrictService {
       _lat = latitude;
       _long = longitude;
       final rankingApi = ref.watch(rankingApiProvider);
-      final mapInfo = await rankingApi.getMapInfo(latitude: latitude, longitude: longitude);
-      if (mapInfo != null && mapInfo.isNotEmpty && state?.gid2 != mapInfo.first.gid2) {
-        state = mapInfo.first;
+      try {
+        final mapInfo = await rankingApi.getMapInfo(
+            latitude: latitude, longitude: longitude,);
+        if (mapInfo != null && mapInfo.isNotEmpty &&
+            state?.gid2 != mapInfo.first.gid2) {
+          state = mapInfo.first;
+        }
+      } catch(e) {
+        debugPrint(e.toString());
+        state = null;
       }
     }
     
