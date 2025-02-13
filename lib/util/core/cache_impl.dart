@@ -91,9 +91,14 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
     if (ttlDuration != null) {
       final values = box!.toMap();
       final ttlTime = DateTime.now().subtract(ttlDuration!);
-      values.removeWhere((a, b) => b.ttl.isBefore(ttlTime));
-      await box!.clear();
-      await box!.putAll(values);
+
+      for (final entry in values.entries) {
+        final key = entry.key;
+        final val = entry.value;
+        if (val.ttl.isBefore(ttlTime)) {
+          await delete(key as String);
+        }
+      }
     }
   }
 
