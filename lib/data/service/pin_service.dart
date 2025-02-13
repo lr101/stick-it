@@ -37,7 +37,7 @@ class PinService extends _$PinService {
     final hiddenUsers = ref.watch(hiddenUserServiceProvider);
     final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
     Set<LocalPinDto> localPins = {};
-    _mutex.protect(() async {
+    await _mutex.protect(() async {
       localPins = await _pinRepository.getPinsByGroup(groupId);
       if (!isUserGroup && localPins.isEmpty) {
         localPins = await _fetchOtherUserGroupPins();
