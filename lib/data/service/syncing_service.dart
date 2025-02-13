@@ -83,9 +83,9 @@ class SyncingService extends _$SyncingService {
   Future<void> syncOfflinePins() async {
     final offlinePin = (await _pinRepository.getAll()).where((e) => e.lastSynced == null);
     for (final pin in offlinePin) {
-      final image = await ref.read(pinImageRepositoryProvider).get(pin.pinId);
+      final image = await ref.read(pinImageRepositoryProvider).offlineImage(pin.pinId);
       try {
-        final newPin = await _pinsApi.createPin(pin.toRequestDto(image!.blob1!));
+        final newPin = await _pinsApi.createPin(pin.toRequestDto(image!));
         await _pinRepository.put(newPin!.id, PinEntity.fromDto(newPin, keepAlive: true));
       } on ApiException catch(e) {
         if (e.code == 409) {

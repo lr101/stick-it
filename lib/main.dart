@@ -16,6 +16,7 @@ import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
+import 'package:buff_lisa/util/core/cache_migrator.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
@@ -48,6 +49,8 @@ Future<void> main() async {
   Hive.registerAdapter(PinLikeEntityAdapter());
   Hive.registerAdapter(UserPinsEntityAdapter());
   Hive.registerAdapter(SeasonEntityAdapter());
+  final migrator = CacheMigrator(prefs: sharedPreferences, latestVersion: 1);
+  await migrator.migrate();
   const bool isProduction = bool.fromEnvironment('dart.vm.product');
   if (isProduction) {
     await dotenv.load();
