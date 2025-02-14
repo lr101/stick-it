@@ -70,8 +70,8 @@ dependencies:
   url_launcher:
   uuid:
   webview_flutter:
-  hive: any
-  hive_flutter: any
+  hive_ce: any
+  hive_ce_flutter: any
   shared_preferences:
 
 dev_dependencies:
@@ -82,7 +82,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed:
-  hive_generator: any
+  hive_ce_generator: any
   lint: ^2.3.0
   meta:
   test:

@@ -18,16 +18,16 @@ class PinEntityAdapter extends TypeAdapter<PinEntity> {
     };
     return PinEntity(
       pinId: fields[3] as String,
-      latitude: fields[4] as double,
-      longitude: fields[5] as double,
+      latitude: (fields[4] as num).toDouble(),
+      longitude: (fields[5] as num).toDouble(),
       creationDate: fields[6] as DateTime,
       description: fields[7] as String?,
       creator: fields[8] as String,
       group: fields[9] as String,
-      isHidden: fields[10] as bool,
+      isHidden: fields[10] == null ? false : fields[10] as bool,
       lastSynced: fields[11] as DateTime?,
-      keepAlive: fields[2] as bool,
-      hits: fields[1] as int,
+      keepAlive: fields[2] == null ? false : fields[2] as bool,
+      hits: fields[1] == null ? 1 : (fields[1] as num).toInt(),
       ttl: fields[0] as DateTime?,
     );
   }
@@ -36,6 +36,12 @@ class PinEntityAdapter extends TypeAdapter<PinEntity> {
   void write(BinaryWriter writer, PinEntity obj) {
     writer
       ..writeByte(12)
+      ..writeByte(0)
+      ..write(obj.ttl)
+      ..writeByte(1)
+      ..write(obj.hits)
+      ..writeByte(2)
+      ..write(obj.keepAlive)
       ..writeByte(3)
       ..write(obj.pinId)
       ..writeByte(4)
@@ -53,13 +59,7 @@ class PinEntityAdapter extends TypeAdapter<PinEntity> {
       ..writeByte(10)
       ..write(obj.isHidden)
       ..writeByte(11)
-      ..write(obj.lastSynced)
-      ..writeByte(0)
-      ..write(obj.ttl)
-      ..writeByte(1)
-      ..write(obj.hits)
-      ..writeByte(2)
-      ..write(obj.keepAlive);
+      ..write(obj.lastSynced);
   }
 
   @override

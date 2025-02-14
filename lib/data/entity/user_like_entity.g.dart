@@ -17,11 +17,11 @@ class UserLikeEntityAdapter extends TypeAdapter<UserLikeEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserLikeEntity(
-      likeCount: fields[3] as int,
-      likePhotographyCount: fields[4] as int,
-      likeLocationCount: fields[5] as int,
-      likeArtCount: fields[6] as int,
-      hits: fields[1] as int,
+      likeCount: (fields[3] as num).toInt(),
+      likePhotographyCount: (fields[4] as num).toInt(),
+      likeLocationCount: (fields[5] as num).toInt(),
+      likeArtCount: (fields[6] as num).toInt(),
+      hits: fields[1] == null ? 1 : (fields[1] as num).toInt(),
       ttl: fields[0] as DateTime?,
     );
   }
@@ -29,7 +29,11 @@ class UserLikeEntityAdapter extends TypeAdapter<UserLikeEntity> {
   @override
   void write(BinaryWriter writer, UserLikeEntity obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(6)
+      ..writeByte(0)
+      ..write(obj.ttl)
+      ..writeByte(1)
+      ..write(obj.hits)
       ..writeByte(3)
       ..write(obj.likeCount)
       ..writeByte(4)
@@ -37,13 +41,7 @@ class UserLikeEntityAdapter extends TypeAdapter<UserLikeEntity> {
       ..writeByte(5)
       ..write(obj.likeLocationCount)
       ..writeByte(6)
-      ..write(obj.likeArtCount)
-      ..writeByte(0)
-      ..write(obj.ttl)
-      ..writeByte(1)
-      ..write(obj.hits)
-      ..writeByte(2)
-      ..write(obj.keepAlive);
+      ..write(obj.likeArtCount);
   }
 
   @override

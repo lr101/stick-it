@@ -19,11 +19,11 @@ class SeasonEntityAdapter extends TypeAdapter<SeasonEntity> {
     return SeasonEntity(
       id: fields[0] as String,
       seasonId: fields[1] as String,
-      month: fields[2] as int,
-      year: fields[3] as int,
-      seasonNumber: fields[4] as int,
-      rank: fields[5] as int,
-      points: fields[6] as int,
+      month: (fields[2] as num).toInt(),
+      year: (fields[3] as num).toInt(),
+      seasonNumber: (fields[4] as num).toInt(),
+      rank: (fields[5] as num).toInt(),
+      points: (fields[6] as num).toInt(),
     );
   }
 

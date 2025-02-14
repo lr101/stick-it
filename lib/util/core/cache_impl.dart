@@ -1,7 +1,8 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/util/core/cache_api.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter/foundation.dart';
+import 'package:hive_ce/hive.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
   final String boxName;

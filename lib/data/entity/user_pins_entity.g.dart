@@ -18,8 +18,8 @@ class UserPinsEntityAdapter extends TypeAdapter<UserPinsEntity> {
     };
     return UserPinsEntity(
       pins: (fields[3] as List).cast<PinEntity>(),
-      keepAlive: fields[2] as bool,
-      hits: fields[1] as int,
+      keepAlive: fields[2] == null ? false : fields[2] as bool,
+      hits: fields[1] == null ? 1 : (fields[1] as num).toInt(),
       ttl: fields[0] as DateTime?,
     );
   }
@@ -28,14 +28,14 @@ class UserPinsEntityAdapter extends TypeAdapter<UserPinsEntity> {
   void write(BinaryWriter writer, UserPinsEntity obj) {
     writer
       ..writeByte(4)
-      ..writeByte(3)
-      ..write(obj.pins)
       ..writeByte(0)
       ..write(obj.ttl)
       ..writeByte(1)
       ..write(obj.hits)
       ..writeByte(2)
-      ..write(obj.keepAlive);
+      ..write(obj.keepAlive)
+      ..writeByte(3)
+      ..write(obj.pins);
   }
 
   @override

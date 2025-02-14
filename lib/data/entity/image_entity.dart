@@ -1,5 +1,5 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 
 part 'image_entity.g.dart';
 

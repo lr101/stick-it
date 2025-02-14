@@ -174,7 +174,7 @@ final numberOfGroupProvider = AutoDisposeProvider<int?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef NumberOfGroupRef = AutoDisposeProviderRef<int?>;
-String _$userPinServiceHash() => r'6d79285f8eb8e6422af5d966aa73b003a734e714';
+String _$userPinServiceHash() => r'2548b902d1b6bc4f11ba284a6e50fe7171d42c0d';
 
 abstract class _$UserPinService
     extends BuildlessAutoDisposeAsyncNotifier<List<LocalPinDto>> {
