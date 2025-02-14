@@ -126,9 +126,9 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
           if (result != null) {
             CustomErrorSnackBar.message(message: result);
           } else {
-            CustomErrorSnackBar.message(
-                message: "Successfully synced to server",);
+            CustomErrorSnackBar.message(message: "Successfully synced to server",);
           }
+          Posthog().screen(screenName: "uploadPin", properties: {"result": result != null, "error": result?.toString() ?? ""});
         }),);
     if (ref.read(appReviewStateProvider)) {
       ref.read(appReviewStateProvider.notifier).updateLastReviewDate();
