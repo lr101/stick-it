@@ -1,7 +1,7 @@
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 
 part 'user_pins_entity.g.dart';
 

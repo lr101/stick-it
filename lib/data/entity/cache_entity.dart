@@ -1,5 +1,5 @@
 
-import 'package:hive/hive.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 
 abstract class CacheEntity {
 

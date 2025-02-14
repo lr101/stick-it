@@ -19,11 +19,11 @@ class UserEntityAdapter extends TypeAdapter<UserEntity> {
     return UserEntity(
       userId: fields[3] as String,
       username: fields[4] as String,
-      selectedBatch: fields[5] as int?,
+      selectedBatch: (fields[5] as num?)?.toInt(),
       description: fields[6] as String?,
       bestSeason: fields[7] as SeasonEntity?,
-      keepAlive: fields[2] as bool,
-      hits: fields[1] as int,
+      keepAlive: fields[2] == null ? false : fields[2] as bool,
+      hits: fields[1] == null ? 1 : (fields[1] as num).toInt(),
       ttl: fields[0] as DateTime?,
     );
   }
@@ -32,6 +32,12 @@ class UserEntityAdapter extends TypeAdapter<UserEntity> {
   void write(BinaryWriter writer, UserEntity obj) {
     writer
       ..writeByte(8)
+      ..writeByte(0)
+      ..write(obj.ttl)
+      ..writeByte(1)
+      ..write(obj.hits)
+      ..writeByte(2)
+      ..write(obj.keepAlive)
       ..writeByte(3)
       ..write(obj.userId)
       ..writeByte(4)
@@ -41,13 +47,7 @@ class UserEntityAdapter extends TypeAdapter<UserEntity> {
       ..writeByte(6)
       ..write(obj.description)
       ..writeByte(7)
-      ..write(obj.bestSeason)
-      ..writeByte(0)
-      ..write(obj.ttl)
-      ..writeByte(1)
-      ..write(obj.hits)
-      ..writeByte(2)
-      ..write(obj.keepAlive);
+      ..write(obj.bestSeason);
   }
 
   @override

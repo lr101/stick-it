@@ -61,6 +61,7 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
     return PagedListView<int, LocalPinDto>(
       pagingController: widget.pagingController,
       addAutomaticKeepAlives: false,
+      physics: const BouncingScrollPhysics(),
       scrollController: scrollController,
       builderDelegate: PagedChildBuilderDelegate<LocalPinDto>(
         animateTransitions: true,

@@ -19,16 +19,16 @@ class GroupEntityAdapter extends TypeAdapter<GroupEntity> {
     return GroupEntity(
       groupId: fields[3] as String,
       name: fields[4] as String,
-      visibility: fields[5] as int,
+      visibility: (fields[5] as num).toInt(),
       inviteUrl: fields[6] as String?,
       groupAdmin: fields[7] as String?,
       description: fields[8] as String?,
-      isActivated: fields[9] as bool,
+      isActivated: fields[9] == null ? false : fields[9] as bool,
       lastUpdated: fields[10] as DateTime?,
       link: fields[11] as String?,
       bestSeason: fields[12] as SeasonEntity?,
-      keepAlive: fields[2] as bool,
-      hits: fields[1] as int,
+      keepAlive: fields[2] == null ? false : fields[2] as bool,
+      hits: fields[1] == null ? 1 : (fields[1] as num).toInt(),
       ttl: fields[0] as DateTime?,
     );
   }
@@ -37,6 +37,12 @@ class GroupEntityAdapter extends TypeAdapter<GroupEntity> {
   void write(BinaryWriter writer, GroupEntity obj) {
     writer
       ..writeByte(13)
+      ..writeByte(0)
+      ..write(obj.ttl)
+      ..writeByte(1)
+      ..write(obj.hits)
+      ..writeByte(2)
+      ..write(obj.keepAlive)
       ..writeByte(3)
       ..write(obj.groupId)
       ..writeByte(4)
@@ -56,13 +62,7 @@ class GroupEntityAdapter extends TypeAdapter<GroupEntity> {
       ..writeByte(11)
       ..write(obj.link)
       ..writeByte(12)
-      ..write(obj.bestSeason)
-      ..writeByte(0)
-      ..write(obj.ttl)
-      ..writeByte(1)
-      ..write(obj.hits)
-      ..writeByte(2)
-      ..write(obj.keepAlive);
+      ..write(obj.bestSeason);
   }
 
   @override

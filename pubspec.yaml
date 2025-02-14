@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.12+64
+version: 3.0.13+64
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -35,10 +35,10 @@ dependencies:
   flutter_native_splash:
   flutter_riverpod: ^2.6.1
   flutter_secure_storage:
-  freezed_annotation: ^2.4.4
   fluttertoast:
-  geolocator:
+  freezed_annotation: ^2.4.4
   geocoding:
+  geolocator:
   http:
   image_cropper:
   image_picker:
@@ -46,15 +46,16 @@ dependencies:
   infinite_scroll_pagination:
   json_annotation: ^4.0.0
   json_serializable: ^6.8.0
-  like_button: ^2.0.5
   latlong2:
+  like_button: ^2.0.5
   mutex:
   native_exif:
   openapi:
     path: ./api
-  permission_handler:
   path:
   path_provider:
+  permission_handler:
+  posthog_flutter: ^4.0.1
   riverpod_annotation: ^2.6.1
   riverpod_generator: ^2.3.3
   riverpod_lint: ^2.2.13
@@ -62,15 +63,15 @@ dependencies:
   settings_ui: ^2.0.2
   shimmer: ^3.0.0
   sliding_up_panel:
-  social_media_buttons: ^1.0.0
   snapping_page_scroll:
+  social_media_buttons: ^1.0.0
   string_validator:
   transparent_image: ^2.0.1
   url_launcher:
   uuid:
   webview_flutter:
-  hive: any
-  hive_flutter: any
+  hive_ce: any
+  hive_ce_flutter: any
   shared_preferences:
 
 dev_dependencies:
@@ -81,7 +82,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed:
-  hive_generator: any
+  hive_ce_generator: any
   lint: ^2.3.0
   meta:
   test:
