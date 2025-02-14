@@ -66,7 +66,15 @@ class PinEntity extends CacheEntity {
   }
 
   PinRequestDto toRequestDto(Uint8List image) {
-    return PinRequestDto(image: base64Encode(image), latitude: latitude, longitude: longitude, userId: creator, groupId: group);
+    return PinRequestDto(
+      image: base64Encode(image),
+      latitude: latitude,
+      longitude: longitude,
+      userId: creator,
+      groupId: group,
+      creationDate: creationDate,
+      description: description,
+    );
   }
 
   @override

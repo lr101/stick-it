@@ -40,6 +40,12 @@
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
         <string>Stick-It needs access to your location, to show the users current location live on the map</string>
 		<key>SKAdNetworkItems</key>
+        <key>com.posthog.posthog.API_KEY</key>
+        <string>phc_wmF4Gx8NYxp05BUpvQzlCDLsDqAZVgUcKqD1mkZNPxW</string>
+        <key>com.posthog.posthog.POSTHOG_HOST</key>
+        <string>https://eu.i.posthog.com</string>
+        <key>com.posthog.posthog.CAPTURE_APPLICATION_LIFECYCLE_EVENTS</key>
+        <true/>
 		<array>
 			<dict>
 				<key>SKAdNetworkIdentifier</key>

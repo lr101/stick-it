@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -19,6 +20,7 @@ class LoginService {
   /// Navigates to the NavBar Widget when authentication was successful
   void handleLoginComplete(BuildContext context) {
     ref.invalidate(syncingServiceProvider);
+    Posthog().screen(screenName: "loginComplete");
     Routing.toAndDelete(context, const Navigation(), "/home");
   }
 
@@ -28,6 +30,7 @@ class LoginService {
     try {
       return await ref.read(authServiceProvider.notifier).login(data.name, data.password);
     } catch (e) {
+      await Posthog().screen(screenName: "signInFailed", properties: {"error": e.toString()});
       return "cannot connect to server";
     }
   }
@@ -47,6 +50,7 @@ class LoginService {
                 data.additionalSignupData!["email"]!,);
       }
     } catch (e) {
+      await Posthog().screen(screenName: "signupFailed", properties: {"error": e.toString()});
       return "cannot connect to server";
     }
   }
@@ -55,10 +59,12 @@ class LoginService {
   /// Returns null on a successful call to the server or an error message on errors
   Future<String?> recoverPassword(String name) {
     try {
+      Posthog().screen(screenName: "recoverPassword");
       return ref.read(authServiceProvider.notifier).recover(name).then((value) {
         return value ? null : 'User does not have an email address';
       });
     } catch (e) {
+      Posthog().screen(screenName: "recoverPasswordFailed", properties: {"error": e.toString()});
       return Future<String>.value("cannot connect to server");
     }
 

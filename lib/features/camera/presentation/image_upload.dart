@@ -16,6 +16,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
+import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:uuid/uuid.dart';
 
