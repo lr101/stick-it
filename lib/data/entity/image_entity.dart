@@ -1,11 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:buff_lisa/data/entity/cache_entity.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 
-part 'image_entity.g.dart'; // This will be generated
+part 'image_entity.g.dart';
 
-@HiveType(typeId: 2) // Unique type ID for this entity
+@HiveType(typeId: 2)
 class ImageEntity extends CacheEntity {
   @HiveField(3)
   final String filePath;

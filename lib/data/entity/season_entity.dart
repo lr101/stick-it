@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:openapi/api.dart';
 
 part 'season_entity.g.dart';

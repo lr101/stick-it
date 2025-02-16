@@ -26,9 +26,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// THIS IS THE START OF THE PROGRAMM
@@ -77,6 +78,8 @@ Future<void> main() async {
   final globalUserData = await GlobalDataRepository.getUser(sharedPreferences, storage);
   final defaultGroupImage =  (await rootBundle.load('assets/image/pin_border.png')).buffer.asUint8List();
   final defaultErrorImage =  (await rootBundle.load('assets/image/profile_blank.jpg')).buffer.asUint8List();
+
+  Posthog().screen(screenName: "main");
 
   runApp(
     ProviderScope(

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:openapi/api.dart';
 
 part 'pin_entity.g.dart'; // This will be generated
@@ -66,7 +66,15 @@ class PinEntity extends CacheEntity {
   }
 
   PinRequestDto toRequestDto(Uint8List image) {
-    return PinRequestDto(image: base64Encode(image), latitude: latitude, longitude: longitude, userId: creator, groupId: group);
+    return PinRequestDto(
+      image: base64Encode(image),
+      latitude: latitude,
+      longitude: longitude,
+      userId: creator,
+      groupId: group,
+      creationDate: creationDate,
+      description: description,
+    );
   }
 
   @override

@@ -18,9 +18,9 @@ class MemberEntityAdapter extends TypeAdapter<MemberEntity> {
     };
     return MemberEntity(
       userId: fields[0] as String,
-      points: fields[1] as int,
+      points: (fields[1] as num).toInt(),
       username: fields[2] as String,
-      selectedBatch: fields[3] as int?,
+      selectedBatch: (fields[3] as num?)?.toInt(),
     );
   }
 
@@ -61,8 +61,8 @@ class MembersEntityAdapter extends TypeAdapter<MembersEntity> {
     };
     return MembersEntity(
       members: (fields[3] as List).cast<MemberEntity>(),
-      keepAlive: fields[2] as bool,
-      hits: fields[1] as int,
+      keepAlive: fields[2] == null ? false : fields[2] as bool,
+      hits: fields[1] == null ? 1 : (fields[1] as num).toInt(),
       ttl: fields[0] as DateTime?,
     );
   }
@@ -71,14 +71,14 @@ class MembersEntityAdapter extends TypeAdapter<MembersEntity> {
   void write(BinaryWriter writer, MembersEntity obj) {
     writer
       ..writeByte(4)
-      ..writeByte(3)
-      ..write(obj.members)
       ..writeByte(0)
       ..write(obj.ttl)
       ..writeByte(1)
       ..write(obj.hits)
       ..writeByte(2)
-      ..write(obj.keepAlive);
+      ..write(obj.keepAlive)
+      ..writeByte(3)
+      ..write(obj.members);
   }
 
   @override

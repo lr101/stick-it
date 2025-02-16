@@ -17,15 +17,15 @@ class PinLikeEntityAdapter extends TypeAdapter<PinLikeEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PinLikeEntity(
-      likeCount: fields[3] as int,
-      likePhotographyCount: fields[4] as int,
-      likeLocationCount: fields[5] as int,
-      likeArtCount: fields[6] as int,
+      likeCount: (fields[3] as num).toInt(),
+      likePhotographyCount: (fields[4] as num).toInt(),
+      likeLocationCount: (fields[5] as num).toInt(),
+      likeArtCount: (fields[6] as num).toInt(),
       hasLikeArt: fields[10] as bool,
       hasLike: fields[7] as bool,
       hasLikeLocation: fields[9] as bool,
       hasLikePhotography: fields[8] as bool,
-      hits: fields[1] as int,
+      hits: fields[1] == null ? 1 : (fields[1] as num).toInt(),
       ttl: fields[0] as DateTime?,
     );
   }
@@ -33,7 +33,11 @@ class PinLikeEntityAdapter extends TypeAdapter<PinLikeEntity> {
   @override
   void write(BinaryWriter writer, PinLikeEntity obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(10)
+      ..writeByte(0)
+      ..write(obj.ttl)
+      ..writeByte(1)
+      ..write(obj.hits)
       ..writeByte(3)
       ..write(obj.likeCount)
       ..writeByte(4)
@@ -49,13 +53,7 @@ class PinLikeEntityAdapter extends TypeAdapter<PinLikeEntity> {
       ..writeByte(9)
       ..write(obj.hasLikeLocation)
       ..writeByte(10)
-      ..write(obj.hasLikeArt)
-      ..writeByte(0)
-      ..write(obj.ttl)
-      ..writeByte(1)
-      ..write(obj.hits)
-      ..writeByte(2)
-      ..write(obj.keepAlive);
+      ..write(obj.hasLikeArt);
   }
 
   @override

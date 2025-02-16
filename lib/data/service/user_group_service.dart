@@ -47,8 +47,7 @@ class UserGroupService extends _$UserGroupService {
       stateVal.remove(currentGroup);
       stateVal.add(updateGroup);
       state = AsyncData(stateVal);
-      _groupRepository.put(
-          updateGroup.groupId, updateGroup.toEntity(keepAlive: true));
+      _groupRepository.put(updateGroup.groupId, updateGroup.toEntity(keepAlive: true),);
     });
   }
 

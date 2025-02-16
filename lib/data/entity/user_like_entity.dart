@@ -1,6 +1,6 @@
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:openapi/api.dart';
 
 part 'user_like_entity.g.dart';
