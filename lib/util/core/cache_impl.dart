@@ -73,10 +73,13 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
   @override
   Future<void> deleteByFilter(bool Function(T) filter) async {
     final box = await openBox();
-    final values = box.toMap();
-    values.removeWhere((_, value) => filter(value));
-    await box.clear();
-    await box.putAll(values);
+    final values = box.keys.toList();
+    for (final key in values) {
+      final value = box.get(key);
+      if (value != null && filter(value)) {
+        await box.delete(key);
+      }
+    }
   }
 
   @override
@@ -96,7 +99,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
       for (final entry in values.entries) {
         final key = entry.key;
         final val = entry.value;
-        if (val.ttl.isBefore(ttlTime)) {
+        if (val.keepAlive == false && val.ttl.isBefore(ttlTime)) {
           await delete(key as String);
         }
       }
