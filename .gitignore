@@ -57,10 +57,10 @@ app.*.map.json
 /change_identifier.sh
 /web/
 /windows/
-/.env2
+/.env.dev
 /dotenv.env
 
-pubspec.lock
+
 /ios/.symlinks/plugins/
 /ios/Pods/
 /macos/

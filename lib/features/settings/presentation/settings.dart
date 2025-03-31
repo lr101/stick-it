@@ -6,6 +6,7 @@ import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/repository/user_pins_repository.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
@@ -245,6 +246,7 @@ class _SettingsState extends ConsumerState<Settings> {
     await ref.read(userLikeRepositoryProvider).deleteAll();
     await ref.read(userRepositoryProvider).deleteAll();
     await ref.read(userPinsRepositoryProvider).deleteAll();
+    ref.invalidate(memberServiceProvider);
     final mgmt = const FMTCStore('tileStore').manage;
     await mgmt.reset();
     final sharedPreferences = ref.watch(sharedPreferencesProvider);
