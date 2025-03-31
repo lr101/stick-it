@@ -16,10 +16,13 @@ import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
+import 'package:buff_lisa/firebase_options.dart';
 import 'package:buff_lisa/util/core/cache_migrator.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -78,6 +81,12 @@ Future<void> main() async {
   final globalUserData = await GlobalDataRepository.getUser(sharedPreferences, storage);
   final defaultGroupImage =  (await rootBundle.load('assets/image/pin_border.png')).buffer.asUint8List();
   final defaultErrorImage =  (await rootBundle.load('assets/image/profile_blank.jpg')).buffer.asUint8List();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  await FirebaseMessaging.instance.subscribeToTopic("info");
 
   Posthog().screen(screenName: "main");
 

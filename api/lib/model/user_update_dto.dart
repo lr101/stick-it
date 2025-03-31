@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -19,6 +19,7 @@ class UserUpdateDto {
     this.username,
     this.description,
     this.selectedBatch,
+    this.messagingToken,
   });
 
   ///
@@ -63,6 +64,14 @@ class UserUpdateDto {
 
   int? selectedBatch;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? messagingToken;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is UserUpdateDto &&
     other.email == email &&
@@ -70,7 +79,8 @@ class UserUpdateDto {
     other.image == image &&
     other.username == username &&
     other.description == description &&
-    other.selectedBatch == selectedBatch;
+    other.selectedBatch == selectedBatch &&
+    other.messagingToken == messagingToken;
 
   @override
   int get hashCode =>
@@ -80,10 +90,11 @@ class UserUpdateDto {
     (image == null ? 0 : image!.hashCode) +
     (username == null ? 0 : username!.hashCode) +
     (description == null ? 0 : description!.hashCode) +
-    (selectedBatch == null ? 0 : selectedBatch!.hashCode);
+    (selectedBatch == null ? 0 : selectedBatch!.hashCode) +
+    (messagingToken == null ? 0 : messagingToken!.hashCode);
 
   @override
-  String toString() => 'UserUpdateDto[email=$email, password=$password, image=$image, username=$username, description=$description, selectedBatch=$selectedBatch]';
+  String toString() => 'UserUpdateDto[email=$email, password=$password, image=$image, username=$username, description=$description, selectedBatch=$selectedBatch, messagingToken=$messagingToken]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -117,6 +128,11 @@ class UserUpdateDto {
     } else {
       json[r'selectedBatch'] = null;
     }
+    if (this.messagingToken != null) {
+      json[r'messagingToken'] = this.messagingToken;
+    } else {
+      json[r'messagingToken'] = null;
+    }
     return json;
   }
 
@@ -145,6 +161,7 @@ class UserUpdateDto {
         username: mapValueOfType<String>(json, r'username'),
         description: mapValueOfType<String>(json, r'description'),
         selectedBatch: mapValueOfType<int>(json, r'selectedBatch'),
+        messagingToken: mapValueOfType<String>(json, r'messagingToken'),
       );
     }
     return null;
