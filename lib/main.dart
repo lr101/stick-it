@@ -86,7 +86,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  await FirebaseMessaging.instance.subscribeToTopic("info");
 
   Posthog().screen(screenName: "main");
 

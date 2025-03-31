@@ -16,6 +16,7 @@ class InitService extends _$InitService {
       final userId = ref.watch(userIdProvider);
       final userApi = ref.watch(userApiProvider);
       try {
+        await FirebaseMessaging.instance.subscribeToTopic("info");
         final fcmToken = await FirebaseMessaging.instance.getToken();
         await userApi.updateUser(
             userId, UserUpdateDto(messagingToken: fcmToken));
