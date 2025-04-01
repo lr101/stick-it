@@ -3,14 +3,15 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.13+64
+version: 3.0.14+64
+
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   cached_network_image: ^3.4.1
-  camera: 0.10.6
+  camera:
   choice: ^2.3.2
   collection:
   connectivity_plus: ^6.1.2
@@ -43,7 +44,7 @@ dependencies:
   image_cropper:
   image_picker:
   in_app_review:
-  infinite_scroll_pagination:
+  infinite_scroll_pagination: ^4.1.0
   json_annotation: ^4.0.0
   json_serializable: ^6.8.0
   latlong2:
@@ -73,6 +74,8 @@ dependencies:
   hive_ce: any
   hive_ce_flutter: any
   shared_preferences:
+  firebase_messaging: ^15.2.5
+  firebase_core: ^3.13.0
 
 dev_dependencies:
   build_runner:

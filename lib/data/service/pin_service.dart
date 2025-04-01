@@ -99,7 +99,6 @@ class PinService extends _$PinService {
 
   Future<String?> deletePinFromGroup(String pinId) async {
     final pinsApi = ref.read(pinApiProvider);
-    final storage = _pinRepository as CacheApi<PinEntity>;
     final userId = ref.read(userIdProvider);
     final userPinRepo = ref.read(userPinServiceProvider(userId).notifier);
     try {
@@ -110,7 +109,7 @@ class PinService extends _$PinService {
           final currentState = {...state.value!};
           currentState.remove(pin);
           state = AsyncValue.data(currentState);
-          await storage.delete(pinId);
+          await _removePinFromUserService(pin);
         });
         await userPinRepo.removePin(pinId);
       }
@@ -118,6 +117,15 @@ class PinService extends _$PinService {
       return e.message;
     }
     return null;
+  }
+
+  Future<void> _removePinFromUserService(LocalPinDto pin) async {
+    if (ref.exists(userPinServiceProvider(pin.creatorId))) {
+      ref.read(userPinServiceProvider(pin.creatorId).notifier).removePin(pin.id);
+    } else {
+      final storage = _pinRepository as CacheApi<PinEntity>;
+      storage.delete(pin.id);
+    }
   }
 
   Future<void> refreshRepo() async {

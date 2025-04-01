@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "306208739055",
+    "project_id": "stick-it-map",
+    "storage_bucket": "stick-it-map.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306208739055:android:d10c31ae05e6581246551a",
+        "android_client_info": {
+          "package_name": "com.TheGermanApps.buff_lisa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyWcHEXvCBAfyznJZ_3ITj6lCjUWSVZr8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

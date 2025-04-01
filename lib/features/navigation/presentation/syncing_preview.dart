@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:buff_lisa/data/service/init_service.dart';
 import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +10,7 @@ class SyncingPreview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final syncing = ref.watch(syncingServiceProvider);
+    final init = ref.watch(initServiceProvider);
     return syncing
         .when(
           data: (_) =>  const SizedBox.shrink(), 

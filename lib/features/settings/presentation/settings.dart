@@ -6,10 +6,12 @@ import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/repository/user_pins_repository.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
+import 'package:buff_lisa/features/settings/presentation/state/notification_state.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_email.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_password.dart';
 import 'package:buff_lisa/features/settings/presentation/sub_widgets/change_profile.dart';
@@ -41,6 +43,7 @@ class Settings extends ConsumerStatefulWidget {
 class _SettingsState extends ConsumerState<Settings> {
   @override
   Widget build(BuildContext context) {
+    final notificationState = ref.watch(notificationStateProvider);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Settings", style: TextStyle(fontWeight: FontWeight.bold)),
@@ -61,6 +64,11 @@ class _SettingsState extends ConsumerState<Settings> {
                    leading: const Icon(Icons.dark_mode),
                    title: const Text('Toggle theme'),
                  ),
+                SettingsTile.switchTile(
+                    initialValue: notificationState.value ?? false,
+                    onToggle: (bool value) => ref.watch(notificationStateProvider.notifier).updatePermission(value),
+                    title: const Text('All Notifications'),
+                    description: const Text("Revoke or grant access to all notifications.")),
                 SettingsTile(
                     title: const Text("Delete cache"),
                     leading: const Icon(Icons.cached),
@@ -245,6 +253,7 @@ class _SettingsState extends ConsumerState<Settings> {
     await ref.read(userLikeRepositoryProvider).deleteAll();
     await ref.read(userRepositoryProvider).deleteAll();
     await ref.read(userPinsRepositoryProvider).deleteAll();
+    ref.invalidate(memberServiceProvider);
     final mgmt = const FMTCStore('tileStore').manage;
     await mgmt.reset();
     final sharedPreferences = ref.watch(sharedPreferencesProvider);

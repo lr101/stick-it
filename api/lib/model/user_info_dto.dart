@@ -1,7 +1,7 @@
 //
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
-// @dart=2.12
+// @dart=2.18
 
 // ignore_for_file: unused_element, unused_import
 // ignore_for_file: always_put_required_named_parameters_first
@@ -18,6 +18,7 @@ class UserInfoDto {
     this.description,
     this.selectedBatch,
     this.bestSeason,
+    this.isMessagingRegistered,
   });
 
   String username;
@@ -42,13 +43,17 @@ class UserInfoDto {
   ///
   SeasonItemDto? bestSeason;
 
+  /// Flag for whether the user registered to receive push messages. Only set for the current user.
+  bool? isMessagingRegistered;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is UserInfoDto &&
     other.username == username &&
     other.userId == userId &&
     other.description == description &&
     other.selectedBatch == selectedBatch &&
-    other.bestSeason == bestSeason;
+    other.bestSeason == bestSeason &&
+    other.isMessagingRegistered == isMessagingRegistered;
 
   @override
   int get hashCode =>
@@ -57,10 +62,11 @@ class UserInfoDto {
     (userId.hashCode) +
     (description == null ? 0 : description!.hashCode) +
     (selectedBatch == null ? 0 : selectedBatch!.hashCode) +
-    (bestSeason == null ? 0 : bestSeason!.hashCode);
+    (bestSeason == null ? 0 : bestSeason!.hashCode) +
+    (isMessagingRegistered == null ? 0 : isMessagingRegistered!.hashCode);
 
   @override
-  String toString() => 'UserInfoDto[username=$username, userId=$userId, description=$description, selectedBatch=$selectedBatch, bestSeason=$bestSeason]';
+  String toString() => 'UserInfoDto[username=$username, userId=$userId, description=$description, selectedBatch=$selectedBatch, bestSeason=$bestSeason, isMessagingRegistered=$isMessagingRegistered]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -80,6 +86,11 @@ class UserInfoDto {
       json[r'bestSeason'] = this.bestSeason;
     } else {
       json[r'bestSeason'] = null;
+    }
+    if (this.isMessagingRegistered != null) {
+      json[r'isMessagingRegistered'] = this.isMessagingRegistered;
+    } else {
+      json[r'isMessagingRegistered'] = null;
     }
     return json;
   }
@@ -108,6 +119,7 @@ class UserInfoDto {
         description: mapValueOfType<String>(json, r'description'),
         selectedBatch: mapValueOfType<int>(json, r'selectedBatch'),
         bestSeason: SeasonItemDto.fromJson(json[r'bestSeason']),
+        isMessagingRegistered: mapValueOfType<bool>(json, r'isMessagingRegistered'),
       );
     }
     return null;
