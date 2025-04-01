@@ -6,12 +6,16 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
    <application
         android:label="Stick-It"
         android:name="${applicationName}"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher">
+       <meta-data
+               android:name="com.google.firebase.messaging.default_notification_icon"
+               android:resource="@mipmap/ic_stat_favicon" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
