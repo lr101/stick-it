@@ -1,3 +1,6 @@
+import 'package:buff_lisa/data/repository/global_data_repository.dart';
+import 'package:buff_lisa/data/service/init_service.dart';
+import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,13 +18,14 @@ class NotificationState extends _$NotificationState {
 
   Future<void> updatePermission(bool isGranted) async {
     if (isGranted) {
-      final result = await FirebaseMessaging.instance.requestPermission();
-      if (result.authorizationStatus == AuthorizationStatus.authorized) {
-        state = const AsyncData(true);
-      }
+      await ref.watch(initServiceProvider.notifier).requestPermission();
+      state = const AsyncData(true);
     } else {
-      CustomErrorSnackBar.message(message: "Please disable notifications via the device settings");
+      await ref.watch(initServiceProvider.notifier).revokePermission();
+      state = const AsyncData(false);
     }
   }
+
+
 
 }
