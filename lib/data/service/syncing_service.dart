@@ -81,19 +81,19 @@ class SyncingService extends _$SyncingService {
   }
 
   Future<void> syncOfflinePins() async {
-    final offlinePin = (await _pinRepository.getAll()).where((e) => e.lastSynced == null);
-    for (final pin in offlinePin) {
+    final offlinePins = (await _pinRepository.getAll()).where((e) => e.lastSynced == null);
+    for (final pin in offlinePins) {
       final image = await ref.read(pinImageRepositoryProvider).offlineImage(pin.pinId);
       try {
         final newPin = await _pinsApi.createPin(pin.toRequestDto(image!));
         await _pinRepository.put(newPin!.id, PinEntity.fromDto(newPin, keepAlive: true));
+        await _pinRepository.delete(pin.pinId);
       } on ApiException catch(e) {
         if (e.code == 409) {
           await _pinRepository.delete(pin.pinId);
         }
       } catch (e) {
         if (kDebugMode) print(e);
-        await _pinRepository.delete(pin.pinId);
       }
     }
   }
