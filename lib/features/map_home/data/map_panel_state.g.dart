@@ -6,21 +6,58 @@ part of 'map_panel_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(MapPanelState)
+const mapPanelStateProvider = MapPanelStateProvider._();
+
+final class MapPanelStateProvider
+    extends $NotifierProvider<MapPanelState, bool> {
+  const MapPanelStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'mapPanelStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$mapPanelStateHash();
+
+  @$internal
+  @override
+  MapPanelState create() => MapPanelState();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
 String _$mapPanelStateHash() => r'd2d9ae3943f5158a973e4abe611a4c16969e6984';
 
-/// See also [MapPanelState].
-@ProviderFor(MapPanelState)
-final mapPanelStateProvider =
-    AutoDisposeNotifierProvider<MapPanelState, bool>.internal(
-  MapPanelState.new,
-  name: r'mapPanelStateProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$mapPanelStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$MapPanelState = AutoDisposeNotifier<bool>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$MapPanelState extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

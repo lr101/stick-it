@@ -8,7 +8,7 @@ part of 'pin_entity.dart';
 
 class PinEntityAdapter extends TypeAdapter<PinEntity> {
   @override
-  final int typeId = 5;
+  final typeId = 5;
 
   @override
   PinEntity read(BinaryReader reader) {

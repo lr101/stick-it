@@ -6,381 +6,354 @@ part of 'pin_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$activatedPinsHash() => r'9573209725906800de2b5007857da8873c02f5b6';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [activatedPins].
-@ProviderFor(activatedPins)
-final activatedPinsProvider =
-    AutoDisposeFutureProvider<Set<LocalPinDto>>.internal(
-  activatedPins,
-  name: r'activatedPinsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$activatedPinsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(PinService)
+const pinServiceProvider = PinServiceFamily._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ActivatedPinsRef = AutoDisposeFutureProviderRef<Set<LocalPinDto>>;
-String _$activatedPinsWithoutLoadingHash() =>
-    r'963dd78336b37523f60edb3a6781a0fca960ef4a';
-
-/// See also [activatedPinsWithoutLoading].
-@ProviderFor(activatedPinsWithoutLoading)
-final activatedPinsWithoutLoadingProvider =
-    AutoDisposeProvider<Set<LocalPinDto>>.internal(
-  activatedPinsWithoutLoading,
-  name: r'activatedPinsWithoutLoadingProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$activatedPinsWithoutLoadingHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ActivatedPinsWithoutLoadingRef
-    = AutoDisposeProviderRef<Set<LocalPinDto>>;
-String _$sortedActivatedPinsHash() =>
-    r'b7ae537c50ec211ab28a4700ca28060c8891fc88';
-
-/// See also [sortedActivatedPins].
-@ProviderFor(sortedActivatedPins)
-final sortedActivatedPinsProvider =
-    AutoDisposeFutureProvider<List<LocalPinDto>>.internal(
-  sortedActivatedPins,
-  name: r'sortedActivatedPinsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$sortedActivatedPinsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SortedActivatedPinsRef
-    = AutoDisposeFutureProviderRef<List<LocalPinDto>>;
-String _$sortedGroupPinsHash() => r'23dbccfee5ac1e9dd3c262c0bcb63e500539867a';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [sortedGroupPins].
-@ProviderFor(sortedGroupPins)
-const sortedGroupPinsProvider = SortedGroupPinsFamily();
-
-/// See also [sortedGroupPins].
-class SortedGroupPinsFamily extends Family<AsyncValue<List<LocalPinDto>?>> {
-  /// See also [sortedGroupPins].
-  const SortedGroupPinsFamily();
-
-  /// See also [sortedGroupPins].
-  SortedGroupPinsProvider call(
-    String groupId,
-  ) {
-    return SortedGroupPinsProvider(
-      groupId,
-    );
-  }
+final class PinServiceProvider
+    extends $AsyncNotifierProvider<PinService, Set<LocalPinDto>> {
+  const PinServiceProvider._({
+    required PinServiceFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'pinServiceProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
-  SortedGroupPinsProvider getProviderOverride(
-    covariant SortedGroupPinsProvider provider,
-  ) {
-    return call(
-      provider.groupId,
-    );
+  String debugGetCreateSourceHash() => _$pinServiceHash();
+
+  @override
+  String toString() {
+    return r'pinServiceProvider'
+        ''
+        '($argument)';
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
+  @$internal
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'sortedGroupPinsProvider';
-}
-
-/// See also [sortedGroupPins].
-class SortedGroupPinsProvider
-    extends AutoDisposeFutureProvider<List<LocalPinDto>?> {
-  /// See also [sortedGroupPins].
-  SortedGroupPinsProvider(
-    String groupId,
-  ) : this._internal(
-          (ref) => sortedGroupPins(
-            ref as SortedGroupPinsRef,
-            groupId,
-          ),
-          from: sortedGroupPinsProvider,
-          name: r'sortedGroupPinsProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$sortedGroupPinsHash,
-          dependencies: SortedGroupPinsFamily._dependencies,
-          allTransitiveDependencies:
-              SortedGroupPinsFamily._allTransitiveDependencies,
-          groupId: groupId,
-        );
-
-  SortedGroupPinsProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.groupId,
-  }) : super.internal();
-
-  final String groupId;
-
-  @override
-  Override overrideWith(
-    FutureOr<List<LocalPinDto>?> Function(SortedGroupPinsRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: SortedGroupPinsProvider._internal(
-        (ref) => create(ref as SortedGroupPinsRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        groupId: groupId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<List<LocalPinDto>?> createElement() {
-    return _SortedGroupPinsProviderElement(this);
-  }
+  PinService create() => PinService();
 
   @override
   bool operator ==(Object other) {
-    return other is SortedGroupPinsProvider && other.groupId == groupId;
+    return other is PinServiceProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, groupId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin SortedGroupPinsRef on AutoDisposeFutureProviderRef<List<LocalPinDto>?> {
-  /// The parameter `groupId` of this provider.
-  String get groupId;
-}
+String _$pinServiceHash() => r'82a2e2e70f9304be6d57c81ed7723e84d2d0a840';
 
-class _SortedGroupPinsProviderElement
-    extends AutoDisposeFutureProviderElement<List<LocalPinDto>?>
-    with SortedGroupPinsRef {
-  _SortedGroupPinsProviderElement(super.provider);
+final class PinServiceFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          PinService,
+          AsyncValue<Set<LocalPinDto>>,
+          Set<LocalPinDto>,
+          FutureOr<Set<LocalPinDto>>,
+          String
+        > {
+  const PinServiceFamily._()
+    : super(
+        retry: null,
+        name: r'pinServiceProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  PinServiceProvider call(String groupId) =>
+      PinServiceProvider._(argument: groupId, from: this);
 
   @override
-  String get groupId => (origin as SortedGroupPinsProvider).groupId;
+  String toString() => r'pinServiceProvider';
+}
+
+abstract class _$PinService extends $AsyncNotifier<Set<LocalPinDto>> {
+  late final _$args = ref.$arg as String;
+  String get groupId => _$args;
+
+  FutureOr<Set<LocalPinDto>> build(String groupId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref =
+        this.ref as $Ref<AsyncValue<Set<LocalPinDto>>, Set<LocalPinDto>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<Set<LocalPinDto>>, Set<LocalPinDto>>,
+              AsyncValue<Set<LocalPinDto>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+@ProviderFor(activatedPins)
+const activatedPinsProvider = ActivatedPinsProvider._();
+
+final class ActivatedPinsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Set<LocalPinDto>>,
+          Set<LocalPinDto>,
+          FutureOr<Set<LocalPinDto>>
+        >
+    with $FutureModifier<Set<LocalPinDto>>, $FutureProvider<Set<LocalPinDto>> {
+  const ActivatedPinsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'activatedPinsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$activatedPinsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<Set<LocalPinDto>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Set<LocalPinDto>> create(Ref ref) {
+    return activatedPins(ref);
+  }
+}
+
+String _$activatedPinsHash() => r'9573209725906800de2b5007857da8873c02f5b6';
+
+@ProviderFor(activatedPinsWithoutLoading)
+const activatedPinsWithoutLoadingProvider =
+    ActivatedPinsWithoutLoadingProvider._();
+
+final class ActivatedPinsWithoutLoadingProvider
+    extends
+        $FunctionalProvider<
+          Set<LocalPinDto>,
+          Set<LocalPinDto>,
+          Set<LocalPinDto>
+        >
+    with $Provider<Set<LocalPinDto>> {
+  const ActivatedPinsWithoutLoadingProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'activatedPinsWithoutLoadingProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$activatedPinsWithoutLoadingHash();
+
+  @$internal
+  @override
+  $ProviderElement<Set<LocalPinDto>> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Set<LocalPinDto> create(Ref ref) {
+    return activatedPinsWithoutLoading(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Set<LocalPinDto> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Set<LocalPinDto>>(value),
+    );
+  }
+}
+
+String _$activatedPinsWithoutLoadingHash() =>
+    r'963dd78336b37523f60edb3a6781a0fca960ef4a';
+
+@ProviderFor(sortedActivatedPins)
+const sortedActivatedPinsProvider = SortedActivatedPinsProvider._();
+
+final class SortedActivatedPinsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<LocalPinDto>>,
+          List<LocalPinDto>,
+          FutureOr<List<LocalPinDto>>
+        >
+    with
+        $FutureModifier<List<LocalPinDto>>,
+        $FutureProvider<List<LocalPinDto>> {
+  const SortedActivatedPinsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'sortedActivatedPinsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$sortedActivatedPinsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<LocalPinDto>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<LocalPinDto>> create(Ref ref) {
+    return sortedActivatedPins(ref);
+  }
+}
+
+String _$sortedActivatedPinsHash() =>
+    r'b7ae537c50ec211ab28a4700ca28060c8891fc88';
+
+@ProviderFor(sortedGroupPins)
+const sortedGroupPinsProvider = SortedGroupPinsFamily._();
+
+final class SortedGroupPinsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<LocalPinDto>?>,
+          List<LocalPinDto>?,
+          FutureOr<List<LocalPinDto>?>
+        >
+    with
+        $FutureModifier<List<LocalPinDto>?>,
+        $FutureProvider<List<LocalPinDto>?> {
+  const SortedGroupPinsProvider._({
+    required SortedGroupPinsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'sortedGroupPinsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$sortedGroupPinsHash();
+
+  @override
+  String toString() {
+    return r'sortedGroupPinsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<LocalPinDto>?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<LocalPinDto>?> create(Ref ref) {
+    final argument = this.argument as String;
+    return sortedGroupPins(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SortedGroupPinsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$sortedGroupPinsHash() => r'23dbccfee5ac1e9dd3c262c0bcb63e500539867a';
+
+final class SortedGroupPinsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<LocalPinDto>?>, String> {
+  const SortedGroupPinsFamily._()
+    : super(
+        retry: null,
+        name: r'sortedGroupPinsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  SortedGroupPinsProvider call(String groupId) =>
+      SortedGroupPinsProvider._(argument: groupId, from: this);
+
+  @override
+  String toString() => r'sortedGroupPinsProvider';
+}
+
+@ProviderFor(pinsSortedByDistance)
+const pinsSortedByDistanceProvider = PinsSortedByDistanceProvider._();
+
+final class PinsSortedByDistanceProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<MapEntry<LocalPinDto, double>>>,
+          AsyncValue<List<MapEntry<LocalPinDto, double>>>,
+          AsyncValue<List<MapEntry<LocalPinDto, double>>>
+        >
+    with $Provider<AsyncValue<List<MapEntry<LocalPinDto, double>>>> {
+  const PinsSortedByDistanceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pinsSortedByDistanceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pinsSortedByDistanceHash();
+
+  @$internal
+  @override
+  $ProviderElement<AsyncValue<List<MapEntry<LocalPinDto, double>>>>
+  $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+
+  @override
+  AsyncValue<List<MapEntry<LocalPinDto, double>>> create(Ref ref) {
+    return pinsSortedByDistance(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(
+    AsyncValue<List<MapEntry<LocalPinDto, double>>> value,
+  ) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride:
+          $SyncValueProvider<AsyncValue<List<MapEntry<LocalPinDto, double>>>>(
+            value,
+          ),
+    );
+  }
 }
 
 String _$pinsSortedByDistanceHash() =>
     r'bc056691a0787e10359700bd7ac8645c4a89e2ef';
-
-/// See also [pinsSortedByDistance].
-@ProviderFor(pinsSortedByDistance)
-final pinsSortedByDistanceProvider = AutoDisposeProvider<
-    AsyncValue<List<MapEntry<LocalPinDto, double>>>>.internal(
-  pinsSortedByDistance,
-  name: r'pinsSortedByDistanceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$pinsSortedByDistanceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef PinsSortedByDistanceRef
-    = AutoDisposeProviderRef<AsyncValue<List<MapEntry<LocalPinDto, double>>>>;
-String _$pinServiceHash() => r'82a2e2e70f9304be6d57c81ed7723e84d2d0a840';
-
-abstract class _$PinService
-    extends BuildlessAutoDisposeAsyncNotifier<Set<LocalPinDto>> {
-  late final String groupId;
-
-  FutureOr<Set<LocalPinDto>> build(
-    String groupId,
-  );
-}
-
-/// See also [PinService].
-@ProviderFor(PinService)
-const pinServiceProvider = PinServiceFamily();
-
-/// See also [PinService].
-class PinServiceFamily extends Family<AsyncValue<Set<LocalPinDto>>> {
-  /// See also [PinService].
-  const PinServiceFamily();
-
-  /// See also [PinService].
-  PinServiceProvider call(
-    String groupId,
-  ) {
-    return PinServiceProvider(
-      groupId,
-    );
-  }
-
-  @override
-  PinServiceProvider getProviderOverride(
-    covariant PinServiceProvider provider,
-  ) {
-    return call(
-      provider.groupId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'pinServiceProvider';
-}
-
-/// See also [PinService].
-class PinServiceProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<PinService, Set<LocalPinDto>> {
-  /// See also [PinService].
-  PinServiceProvider(
-    String groupId,
-  ) : this._internal(
-          () => PinService()..groupId = groupId,
-          from: pinServiceProvider,
-          name: r'pinServiceProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$pinServiceHash,
-          dependencies: PinServiceFamily._dependencies,
-          allTransitiveDependencies:
-              PinServiceFamily._allTransitiveDependencies,
-          groupId: groupId,
-        );
-
-  PinServiceProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.groupId,
-  }) : super.internal();
-
-  final String groupId;
-
-  @override
-  FutureOr<Set<LocalPinDto>> runNotifierBuild(
-    covariant PinService notifier,
-  ) {
-    return notifier.build(
-      groupId,
-    );
-  }
-
-  @override
-  Override overrideWith(PinService Function() create) {
-    return ProviderOverride(
-      origin: this,
-      override: PinServiceProvider._internal(
-        () => create()..groupId = groupId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        groupId: groupId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeAsyncNotifierProviderElement<PinService, Set<LocalPinDto>>
-      createElement() {
-    return _PinServiceProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is PinServiceProvider && other.groupId == groupId;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, groupId.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin PinServiceRef on AutoDisposeAsyncNotifierProviderRef<Set<LocalPinDto>> {
-  /// The parameter `groupId` of this provider.
-  String get groupId;
-}
-
-class _PinServiceProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<PinService,
-        Set<LocalPinDto>> with PinServiceRef {
-  _PinServiceProviderElement(super.provider);
-
-  @override
-  String get groupId => (origin as PinServiceProvider).groupId;
-}
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

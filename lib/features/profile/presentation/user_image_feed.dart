@@ -3,6 +3,7 @@ import 'package:buff_lisa/widgets/custom_feed/presentation/custom_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class UserImageFeed extends ConsumerWidget {
 
@@ -10,7 +11,7 @@ class UserImageFeed extends ConsumerWidget {
 
   final int index;
   final String userId;
-  final AutoDisposeFutureProvider<List<LocalPinDto>> userPinNotifier;
+  final ProviderListenable<AsyncValue<List<LocalPinDto>>> userPinNotifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

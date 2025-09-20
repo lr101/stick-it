@@ -8,7 +8,7 @@ part of 'user_like_entity.dart';
 
 class UserLikeEntityAdapter extends TypeAdapter<UserLikeEntity> {
   @override
-  final int typeId = 7;
+  final typeId = 7;
 
   @override
   UserLikeEntity read(BinaryReader reader) {

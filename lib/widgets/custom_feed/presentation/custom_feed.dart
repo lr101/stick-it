@@ -7,11 +7,12 @@ import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class CustomFeed extends ConsumerStatefulWidget {
   const CustomFeed({super.key, required this.pinProvider, this.index, required this.pagingController});
 
-    final AutoDisposeFutureProvider<List<LocalPinDto>?> pinProvider;
+  final ProviderListenable<AsyncValue<List<LocalPinDto>?>> pinProvider;
   final PagingController<int, LocalPinDto> pagingController;
   final int? index;
 
@@ -35,7 +36,7 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
     widget.pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(widget.pinProvider).whenData((data) => _pins = data ?? []);
       if (widget.index != null) {
         double maxWidth = MediaQuery.of(context).size.width;

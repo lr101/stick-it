@@ -6,40 +6,94 @@ part of 'user_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(userRepository)
+const userRepositoryProvider = UserRepositoryProvider._();
+
+final class UserRepositoryProvider
+    extends $FunctionalProvider<UserRepository, UserRepository, UserRepository>
+    with $Provider<UserRepository> {
+  const UserRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<UserRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  UserRepository create(Ref ref) {
+    return userRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserRepository>(value),
+    );
+  }
+}
+
 String _$userRepositoryHash() => r'6f33c0662d4bd5e514fd4f4f99ff0bcb31cd094d';
 
-/// See also [userRepository].
-@ProviderFor(userRepository)
-final userRepositoryProvider = Provider<UserRepository>.internal(
-  userRepository,
-  name: r'userRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$userRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(userLikeRepository)
+const userLikeRepositoryProvider = UserLikeRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserRepositoryRef = ProviderRef<UserRepository>;
+final class UserLikeRepositoryProvider
+    extends
+        $FunctionalProvider<
+          UserLikeRepository,
+          UserLikeRepository,
+          UserLikeRepository
+        >
+    with $Provider<UserLikeRepository> {
+  const UserLikeRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userLikeRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userLikeRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<UserLikeRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UserLikeRepository create(Ref ref) {
+    return userLikeRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserLikeRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserLikeRepository>(value),
+    );
+  }
+}
+
 String _$userLikeRepositoryHash() =>
     r'aa5331a3d8ca02c10b25d92a92e421f9ff8ae956';
-
-/// See also [userLikeRepository].
-@ProviderFor(userLikeRepository)
-final userLikeRepositoryProvider = Provider<UserLikeRepository>.internal(
-  userLikeRepository,
-  name: r'userLikeRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$userLikeRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserLikeRepositoryRef = ProviderRef<UserLikeRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

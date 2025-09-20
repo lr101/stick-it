@@ -10,6 +10,7 @@ import 'package:like_button/src/utils/like_button_model.dart';
 import 'package:like_button/src/utils/like_button_typedef.dart';
 // ignore: implementation_imports
 import 'package:like_button/src/utils/like_button_util.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 
 class LikeButtonAnimated extends ConsumerStatefulWidget {

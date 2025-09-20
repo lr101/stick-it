@@ -6,21 +6,58 @@ part of 'group_edit_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(GroupEditService)
+const groupEditServiceProvider = GroupEditServiceProvider._();
+
+final class GroupEditServiceProvider
+    extends $NotifierProvider<GroupEditService, String> {
+  const GroupEditServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'groupEditServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$groupEditServiceHash();
+
+  @$internal
+  @override
+  GroupEditService create() => GroupEditService();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String>(value),
+    );
+  }
+}
+
 String _$groupEditServiceHash() => r'ecc44e6add72623f6a839ba9b50b6c6a50fec9ba';
 
-/// See also [GroupEditService].
-@ProviderFor(GroupEditService)
-final groupEditServiceProvider =
-    AutoDisposeNotifierProvider<GroupEditService, String>.internal(
-  GroupEditService.new,
-  name: r'groupEditServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$groupEditServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$GroupEditService = AutoDisposeNotifier<String>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$GroupEditService extends $Notifier<String> {
+  String build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<String, String>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<String, String>,
+              String,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

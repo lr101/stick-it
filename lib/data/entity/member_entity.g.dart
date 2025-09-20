@@ -8,7 +8,7 @@ part of 'member_entity.dart';
 
 class MemberEntityAdapter extends TypeAdapter<MemberEntity> {
   @override
-  final int typeId = 3;
+  final typeId = 3;
 
   @override
   MemberEntity read(BinaryReader reader) {
@@ -51,7 +51,7 @@ class MemberEntityAdapter extends TypeAdapter<MemberEntity> {
 
 class MembersEntityAdapter extends TypeAdapter<MembersEntity> {
   @override
-  final int typeId = 4;
+  final typeId = 4;
 
   @override
   MembersEntity read(BinaryReader reader) {

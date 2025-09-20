@@ -6,57 +6,141 @@ part of 'pin_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(pinRepository)
+const pinRepositoryProvider = PinRepositoryProvider._();
+
+final class PinRepositoryProvider
+    extends $FunctionalProvider<PinRepository, PinRepository, PinRepository>
+    with $Provider<PinRepository> {
+  const PinRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pinRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pinRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<PinRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  PinRepository create(Ref ref) {
+    return pinRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PinRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PinRepository>(value),
+    );
+  }
+}
+
 String _$pinRepositoryHash() => r'e9c71e7ad4bb7fd09e023aa9cba6cf667c79a130';
 
-/// See also [pinRepository].
-@ProviderFor(pinRepository)
-final pinRepositoryProvider = Provider<PinRepository>.internal(
-  pinRepository,
-  name: r'pinRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$pinRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(otherPinRepository)
+const otherPinRepositoryProvider = OtherPinRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef PinRepositoryRef = ProviderRef<PinRepository>;
+final class OtherPinRepositoryProvider
+    extends
+        $FunctionalProvider<
+          OtherPinRepository,
+          OtherPinRepository,
+          OtherPinRepository
+        >
+    with $Provider<OtherPinRepository> {
+  const OtherPinRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'otherPinRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$otherPinRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<OtherPinRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  OtherPinRepository create(Ref ref) {
+    return otherPinRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(OtherPinRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<OtherPinRepository>(value),
+    );
+  }
+}
+
 String _$otherPinRepositoryHash() =>
     r'909a627aa32009f2ca3f9bdee01de11a17b537fa';
 
-/// See also [otherPinRepository].
-@ProviderFor(otherPinRepository)
-final otherPinRepositoryProvider = Provider<OtherPinRepository>.internal(
-  otherPinRepository,
-  name: r'otherPinRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$otherPinRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef OtherPinRepositoryRef = ProviderRef<OtherPinRepository>;
-String _$pinLikeRepositoryHash() => r'53271d6bffe942634475e82b91423fe4c49626e2';
-
-/// See also [pinLikeRepository].
 @ProviderFor(pinLikeRepository)
-final pinLikeRepositoryProvider = Provider<PinLikeRepository>.internal(
-  pinLikeRepository,
-  name: r'pinLikeRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$pinLikeRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const pinLikeRepositoryProvider = PinLikeRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef PinLikeRepositoryRef = ProviderRef<PinLikeRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class PinLikeRepositoryProvider
+    extends
+        $FunctionalProvider<
+          PinLikeRepository,
+          PinLikeRepository,
+          PinLikeRepository
+        >
+    with $Provider<PinLikeRepository> {
+  const PinLikeRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pinLikeRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pinLikeRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<PinLikeRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  PinLikeRepository create(Ref ref) {
+    return pinLikeRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PinLikeRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PinLikeRepository>(value),
+    );
+  }
+}
+
+String _$pinLikeRepositoryHash() => r'53271d6bffe942634475e82b91423fe4c49626e2';

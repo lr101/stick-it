@@ -6,41 +6,101 @@ part of 'group_create_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$createGroupProfileImageHash() =>
-    r'822f1e78afb6eae7561b85ab5ca2f287a646fc57';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [createGroupProfileImage].
-@ProviderFor(createGroupProfileImage)
-final createGroupProfileImageProvider =
-    AutoDisposeProvider<Uint8List?>.internal(
-  createGroupProfileImage,
-  name: r'createGroupProfileImageProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$createGroupProfileImageHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(GroupCreateService)
+const groupCreateServiceProvider = GroupCreateServiceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CreateGroupProfileImageRef = AutoDisposeProviderRef<Uint8List?>;
+final class GroupCreateServiceProvider
+    extends $NotifierProvider<GroupCreateService, GroupCreateState> {
+  const GroupCreateServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'groupCreateServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$groupCreateServiceHash();
+
+  @$internal
+  @override
+  GroupCreateService create() => GroupCreateService();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GroupCreateState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GroupCreateState>(value),
+    );
+  }
+}
+
 String _$groupCreateServiceHash() =>
     r'adb0e3be739d8531f7c742e18b5c8c42bd4581a0';
 
-/// See also [GroupCreateService].
-@ProviderFor(GroupCreateService)
-final groupCreateServiceProvider =
-    AutoDisposeNotifierProvider<GroupCreateService, GroupCreateState>.internal(
-  GroupCreateService.new,
-  name: r'groupCreateServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$groupCreateServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+abstract class _$GroupCreateService extends $Notifier<GroupCreateState> {
+  GroupCreateState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<GroupCreateState, GroupCreateState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<GroupCreateState, GroupCreateState>,
+              GroupCreateState,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$GroupCreateService = AutoDisposeNotifier<GroupCreateState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+@ProviderFor(createGroupProfileImage)
+const createGroupProfileImageProvider = CreateGroupProfileImageProvider._();
+
+final class CreateGroupProfileImageProvider
+    extends $FunctionalProvider<Uint8List?, Uint8List?, Uint8List?>
+    with $Provider<Uint8List?> {
+  const CreateGroupProfileImageProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'createGroupProfileImageProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$createGroupProfileImageHash();
+
+  @$internal
+  @override
+  $ProviderElement<Uint8List?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Uint8List? create(Ref ref) {
+    return createGroupProfileImage(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Uint8List? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Uint8List?>(value),
+    );
+  }
+}
+
+String _$createGroupProfileImageHash() =>
+    r'822f1e78afb6eae7561b85ab5ca2f287a646fc57';

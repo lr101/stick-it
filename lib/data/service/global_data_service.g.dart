@@ -6,245 +6,333 @@ part of 'global_data_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userIdHash() => r'f2c97313ee210fb250e363e4fcf6288210cac59b';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [userId].
-@ProviderFor(userId)
-final userIdProvider = AutoDisposeProvider<String>.internal(
-  userId,
-  name: r'userIdProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userIdHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(GlobalDataService)
+const globalDataServiceProvider = GlobalDataServiceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserIdRef = AutoDisposeProviderRef<String>;
-String _$lastKnownLocationHash() => r'32bf99245b9bc078cb9ab20675d6db2f5b6f0191';
+final class GlobalDataServiceProvider
+    extends $NotifierProvider<GlobalDataService, GlobalDataDto> {
+  const GlobalDataServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'globalDataServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [lastKnownLocation].
-@ProviderFor(lastKnownLocation)
-final lastKnownLocationProvider = AutoDisposeProvider<LatLng>.internal(
-  lastKnownLocation,
-  name: r'lastKnownLocationProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$lastKnownLocationHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+  @override
+  String debugGetCreateSourceHash() => _$globalDataServiceHash();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef LastKnownLocationRef = AutoDisposeProviderRef<LatLng>;
+  @$internal
+  @override
+  GlobalDataService create() => GlobalDataService();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GlobalDataDto value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GlobalDataDto>(value),
+    );
+  }
+}
+
 String _$globalDataServiceHash() => r'e4281575bf51ae5456daf4e3694243ac85d3ae31';
 
-/// See also [GlobalDataService].
-@ProviderFor(GlobalDataService)
-final globalDataServiceProvider =
-    NotifierProvider<GlobalDataService, GlobalDataDto>.internal(
-  GlobalDataService.new,
-  name: r'globalDataServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$globalDataServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+abstract class _$GlobalDataService extends $Notifier<GlobalDataDto> {
+  GlobalDataDto build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<GlobalDataDto, GlobalDataDto>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<GlobalDataDto, GlobalDataDto>,
+              GlobalDataDto,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$GlobalDataService = Notifier<GlobalDataDto>;
+@ProviderFor(AuthService)
+const authServiceProvider = AuthServiceProvider._();
+
+final class AuthServiceProvider
+    extends $AsyncNotifierProvider<AuthService, bool> {
+  const AuthServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'authServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$authServiceHash();
+
+  @$internal
+  @override
+  AuthService create() => AuthService();
+}
+
 String _$authServiceHash() => r'c5e69c64abcaabf82fb42dc9d93e6305cba96df0';
 
-/// See also [AuthService].
-@ProviderFor(AuthService)
-final authServiceProvider =
-    AutoDisposeAsyncNotifierProvider<AuthService, bool>.internal(
-  AuthService.new,
-  name: r'authServiceProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$authServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+abstract class _$AuthService extends $AsyncNotifier<bool> {
+  FutureOr<bool> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<bool>, bool>,
+              AsyncValue<bool>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$AuthService = AutoDisposeAsyncNotifier<bool>;
+@ProviderFor(userId)
+const userIdProvider = UserIdProvider._();
+
+final class UserIdProvider extends $FunctionalProvider<String, String, String>
+    with $Provider<String> {
+  const UserIdProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userIdProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userIdHash();
+
+  @$internal
+  @override
+  $ProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String create(Ref ref) {
+    return userId(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String>(value),
+    );
+  }
+}
+
+String _$userIdHash() => r'f2c97313ee210fb250e363e4fcf6288210cac59b';
+
+@ProviderFor(CameraTorch)
+const cameraTorchProvider = CameraTorchProvider._();
+
+final class CameraTorchProvider extends $NotifierProvider<CameraTorch, bool> {
+  const CameraTorchProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'cameraTorchProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$cameraTorchHash();
+
+  @$internal
+  @override
+  CameraTorch create() => CameraTorch();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
 String _$cameraTorchHash() => r'd9b867808565232d7ea3ccb93b3f588211414af4';
 
-/// See also [CameraTorch].
-@ProviderFor(CameraTorch)
-final cameraTorchProvider =
-    AutoDisposeNotifierProvider<CameraTorch, bool>.internal(
-  CameraTorch.new,
-  name: r'cameraTorchProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$cameraTorchHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$CameraTorch = AutoDisposeNotifier<bool>;
-String _$lastSeenHash() => r'2116a21cd5c291835d95e9b948f7cd80f579e40f';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+abstract class _$CameraTorch extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
   }
 }
 
-abstract class _$LastSeen extends BuildlessNotifier<DateTime?> {
-  late final String key;
-
-  DateTime? build(
-    String key,
-  );
-}
-
-/// See also [LastSeen].
 @ProviderFor(LastSeen)
-const lastSeenProvider = LastSeenFamily();
+const lastSeenProvider = LastSeenFamily._();
 
-/// See also [LastSeen].
-class LastSeenFamily extends Family<DateTime?> {
-  /// See also [LastSeen].
-  const LastSeenFamily();
+final class LastSeenProvider extends $NotifierProvider<LastSeen, DateTime?> {
+  const LastSeenProvider._({
+    required LastSeenFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'lastSeenProvider',
+         isAutoDispose: false,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [LastSeen].
-  LastSeenProvider call(
-    String key,
-  ) {
-    return LastSeenProvider(
-      key,
-    );
+  @override
+  String debugGetCreateSourceHash() => _$lastSeenHash();
+
+  @override
+  String toString() {
+    return r'lastSeenProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  LastSeenProvider getProviderOverride(
-    covariant LastSeenProvider provider,
-  ) {
-    return call(
-      provider.key,
-    );
-  }
+  LastSeen create() => LastSeen();
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'lastSeenProvider';
-}
-
-/// See also [LastSeen].
-class LastSeenProvider extends NotifierProviderImpl<LastSeen, DateTime?> {
-  /// See also [LastSeen].
-  LastSeenProvider(
-    String key,
-  ) : this._internal(
-          () => LastSeen()..key = key,
-          from: lastSeenProvider,
-          name: r'lastSeenProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$lastSeenHash,
-          dependencies: LastSeenFamily._dependencies,
-          allTransitiveDependencies: LastSeenFamily._allTransitiveDependencies,
-          key: key,
-        );
-
-  LastSeenProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.key,
-  }) : super.internal();
-
-  final String key;
-
-  @override
-  DateTime? runNotifierBuild(
-    covariant LastSeen notifier,
-  ) {
-    return notifier.build(
-      key,
-    );
-  }
-
-  @override
-  Override overrideWith(LastSeen Function() create) {
-    return ProviderOverride(
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DateTime? value) {
+    return $ProviderOverride(
       origin: this,
-      override: LastSeenProvider._internal(
-        () => create()..key = key,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        key: key,
-      ),
+      providerOverride: $SyncValueProvider<DateTime?>(value),
     );
-  }
-
-  @override
-  NotifierProviderElement<LastSeen, DateTime?> createElement() {
-    return _LastSeenProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is LastSeenProvider && other.key == key;
+    return other is LastSeenProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, key.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin LastSeenRef on NotifierProviderRef<DateTime?> {
-  /// The parameter `key` of this provider.
-  String get key;
-}
+String _$lastSeenHash() => r'2116a21cd5c291835d95e9b948f7cd80f579e40f';
 
-class _LastSeenProviderElement
-    extends NotifierProviderElement<LastSeen, DateTime?> with LastSeenRef {
-  _LastSeenProviderElement(super.provider);
+final class LastSeenFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          LastSeen,
+          DateTime?,
+          DateTime?,
+          DateTime?,
+          String
+        > {
+  const LastSeenFamily._()
+    : super(
+        retry: null,
+        name: r'lastSeenProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: false,
+      );
+
+  LastSeenProvider call(String key) =>
+      LastSeenProvider._(argument: key, from: this);
 
   @override
-  String get key => (origin as LastSeenProvider).key;
+  String toString() => r'lastSeenProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+
+abstract class _$LastSeen extends $Notifier<DateTime?> {
+  late final _$args = ref.$arg as String;
+  String get key => _$args;
+
+  DateTime? build(String key);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref = this.ref as $Ref<DateTime?, DateTime?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<DateTime?, DateTime?>,
+              DateTime?,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+@ProviderFor(lastKnownLocation)
+const lastKnownLocationProvider = LastKnownLocationProvider._();
+
+final class LastKnownLocationProvider
+    extends $FunctionalProvider<LatLng, LatLng, LatLng>
+    with $Provider<LatLng> {
+  const LastKnownLocationProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'lastKnownLocationProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$lastKnownLocationHash();
+
+  @$internal
+  @override
+  $ProviderElement<LatLng> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  LatLng create(Ref ref) {
+    return lastKnownLocation(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LatLng value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LatLng>(value),
+    );
+  }
+}
+
+String _$lastKnownLocationHash() => r'32bf99245b9bc078cb9ab20675d6db2f5b6f0191';

@@ -6,21 +6,60 @@ part of 'ranking_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(Top3GroupService)
+const top3GroupServiceProvider = Top3GroupServiceProvider._();
+
+final class Top3GroupServiceProvider
+    extends
+        $AsyncNotifierProvider<Top3GroupService, List<GroupRankingDtoInner>?> {
+  const Top3GroupServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'top3GroupServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$top3GroupServiceHash();
+
+  @$internal
+  @override
+  Top3GroupService create() => Top3GroupService();
+}
+
 String _$top3GroupServiceHash() => r'55a40d39d11aa068fbbdfea3ed2495ac9c6d6995';
 
-/// See also [Top3GroupService].
-@ProviderFor(Top3GroupService)
-final top3GroupServiceProvider = AsyncNotifierProvider<Top3GroupService,
-    List<GroupRankingDtoInner>?>.internal(
-  Top3GroupService.new,
-  name: r'top3GroupServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$top3GroupServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$Top3GroupService = AsyncNotifier<List<GroupRankingDtoInner>?>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$Top3GroupService
+    extends $AsyncNotifier<List<GroupRankingDtoInner>?> {
+  FutureOr<List<GroupRankingDtoInner>?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<List<GroupRankingDtoInner>?>,
+              List<GroupRankingDtoInner>?
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<List<GroupRankingDtoInner>?>,
+                List<GroupRankingDtoInner>?
+              >,
+              AsyncValue<List<GroupRankingDtoInner>?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

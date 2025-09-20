@@ -4,7 +4,7 @@ part 'offline_login_dto.freezed.dart';
 part 'offline_login_dto.g.dart';
 
 @freezed
-class OfflineLoginDto with _$OfflineLoginDto {
+abstract class OfflineLoginDto with _$OfflineLoginDto {
   const factory OfflineLoginDto({
     @Default(false) bool loadedGroups,
     int? numberOfGroups,

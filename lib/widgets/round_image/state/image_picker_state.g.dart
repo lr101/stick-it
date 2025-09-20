@@ -6,21 +6,50 @@ part of 'image_picker_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(ImagePickerState)
+const imagePickerStateProvider = ImagePickerStateProvider._();
+
+final class ImagePickerStateProvider
+    extends $AsyncNotifierProvider<ImagePickerState, Uint8List?> {
+  const ImagePickerStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'imagePickerStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$imagePickerStateHash();
+
+  @$internal
+  @override
+  ImagePickerState create() => ImagePickerState();
+}
+
 String _$imagePickerStateHash() => r'c8feebfd2990e0c049a75cae74a4a0eb2be91ab5';
 
-/// See also [ImagePickerState].
-@ProviderFor(ImagePickerState)
-final imagePickerStateProvider =
-    AutoDisposeAsyncNotifierProvider<ImagePickerState, Uint8List?>.internal(
-  ImagePickerState.new,
-  name: r'imagePickerStateProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$imagePickerStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$ImagePickerState = AutoDisposeAsyncNotifier<Uint8List?>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$ImagePickerState extends $AsyncNotifier<Uint8List?> {
+  FutureOr<Uint8List?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<Uint8List?>, Uint8List?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<Uint8List?>, Uint8List?>,
+              AsyncValue<Uint8List?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
