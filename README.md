@@ -1,7 +1,7 @@
 
 
-# [<img src="/assets/icon/logo-rounded-corners.png" width="23" />](https://lr-projects.de) Stick-It: *Map & Stickers*
- 
+# Stick-It: Map & Stickers
+  
 [![Codemagic build status](https://api.codemagic.io/apps/63413ae4c15332316120753f/63413ae4c15332316120753e/status_badge.svg)](https://codemagic.io/app/63413ae4c15332316120753f/63413ae4c15332316120753e/latest_build)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/lr101/stick-it/issues)
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white&style=flat)](https://discord.gg/ReMZ8j6S8X)
@@ -10,27 +10,19 @@
 
 ## Description
 
-Experience sticker sharing like never before! Welcome to Stick-It, the app to record where in the world your stickers can be found📍🎉
+Stick-It lets you capture where stickers and street art are found, and explore posts from others on an interactive map.
 
-Upload pictures, share them with your groups and tag them right where you took them. Even better: explore new spots and cool content posted by others on an interactive map! 🌍📸
-
-What makes Stick-It so special?  
-🌟 Groups & Community: Share your best shots with groups and discover what your friends and other adventurers have posted. Whether it's street art, stickers or insider tips - Stick-It captures them all!
-
-🗺️ Interactive map view: See all your uploaded stickers and groups directly on the map. Tap on a location to see the local ranking. Oh yes - Ranking - Become the biggest in your region, country or the world and collect Achievements
-
-⚡ Quick & Easy: Take photos, upload, share - all in seconds!
-
-📖 Overview feed: Keep track of all your groups and photos - activate or deactivate groups with just one click.
-
-🚀 Ready to Stick-It?  
-What are you waiting for? Get Stick-It now for Android and iOS and discover the world in a whole new way. Your adventures are waiting! 🌟
+Key features:
+- Groups and community: Share posts with groups and discover new content from friends and others.
+- Interactive map: View stickers and groups on the map and explore local rankings.
+- Fast posting: Take a photo, tag it to a location, and share in seconds.
+- Overview feed: Quickly enable/disable groups to curate your feed.
 
 ## How does it work?
 
 The Stick-It app is built using the **Flutter** framework, which allows for cross-platform development on Android, iOS, and web platforms. Here's a high-level overview of how the app works:
 
-### Structure
+### Project structure
 
 The app is structured as follows:
  - **data**: contains data models, repositories, and services. Repositories handles and provides database operations. Services provide business logic for the app, including holding global state values and making api calls.
@@ -38,11 +30,47 @@ The app is structured as follows:
  - **util**: contains utility classes, such as the app's theme, routing, and error handling.
  - **widgets**: contains reusable widgets that are used across the app. Each directory is split into representation (UI) and data (screen specific logic and states).
 
-### Development setup
-- Install & setup [Flutter](https://flutter.dev/docs/get-started/install)
-- Clone api repository  ```git clone git@github.com:lr101/MonaServerApi.git ../MonaServerApi```
-- Run pub get to install dependencies ```flutter pub get```
-- Run build runner to generate database and riverpod code: ```dart run build_runner build```
+## Quick start (development)
+
+1) Prerequisites
+- Install Flutter: https://flutter.dev/docs/get-started/install
+- Ensure a working Android/iOS development environment (Android Studio / Xcode on macOS for iOS).
+
+2) Clone and install
+```
+# Clone this repository
+git clone https://github.com/lr101/stick-it.git
+cd stick-it
+
+# Install dependencies
+flutter pub get
+```
+
+3) Generate code (Freezed, Json Serializable, Riverpod)
+```
+# Generates all code and resolves any conflicts
+dart run build_runner build --delete-conflicting-outputs
+```
+
+4) Run the app
+```
+# Android
+flutter run -d android
+
+# iOS (requires macOS)
+flutter run -d ios
+```
+
+### Optional: API generator setup
+If you are working on the API client, clone the API repository next to this project and regenerate API code.
+```
+# Clone API repo next to this project
+git clone git@github.com:lr101/MonaServerApi.git ../MonaServerApi
+
+# Generate OpenAPI client
+flutter pub global activate openapi_generator_cli
+openapi-generator generate -i ../MonaServerApi/openapi.yaml -g dart -o ./api
+```
 
 ## Developer references
 
@@ -50,14 +78,35 @@ The app is structured as follows:
 1. change asset path in pubspec.yaml
 2. run: ```flutter packages pub run flutter_launcher_icons:main```
 
-### Build android apk
+### Build Android APK
 1. run: ```flutter build apk```
 
 ### Release app
 
 The app release in Google Play Store and App Store is managed via Codemagic. The pipeline is triggered when a new commit is pushed to the main branch.
 
-### Generate API
-1.
-2. Activate openapi-generator: `flutter pub global activate openapi_generator_cli`
-3. Run generator: `openapi-generator generate -i ../MonaServerApi/openapi.yaml -g dart -o ./api`
+### Generate API (summary)
+1. Activate openapi-generator: `flutter pub global activate openapi_generator_cli`  
+2. Run generator: `openapi-generator generate -i ../MonaServerApi/openapi.yaml -g dart -o ./api`
+
+## Troubleshooting
+
+- iOS minimum version error (Firebase):
+  - Error: The plugin "firebase_core" requires iOS 15.0+.  
+  - Fix: In `ios/Podfile`, set `platform :ios, '15.0'` and ensure the `post_install` hook sets `IPHONEOS_DEPLOYMENT_TARGET` to `15.0` for all pods. Then run on macOS: `flutter clean && flutter pub get && cd ios && pod repo update && pod install`.
+
+- Code generation errors (Freezed/Riverpod):
+  - Run: `dart run build_runner build --delete-conflicting-outputs`.
+  - Ensure your files contain the correct `part 'file.freezed.dart';` and `part 'file.g.dart';` statements when required.
+
+- Android build issues:
+  - Run: `flutter clean && flutter pub get`.
+  - Check your Java SDK and Android SDK versions in Android Studio.
+
+## Contributing
+
+Contributions are welcome. Please open an issue for bugs or feature requests, or submit a pull request. For larger changes, open an issue first to discuss the approach.
+
+## License
+
+This project is licensed under the terms of the LICENSE file included in the repository.
