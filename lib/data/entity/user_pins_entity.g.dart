@@ -8,7 +8,7 @@ part of 'user_pins_entity.dart';
 
 class UserPinsEntityAdapter extends TypeAdapter<UserPinsEntity> {
   @override
-  final int typeId = 9;
+  final typeId = 9;
 
   @override
   UserPinsEntity read(BinaryReader reader) {

@@ -6,171 +6,95 @@ part of 'like_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$likeServiceHash() => r'0eb728498b1b3a391cb31a5f1023ee5a36b339a2';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$LikeService
-    extends BuildlessAutoDisposeAsyncNotifier<PinLikeDto> {
-  late final String pinId;
-
-  FutureOr<PinLikeDto> build(
-    String pinId,
-  );
-}
-
-/// See also [LikeService].
 @ProviderFor(LikeService)
-const likeServiceProvider = LikeServiceFamily();
+const likeServiceProvider = LikeServiceFamily._();
 
-/// See also [LikeService].
-class LikeServiceFamily extends Family<AsyncValue<PinLikeDto>> {
-  /// See also [LikeService].
-  const LikeServiceFamily();
+final class LikeServiceProvider
+    extends $AsyncNotifierProvider<LikeService, PinLikeDto> {
+  const LikeServiceProvider._({
+    required LikeServiceFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'likeServiceProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [LikeService].
-  LikeServiceProvider call(
-    String pinId,
-  ) {
-    return LikeServiceProvider(
-      pinId,
-    );
+  @override
+  String debugGetCreateSourceHash() => _$likeServiceHash();
+
+  @override
+  String toString() {
+    return r'likeServiceProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  LikeServiceProvider getProviderOverride(
-    covariant LikeServiceProvider provider,
-  ) {
-    return call(
-      provider.pinId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'likeServiceProvider';
-}
-
-/// See also [LikeService].
-class LikeServiceProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<LikeService, PinLikeDto> {
-  /// See also [LikeService].
-  LikeServiceProvider(
-    String pinId,
-  ) : this._internal(
-          () => LikeService()..pinId = pinId,
-          from: likeServiceProvider,
-          name: r'likeServiceProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$likeServiceHash,
-          dependencies: LikeServiceFamily._dependencies,
-          allTransitiveDependencies:
-              LikeServiceFamily._allTransitiveDependencies,
-          pinId: pinId,
-        );
-
-  LikeServiceProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.pinId,
-  }) : super.internal();
-
-  final String pinId;
-
-  @override
-  FutureOr<PinLikeDto> runNotifierBuild(
-    covariant LikeService notifier,
-  ) {
-    return notifier.build(
-      pinId,
-    );
-  }
-
-  @override
-  Override overrideWith(LikeService Function() create) {
-    return ProviderOverride(
-      origin: this,
-      override: LikeServiceProvider._internal(
-        () => create()..pinId = pinId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        pinId: pinId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeAsyncNotifierProviderElement<LikeService, PinLikeDto>
-      createElement() {
-    return _LikeServiceProviderElement(this);
-  }
+  LikeService create() => LikeService();
 
   @override
   bool operator ==(Object other) {
-    return other is LikeServiceProvider && other.pinId == pinId;
+    return other is LikeServiceProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, pinId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin LikeServiceRef on AutoDisposeAsyncNotifierProviderRef<PinLikeDto> {
-  /// The parameter `pinId` of this provider.
-  String get pinId;
-}
+String _$likeServiceHash() => r'0eb728498b1b3a391cb31a5f1023ee5a36b339a2';
 
-class _LikeServiceProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<LikeService, PinLikeDto>
-    with LikeServiceRef {
-  _LikeServiceProviderElement(super.provider);
+final class LikeServiceFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          LikeService,
+          AsyncValue<PinLikeDto>,
+          PinLikeDto,
+          FutureOr<PinLikeDto>,
+          String
+        > {
+  const LikeServiceFamily._()
+    : super(
+        retry: null,
+        name: r'likeServiceProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  LikeServiceProvider call(String pinId) =>
+      LikeServiceProvider._(argument: pinId, from: this);
 
   @override
-  String get pinId => (origin as LikeServiceProvider).pinId;
+  String toString() => r'likeServiceProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+
+abstract class _$LikeService extends $AsyncNotifier<PinLikeDto> {
+  late final _$args = ref.$arg as String;
+  String get pinId => _$args;
+
+  FutureOr<PinLikeDto> build(String pinId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<PinLikeDto>, PinLikeDto>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<PinLikeDto>, PinLikeDto>,
+              AsyncValue<PinLikeDto>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

@@ -15,7 +15,7 @@ part 'map_state.freezed.dart';
 part 'map_state.g.dart';
 
 @freezed
-class MapState with _$MapState {
+abstract class MapState with _$MapState {
   const factory MapState({
     required List<Marker> markers,
   }) = _MapState;

@@ -6,36 +6,91 @@ part of 'map_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentLocationHash() => r'd5de2759b915419e2ede395268475714aae4e37a';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [currentLocation].
-@ProviderFor(currentLocation)
-final currentLocationProvider = StreamProvider<Position>.internal(
-  currentLocation,
-  name: r'currentLocationProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentLocationHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(MapStates)
+const mapStatesProvider = MapStatesProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CurrentLocationRef = StreamProviderRef<Position>;
+final class MapStatesProvider extends $NotifierProvider<MapStates, MapState> {
+  const MapStatesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'mapStatesProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$mapStatesHash();
+
+  @$internal
+  @override
+  MapStates create() => MapStates();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(MapState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<MapState>(value),
+    );
+  }
+}
+
 String _$mapStatesHash() => r'026eeb518042f9823570dd45c228554235bc21c9';
 
-/// See also [MapStates].
-@ProviderFor(MapStates)
-final mapStatesProvider = NotifierProvider<MapStates, MapState>.internal(
-  MapStates.new,
-  name: r'mapStatesProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$mapStatesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+abstract class _$MapStates extends $Notifier<MapState> {
+  MapState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<MapState, MapState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<MapState, MapState>,
+              MapState,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$MapStates = Notifier<MapState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+@ProviderFor(currentLocation)
+const currentLocationProvider = CurrentLocationProvider._();
+
+final class CurrentLocationProvider
+    extends
+        $FunctionalProvider<AsyncValue<Position>, Position, Stream<Position>>
+    with $FutureModifier<Position>, $StreamProvider<Position> {
+  const CurrentLocationProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentLocationProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentLocationHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<Position> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<Position> create(Ref ref) {
+    return currentLocation(ref);
+  }
+}
+
+String _$currentLocationHash() => r'd5de2759b915419e2ede395268475714aae4e37a';

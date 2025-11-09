@@ -6,22 +6,51 @@ part of 'member_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$memberRepositoryHash() => r'8845acef2c6282885af327c50407377f781b674f';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [memberRepository].
 @ProviderFor(memberRepository)
-final memberRepositoryProvider = Provider<MemberRepository>.internal(
-  memberRepository,
-  name: r'memberRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$memberRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const memberRepositoryProvider = MemberRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef MemberRepositoryRef = ProviderRef<MemberRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class MemberRepositoryProvider
+    extends
+        $FunctionalProvider<
+          MemberRepository,
+          MemberRepository,
+          MemberRepository
+        >
+    with $Provider<MemberRepository> {
+  const MemberRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'memberRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$memberRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<MemberRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  MemberRepository create(Ref ref) {
+    return memberRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(MemberRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<MemberRepository>(value),
+    );
+  }
+}
+
+String _$memberRepositoryHash() => r'8845acef2c6282885af327c50407377f781b674f';

@@ -3,11 +3,13 @@ import 'package:buff_lisa/widgets/image_grid/presentation/square_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 
 class ImageGrid extends ConsumerStatefulWidget {
   const ImageGrid({super.key, required this.pinProvider, required this.onTab});
 
-  final AutoDisposeFutureProvider<List<LocalPinDto>?> pinProvider;
+  final ProviderListenable<AsyncValue<List<LocalPinDto>?>> pinProvider;
   final Function(int index) onTab;
 
   @override

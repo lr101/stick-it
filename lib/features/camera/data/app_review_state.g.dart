@@ -6,21 +6,58 @@ part of 'app_review_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(AppReviewState)
+const appReviewStateProvider = AppReviewStateProvider._();
+
+final class AppReviewStateProvider
+    extends $NotifierProvider<AppReviewState, bool> {
+  const AppReviewStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appReviewStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appReviewStateHash();
+
+  @$internal
+  @override
+  AppReviewState create() => AppReviewState();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
 String _$appReviewStateHash() => r'bb67cb55376ca004838cb08a87e57be00d1e61d9';
 
-/// See also [AppReviewState].
-@ProviderFor(AppReviewState)
-final appReviewStateProvider =
-    AutoDisposeNotifierProvider<AppReviewState, bool>.internal(
-  AppReviewState.new,
-  name: r'appReviewStateProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appReviewStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$AppReviewState = AutoDisposeNotifier<bool>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$AppReviewState extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

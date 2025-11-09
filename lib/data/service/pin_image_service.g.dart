@@ -6,157 +6,80 @@ part of 'pin_image_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getPinImageAndFetchHash() =>
-    r'97df963630e1f177a5cfbfd2f4af765d54008235';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [getPinImageAndFetch].
 @ProviderFor(getPinImageAndFetch)
-const getPinImageAndFetchProvider = GetPinImageAndFetchFamily();
+const getPinImageAndFetchProvider = GetPinImageAndFetchFamily._();
 
-/// See also [getPinImageAndFetch].
-class GetPinImageAndFetchFamily extends Family<AsyncValue<Uint8List>> {
-  /// See also [getPinImageAndFetch].
-  const GetPinImageAndFetchFamily();
+final class GetPinImageAndFetchProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Uint8List>,
+          Uint8List,
+          FutureOr<Uint8List>
+        >
+    with $FutureModifier<Uint8List>, $FutureProvider<Uint8List> {
+  const GetPinImageAndFetchProvider._({
+    required GetPinImageAndFetchFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'getPinImageAndFetchProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [getPinImageAndFetch].
-  GetPinImageAndFetchProvider call(
-    String pinId,
-  ) {
-    return GetPinImageAndFetchProvider(
-      pinId,
-    );
+  @override
+  String debugGetCreateSourceHash() => _$getPinImageAndFetchHash();
+
+  @override
+  String toString() {
+    return r'getPinImageAndFetchProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  GetPinImageAndFetchProvider getProviderOverride(
-    covariant GetPinImageAndFetchProvider provider,
-  ) {
-    return call(
-      provider.pinId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  $FutureProviderElement<Uint8List> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'getPinImageAndFetchProvider';
-}
-
-/// See also [getPinImageAndFetch].
-class GetPinImageAndFetchProvider extends AutoDisposeFutureProvider<Uint8List> {
-  /// See also [getPinImageAndFetch].
-  GetPinImageAndFetchProvider(
-    String pinId,
-  ) : this._internal(
-          (ref) => getPinImageAndFetch(
-            ref as GetPinImageAndFetchRef,
-            pinId,
-          ),
-          from: getPinImageAndFetchProvider,
-          name: r'getPinImageAndFetchProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$getPinImageAndFetchHash,
-          dependencies: GetPinImageAndFetchFamily._dependencies,
-          allTransitiveDependencies:
-              GetPinImageAndFetchFamily._allTransitiveDependencies,
-          pinId: pinId,
-        );
-
-  GetPinImageAndFetchProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.pinId,
-  }) : super.internal();
-
-  final String pinId;
-
-  @override
-  Override overrideWith(
-    FutureOr<Uint8List> Function(GetPinImageAndFetchRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: GetPinImageAndFetchProvider._internal(
-        (ref) => create(ref as GetPinImageAndFetchRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        pinId: pinId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<Uint8List> createElement() {
-    return _GetPinImageAndFetchProviderElement(this);
+  FutureOr<Uint8List> create(Ref ref) {
+    final argument = this.argument as String;
+    return getPinImageAndFetch(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetPinImageAndFetchProvider && other.pinId == pinId;
+    return other is GetPinImageAndFetchProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, pinId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin GetPinImageAndFetchRef on AutoDisposeFutureProviderRef<Uint8List> {
-  /// The parameter `pinId` of this provider.
-  String get pinId;
-}
+String _$getPinImageAndFetchHash() =>
+    r'97df963630e1f177a5cfbfd2f4af765d54008235';
 
-class _GetPinImageAndFetchProviderElement
-    extends AutoDisposeFutureProviderElement<Uint8List>
-    with GetPinImageAndFetchRef {
-  _GetPinImageAndFetchProviderElement(super.provider);
+final class GetPinImageAndFetchFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<Uint8List>, String> {
+  const GetPinImageAndFetchFamily._()
+    : super(
+        retry: null,
+        name: r'getPinImageAndFetchProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  GetPinImageAndFetchProvider call(String pinId) =>
+      GetPinImageAndFetchProvider._(argument: pinId, from: this);
 
   @override
-  String get pinId => (origin as GetPinImageAndFetchProvider).pinId;
+  String toString() => r'getPinImageAndFetchProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

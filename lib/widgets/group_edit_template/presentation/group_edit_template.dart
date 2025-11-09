@@ -48,7 +48,7 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final image = ref
             .watch(groupProfilePictureByIdProvider(widget.groupDto!.groupId))
-            .valueOrNull; // should exists because editing can only be done to a user group but better solution needed in the future
+            .value; // should exists because editing can only be done to a user group but better solution needed in the future
         ref
             .read(groupCreateServiceProvider.notifier)
             .init(widget.groupDto!, image);

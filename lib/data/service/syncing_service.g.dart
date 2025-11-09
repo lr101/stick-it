@@ -6,21 +6,50 @@ part of 'syncing_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$syncingServiceHash() => r'c444a465224108712ffc8402e9c319b533f1d027';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [SyncingService].
 @ProviderFor(SyncingService)
-final syncingServiceProvider =
-    AsyncNotifierProvider<SyncingService, bool>.internal(
-  SyncingService.new,
-  name: r'syncingServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$syncingServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const syncingServiceProvider = SyncingServiceProvider._();
 
-typedef _$SyncingService = AsyncNotifier<bool>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class SyncingServiceProvider
+    extends $AsyncNotifierProvider<SyncingService, bool> {
+  const SyncingServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'syncingServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$syncingServiceHash();
+
+  @$internal
+  @override
+  SyncingService create() => SyncingService();
+}
+
+String _$syncingServiceHash() => r'c747720ad4f51d973970415be190df33a27b1b1f';
+
+abstract class _$SyncingService extends $AsyncNotifier<bool> {
+  FutureOr<bool> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<bool>, bool>,
+              AsyncValue<bool>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

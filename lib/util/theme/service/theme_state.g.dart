@@ -6,19 +6,58 @@ part of 'theme_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(ThemeState)
+const themeStateProvider = ThemeStateProvider._();
+
+final class ThemeStateProvider
+    extends $NotifierProvider<ThemeState, ThemeMode> {
+  const ThemeStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'themeStateProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$themeStateHash();
+
+  @$internal
+  @override
+  ThemeState create() => ThemeState();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ThemeMode value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ThemeMode>(value),
+    );
+  }
+}
+
 String _$themeStateHash() => r'3ed503cf1421c966acfc76c1c5f741c00c3e2145';
 
-/// See also [ThemeState].
-@ProviderFor(ThemeState)
-final themeStateProvider = NotifierProvider<ThemeState, ThemeMode>.internal(
-  ThemeState.new,
-  name: r'themeStateProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$themeStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$ThemeState = Notifier<ThemeMode>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$ThemeState extends $Notifier<ThemeMode> {
+  ThemeMode build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<ThemeMode, ThemeMode>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<ThemeMode, ThemeMode>,
+              ThemeMode,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

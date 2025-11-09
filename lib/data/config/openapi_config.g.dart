@@ -6,149 +6,386 @@ part of 'openapi_config.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pinApiHash() => r'63694a72551560399ef7f0d6229f527a73d80b5e';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [pinApi].
-@ProviderFor(pinApi)
-final pinApiProvider = Provider<PinsApi>.internal(
-  pinApi,
-  name: r'pinApiProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$pinApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(OpenApiConfig)
+const openApiConfigProvider = OpenApiConfigProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef PinApiRef = ProviderRef<PinsApi>;
-String _$groupApiHash() => r'b1af627b8fcabd51b34e5256d6b930062f5b261c';
+final class OpenApiConfigProvider
+    extends $NotifierProvider<OpenApiConfig, ApiClient> {
+  const OpenApiConfigProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'openApiConfigProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [groupApi].
-@ProviderFor(groupApi)
-final groupApiProvider = Provider<GroupsApi>.internal(
-  groupApi,
-  name: r'groupApiProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$groupApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+  @override
+  String debugGetCreateSourceHash() => _$openApiConfigHash();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GroupApiRef = ProviderRef<GroupsApi>;
-String _$userApiHash() => r'625731af7b01225bbb8d6330930b0d8285a24028';
+  @$internal
+  @override
+  OpenApiConfig create() => OpenApiConfig();
 
-/// See also [userApi].
-@ProviderFor(userApi)
-final userApiProvider = Provider<UsersApi>.internal(
-  userApi,
-  name: r'userApiProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ApiClient value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ApiClient>(value),
+    );
+  }
+}
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserApiRef = ProviderRef<UsersApi>;
-String _$authApiHash() => r'a3560de16373c563da2b9bae56c13bd41096a968';
-
-/// See also [authApi].
-@ProviderFor(authApi)
-final authApiProvider = Provider<AuthApi>.internal(
-  authApi,
-  name: r'authApiProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$authApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef AuthApiRef = ProviderRef<AuthApi>;
-String _$memberApiHash() => r'62285c719ed5f6bf488db20c93b66be8c6c54acb';
-
-/// See also [memberApi].
-@ProviderFor(memberApi)
-final memberApiProvider = Provider<MembersApi>.internal(
-  memberApi,
-  name: r'memberApiProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$memberApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef MemberApiRef = ProviderRef<MembersApi>;
-String _$reportApiHash() => r'7d280e3391bffc8f5866c96c1c7b288799b7fc96';
-
-/// See also [reportApi].
-@ProviderFor(reportApi)
-final reportApiProvider = Provider<ReportApi>.internal(
-  reportApi,
-  name: r'reportApiProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$reportApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ReportApiRef = ProviderRef<ReportApi>;
-String _$likeApiHash() => r'5095098e8e98d14190505cce9fad7482cb1d5bca';
-
-/// See also [likeApi].
-@ProviderFor(likeApi)
-final likeApiProvider = Provider<LikesApi>.internal(
-  likeApi,
-  name: r'likeApiProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$likeApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef LikeApiRef = ProviderRef<LikesApi>;
-String _$rankingApiHash() => r'275731b01ad88a4c8263f0a74cdc0f67effe9b40';
-
-/// See also [rankingApi].
-@ProviderFor(rankingApi)
-final rankingApiProvider = Provider<RankingApi>.internal(
-  rankingApi,
-  name: r'rankingApiProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$rankingApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef RankingApiRef = ProviderRef<RankingApi>;
 String _$openApiConfigHash() => r'de8e0f2ad7498e7308ae525df5be7f4ea009e4af';
 
-/// See also [OpenApiConfig].
-@ProviderFor(OpenApiConfig)
-final openApiConfigProvider =
-    NotifierProvider<OpenApiConfig, ApiClient>.internal(
-  OpenApiConfig.new,
-  name: r'openApiConfigProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$openApiConfigHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+abstract class _$OpenApiConfig extends $Notifier<ApiClient> {
+  ApiClient build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<ApiClient, ApiClient>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<ApiClient, ApiClient>,
+              ApiClient,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$OpenApiConfig = Notifier<ApiClient>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+@ProviderFor(pinApi)
+const pinApiProvider = PinApiProvider._();
+
+final class PinApiProvider
+    extends $FunctionalProvider<PinsApi, PinsApi, PinsApi>
+    with $Provider<PinsApi> {
+  const PinApiProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pinApiProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pinApiHash();
+
+  @$internal
+  @override
+  $ProviderElement<PinsApi> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  PinsApi create(Ref ref) {
+    return pinApi(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PinsApi value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PinsApi>(value),
+    );
+  }
+}
+
+String _$pinApiHash() => r'63694a72551560399ef7f0d6229f527a73d80b5e';
+
+@ProviderFor(groupApi)
+const groupApiProvider = GroupApiProvider._();
+
+final class GroupApiProvider
+    extends $FunctionalProvider<GroupsApi, GroupsApi, GroupsApi>
+    with $Provider<GroupsApi> {
+  const GroupApiProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'groupApiProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$groupApiHash();
+
+  @$internal
+  @override
+  $ProviderElement<GroupsApi> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  GroupsApi create(Ref ref) {
+    return groupApi(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GroupsApi value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GroupsApi>(value),
+    );
+  }
+}
+
+String _$groupApiHash() => r'b1af627b8fcabd51b34e5256d6b930062f5b261c';
+
+@ProviderFor(userApi)
+const userApiProvider = UserApiProvider._();
+
+final class UserApiProvider
+    extends $FunctionalProvider<UsersApi, UsersApi, UsersApi>
+    with $Provider<UsersApi> {
+  const UserApiProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userApiProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userApiHash();
+
+  @$internal
+  @override
+  $ProviderElement<UsersApi> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  UsersApi create(Ref ref) {
+    return userApi(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UsersApi value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UsersApi>(value),
+    );
+  }
+}
+
+String _$userApiHash() => r'625731af7b01225bbb8d6330930b0d8285a24028';
+
+@ProviderFor(authApi)
+const authApiProvider = AuthApiProvider._();
+
+final class AuthApiProvider
+    extends $FunctionalProvider<AuthApi, AuthApi, AuthApi>
+    with $Provider<AuthApi> {
+  const AuthApiProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'authApiProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$authApiHash();
+
+  @$internal
+  @override
+  $ProviderElement<AuthApi> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  AuthApi create(Ref ref) {
+    return authApi(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AuthApi value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AuthApi>(value),
+    );
+  }
+}
+
+String _$authApiHash() => r'a3560de16373c563da2b9bae56c13bd41096a968';
+
+@ProviderFor(memberApi)
+const memberApiProvider = MemberApiProvider._();
+
+final class MemberApiProvider
+    extends $FunctionalProvider<MembersApi, MembersApi, MembersApi>
+    with $Provider<MembersApi> {
+  const MemberApiProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'memberApiProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$memberApiHash();
+
+  @$internal
+  @override
+  $ProviderElement<MembersApi> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  MembersApi create(Ref ref) {
+    return memberApi(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(MembersApi value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<MembersApi>(value),
+    );
+  }
+}
+
+String _$memberApiHash() => r'62285c719ed5f6bf488db20c93b66be8c6c54acb';
+
+@ProviderFor(reportApi)
+const reportApiProvider = ReportApiProvider._();
+
+final class ReportApiProvider
+    extends $FunctionalProvider<ReportApi, ReportApi, ReportApi>
+    with $Provider<ReportApi> {
+  const ReportApiProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'reportApiProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$reportApiHash();
+
+  @$internal
+  @override
+  $ProviderElement<ReportApi> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ReportApi create(Ref ref) {
+    return reportApi(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ReportApi value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ReportApi>(value),
+    );
+  }
+}
+
+String _$reportApiHash() => r'7d280e3391bffc8f5866c96c1c7b288799b7fc96';
+
+@ProviderFor(likeApi)
+const likeApiProvider = LikeApiProvider._();
+
+final class LikeApiProvider
+    extends $FunctionalProvider<LikesApi, LikesApi, LikesApi>
+    with $Provider<LikesApi> {
+  const LikeApiProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'likeApiProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$likeApiHash();
+
+  @$internal
+  @override
+  $ProviderElement<LikesApi> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  LikesApi create(Ref ref) {
+    return likeApi(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LikesApi value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LikesApi>(value),
+    );
+  }
+}
+
+String _$likeApiHash() => r'5095098e8e98d14190505cce9fad7482cb1d5bca';
+
+@ProviderFor(rankingApi)
+const rankingApiProvider = RankingApiProvider._();
+
+final class RankingApiProvider
+    extends $FunctionalProvider<RankingApi, RankingApi, RankingApi>
+    with $Provider<RankingApi> {
+  const RankingApiProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'rankingApiProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$rankingApiHash();
+
+  @$internal
+  @override
+  $ProviderElement<RankingApi> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  RankingApi create(Ref ref) {
+    return rankingApi(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RankingApi value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RankingApi>(value),
+    );
+  }
+}
+
+String _$rankingApiHash() => r'275731b01ad88a4c8263f0a74cdc0f67effe9b40';
