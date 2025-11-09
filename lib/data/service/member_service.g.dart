@@ -6,171 +6,95 @@ part of 'member_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$memberServiceHash() => r'35a9991be1170204ddba2d34239967b23307e751';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$MemberService
-    extends BuildlessAutoDisposeAsyncNotifier<List<MemberDto>> {
-  late final String groupId;
-
-  FutureOr<List<MemberDto>> build(
-    String groupId,
-  );
-}
-
-/// See also [MemberService].
 @ProviderFor(MemberService)
-const memberServiceProvider = MemberServiceFamily();
+const memberServiceProvider = MemberServiceFamily._();
 
-/// See also [MemberService].
-class MemberServiceFamily extends Family<AsyncValue<List<MemberDto>>> {
-  /// See also [MemberService].
-  const MemberServiceFamily();
+final class MemberServiceProvider
+    extends $AsyncNotifierProvider<MemberService, List<MemberDto>> {
+  const MemberServiceProvider._({
+    required MemberServiceFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'memberServiceProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [MemberService].
-  MemberServiceProvider call(
-    String groupId,
-  ) {
-    return MemberServiceProvider(
-      groupId,
-    );
+  @override
+  String debugGetCreateSourceHash() => _$memberServiceHash();
+
+  @override
+  String toString() {
+    return r'memberServiceProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  MemberServiceProvider getProviderOverride(
-    covariant MemberServiceProvider provider,
-  ) {
-    return call(
-      provider.groupId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'memberServiceProvider';
-}
-
-/// See also [MemberService].
-class MemberServiceProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    MemberService, List<MemberDto>> {
-  /// See also [MemberService].
-  MemberServiceProvider(
-    String groupId,
-  ) : this._internal(
-          () => MemberService()..groupId = groupId,
-          from: memberServiceProvider,
-          name: r'memberServiceProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$memberServiceHash,
-          dependencies: MemberServiceFamily._dependencies,
-          allTransitiveDependencies:
-              MemberServiceFamily._allTransitiveDependencies,
-          groupId: groupId,
-        );
-
-  MemberServiceProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.groupId,
-  }) : super.internal();
-
-  final String groupId;
-
-  @override
-  FutureOr<List<MemberDto>> runNotifierBuild(
-    covariant MemberService notifier,
-  ) {
-    return notifier.build(
-      groupId,
-    );
-  }
-
-  @override
-  Override overrideWith(MemberService Function() create) {
-    return ProviderOverride(
-      origin: this,
-      override: MemberServiceProvider._internal(
-        () => create()..groupId = groupId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        groupId: groupId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeAsyncNotifierProviderElement<MemberService, List<MemberDto>>
-      createElement() {
-    return _MemberServiceProviderElement(this);
-  }
+  MemberService create() => MemberService();
 
   @override
   bool operator ==(Object other) {
-    return other is MemberServiceProvider && other.groupId == groupId;
+    return other is MemberServiceProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, groupId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin MemberServiceRef on AutoDisposeAsyncNotifierProviderRef<List<MemberDto>> {
-  /// The parameter `groupId` of this provider.
-  String get groupId;
-}
+String _$memberServiceHash() => r'35a9991be1170204ddba2d34239967b23307e751';
 
-class _MemberServiceProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<MemberService,
-        List<MemberDto>> with MemberServiceRef {
-  _MemberServiceProviderElement(super.provider);
+final class MemberServiceFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          MemberService,
+          AsyncValue<List<MemberDto>>,
+          List<MemberDto>,
+          FutureOr<List<MemberDto>>,
+          String
+        > {
+  const MemberServiceFamily._()
+    : super(
+        retry: null,
+        name: r'memberServiceProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  MemberServiceProvider call(String groupId) =>
+      MemberServiceProvider._(argument: groupId, from: this);
 
   @override
-  String get groupId => (origin as MemberServiceProvider).groupId;
+  String toString() => r'memberServiceProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+
+abstract class _$MemberService extends $AsyncNotifier<List<MemberDto>> {
+  late final _$args = ref.$arg as String;
+  String get groupId => _$args;
+
+  FutureOr<List<MemberDto>> build(String groupId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<List<MemberDto>>, List<MemberDto>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<MemberDto>>, List<MemberDto>>,
+              AsyncValue<List<MemberDto>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

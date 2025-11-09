@@ -6,23 +6,39 @@ part of 'reachability_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(reachabilityService)
+const reachabilityServiceProvider = ReachabilityServiceProvider._();
+
+final class ReachabilityServiceProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, Stream<bool>>
+    with $FutureModifier<bool>, $StreamProvider<bool> {
+  const ReachabilityServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'reachabilityServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$reachabilityServiceHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<bool> create(Ref ref) {
+    return reachabilityService(ref);
+  }
+}
+
 String _$reachabilityServiceHash() =>
     r'cfd90fc1cee128f4572f2805b078f4805f02a07a';
-
-/// See also [reachabilityService].
-@ProviderFor(reachabilityService)
-final reachabilityServiceProvider = StreamProvider<bool>.internal(
-  reachabilityService,
-  name: r'reachabilityServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$reachabilityServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ReachabilityServiceRef = StreamProviderRef<bool>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

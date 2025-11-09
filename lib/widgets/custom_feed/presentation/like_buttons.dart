@@ -21,7 +21,7 @@ class LikeButtons extends ConsumerWidget {
           children: [
             LikeButtonAnimated(
               isLikedProvider: likeServiceProvider(pinId).select((e) => e.value?.likedByUser),
-              isLiked: pinLike.valueOrNull?.likedByUser ?? false,
+              isLiked: pinLike.value?.likedByUser ?? false,
               likeBuilder: (isLiked) {
                 return Icon(
                   Icons.favorite,
@@ -29,7 +29,7 @@ class LikeButtons extends ConsumerWidget {
                   size: 25,
                 );
               },
-              likeCount: pinLike.valueOrNull?.likeCount ?? 0,
+              likeCount: pinLike.value?.likeCount ?? 0,
               onTap: (isLiked) async {
                 try {
                   if (isLiked) {
@@ -45,8 +45,8 @@ class LikeButtons extends ConsumerWidget {
             ),
             const SizedBox(width: 10),
             LikeButtonAnimated(
-              isLikedProvider: likeServiceProvider(pinId).select((e) => e.valueOrNull?.likedLocationByUser),
-              isLiked: pinLike.valueOrNull?.likedLocationByUser ?? false,
+              isLikedProvider: likeServiceProvider(pinId).select((e) => e.value?.likedLocationByUser),
+              isLiked: pinLike.value?.likedLocationByUser ?? false,
               likeBuilder: (isLiked) {
                 return Icon(
                   CupertinoIcons.location_solid,
@@ -54,7 +54,7 @@ class LikeButtons extends ConsumerWidget {
                   size: 25,
                 );
               },
-              likeCount: pinLike.valueOrNull?.likeLocationCount ?? 0,
+              likeCount: pinLike.value?.likeLocationCount ?? 0,
               onTap: (isLiked) async {
                 try {
                   if (isLiked) {
@@ -70,8 +70,8 @@ class LikeButtons extends ConsumerWidget {
             ),
             const SizedBox(width: 10),
             LikeButtonAnimated(
-              isLikedProvider: likeServiceProvider(pinId).select((e) => e.valueOrNull?.likedPhotographyByUser),
-              isLiked: pinLike.valueOrNull?.likedPhotographyByUser ?? false,
+              isLikedProvider: likeServiceProvider(pinId).select((e) => e.value?.likedPhotographyByUser),
+              isLiked: pinLike.value?.likedPhotographyByUser ?? false,
               likeBuilder: (isLiked) {
                 return Icon(
                   Icons.photo_camera,
@@ -79,7 +79,7 @@ class LikeButtons extends ConsumerWidget {
                   size: 25,
                 );
               },
-              likeCount: pinLike.valueOrNull?.likePhotographyCount ?? 0,
+              likeCount: pinLike.value?.likePhotographyCount ?? 0,
               onTap: (isLiked) async {
                 try {
                   if (isLiked) {
@@ -95,8 +95,8 @@ class LikeButtons extends ConsumerWidget {
             ),
             const SizedBox(width: 10),
             LikeButtonAnimated(
-              isLikedProvider: likeServiceProvider(pinId).select((e) => e.valueOrNull?.likedArtByUser),
-              isLiked: pinLike.valueOrNull?.likedArtByUser ?? false,
+              isLikedProvider: likeServiceProvider(pinId).select((e) => e.value?.likedArtByUser),
+              isLiked: pinLike.value?.likedArtByUser ?? false,
               likeBuilder: (isLiked) {
                 return Icon(
                   Icons.brush,
@@ -104,7 +104,7 @@ class LikeButtons extends ConsumerWidget {
                   size: 25,
                 );
               },
-              likeCount: pinLike.valueOrNull?.likeArtCount ?? 0,
+              likeCount: pinLike.value?.likeArtCount ?? 0,
               onTap: (isLiked) async {
                 try {
                   if (isLiked) {

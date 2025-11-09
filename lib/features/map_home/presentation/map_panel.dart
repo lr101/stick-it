@@ -48,7 +48,7 @@ class _MapPanelState extends ConsumerState<MapPanel> {
   Widget build(BuildContext context) {
     final windowsState = ref.watch(markerWindowStateProvider);
     ref.listen(pinsSortedByDistanceProvider, (previous, next) {
-      _pins = next.valueOrNull ?? [];
+      _pins = next.value ?? [];
       _pagingController.refresh();
     });
     return Column(

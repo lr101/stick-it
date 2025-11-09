@@ -6,173 +6,96 @@ part of 'no_user_group_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$noUserGroupServiceHash() =>
-    r'9b08715e8473568f27c005679f79ab49fbdfed2f';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$NoUserGroupService
-    extends BuildlessAutoDisposeAsyncNotifier<LocalGroupDto> {
-  late final String groupId;
-
-  FutureOr<LocalGroupDto> build(
-    String groupId,
-  );
-}
-
-/// See also [NoUserGroupService].
 @ProviderFor(NoUserGroupService)
-const noUserGroupServiceProvider = NoUserGroupServiceFamily();
+const noUserGroupServiceProvider = NoUserGroupServiceFamily._();
 
-/// See also [NoUserGroupService].
-class NoUserGroupServiceFamily extends Family<AsyncValue<LocalGroupDto>> {
-  /// See also [NoUserGroupService].
-  const NoUserGroupServiceFamily();
+final class NoUserGroupServiceProvider
+    extends $AsyncNotifierProvider<NoUserGroupService, LocalGroupDto> {
+  const NoUserGroupServiceProvider._({
+    required NoUserGroupServiceFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'noUserGroupServiceProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [NoUserGroupService].
-  NoUserGroupServiceProvider call(
-    String groupId,
-  ) {
-    return NoUserGroupServiceProvider(
-      groupId,
-    );
+  @override
+  String debugGetCreateSourceHash() => _$noUserGroupServiceHash();
+
+  @override
+  String toString() {
+    return r'noUserGroupServiceProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  NoUserGroupServiceProvider getProviderOverride(
-    covariant NoUserGroupServiceProvider provider,
-  ) {
-    return call(
-      provider.groupId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'noUserGroupServiceProvider';
-}
-
-/// See also [NoUserGroupService].
-class NoUserGroupServiceProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    NoUserGroupService, LocalGroupDto> {
-  /// See also [NoUserGroupService].
-  NoUserGroupServiceProvider(
-    String groupId,
-  ) : this._internal(
-          () => NoUserGroupService()..groupId = groupId,
-          from: noUserGroupServiceProvider,
-          name: r'noUserGroupServiceProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$noUserGroupServiceHash,
-          dependencies: NoUserGroupServiceFamily._dependencies,
-          allTransitiveDependencies:
-              NoUserGroupServiceFamily._allTransitiveDependencies,
-          groupId: groupId,
-        );
-
-  NoUserGroupServiceProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.groupId,
-  }) : super.internal();
-
-  final String groupId;
-
-  @override
-  FutureOr<LocalGroupDto> runNotifierBuild(
-    covariant NoUserGroupService notifier,
-  ) {
-    return notifier.build(
-      groupId,
-    );
-  }
-
-  @override
-  Override overrideWith(NoUserGroupService Function() create) {
-    return ProviderOverride(
-      origin: this,
-      override: NoUserGroupServiceProvider._internal(
-        () => create()..groupId = groupId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        groupId: groupId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeAsyncNotifierProviderElement<NoUserGroupService, LocalGroupDto>
-      createElement() {
-    return _NoUserGroupServiceProviderElement(this);
-  }
+  NoUserGroupService create() => NoUserGroupService();
 
   @override
   bool operator ==(Object other) {
-    return other is NoUserGroupServiceProvider && other.groupId == groupId;
+    return other is NoUserGroupServiceProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, groupId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin NoUserGroupServiceRef
-    on AutoDisposeAsyncNotifierProviderRef<LocalGroupDto> {
-  /// The parameter `groupId` of this provider.
-  String get groupId;
-}
+String _$noUserGroupServiceHash() =>
+    r'9b08715e8473568f27c005679f79ab49fbdfed2f';
 
-class _NoUserGroupServiceProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<NoUserGroupService,
-        LocalGroupDto> with NoUserGroupServiceRef {
-  _NoUserGroupServiceProviderElement(super.provider);
+final class NoUserGroupServiceFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          NoUserGroupService,
+          AsyncValue<LocalGroupDto>,
+          LocalGroupDto,
+          FutureOr<LocalGroupDto>,
+          String
+        > {
+  const NoUserGroupServiceFamily._()
+    : super(
+        retry: null,
+        name: r'noUserGroupServiceProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  NoUserGroupServiceProvider call(String groupId) =>
+      NoUserGroupServiceProvider._(argument: groupId, from: this);
 
   @override
-  String get groupId => (origin as NoUserGroupServiceProvider).groupId;
+  String toString() => r'noUserGroupServiceProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+
+abstract class _$NoUserGroupService extends $AsyncNotifier<LocalGroupDto> {
+  late final _$args = ref.$arg as String;
+  String get groupId => _$args;
+
+  FutureOr<LocalGroupDto> build(String groupId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<LocalGroupDto>, LocalGroupDto>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<LocalGroupDto>, LocalGroupDto>,
+              AsyncValue<LocalGroupDto>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

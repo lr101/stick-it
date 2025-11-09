@@ -8,7 +8,7 @@ part of 'image_entity.dart';
 
 class ImageEntityAdapter extends TypeAdapter<ImageEntity> {
   @override
-  final int typeId = 2;
+  final typeId = 2;
 
   @override
   ImageEntity read(BinaryReader reader) {

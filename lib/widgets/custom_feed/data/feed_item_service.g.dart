@@ -6,21 +6,46 @@ part of 'feed_item_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$feedItemHash() => r'ce9040449c2cc46184ea37206fb640c1ea53d34b';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [feedItem].
 @ProviderFor(feedItem)
-final feedItemProvider = AutoDisposeProvider<LocalPinDto>.internal(
-  feedItem,
-  name: r'feedItemProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$feedItemHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const feedItemProvider = FeedItemProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef FeedItemRef = AutoDisposeProviderRef<LocalPinDto>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class FeedItemProvider
+    extends $FunctionalProvider<LocalPinDto, LocalPinDto, LocalPinDto>
+    with $Provider<LocalPinDto> {
+  const FeedItemProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'feedItemProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$feedItemHash();
+
+  @$internal
+  @override
+  $ProviderElement<LocalPinDto> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  LocalPinDto create(Ref ref) {
+    return feedItem(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LocalPinDto value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LocalPinDto>(value),
+    );
+  }
+}
+
+String _$feedItemHash() => r'ce9040449c2cc46184ea37206fb640c1ea53d34b';

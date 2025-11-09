@@ -6,75 +6,183 @@ part of 'global_data_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(globalDataRepository)
+const globalDataRepositoryProvider = GlobalDataRepositoryProvider._();
+
+final class GlobalDataRepositoryProvider
+    extends
+        $FunctionalProvider<
+          GlobalDataRepository,
+          GlobalDataRepository,
+          GlobalDataRepository
+        >
+    with $Provider<GlobalDataRepository> {
+  const GlobalDataRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'globalDataRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$globalDataRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<GlobalDataRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GlobalDataRepository create(Ref ref) {
+    return globalDataRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GlobalDataRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GlobalDataRepository>(value),
+    );
+  }
+}
+
 String _$globalDataRepositoryHash() =>
     r'52018c90eb3d4d4a9b0367097eaa4aa0695da2f0';
 
-/// See also [globalDataRepository].
-@ProviderFor(globalDataRepository)
-final globalDataRepositoryProvider = Provider<GlobalDataRepository>.internal(
-  globalDataRepository,
-  name: r'globalDataRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$globalDataRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(globalDataOnce)
+const globalDataOnceProvider = GlobalDataOnceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GlobalDataRepositoryRef = ProviderRef<GlobalDataRepository>;
+final class GlobalDataOnceProvider
+    extends $FunctionalProvider<GlobalDataDto, GlobalDataDto, GlobalDataDto>
+    with $Provider<GlobalDataDto> {
+  const GlobalDataOnceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'globalDataOnceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$globalDataOnceHash();
+
+  @$internal
+  @override
+  $ProviderElement<GlobalDataDto> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  GlobalDataDto create(Ref ref) {
+    return globalDataOnce(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GlobalDataDto value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GlobalDataDto>(value),
+    );
+  }
+}
+
 String _$globalDataOnceHash() => r'94d894761acf917a095162ba6b7f044cef140fee';
 
-/// See also [globalDataOnce].
-@ProviderFor(globalDataOnce)
-final globalDataOnceProvider = Provider<GlobalDataDto>.internal(
-  globalDataOnce,
-  name: r'globalDataOnceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$globalDataOnceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(currentUserOnce)
+const currentUserOnceProvider = CurrentUserOnceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GlobalDataOnceRef = ProviderRef<GlobalDataDto>;
+final class CurrentUserOnceProvider
+    extends $FunctionalProvider<CurrentUserDto, CurrentUserDto, CurrentUserDto>
+    with $Provider<CurrentUserDto> {
+  const CurrentUserOnceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentUserOnceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentUserOnceHash();
+
+  @$internal
+  @override
+  $ProviderElement<CurrentUserDto> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  CurrentUserDto create(Ref ref) {
+    return currentUserOnce(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CurrentUserDto value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CurrentUserDto>(value),
+    );
+  }
+}
+
 String _$currentUserOnceHash() => r'6e4d8bf13ea35b7f3d7ab3c08a4dfeb35e59ed6f';
 
-/// See also [currentUserOnce].
-@ProviderFor(currentUserOnce)
-final currentUserOnceProvider = Provider<CurrentUserDto>.internal(
-  currentUserOnce,
-  name: r'currentUserOnceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentUserOnceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(flutterSecureStorage)
+const flutterSecureStorageProvider = FlutterSecureStorageProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CurrentUserOnceRef = ProviderRef<CurrentUserDto>;
+final class FlutterSecureStorageProvider
+    extends
+        $FunctionalProvider<
+          FlutterSecureStorage,
+          FlutterSecureStorage,
+          FlutterSecureStorage
+        >
+    with $Provider<FlutterSecureStorage> {
+  const FlutterSecureStorageProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'flutterSecureStorageProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$flutterSecureStorageHash();
+
+  @$internal
+  @override
+  $ProviderElement<FlutterSecureStorage> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FlutterSecureStorage create(Ref ref) {
+    return flutterSecureStorage(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FlutterSecureStorage value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FlutterSecureStorage>(value),
+    );
+  }
+}
+
 String _$flutterSecureStorageHash() =>
     r'4edd8f2d834ddb7fab25cf2e14cd3331d1d94d31';
-
-/// See also [flutterSecureStorage].
-@ProviderFor(flutterSecureStorage)
-final flutterSecureStorageProvider = Provider<FlutterSecureStorage>.internal(
-  flutterSecureStorage,
-  name: r'flutterSecureStorageProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$flutterSecureStorageHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef FlutterSecureStorageRef = ProviderRef<FlutterSecureStorage>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

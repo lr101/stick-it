@@ -6,19 +6,50 @@ part of 'init_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$initServiceHash() => r'f03d097f964d0e03cfb8c2bb82679aa80614b19c';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [InitService].
 @ProviderFor(InitService)
-final initServiceProvider = AsyncNotifierProvider<InitService, bool>.internal(
-  InitService.new,
-  name: r'initServiceProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$initServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const initServiceProvider = InitServiceProvider._();
 
-typedef _$InitService = AsyncNotifier<bool>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class InitServiceProvider
+    extends $AsyncNotifierProvider<InitService, bool> {
+  const InitServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'initServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$initServiceHash();
+
+  @$internal
+  @override
+  InitService create() => InitService();
+}
+
+String _$initServiceHash() => r'f0227d0556bc9b42315eefb5105c69838d77abe3';
+
+abstract class _$InitService extends $AsyncNotifier<bool> {
+  FutureOr<bool> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<bool>, bool>,
+              AsyncValue<bool>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
