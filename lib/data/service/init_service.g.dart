@@ -20,7 +20,7 @@ final class InitServiceProvider
         argument: null,
         retry: null,
         name: r'initServiceProvider',
-        isAutoDispose: false,
+        isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -33,7 +33,7 @@ final class InitServiceProvider
   InitService create() => InitService();
 }
 
-String _$initServiceHash() => r'f0227d0556bc9b42315eefb5105c69838d77abe3';
+String _$initServiceHash() => r'c3354894ce07645d0cff0f2c51ad88cfa13f1346';
 
 abstract class _$InitService extends $AsyncNotifier<bool> {
   FutureOr<bool> build();

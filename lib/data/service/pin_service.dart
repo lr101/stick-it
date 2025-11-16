@@ -60,7 +60,8 @@ class PinService extends _$PinService {
   }
   
   Future<void> updateSinglePin(LocalPinDto? oldPin, LocalPinDto updatedPin) async {
-    final userPinRepo = ref.read(userPinServiceProvider(updatedPin.creatorId).notifier);
+    final hasUserPinService = ref.exists(userPinServiceProvider(updatedPin.creatorId));
+    final userPinRepo = hasUserPinService ? ref.read(userPinServiceProvider(updatedPin.creatorId).notifier) : null;
     final storage = _pinRepository as CacheApi<PinEntity>;
     await _mutex.protect(() async {
       final currentState = {...state.value!};
@@ -69,10 +70,14 @@ class PinService extends _$PinService {
       state = AsyncData(currentState);
       if (oldPin != null) {
         await storage.delete(oldPin.id);
-        await userPinRepo.removePin(oldPin.id);
+        if (userPinRepo != null) {
+          await userPinRepo.removePin(oldPin.id);
+        }
       }
       await storage.put(updatedPin.id, updatedPin.toEntityCompanion(keepAlive: true));
-      await userPinRepo.addPin(updatedPin);
+      if (userPinRepo != null) {
+        await userPinRepo.addPin(updatedPin);
+      }
     });
   }
 
@@ -93,14 +98,15 @@ class PinService extends _$PinService {
     final pinsApi = ref.read(pinApiProvider);
     final result = await pinsApi.createPin(pin.toPinRequestDto(base64Encode(image)));
     final newPin = LocalPinDto.fromDto(result!);
-    updateSinglePin(pin, newPin);
+    await updateSinglePin(pin, newPin);
     await pinImageRepo.delete(pin.id);
   }
 
   Future<String?> deletePinFromGroup(String pinId) async {
     final pinsApi = ref.read(pinApiProvider);
     final userId = ref.read(userIdProvider);
-    final userPinRepo = ref.read(userPinServiceProvider(userId).notifier);
+    final hasUserPinService = ref.exists(userPinServiceProvider(userId));
+    final userPinRepo = hasUserPinService ? ref.read(userPinServiceProvider(userId).notifier) : null;
     try {
       final pin = state.value!.firstWhere((e) => e.id == pinId);
       if (pin.lastSynced != null) {
@@ -111,7 +117,9 @@ class PinService extends _$PinService {
           state = AsyncValue.data(currentState);
           await _removePinFromUserService(pin);
         });
-        await userPinRepo.removePin(pinId);
+        if (userPinRepo != null) {
+          await userPinRepo.removePin(pinId);
+        }
       }
     } on ApiException catch (e) {
       return e.message;

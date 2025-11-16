@@ -122,22 +122,19 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         groupId: group.groupId,
         isHidden: false,);
     _m.release();
-    Future(() => ref.read(pinServiceProvider(group.groupId).notifier).addPinToGroup(pin, widget.image).then((result) {
-          if (result != null) {
-            CustomErrorSnackBar.message(message: result);
-          } else {
-            CustomErrorSnackBar.message(message: "Successfully synced to server",);
-          }
-          Posthog().screen(screenName: "uploadPin", properties: {"result": result != null, "error": result?.toString() ?? ""});
-        }),);
+    final returnValue = await ref.read(pinServiceProvider(group.groupId).notifier).addPinToGroup(pin, widget.image);
+    if (returnValue != null) {
+      CustomErrorSnackBar.message(message: returnValue);
+    } else {
+      CustomErrorSnackBar.message(message: "Successfully synced to server",);
+    }
+    await Posthog().screen(screenName: "uploadPin", properties: {"result": returnValue != null, "error": returnValue?.toString() ?? ""});
     if (ref.read(appReviewStateProvider)) {
       ref.read(appReviewStateProvider.notifier).updateLastReviewDate();
-      Future(() async {
-        final InAppReview inAppReview = InAppReview.instance;
-        if (await inAppReview.isAvailable()) {
-          inAppReview.requestReview();
-        }
-      });
+      final InAppReview inAppReview = InAppReview.instance;
+      if (await inAppReview.isAvailable()) {
+        await inAppReview.requestReview();
+      }
     }
     ref.read(cameraGroupIndexProvider.notifier).updateIndex(_groupIndexWhenOpened);
     if (!mounted) return;

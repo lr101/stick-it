@@ -27,7 +27,7 @@ class Camera extends ConsumerStatefulWidget {
   ConsumerState<Camera> createState() => _CameraState();
 }
 
-class _CameraState extends ConsumerState<Camera> {
+class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
 
   final PageController pageController = PageController(viewportFraction: 0.3);
   late final CameraController controller;
@@ -38,7 +38,45 @@ class _CameraState extends ConsumerState<Camera> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     controller = CameraController(ref.read(globalDataServiceProvider).cameras[0], ResolutionPreset.medium, enableAudio: false);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // When this route becomes current again, resume preview if possible
+    final route = ModalRoute.of(context);
+    if (route?.isCurrent ?? false) {
+      if (controller.value.isInitialized) {
+        controller.resumePreview().catchError((_) {});
+      }
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!mounted) return;
+    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+      controller.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      // Recreate and initialize controller (same code as initState)
+      controller = CameraController(
+        ref.read(globalDataServiceProvider).cameras[ref.read(cameraIndexProvider)],
+        ResolutionPreset.medium,
+        enableAudio: false,
+      );
+      // Re-initialize via your existing provider:
+      ref.read(cameraValuesProvider(controller).notifier);
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    controller.dispose();
+    pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -190,6 +228,10 @@ class _CameraState extends ConsumerState<Camera> {
 
     if (pickedFile != null && mounted) {
       try {
+        // Pause preview while another screen is placed on top
+        if (controller.value.isInitialized) {
+          await controller.pausePreview().catchError((_) {});
+        }
         final croppedImage = await CustomImagePicker.crop(res: pickedFile, minHeight: 500, minWidth: 500, context: context, initAspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4));
         final exif = await Exif.fromPath(pickedFile.path);
         final coord = await exif.getLatLong();
@@ -242,6 +284,10 @@ class _CameraState extends ConsumerState<Camera> {
         final Uint8List bytes = await image.readAsBytes();
         final Position position = await Geolocator.getCurrentPosition();
         final pos = LatLng(position.latitude, position.longitude);
+        // Pause preview while the ImageUpload screen is on top
+        if (controller.value.isInitialized) {
+          await controller.pausePreview().catchError((_) {});
+        }
         if (!mounted) return;
         Routing.to(context, ImageUpload(image: bytes, position: pos));
       } catch (e) {
