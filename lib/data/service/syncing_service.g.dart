@@ -13,14 +13,14 @@ part of 'syncing_service.dart';
 const syncingServiceProvider = SyncingServiceProvider._();
 
 final class SyncingServiceProvider
-    extends $AsyncNotifierProvider<SyncingService, bool> {
+    extends $NotifierProvider<SyncingService, SyncState> {
   const SyncingServiceProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'syncingServiceProvider',
-        isAutoDispose: false,
+        isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -31,22 +31,30 @@ final class SyncingServiceProvider
   @$internal
   @override
   SyncingService create() => SyncingService();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SyncState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SyncState>(value),
+    );
+  }
 }
 
-String _$syncingServiceHash() => r'c747720ad4f51d973970415be190df33a27b1b1f';
+String _$syncingServiceHash() => r'50982eca2b21ee7af14614d96f0ff185583eb73f';
 
-abstract class _$SyncingService extends $AsyncNotifier<bool> {
-  FutureOr<bool> build();
+abstract class _$SyncingService extends $Notifier<SyncState> {
+  SyncState build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
+    final ref = this.ref as $Ref<SyncState, SyncState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<bool>, bool>,
-              AsyncValue<bool>,
+              AnyNotifier<SyncState, SyncState>,
+              SyncState,
               Object?,
               Object?
             >;

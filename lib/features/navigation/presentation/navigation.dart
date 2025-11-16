@@ -1,3 +1,6 @@
+import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/syncing_service.dart';
+import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/camera/presentation/camera.dart';
 import 'package:buff_lisa/features/feed/presentation/active_group_feed.dart';
 import 'package:buff_lisa/features/group_user_list/presentation/user_groups.dart';
@@ -10,6 +13,7 @@ import 'package:buff_lisa/widgets/group_selector/presentation/group_selector.dar
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
 class Navigation extends ConsumerStatefulWidget {
   const Navigation({super.key});
@@ -22,6 +26,7 @@ class _NavigationState extends ConsumerState<Navigation> {
   late PageController _pageController;
 
   late final List<Widget> widgetOptions;
+  final Logger _logger = Logger();
 
   @override
   void initState() {
@@ -34,12 +39,15 @@ class _NavigationState extends ConsumerState<Navigation> {
       const ActiveGroupFeed(),
       const UserProfile(),
     ];
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(syncingServiceProvider.notifier).syncToBackend();
+    });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
+      _logger.d('Got a message whilst in the foreground!');
+      _logger.d('Message data: ${message.data}');
 
       if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
+        _logger.d('Message also contained a notification: ${message.notification}');
       }
     });
   }

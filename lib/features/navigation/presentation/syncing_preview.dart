@@ -11,12 +11,13 @@ class SyncingPreview extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final syncing = ref.watch(syncingServiceProvider);
     final init = ref.watch(initServiceProvider);
-    return syncing
-        .when(
-          data: (_) =>  const SizedBox.shrink(), 
-          error: (_,__) => _content(false), 
-          loading: () => _content(true),
-    );
+    if (syncing == SyncState.syncing) {
+      return  _content(true);
+    } else if (syncing == SyncState.failed) {
+      return _content(false);
+    } else {
+      return const SizedBox.shrink();
+    }
   }
   
   Widget _content(bool loading) {

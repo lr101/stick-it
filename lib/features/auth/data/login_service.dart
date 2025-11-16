@@ -19,7 +19,6 @@ class LoginService {
 
   /// Navigates to the NavBar Widget when authentication was successful
   void handleLoginComplete(BuildContext context) {
-    ref.invalidate(syncingServiceProvider);
     Posthog().screen(screenName: "loginComplete");
     Routing.toAndDelete(context, const Navigation(), "/home");
   }
