@@ -50,7 +50,7 @@ final class PinServiceProvider
   }
 }
 
-String _$pinServiceHash() => r'82a2e2e70f9304be6d57c81ed7723e84d2d0a840';
+String _$pinServiceHash() => r'5d0f7fd436de04ef7c53590ce229da0b2735805e';
 
 final class PinServiceFamily extends $Family
     with

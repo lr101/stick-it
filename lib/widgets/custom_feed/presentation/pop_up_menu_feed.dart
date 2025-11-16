@@ -33,7 +33,7 @@ class PopUpMenuFeed extends ConsumerWidget {
             ),
             if(isNotCreator) CustomMenuItem<int>(
                 value: 1,
-                title: "Report stick",
+                title: "Report post",
               icon: Icons.report,
             ),
             if(isNotCreator) CustomMenuItem<int>(
@@ -56,7 +56,7 @@ class PopUpMenuFeed extends ConsumerWidget {
         onSelected:(value){
           switch (value) {
             case 0: ref.read(hiddenPostsServiceProvider.notifier).addHiddenPost(pinDto.id);
-            case 1: Routing.to(context, ReportIssuePage(issueTypes: const ["Report stick"], pinId: pinDto.id,));
+            case 1: Routing.to(context, ReportIssuePage(issueTypes: const ["Report post"], pinId: pinDto.id,));
             case 2: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(pinDto.creatorId);
             case 3: Routing.to(context, ReportIssuePage(issueTypes: const ["Report user"], userId: pinDto.creatorId,));
             case 4: _deleteStick(ref, context);

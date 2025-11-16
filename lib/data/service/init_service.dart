@@ -9,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'init_service.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class InitService extends _$InitService {
   @override
   Future<bool> build() async {
