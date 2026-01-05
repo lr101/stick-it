@@ -37,13 +37,13 @@ class RoundImage extends ConsumerWidget {
                     placeholder: MemoryImage(kTransparentImage),
                     image: MemoryImage(imageCallback.when<Uint8List>(
                         data: (data) => data ?? defaultPlaceholderImage ?? ref.watch(defaultErrorImageProvider),
-                        error: (_,__) => defaultPlaceholderImage ?? ref.watch(defaultErrorImageProvider),
+                        error: (_,trace) => defaultPlaceholderImage ?? ref.watch(defaultErrorImageProvider),
                         loading: () => kTransparentImage,
                     ),),
                     fit: BoxFit.cover,
                     fadeInDuration: const Duration(milliseconds: 250),
                     fadeOutDuration: const Duration(milliseconds: 250),
-                    imageErrorBuilder: (_, __, ___) => Image.memory(
+                    imageErrorBuilder: (_, obj, trace) => Image.memory(
                       ref.watch(defaultErrorImageProvider),
                       fit: BoxFit.cover,
                     ),

@@ -10,11 +10,11 @@ part of 'no_user_group_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(NoUserGroupService)
-const noUserGroupServiceProvider = NoUserGroupServiceFamily._();
+final noUserGroupServiceProvider = NoUserGroupServiceFamily._();
 
 final class NoUserGroupServiceProvider
     extends $AsyncNotifierProvider<NoUserGroupService, LocalGroupDto> {
-  const NoUserGroupServiceProvider._({
+  NoUserGroupServiceProvider._({
     required NoUserGroupServiceFamily super.from,
     required String super.argument,
   }) : super(
@@ -62,7 +62,7 @@ final class NoUserGroupServiceFamily extends $Family
           FutureOr<LocalGroupDto>,
           String
         > {
-  const NoUserGroupServiceFamily._()
+  NoUserGroupServiceFamily._()
     : super(
         retry: null,
         name: r'noUserGroupServiceProvider',
@@ -86,7 +86,6 @@ abstract class _$NoUserGroupService extends $AsyncNotifier<LocalGroupDto> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(_$args);
     final ref = this.ref as $Ref<AsyncValue<LocalGroupDto>, LocalGroupDto>;
     final element =
         ref.element
@@ -96,6 +95,6 @@ abstract class _$NoUserGroupService extends $AsyncNotifier<LocalGroupDto> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, () => build(_$args));
   }
 }

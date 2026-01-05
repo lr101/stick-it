@@ -32,7 +32,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.watch(widget.pinProvider).whenData((data) {
         if (data != null) {
           _images = data;

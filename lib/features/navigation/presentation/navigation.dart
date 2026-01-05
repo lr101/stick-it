@@ -1,6 +1,4 @@
-import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/syncing_service.dart';
-import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/camera/presentation/camera.dart';
 import 'package:buff_lisa/features/feed/presentation/active_group_feed.dart';
 import 'package:buff_lisa/features/group_user_list/presentation/user_groups.dart';

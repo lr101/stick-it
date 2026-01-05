@@ -5,8 +5,8 @@ import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -29,13 +29,18 @@ class GlobalDataService  extends _$GlobalDataService {
     await ref.read(globalDataRepositoryProvider).login(username, refreshToken.userId, refreshToken.refreshToken);
   }
 
+  Future<void> refreshCameraList() async {
+    final cameras = await availableCameras();
+    state = state.copyWith(cameras: cameras);
+  }
+
 }
 
 @riverpod
 class AuthService extends _$AuthService {
 
   @override
-  FutureOr<bool> build() async {
+  FutureOr<bool> build() {
     return true;
   }
 

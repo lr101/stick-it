@@ -10,7 +10,7 @@ part of 'pin_image_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(getPinImageAndFetch)
-const getPinImageAndFetchProvider = GetPinImageAndFetchFamily._();
+final getPinImageAndFetchProvider = GetPinImageAndFetchFamily._();
 
 final class GetPinImageAndFetchProvider
     extends
@@ -20,7 +20,7 @@ final class GetPinImageAndFetchProvider
           FutureOr<Uint8List>
         >
     with $FutureModifier<Uint8List>, $FutureProvider<Uint8List> {
-  const GetPinImageAndFetchProvider._({
+  GetPinImageAndFetchProvider._({
     required GetPinImageAndFetchFamily super.from,
     required String super.argument,
   }) : super(
@@ -68,7 +68,7 @@ String _$getPinImageAndFetchHash() =>
 
 final class GetPinImageAndFetchFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Uint8List>, String> {
-  const GetPinImageAndFetchFamily._()
+  GetPinImageAndFetchFamily._()
     : super(
         retry: null,
         name: r'getPinImageAndFetchProvider',

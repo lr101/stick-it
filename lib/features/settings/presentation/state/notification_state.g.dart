@@ -10,11 +10,11 @@ part of 'notification_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(NotificationState)
-const notificationStateProvider = NotificationStateProvider._();
+final notificationStateProvider = NotificationStateProvider._();
 
 final class NotificationStateProvider
     extends $AsyncNotifierProvider<NotificationState, bool> {
-  const NotificationStateProvider._()
+  NotificationStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -40,7 +40,6 @@ abstract class _$NotificationState extends $AsyncNotifier<bool> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
     final element =
         ref.element
@@ -50,6 +49,6 @@ abstract class _$NotificationState extends $AsyncNotifier<bool> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

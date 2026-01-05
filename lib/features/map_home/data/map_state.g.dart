@@ -10,10 +10,10 @@ part of 'map_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(MapStates)
-const mapStatesProvider = MapStatesProvider._();
+final mapStatesProvider = MapStatesProvider._();
 
 final class MapStatesProvider extends $NotifierProvider<MapStates, MapState> {
-  const MapStatesProvider._()
+  MapStatesProvider._()
     : super(
         from: null,
         argument: null,
@@ -47,7 +47,6 @@ abstract class _$MapStates extends $Notifier<MapState> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<MapState, MapState>;
     final element =
         ref.element
@@ -57,18 +56,18 @@ abstract class _$MapStates extends $Notifier<MapState> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(currentLocation)
-const currentLocationProvider = CurrentLocationProvider._();
+final currentLocationProvider = CurrentLocationProvider._();
 
 final class CurrentLocationProvider
     extends
         $FunctionalProvider<AsyncValue<Position>, Position, Stream<Position>>
     with $FutureModifier<Position>, $StreamProvider<Position> {
-  const CurrentLocationProvider._()
+  CurrentLocationProvider._()
     : super(
         from: null,
         argument: null,

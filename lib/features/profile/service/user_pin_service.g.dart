@@ -10,11 +10,11 @@ part of 'user_pin_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(UserPinService)
-const userPinServiceProvider = UserPinServiceFamily._();
+final userPinServiceProvider = UserPinServiceFamily._();
 
 final class UserPinServiceProvider
     extends $AsyncNotifierProvider<UserPinService, List<LocalPinDto>> {
-  const UserPinServiceProvider._({
+  UserPinServiceProvider._({
     required UserPinServiceFamily super.from,
     required String super.argument,
   }) : super(
@@ -61,7 +61,7 @@ final class UserPinServiceFamily extends $Family
           FutureOr<List<LocalPinDto>>,
           String
         > {
-  const UserPinServiceFamily._()
+  UserPinServiceFamily._()
     : super(
         retry: null,
         name: r'userPinServiceProvider',
@@ -85,7 +85,6 @@ abstract class _$UserPinService extends $AsyncNotifier<List<LocalPinDto>> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(_$args);
     final ref =
         this.ref as $Ref<AsyncValue<List<LocalPinDto>>, List<LocalPinDto>>;
     final element =
@@ -96,12 +95,12 @@ abstract class _$UserPinService extends $AsyncNotifier<List<LocalPinDto>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, () => build(_$args));
   }
 }
 
 @ProviderFor(userPin)
-const userPinProvider = UserPinFamily._();
+final userPinProvider = UserPinFamily._();
 
 final class UserPinProvider
     extends
@@ -113,7 +112,7 @@ final class UserPinProvider
     with
         $FutureModifier<List<LocalPinDto>>,
         $FutureProvider<List<LocalPinDto>> {
-  const UserPinProvider._({
+  UserPinProvider._({
     required UserPinFamily super.from,
     required String super.argument,
   }) : super(
@@ -161,7 +160,7 @@ String _$userPinHash() => r'10ba1e091ad1706792ca0b575a2e622d01cba5ce';
 
 final class UserPinFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<List<LocalPinDto>>, String> {
-  const UserPinFamily._()
+  UserPinFamily._()
     : super(
         retry: null,
         name: r'userPinProvider',
@@ -178,11 +177,11 @@ final class UserPinFamily extends $Family
 }
 
 @ProviderFor(numberOfGroup)
-const numberOfGroupProvider = NumberOfGroupProvider._();
+final numberOfGroupProvider = NumberOfGroupProvider._();
 
 final class NumberOfGroupProvider extends $FunctionalProvider<int?, int?, int?>
     with $Provider<int?> {
-  const NumberOfGroupProvider._()
+  NumberOfGroupProvider._()
     : super(
         from: null,
         argument: null,

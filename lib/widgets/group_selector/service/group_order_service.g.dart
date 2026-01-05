@@ -10,11 +10,11 @@ part of 'group_order_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(GroupOrderService)
-const groupOrderServiceProvider = GroupOrderServiceProvider._();
+final groupOrderServiceProvider = GroupOrderServiceProvider._();
 
 final class GroupOrderServiceProvider
     extends $NotifierProvider<GroupOrderService, List<String>> {
-  const GroupOrderServiceProvider._()
+  GroupOrderServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,7 +48,6 @@ abstract class _$GroupOrderService extends $Notifier<List<String>> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<List<String>, List<String>>;
     final element =
         ref.element
@@ -58,17 +57,17 @@ abstract class _$GroupOrderService extends $Notifier<List<String>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(roundGroupId)
-const roundGroupIdProvider = RoundGroupIdProvider._();
+final roundGroupIdProvider = RoundGroupIdProvider._();
 
 final class RoundGroupIdProvider
     extends $FunctionalProvider<String, String, String>
     with $Provider<String> {
-  const RoundGroupIdProvider._()
+  RoundGroupIdProvider._()
     : super(
         from: null,
         argument: null,

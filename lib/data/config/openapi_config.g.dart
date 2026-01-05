@@ -10,11 +10,11 @@ part of 'openapi_config.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(OpenApiConfig)
-const openApiConfigProvider = OpenApiConfigProvider._();
+final openApiConfigProvider = OpenApiConfigProvider._();
 
 final class OpenApiConfigProvider
     extends $NotifierProvider<OpenApiConfig, ApiClient> {
-  const OpenApiConfigProvider._()
+  OpenApiConfigProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,7 +48,6 @@ abstract class _$OpenApiConfig extends $Notifier<ApiClient> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<ApiClient, ApiClient>;
     final element =
         ref.element
@@ -58,17 +57,17 @@ abstract class _$OpenApiConfig extends $Notifier<ApiClient> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(pinApi)
-const pinApiProvider = PinApiProvider._();
+final pinApiProvider = PinApiProvider._();
 
 final class PinApiProvider
     extends $FunctionalProvider<PinsApi, PinsApi, PinsApi>
     with $Provider<PinsApi> {
-  const PinApiProvider._()
+  PinApiProvider._()
     : super(
         from: null,
         argument: null,
@@ -104,12 +103,12 @@ final class PinApiProvider
 String _$pinApiHash() => r'63694a72551560399ef7f0d6229f527a73d80b5e';
 
 @ProviderFor(groupApi)
-const groupApiProvider = GroupApiProvider._();
+final groupApiProvider = GroupApiProvider._();
 
 final class GroupApiProvider
     extends $FunctionalProvider<GroupsApi, GroupsApi, GroupsApi>
     with $Provider<GroupsApi> {
-  const GroupApiProvider._()
+  GroupApiProvider._()
     : super(
         from: null,
         argument: null,
@@ -145,12 +144,12 @@ final class GroupApiProvider
 String _$groupApiHash() => r'b1af627b8fcabd51b34e5256d6b930062f5b261c';
 
 @ProviderFor(userApi)
-const userApiProvider = UserApiProvider._();
+final userApiProvider = UserApiProvider._();
 
 final class UserApiProvider
     extends $FunctionalProvider<UsersApi, UsersApi, UsersApi>
     with $Provider<UsersApi> {
-  const UserApiProvider._()
+  UserApiProvider._()
     : super(
         from: null,
         argument: null,
@@ -186,12 +185,12 @@ final class UserApiProvider
 String _$userApiHash() => r'625731af7b01225bbb8d6330930b0d8285a24028';
 
 @ProviderFor(authApi)
-const authApiProvider = AuthApiProvider._();
+final authApiProvider = AuthApiProvider._();
 
 final class AuthApiProvider
     extends $FunctionalProvider<AuthApi, AuthApi, AuthApi>
     with $Provider<AuthApi> {
-  const AuthApiProvider._()
+  AuthApiProvider._()
     : super(
         from: null,
         argument: null,
@@ -227,12 +226,12 @@ final class AuthApiProvider
 String _$authApiHash() => r'a3560de16373c563da2b9bae56c13bd41096a968';
 
 @ProviderFor(memberApi)
-const memberApiProvider = MemberApiProvider._();
+final memberApiProvider = MemberApiProvider._();
 
 final class MemberApiProvider
     extends $FunctionalProvider<MembersApi, MembersApi, MembersApi>
     with $Provider<MembersApi> {
-  const MemberApiProvider._()
+  MemberApiProvider._()
     : super(
         from: null,
         argument: null,
@@ -268,12 +267,12 @@ final class MemberApiProvider
 String _$memberApiHash() => r'62285c719ed5f6bf488db20c93b66be8c6c54acb';
 
 @ProviderFor(reportApi)
-const reportApiProvider = ReportApiProvider._();
+final reportApiProvider = ReportApiProvider._();
 
 final class ReportApiProvider
     extends $FunctionalProvider<ReportApi, ReportApi, ReportApi>
     with $Provider<ReportApi> {
-  const ReportApiProvider._()
+  ReportApiProvider._()
     : super(
         from: null,
         argument: null,
@@ -309,12 +308,12 @@ final class ReportApiProvider
 String _$reportApiHash() => r'7d280e3391bffc8f5866c96c1c7b288799b7fc96';
 
 @ProviderFor(likeApi)
-const likeApiProvider = LikeApiProvider._();
+final likeApiProvider = LikeApiProvider._();
 
 final class LikeApiProvider
     extends $FunctionalProvider<LikesApi, LikesApi, LikesApi>
     with $Provider<LikesApi> {
-  const LikeApiProvider._()
+  LikeApiProvider._()
     : super(
         from: null,
         argument: null,
@@ -350,12 +349,12 @@ final class LikeApiProvider
 String _$likeApiHash() => r'5095098e8e98d14190505cce9fad7482cb1d5bca';
 
 @ProviderFor(rankingApi)
-const rankingApiProvider = RankingApiProvider._();
+final rankingApiProvider = RankingApiProvider._();
 
 final class RankingApiProvider
     extends $FunctionalProvider<RankingApi, RankingApi, RankingApi>
     with $Provider<RankingApi> {
-  const RankingApiProvider._()
+  RankingApiProvider._()
     : super(
         from: null,
         argument: null,

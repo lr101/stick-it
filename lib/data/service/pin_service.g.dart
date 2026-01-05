@@ -10,11 +10,11 @@ part of 'pin_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(PinService)
-const pinServiceProvider = PinServiceFamily._();
+final pinServiceProvider = PinServiceFamily._();
 
 final class PinServiceProvider
     extends $AsyncNotifierProvider<PinService, Set<LocalPinDto>> {
-  const PinServiceProvider._({
+  PinServiceProvider._({
     required PinServiceFamily super.from,
     required String super.argument,
   }) : super(
@@ -61,7 +61,7 @@ final class PinServiceFamily extends $Family
           FutureOr<Set<LocalPinDto>>,
           String
         > {
-  const PinServiceFamily._()
+  PinServiceFamily._()
     : super(
         retry: null,
         name: r'pinServiceProvider',
@@ -85,7 +85,6 @@ abstract class _$PinService extends $AsyncNotifier<Set<LocalPinDto>> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(_$args);
     final ref =
         this.ref as $Ref<AsyncValue<Set<LocalPinDto>>, Set<LocalPinDto>>;
     final element =
@@ -96,12 +95,12 @@ abstract class _$PinService extends $AsyncNotifier<Set<LocalPinDto>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, () => build(_$args));
   }
 }
 
 @ProviderFor(activatedPins)
-const activatedPinsProvider = ActivatedPinsProvider._();
+final activatedPinsProvider = ActivatedPinsProvider._();
 
 final class ActivatedPinsProvider
     extends
@@ -111,7 +110,7 @@ final class ActivatedPinsProvider
           FutureOr<Set<LocalPinDto>>
         >
     with $FutureModifier<Set<LocalPinDto>>, $FutureProvider<Set<LocalPinDto>> {
-  const ActivatedPinsProvider._()
+  ActivatedPinsProvider._()
     : super(
         from: null,
         argument: null,
@@ -140,7 +139,7 @@ final class ActivatedPinsProvider
 String _$activatedPinsHash() => r'9573209725906800de2b5007857da8873c02f5b6';
 
 @ProviderFor(activatedPinsWithoutLoading)
-const activatedPinsWithoutLoadingProvider =
+final activatedPinsWithoutLoadingProvider =
     ActivatedPinsWithoutLoadingProvider._();
 
 final class ActivatedPinsWithoutLoadingProvider
@@ -151,7 +150,7 @@ final class ActivatedPinsWithoutLoadingProvider
           Set<LocalPinDto>
         >
     with $Provider<Set<LocalPinDto>> {
-  const ActivatedPinsWithoutLoadingProvider._()
+  ActivatedPinsWithoutLoadingProvider._()
     : super(
         from: null,
         argument: null,
@@ -188,7 +187,7 @@ String _$activatedPinsWithoutLoadingHash() =>
     r'963dd78336b37523f60edb3a6781a0fca960ef4a';
 
 @ProviderFor(sortedActivatedPins)
-const sortedActivatedPinsProvider = SortedActivatedPinsProvider._();
+final sortedActivatedPinsProvider = SortedActivatedPinsProvider._();
 
 final class SortedActivatedPinsProvider
     extends
@@ -200,7 +199,7 @@ final class SortedActivatedPinsProvider
     with
         $FutureModifier<List<LocalPinDto>>,
         $FutureProvider<List<LocalPinDto>> {
-  const SortedActivatedPinsProvider._()
+  SortedActivatedPinsProvider._()
     : super(
         from: null,
         argument: null,
@@ -230,7 +229,7 @@ String _$sortedActivatedPinsHash() =>
     r'b7ae537c50ec211ab28a4700ca28060c8891fc88';
 
 @ProviderFor(sortedGroupPins)
-const sortedGroupPinsProvider = SortedGroupPinsFamily._();
+final sortedGroupPinsProvider = SortedGroupPinsFamily._();
 
 final class SortedGroupPinsProvider
     extends
@@ -242,7 +241,7 @@ final class SortedGroupPinsProvider
     with
         $FutureModifier<List<LocalPinDto>?>,
         $FutureProvider<List<LocalPinDto>?> {
-  const SortedGroupPinsProvider._({
+  SortedGroupPinsProvider._({
     required SortedGroupPinsFamily super.from,
     required String super.argument,
   }) : super(
@@ -290,7 +289,7 @@ String _$sortedGroupPinsHash() => r'23dbccfee5ac1e9dd3c262c0bcb63e500539867a';
 
 final class SortedGroupPinsFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<List<LocalPinDto>?>, String> {
-  const SortedGroupPinsFamily._()
+  SortedGroupPinsFamily._()
     : super(
         retry: null,
         name: r'sortedGroupPinsProvider',
@@ -307,7 +306,7 @@ final class SortedGroupPinsFamily extends $Family
 }
 
 @ProviderFor(pinsSortedByDistance)
-const pinsSortedByDistanceProvider = PinsSortedByDistanceProvider._();
+final pinsSortedByDistanceProvider = PinsSortedByDistanceProvider._();
 
 final class PinsSortedByDistanceProvider
     extends
@@ -317,7 +316,7 @@ final class PinsSortedByDistanceProvider
           AsyncValue<List<MapEntry<LocalPinDto, double>>>
         >
     with $Provider<AsyncValue<List<MapEntry<LocalPinDto, double>>>> {
-  const PinsSortedByDistanceProvider._()
+  PinsSortedByDistanceProvider._()
     : super(
         from: null,
         argument: null,

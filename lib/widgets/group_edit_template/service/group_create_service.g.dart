@@ -10,11 +10,11 @@ part of 'group_create_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(GroupCreateService)
-const groupCreateServiceProvider = GroupCreateServiceProvider._();
+final groupCreateServiceProvider = GroupCreateServiceProvider._();
 
 final class GroupCreateServiceProvider
     extends $NotifierProvider<GroupCreateService, GroupCreateState> {
-  const GroupCreateServiceProvider._()
+  GroupCreateServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -49,7 +49,6 @@ abstract class _$GroupCreateService extends $Notifier<GroupCreateState> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<GroupCreateState, GroupCreateState>;
     final element =
         ref.element
@@ -59,17 +58,17 @@ abstract class _$GroupCreateService extends $Notifier<GroupCreateState> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(createGroupProfileImage)
-const createGroupProfileImageProvider = CreateGroupProfileImageProvider._();
+final createGroupProfileImageProvider = CreateGroupProfileImageProvider._();
 
 final class CreateGroupProfileImageProvider
     extends $FunctionalProvider<Uint8List?, Uint8List?, Uint8List?>
     with $Provider<Uint8List?> {
-  const CreateGroupProfileImageProvider._()
+  CreateGroupProfileImageProvider._()
     : super(
         from: null,
         argument: null,

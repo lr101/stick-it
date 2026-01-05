@@ -10,10 +10,10 @@ part of 'camera_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(CameraIndex)
-const cameraIndexProvider = CameraIndexProvider._();
+final cameraIndexProvider = CameraIndexProvider._();
 
 final class CameraIndexProvider extends $NotifierProvider<CameraIndex, int> {
-  const CameraIndexProvider._()
+  CameraIndexProvider._()
     : super(
         from: null,
         argument: null,
@@ -47,7 +47,6 @@ abstract class _$CameraIndex extends $Notifier<int> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<int, int>;
     final element =
         ref.element
@@ -57,16 +56,16 @@ abstract class _$CameraIndex extends $Notifier<int> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(CameraValues)
-const cameraValuesProvider = CameraValuesFamily._();
+final cameraValuesProvider = CameraValuesFamily._();
 
 final class CameraValuesProvider
     extends $AsyncNotifierProvider<CameraValues, CameraState> {
-  const CameraValuesProvider._({
+  CameraValuesProvider._({
     required CameraValuesFamily super.from,
     required CameraController super.argument,
   }) : super(
@@ -113,7 +112,7 @@ final class CameraValuesFamily extends $Family
           FutureOr<CameraState>,
           CameraController
         > {
-  const CameraValuesFamily._()
+  CameraValuesFamily._()
     : super(
         retry: null,
         name: r'cameraValuesProvider',
@@ -137,7 +136,6 @@ abstract class _$CameraValues extends $AsyncNotifier<CameraState> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(_$args);
     final ref = this.ref as $Ref<AsyncValue<CameraState>, CameraState>;
     final element =
         ref.element
@@ -147,16 +145,16 @@ abstract class _$CameraValues extends $AsyncNotifier<CameraState> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, () => build(_$args));
   }
 }
 
 @ProviderFor(CameraGroupIndex)
-const cameraGroupIndexProvider = CameraGroupIndexProvider._();
+final cameraGroupIndexProvider = CameraGroupIndexProvider._();
 
 final class CameraGroupIndexProvider
     extends $NotifierProvider<CameraGroupIndex, int> {
-  const CameraGroupIndexProvider._()
+  CameraGroupIndexProvider._()
     : super(
         from: null,
         argument: null,
@@ -190,7 +188,6 @@ abstract class _$CameraGroupIndex extends $Notifier<int> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<int, int>;
     final element =
         ref.element
@@ -200,12 +197,12 @@ abstract class _$CameraGroupIndex extends $Notifier<int> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(cameraSelectedGroup)
-const cameraSelectedGroupProvider = CameraSelectedGroupProvider._();
+final cameraSelectedGroupProvider = CameraSelectedGroupProvider._();
 
 final class CameraSelectedGroupProvider
     extends
@@ -215,7 +212,7 @@ final class CameraSelectedGroupProvider
           FutureOr<LocalGroupDto>
         >
     with $FutureModifier<LocalGroupDto>, $FutureProvider<LocalGroupDto> {
-  const CameraSelectedGroupProvider._()
+  CameraSelectedGroupProvider._()
     : super(
         from: null,
         argument: null,
@@ -245,17 +242,17 @@ String _$cameraSelectedGroupHash() =>
     r'e34f8df3bcae7820db52382e7eb2854077fa2e4c';
 
 @ProviderFor(CameraCapturing)
-const cameraCapturingProvider = CameraCapturingProvider._();
+final cameraCapturingProvider = CameraCapturingProvider._();
 
 final class CameraCapturingProvider
     extends $NotifierProvider<CameraCapturing, bool> {
-  const CameraCapturingProvider._()
+  CameraCapturingProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'cameraCapturingProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -276,14 +273,13 @@ final class CameraCapturingProvider
   }
 }
 
-String _$cameraCapturingHash() => r'd82a1d173ce7bbde1bf2c3e7ffc79869833964e8';
+String _$cameraCapturingHash() => r'085c4bc10e7ad57d76a4866256c2ffdd6d795047';
 
 abstract class _$CameraCapturing extends $Notifier<bool> {
   bool build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -293,6 +289,6 @@ abstract class _$CameraCapturing extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

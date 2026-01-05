@@ -10,13 +10,13 @@ part of 'group_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(groupRepository)
-const groupRepositoryProvider = GroupRepositoryProvider._();
+final groupRepositoryProvider = GroupRepositoryProvider._();
 
 final class GroupRepositoryProvider
     extends
         $FunctionalProvider<GroupRepository, GroupRepository, GroupRepository>
     with $Provider<GroupRepository> {
-  const GroupRepositoryProvider._()
+  GroupRepositoryProvider._()
     : super(
         from: null,
         argument: null,
@@ -52,7 +52,7 @@ final class GroupRepositoryProvider
 String _$groupRepositoryHash() => r'51119577a6fb9b3cadc87be1bd741ef7955662de';
 
 @ProviderFor(noUserGroupRepository)
-const noUserGroupRepositoryProvider = NoUserGroupRepositoryProvider._();
+final noUserGroupRepositoryProvider = NoUserGroupRepositoryProvider._();
 
 final class NoUserGroupRepositoryProvider
     extends
@@ -62,7 +62,7 @@ final class NoUserGroupRepositoryProvider
           NoUserGroupRepository
         >
     with $Provider<NoUserGroupRepository> {
-  const NoUserGroupRepositoryProvider._()
+  NoUserGroupRepositoryProvider._()
     : super(
         from: null,
         argument: null,

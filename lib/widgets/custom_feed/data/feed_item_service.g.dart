@@ -10,12 +10,12 @@ part of 'feed_item_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(feedItem)
-const feedItemProvider = FeedItemProvider._();
+final feedItemProvider = FeedItemProvider._();
 
 final class FeedItemProvider
     extends $FunctionalProvider<LocalPinDto, LocalPinDto, LocalPinDto>
     with $Provider<LocalPinDto> {
-  const FeedItemProvider._()
+  FeedItemProvider._()
     : super(
         from: null,
         argument: null,

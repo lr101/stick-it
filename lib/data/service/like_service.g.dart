@@ -10,11 +10,11 @@ part of 'like_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(UserLikeService)
-const userLikeServiceProvider = UserLikeServiceFamily._();
+final userLikeServiceProvider = UserLikeServiceFamily._();
 
 final class UserLikeServiceProvider
     extends $AsyncNotifierProvider<UserLikeService, UserLikesDto> {
-  const UserLikeServiceProvider._({
+  UserLikeServiceProvider._({
     required UserLikeServiceFamily super.from,
     required String super.argument,
   }) : super(
@@ -61,7 +61,7 @@ final class UserLikeServiceFamily extends $Family
           FutureOr<UserLikesDto>,
           String
         > {
-  const UserLikeServiceFamily._()
+  UserLikeServiceFamily._()
     : super(
         retry: null,
         name: r'userLikeServiceProvider',
@@ -85,7 +85,6 @@ abstract class _$UserLikeService extends $AsyncNotifier<UserLikesDto> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(_$args);
     final ref = this.ref as $Ref<AsyncValue<UserLikesDto>, UserLikesDto>;
     final element =
         ref.element
@@ -95,6 +94,6 @@ abstract class _$UserLikeService extends $AsyncNotifier<UserLikesDto> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, () => build(_$args));
   }
 }

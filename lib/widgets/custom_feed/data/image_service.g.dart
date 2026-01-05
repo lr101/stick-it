@@ -10,7 +10,7 @@ part of 'image_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(getPinImageInfo)
-const getPinImageInfoProvider = GetPinImageInfoFamily._();
+final getPinImageInfoProvider = GetPinImageInfoFamily._();
 
 final class GetPinImageInfoProvider
     extends
@@ -20,7 +20,7 @@ final class GetPinImageInfoProvider
           FutureOr<PinImageInfo?>
         >
     with $FutureModifier<PinImageInfo?>, $FutureProvider<PinImageInfo?> {
-  const GetPinImageInfoProvider._({
+  GetPinImageInfoProvider._({
     required GetPinImageInfoFamily super.from,
     required LocalPinDto super.argument,
   }) : super(
@@ -68,7 +68,7 @@ String _$getPinImageInfoHash() => r'7b2bc5df14f355670077b6886432a86ee0d5cec2';
 
 final class GetPinImageInfoFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<PinImageInfo?>, LocalPinDto> {
-  const GetPinImageInfoFamily._()
+  GetPinImageInfoFamily._()
     : super(
         retry: null,
         name: r'getPinImageInfoProvider',

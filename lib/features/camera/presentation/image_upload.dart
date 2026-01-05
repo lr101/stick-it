@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:mutex/mutex.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:uuid/uuid.dart';
@@ -33,7 +32,6 @@ class ImageUpload extends ConsumerStatefulWidget {
 class _ImageUploadState extends ConsumerState<ImageUpload> {
   final _controller = TextEditingController();
 
-  final Mutex _m = Mutex();
   late final int _groupIndexWhenOpened;
 
   @override
@@ -109,8 +107,6 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
 
 
   Future<void> handleApprove() async {
-    if (_m.isLocked) return;
-    await _m.acquire();
     final group = await ref.watch(cameraSelectedGroupProvider.future);
     final pin = LocalPinDto(
         id: const Uuid().v4(),
@@ -121,14 +117,20 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         creatorId: ref.watch(globalDataServiceProvider).userId!,
         groupId: group.groupId,
         isHidden: false,);
-    _m.release();
-    final returnValue = await ref.read(pinServiceProvider(group.groupId).notifier).addPinToGroup(pin, widget.image);
-    if (returnValue != null) {
-      CustomErrorSnackBar.message(message: returnValue);
+    final errorMessage = await ref.read(pinServiceProvider(group.groupId).notifier).addPinToGroup(pin, widget.image);
+    await postUploadActions(errorMessage);
+    ref.read(cameraGroupIndexProvider.notifier).updateIndex(_groupIndexWhenOpened);
+    if (!mounted) return;
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  Future<void> postUploadActions(String? errorMessage) async {
+    if (errorMessage != null) {
+      CustomErrorSnackBar.message(message: errorMessage);
     } else {
       CustomErrorSnackBar.message(message: "Successfully synced to server",);
     }
-    await Posthog().screen(screenName: "uploadPin", properties: {"result": returnValue != null, "error": returnValue?.toString() ?? ""});
+    await Posthog().screen(screenName: "uploadPin", properties: {"result": errorMessage != null, "error": errorMessage?.toString() ?? ""});
     if (ref.read(appReviewStateProvider)) {
       ref.read(appReviewStateProvider.notifier).updateLastReviewDate();
       final InAppReview inAppReview = InAppReview.instance;
@@ -136,9 +138,6 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         await inAppReview.requestReview();
       }
     }
-    ref.read(cameraGroupIndexProvider.notifier).updateIndex(_groupIndexWhenOpened);
-    if (!mounted) return;
-    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Future<void> handleEdit() async {

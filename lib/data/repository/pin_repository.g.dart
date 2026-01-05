@@ -10,12 +10,12 @@ part of 'pin_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(pinRepository)
-const pinRepositoryProvider = PinRepositoryProvider._();
+final pinRepositoryProvider = PinRepositoryProvider._();
 
 final class PinRepositoryProvider
     extends $FunctionalProvider<PinRepository, PinRepository, PinRepository>
     with $Provider<PinRepository> {
-  const PinRepositoryProvider._()
+  PinRepositoryProvider._()
     : super(
         from: null,
         argument: null,
@@ -51,7 +51,7 @@ final class PinRepositoryProvider
 String _$pinRepositoryHash() => r'e9c71e7ad4bb7fd09e023aa9cba6cf667c79a130';
 
 @ProviderFor(otherPinRepository)
-const otherPinRepositoryProvider = OtherPinRepositoryProvider._();
+final otherPinRepositoryProvider = OtherPinRepositoryProvider._();
 
 final class OtherPinRepositoryProvider
     extends
@@ -61,7 +61,7 @@ final class OtherPinRepositoryProvider
           OtherPinRepository
         >
     with $Provider<OtherPinRepository> {
-  const OtherPinRepositoryProvider._()
+  OtherPinRepositoryProvider._()
     : super(
         from: null,
         argument: null,
@@ -99,7 +99,7 @@ String _$otherPinRepositoryHash() =>
     r'909a627aa32009f2ca3f9bdee01de11a17b537fa';
 
 @ProviderFor(pinLikeRepository)
-const pinLikeRepositoryProvider = PinLikeRepositoryProvider._();
+final pinLikeRepositoryProvider = PinLikeRepositoryProvider._();
 
 final class PinLikeRepositoryProvider
     extends
@@ -109,7 +109,7 @@ final class PinLikeRepositoryProvider
           PinLikeRepository
         >
     with $Provider<PinLikeRepository> {
-  const PinLikeRepositoryProvider._()
+  PinLikeRepositoryProvider._()
     : super(
         from: null,
         argument: null,

@@ -10,7 +10,7 @@ part of 'group_image_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(groupProfilePictureById)
-const groupProfilePictureByIdProvider = GroupProfilePictureByIdFamily._();
+final groupProfilePictureByIdProvider = GroupProfilePictureByIdFamily._();
 
 final class GroupProfilePictureByIdProvider
     extends
@@ -20,7 +20,7 @@ final class GroupProfilePictureByIdProvider
           FutureOr<Uint8List>
         >
     with $FutureModifier<Uint8List>, $FutureProvider<Uint8List> {
-  const GroupProfilePictureByIdProvider._({
+  GroupProfilePictureByIdProvider._({
     required GroupProfilePictureByIdFamily super.from,
     required String super.argument,
   }) : super(
@@ -69,7 +69,7 @@ String _$groupProfilePictureByIdHash() =>
 
 final class GroupProfilePictureByIdFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Uint8List>, String> {
-  const GroupProfilePictureByIdFamily._()
+  GroupProfilePictureByIdFamily._()
     : super(
         retry: null,
         name: r'groupProfilePictureByIdProvider',
@@ -86,7 +86,7 @@ final class GroupProfilePictureByIdFamily extends $Family
 }
 
 @ProviderFor(groupProfilePictureSmallById)
-const groupProfilePictureSmallByIdProvider =
+final groupProfilePictureSmallByIdProvider =
     GroupProfilePictureSmallByIdFamily._();
 
 final class GroupProfilePictureSmallByIdProvider
@@ -97,7 +97,7 @@ final class GroupProfilePictureSmallByIdProvider
           FutureOr<Uint8List>
         >
     with $FutureModifier<Uint8List>, $FutureProvider<Uint8List> {
-  const GroupProfilePictureSmallByIdProvider._({
+  GroupProfilePictureSmallByIdProvider._({
     required GroupProfilePictureSmallByIdFamily super.from,
     required String super.argument,
   }) : super(
@@ -146,7 +146,7 @@ String _$groupProfilePictureSmallByIdHash() =>
 
 final class GroupProfilePictureSmallByIdFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Uint8List>, String> {
-  const GroupProfilePictureSmallByIdFamily._()
+  GroupProfilePictureSmallByIdFamily._()
     : super(
         retry: null,
         name: r'groupProfilePictureSmallByIdProvider',
@@ -163,7 +163,7 @@ final class GroupProfilePictureSmallByIdFamily extends $Family
 }
 
 @ProviderFor(groupPinImageById)
-const groupPinImageByIdProvider = GroupPinImageByIdFamily._();
+final groupPinImageByIdProvider = GroupPinImageByIdFamily._();
 
 final class GroupPinImageByIdProvider
     extends
@@ -173,7 +173,7 @@ final class GroupPinImageByIdProvider
           FutureOr<Uint8List>
         >
     with $FutureModifier<Uint8List>, $FutureProvider<Uint8List> {
-  const GroupPinImageByIdProvider._({
+  GroupPinImageByIdProvider._({
     required GroupPinImageByIdFamily super.from,
     required String super.argument,
   }) : super(
@@ -220,7 +220,7 @@ String _$groupPinImageByIdHash() => r'5b6665b376f67cc070663da29093c66528e1a170';
 
 final class GroupPinImageByIdFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Uint8List>, String> {
-  const GroupPinImageByIdFamily._()
+  GroupPinImageByIdFamily._()
     : super(
         retry: null,
         name: r'groupPinImageByIdProvider',

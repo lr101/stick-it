@@ -10,11 +10,11 @@ part of 'user_edit_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(UserEditState)
-const userEditStateProvider = UserEditStateProvider._();
+final userEditStateProvider = UserEditStateProvider._();
 
 final class UserEditStateProvider
     extends $NotifierProvider<UserEditState, Uint8List?> {
-  const UserEditStateProvider._()
+  UserEditStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,7 +48,6 @@ abstract class _$UserEditState extends $Notifier<Uint8List?> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<Uint8List?, Uint8List?>;
     final element =
         ref.element
@@ -58,6 +57,6 @@ abstract class _$UserEditState extends $Notifier<Uint8List?> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

@@ -10,11 +10,11 @@ part of 'group_edit_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(GroupEditService)
-const groupEditServiceProvider = GroupEditServiceProvider._();
+final groupEditServiceProvider = GroupEditServiceProvider._();
 
 final class GroupEditServiceProvider
     extends $NotifierProvider<GroupEditService, String> {
-  const GroupEditServiceProvider._()
+  GroupEditServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,7 +48,6 @@ abstract class _$GroupEditService extends $Notifier<String> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<String, String>;
     final element =
         ref.element
@@ -58,6 +57,6 @@ abstract class _$GroupEditService extends $Notifier<String> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

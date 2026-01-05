@@ -10,12 +10,12 @@ part of 'ranking_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(Top3GroupService)
-const top3GroupServiceProvider = Top3GroupServiceProvider._();
+final top3GroupServiceProvider = Top3GroupServiceProvider._();
 
 final class Top3GroupServiceProvider
     extends
         $AsyncNotifierProvider<Top3GroupService, List<GroupRankingDtoInner>?> {
-  const Top3GroupServiceProvider._()
+  Top3GroupServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -42,7 +42,6 @@ abstract class _$Top3GroupService
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref =
         this.ref
             as $Ref<
@@ -60,6 +59,6 @@ abstract class _$Top3GroupService
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

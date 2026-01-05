@@ -10,11 +10,11 @@ part of 'image_picker_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(ImagePickerState)
-const imagePickerStateProvider = ImagePickerStateProvider._();
+final imagePickerStateProvider = ImagePickerStateProvider._();
 
 final class ImagePickerStateProvider
     extends $AsyncNotifierProvider<ImagePickerState, Uint8List?> {
-  const ImagePickerStateProvider._()
+  ImagePickerStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -40,7 +40,6 @@ abstract class _$ImagePickerState extends $AsyncNotifier<Uint8List?> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<AsyncValue<Uint8List?>, Uint8List?>;
     final element =
         ref.element
@@ -50,6 +49,6 @@ abstract class _$ImagePickerState extends $AsyncNotifier<Uint8List?> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

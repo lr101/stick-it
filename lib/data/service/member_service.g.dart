@@ -10,11 +10,11 @@ part of 'member_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(MemberService)
-const memberServiceProvider = MemberServiceFamily._();
+final memberServiceProvider = MemberServiceFamily._();
 
 final class MemberServiceProvider
     extends $AsyncNotifierProvider<MemberService, List<MemberDto>> {
-  const MemberServiceProvider._({
+  MemberServiceProvider._({
     required MemberServiceFamily super.from,
     required String super.argument,
   }) : super(
@@ -61,7 +61,7 @@ final class MemberServiceFamily extends $Family
           FutureOr<List<MemberDto>>,
           String
         > {
-  const MemberServiceFamily._()
+  MemberServiceFamily._()
     : super(
         retry: null,
         name: r'memberServiceProvider',
@@ -85,7 +85,6 @@ abstract class _$MemberService extends $AsyncNotifier<List<MemberDto>> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build(_$args);
     final ref = this.ref as $Ref<AsyncValue<List<MemberDto>>, List<MemberDto>>;
     final element =
         ref.element
@@ -95,6 +94,6 @@ abstract class _$MemberService extends $AsyncNotifier<List<MemberDto>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, () => build(_$args));
   }
 }

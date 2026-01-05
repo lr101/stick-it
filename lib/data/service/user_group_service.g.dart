@@ -10,11 +10,11 @@ part of 'user_group_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(UserGroupService)
-const userGroupServiceProvider = UserGroupServiceProvider._();
+final userGroupServiceProvider = UserGroupServiceProvider._();
 
 final class UserGroupServiceProvider
     extends $AsyncNotifierProvider<UserGroupService, Set<LocalGroupDto>> {
-  const UserGroupServiceProvider._()
+  UserGroupServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -40,7 +40,6 @@ abstract class _$UserGroupService extends $AsyncNotifier<Set<LocalGroupDto>> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref =
         this.ref as $Ref<AsyncValue<Set<LocalGroupDto>>, Set<LocalGroupDto>>;
     final element =
@@ -51,12 +50,12 @@ abstract class _$UserGroupService extends $AsyncNotifier<Set<LocalGroupDto>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(groupById)
-const groupByIdProvider = GroupByIdFamily._();
+final groupByIdProvider = GroupByIdFamily._();
 
 final class GroupByIdProvider
     extends
@@ -66,7 +65,7 @@ final class GroupByIdProvider
           FutureOr<LocalGroupDto?>
         >
     with $FutureModifier<LocalGroupDto?>, $FutureProvider<LocalGroupDto?> {
-  const GroupByIdProvider._({
+  GroupByIdProvider._({
     required GroupByIdFamily super.from,
     required String super.argument,
   }) : super(
@@ -114,7 +113,7 @@ String _$groupByIdHash() => r'8e8485b96fd0837f8c4dc719977ef2de91738583';
 
 final class GroupByIdFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<LocalGroupDto?>, String> {
-  const GroupByIdFamily._()
+  GroupByIdFamily._()
     : super(
         retry: null,
         name: r'groupByIdProvider',
@@ -131,7 +130,7 @@ final class GroupByIdFamily extends $Family
 }
 
 @ProviderFor(activeGroups)
-const activeGroupsProvider = ActiveGroupsProvider._();
+final activeGroupsProvider = ActiveGroupsProvider._();
 
 final class ActiveGroupsProvider
     extends
@@ -143,7 +142,7 @@ final class ActiveGroupsProvider
     with
         $FutureModifier<Set<LocalGroupDto>>,
         $FutureProvider<Set<LocalGroupDto>> {
-  const ActiveGroupsProvider._()
+  ActiveGroupsProvider._()
     : super(
         from: null,
         argument: null,
@@ -172,7 +171,7 @@ final class ActiveGroupsProvider
 String _$activeGroupsHash() => r'51791894bb2bc2701a868d5fde855c52b87dd383';
 
 @ProviderFor(orderedGroups)
-const orderedGroupsProvider = OrderedGroupsProvider._();
+final orderedGroupsProvider = OrderedGroupsProvider._();
 
 final class OrderedGroupsProvider
     extends
@@ -184,7 +183,7 @@ final class OrderedGroupsProvider
     with
         $FutureModifier<List<LocalGroupDto>>,
         $FutureProvider<List<LocalGroupDto>> {
-  const OrderedGroupsProvider._()
+  OrderedGroupsProvider._()
     : super(
         from: null,
         argument: null,
@@ -213,12 +212,12 @@ final class OrderedGroupsProvider
 String _$orderedGroupsHash() => r'd6c9fb1bad23f80f667fc0677a6ae12626fe8a8d';
 
 @ProviderFor(groupByIdActivated)
-const groupByIdActivatedProvider = GroupByIdActivatedFamily._();
+final groupByIdActivatedProvider = GroupByIdActivatedFamily._();
 
 final class GroupByIdActivatedProvider
     extends $FunctionalProvider<AsyncValue<bool>, bool, FutureOr<bool>>
     with $FutureModifier<bool>, $FutureProvider<bool> {
-  const GroupByIdActivatedProvider._({
+  GroupByIdActivatedProvider._({
     required GroupByIdActivatedFamily super.from,
     required String super.argument,
   }) : super(
@@ -266,7 +265,7 @@ String _$groupByIdActivatedHash() =>
 
 final class GroupByIdActivatedFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<bool>, String> {
-  const GroupByIdActivatedFamily._()
+  GroupByIdActivatedFamily._()
     : super(
         retry: null,
         name: r'groupByIdActivatedProvider',
@@ -283,7 +282,7 @@ final class GroupByIdActivatedFamily extends $Family
 }
 
 @ProviderFor(groupByIdWithoutState)
-const groupByIdWithoutStateProvider = GroupByIdWithoutStateFamily._();
+final groupByIdWithoutStateProvider = GroupByIdWithoutStateFamily._();
 
 final class GroupByIdWithoutStateProvider
     extends
@@ -293,7 +292,7 @@ final class GroupByIdWithoutStateProvider
           FutureOr<LocalGroupDto>
         >
     with $FutureModifier<LocalGroupDto>, $FutureProvider<LocalGroupDto> {
-  const GroupByIdWithoutStateProvider._({
+  GroupByIdWithoutStateProvider._({
     required GroupByIdWithoutStateFamily super.from,
     required String super.argument,
   }) : super(
@@ -342,7 +341,7 @@ String _$groupByIdWithoutStateHash() =>
 
 final class GroupByIdWithoutStateFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<LocalGroupDto>, String> {
-  const GroupByIdWithoutStateFamily._()
+  GroupByIdWithoutStateFamily._()
     : super(
         retry: null,
         name: r'groupByIdWithoutStateProvider',

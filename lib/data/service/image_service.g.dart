@@ -10,7 +10,7 @@ part of 'image_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(getUserProfile)
-const getUserProfileProvider = GetUserProfileFamily._();
+final getUserProfileProvider = GetUserProfileFamily._();
 
 final class GetUserProfileProvider
     extends
@@ -20,7 +20,7 @@ final class GetUserProfileProvider
           FutureOr<Uint8List?>
         >
     with $FutureModifier<Uint8List?>, $FutureProvider<Uint8List?> {
-  const GetUserProfileProvider._({
+  GetUserProfileProvider._({
     required GetUserProfileFamily super.from,
     required String super.argument,
   }) : super(
@@ -67,7 +67,7 @@ String _$getUserProfileHash() => r'cfb2e83ca0010827fe002f08eb3f9bcf1a00f0f6';
 
 final class GetUserProfileFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Uint8List?>, String> {
-  const GetUserProfileFamily._()
+  GetUserProfileFamily._()
     : super(
         retry: null,
         name: r'getUserProfileProvider',
@@ -84,7 +84,7 @@ final class GetUserProfileFamily extends $Family
 }
 
 @ProviderFor(getUserProfileSmall)
-const getUserProfileSmallProvider = GetUserProfileSmallFamily._();
+final getUserProfileSmallProvider = GetUserProfileSmallFamily._();
 
 final class GetUserProfileSmallProvider
     extends
@@ -94,7 +94,7 @@ final class GetUserProfileSmallProvider
           FutureOr<Uint8List?>
         >
     with $FutureModifier<Uint8List?>, $FutureProvider<Uint8List?> {
-  const GetUserProfileSmallProvider._({
+  GetUserProfileSmallProvider._({
     required GetUserProfileSmallFamily super.from,
     required String super.argument,
   }) : super(
@@ -142,7 +142,7 @@ String _$getUserProfileSmallHash() =>
 
 final class GetUserProfileSmallFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Uint8List?>, String> {
-  const GetUserProfileSmallFamily._()
+  GetUserProfileSmallFamily._()
     : super(
         retry: null,
         name: r'getUserProfileSmallProvider',

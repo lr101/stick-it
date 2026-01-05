@@ -10,12 +10,12 @@ part of 'reachability_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(reachabilityService)
-const reachabilityServiceProvider = ReachabilityServiceProvider._();
+final reachabilityServiceProvider = ReachabilityServiceProvider._();
 
 final class ReachabilityServiceProvider
     extends $FunctionalProvider<AsyncValue<bool>, bool, Stream<bool>>
     with $FutureModifier<bool>, $StreamProvider<bool> {
-  const ReachabilityServiceProvider._()
+  ReachabilityServiceProvider._()
     : super(
         from: null,
         argument: null,

@@ -10,11 +10,11 @@ part of 'filter_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(HiddenUserService)
-const hiddenUserServiceProvider = HiddenUserServiceProvider._();
+final hiddenUserServiceProvider = HiddenUserServiceProvider._();
 
 final class HiddenUserServiceProvider
     extends $NotifierProvider<HiddenUserService, List<String>> {
-  const HiddenUserServiceProvider._()
+  HiddenUserServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,7 +48,6 @@ abstract class _$HiddenUserService extends $Notifier<List<String>> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<List<String>, List<String>>;
     final element =
         ref.element
@@ -58,16 +57,16 @@ abstract class _$HiddenUserService extends $Notifier<List<String>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(HiddenPostsService)
-const hiddenPostsServiceProvider = HiddenPostsServiceProvider._();
+final hiddenPostsServiceProvider = HiddenPostsServiceProvider._();
 
 final class HiddenPostsServiceProvider
     extends $NotifierProvider<HiddenPostsService, List<String>> {
-  const HiddenPostsServiceProvider._()
+  HiddenPostsServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -102,7 +101,6 @@ abstract class _$HiddenPostsService extends $Notifier<List<String>> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<List<String>, List<String>>;
     final element =
         ref.element
@@ -112,6 +110,6 @@ abstract class _$HiddenPostsService extends $Notifier<List<String>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

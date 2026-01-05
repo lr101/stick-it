@@ -10,11 +10,11 @@ part of 'geojson_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(GeojsonService)
-const geojsonServiceProvider = GeojsonServiceProvider._();
+final geojsonServiceProvider = GeojsonServiceProvider._();
 
 final class GeojsonServiceProvider
     extends $AsyncNotifierProvider<GeojsonService, List<Polygon<Object>>> {
-  const GeojsonServiceProvider._()
+  GeojsonServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -40,7 +40,6 @@ abstract class _$GeojsonService extends $AsyncNotifier<List<Polygon<Object>>> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref =
         this.ref
             as $Ref<AsyncValue<List<Polygon<Object>>>, List<Polygon<Object>>>;
@@ -55,16 +54,16 @@ abstract class _$GeojsonService extends $AsyncNotifier<List<Polygon<Object>>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(DistrictService)
-const districtServiceProvider = DistrictServiceProvider._();
+final districtServiceProvider = DistrictServiceProvider._();
 
 final class DistrictServiceProvider
     extends $NotifierProvider<DistrictService, MapInfoDto?> {
-  const DistrictServiceProvider._()
+  DistrictServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -98,7 +97,6 @@ abstract class _$DistrictService extends $Notifier<MapInfoDto?> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<MapInfoDto?, MapInfoDto?>;
     final element =
         ref.element
@@ -108,6 +106,6 @@ abstract class _$DistrictService extends $Notifier<MapInfoDto?> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

@@ -10,7 +10,7 @@ part of 'pin_image_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(pinImageRepository)
-const pinImageRepositoryProvider = PinImageRepositoryProvider._();
+final pinImageRepositoryProvider = PinImageRepositoryProvider._();
 
 final class PinImageRepositoryProvider
     extends
@@ -20,7 +20,7 @@ final class PinImageRepositoryProvider
           PinImageRepository
         >
     with $Provider<PinImageRepository> {
-  const PinImageRepositoryProvider._()
+  PinImageRepositoryProvider._()
     : super(
         from: null,
         argument: null,

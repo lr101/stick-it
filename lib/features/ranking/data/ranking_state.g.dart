@@ -10,11 +10,11 @@ part of 'ranking_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(RankingGid)
-const rankingGidProvider = RankingGidProvider._();
+final rankingGidProvider = RankingGidProvider._();
 
 final class RankingGidProvider
     extends $NotifierProvider<RankingGid, RankingSearchDtoInner?> {
-  const RankingGidProvider._()
+  RankingGidProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,7 +48,6 @@ abstract class _$RankingGid extends $Notifier<RankingSearchDtoInner?> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref =
         this.ref as $Ref<RankingSearchDtoInner?, RankingSearchDtoInner?>;
     final element =
@@ -59,16 +58,16 @@ abstract class _$RankingGid extends $Notifier<RankingSearchDtoInner?> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(RankingSearch)
-const rankingSearchProvider = RankingSearchProvider._();
+final rankingSearchProvider = RankingSearchProvider._();
 
 final class RankingSearchProvider
     extends $AsyncNotifierProvider<RankingSearch, List<RankingSearchDtoInner>> {
-  const RankingSearchProvider._()
+  RankingSearchProvider._()
     : super(
         from: null,
         argument: null,
@@ -95,7 +94,6 @@ abstract class _$RankingSearch
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref =
         this.ref
             as $Ref<
@@ -113,16 +111,16 @@ abstract class _$RankingSearch
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
 @ProviderFor(RankingTimeSelector)
-const rankingTimeSelectorProvider = RankingTimeSelectorProvider._();
+final rankingTimeSelectorProvider = RankingTimeSelectorProvider._();
 
 final class RankingTimeSelectorProvider
     extends $NotifierProvider<RankingTimeSelector, int> {
-  const RankingTimeSelectorProvider._()
+  RankingTimeSelectorProvider._()
     : super(
         from: null,
         argument: null,
@@ -157,7 +155,6 @@ abstract class _$RankingTimeSelector extends $Notifier<int> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<int, int>;
     final element =
         ref.element
@@ -167,6 +164,6 @@ abstract class _$RankingTimeSelector extends $Notifier<int> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

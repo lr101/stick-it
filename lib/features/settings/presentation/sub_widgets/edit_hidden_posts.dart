@@ -40,7 +40,7 @@ class _EditHiddenPostsState extends ConsumerState<EditHiddenPosts> {
                                 placeholder: MemoryImage(kTransparentImage),
                                 image: MemoryImage(data),);
                           },
-                          error: (_, __) => const Icon(Icons.error),
+                          error: (_, trace) => const Icon(Icons.error),
                         ) ??
                     const CircularProgressIndicator(),),
           ),

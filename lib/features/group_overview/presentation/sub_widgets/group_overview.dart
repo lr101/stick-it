@@ -112,7 +112,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
                         MemberTile(memberDto: data[index], adminId: group?.groupAdmin ?? "", ),
                     itemCount: data.length,
                   ),
-              error: (err, __) => const Center(child: Text("Ups something went wrong")),
+              error: (err, _) => const Center(child: Text("Ups something went wrong")),
               loading: () => const Center(child: CircularProgressIndicator()),),
           ImageGrid(
             pinProvider: sortedGroupPinsProvider(widget.groupId),

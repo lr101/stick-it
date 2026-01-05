@@ -86,7 +86,7 @@ Future<LocalGroupDto> cameraSelectedGroup(Ref ref) async {
   return await ref.watch(groupByIdWithoutStateProvider(groupIds[groupCameraIndex]).future);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class CameraCapturing extends _$CameraCapturing {
 
   @override

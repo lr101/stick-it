@@ -10,12 +10,12 @@ part of 'default_group_image.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(defaultGroupPinImage)
-const defaultGroupPinImageProvider = DefaultGroupPinImageProvider._();
+final defaultGroupPinImageProvider = DefaultGroupPinImageProvider._();
 
 final class DefaultGroupPinImageProvider
     extends $FunctionalProvider<Uint8List, Uint8List, Uint8List>
     with $Provider<Uint8List> {
-  const DefaultGroupPinImageProvider._()
+  DefaultGroupPinImageProvider._()
     : super(
         from: null,
         argument: null,
@@ -52,12 +52,12 @@ String _$defaultGroupPinImageHash() =>
     r'20d42006401a57704eb4c7d13b7e6db5f436e4cb';
 
 @ProviderFor(defaultErrorImage)
-const defaultErrorImageProvider = DefaultErrorImageProvider._();
+final defaultErrorImageProvider = DefaultErrorImageProvider._();
 
 final class DefaultErrorImageProvider
     extends $FunctionalProvider<Uint8List, Uint8List, Uint8List>
     with $Provider<Uint8List> {
-  const DefaultErrorImageProvider._()
+  DefaultErrorImageProvider._()
     : super(
         from: null,
         argument: null,

@@ -28,7 +28,7 @@ class SquareImage extends ConsumerWidget {
                     alignment: Alignment.topCenter,
                     placeholder: MemoryImage(kTransparentImage),
                     image: MemoryImage(data),),),
-        error: (_, __) => const Center(child: Icon(Icons.error)),
+        error: (_, trace) => const Center(child: Icon(Icons.error)),
         loading: () => const SizedBox.shrink(),);
   }
 }

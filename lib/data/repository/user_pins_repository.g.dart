@@ -10,7 +10,7 @@ part of 'user_pins_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(userPinsRepository)
-const userPinsRepositoryProvider = UserPinsRepositoryProvider._();
+final userPinsRepositoryProvider = UserPinsRepositoryProvider._();
 
 final class UserPinsRepositoryProvider
     extends
@@ -20,7 +20,7 @@ final class UserPinsRepositoryProvider
           UserPinsRepository
         >
     with $Provider<UserPinsRepository> {
-  const UserPinsRepositoryProvider._()
+  UserPinsRepositoryProvider._()
     : super(
         from: null,
         argument: null,

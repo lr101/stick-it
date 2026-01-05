@@ -10,13 +10,13 @@ part of 'image_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(groupProfileRepo)
-const groupProfileRepoProvider = GroupProfileRepoProvider._();
+final groupProfileRepoProvider = GroupProfileRepoProvider._();
 
 final class GroupProfileRepoProvider
     extends
         $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
     with $Provider<ImageRepository> {
-  const GroupProfileRepoProvider._()
+  GroupProfileRepoProvider._()
     : super(
         from: null,
         argument: null,
@@ -52,13 +52,13 @@ final class GroupProfileRepoProvider
 String _$groupProfileRepoHash() => r'99b9ceab07018ae305fc2a9c44ceb0e461a1ef95';
 
 @ProviderFor(groupProfileSmallRepo)
-const groupProfileSmallRepoProvider = GroupProfileSmallRepoProvider._();
+final groupProfileSmallRepoProvider = GroupProfileSmallRepoProvider._();
 
 final class GroupProfileSmallRepoProvider
     extends
         $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
     with $Provider<ImageRepository> {
-  const GroupProfileSmallRepoProvider._()
+  GroupProfileSmallRepoProvider._()
     : super(
         from: null,
         argument: null,
@@ -95,13 +95,13 @@ String _$groupProfileSmallRepoHash() =>
     r'bc3cbceca4c78cade47eb6881c750f8ff4108133';
 
 @ProviderFor(groupPinImageRepo)
-const groupPinImageRepoProvider = GroupPinImageRepoProvider._();
+final groupPinImageRepoProvider = GroupPinImageRepoProvider._();
 
 final class GroupPinImageRepoProvider
     extends
         $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
     with $Provider<ImageRepository> {
-  const GroupPinImageRepoProvider._()
+  GroupPinImageRepoProvider._()
     : super(
         from: null,
         argument: null,
@@ -137,13 +137,13 @@ final class GroupPinImageRepoProvider
 String _$groupPinImageRepoHash() => r'3ef389b4e9ca9f6fb53c7c0d91dbcb7ca72596cc';
 
 @ProviderFor(userImageSmallRepo)
-const userImageSmallRepoProvider = UserImageSmallRepoProvider._();
+final userImageSmallRepoProvider = UserImageSmallRepoProvider._();
 
 final class UserImageSmallRepoProvider
     extends
         $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
     with $Provider<ImageRepository> {
-  const UserImageSmallRepoProvider._()
+  UserImageSmallRepoProvider._()
     : super(
         from: null,
         argument: null,
@@ -180,13 +180,13 @@ String _$userImageSmallRepoHash() =>
     r'19e688a800d4a47d5f7c2700d06988a2d772ff0b';
 
 @ProviderFor(userImageRepo)
-const userImageRepoProvider = UserImageRepoProvider._();
+final userImageRepoProvider = UserImageRepoProvider._();
 
 final class UserImageRepoProvider
     extends
         $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
     with $Provider<ImageRepository> {
-  const UserImageRepoProvider._()
+  UserImageRepoProvider._()
     : super(
         from: null,
         argument: null,

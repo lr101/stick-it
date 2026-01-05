@@ -10,11 +10,11 @@ part of 'map_panel_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(MapPanelState)
-const mapPanelStateProvider = MapPanelStateProvider._();
+final mapPanelStateProvider = MapPanelStateProvider._();
 
 final class MapPanelStateProvider
     extends $NotifierProvider<MapPanelState, bool> {
-  const MapPanelStateProvider._()
+  MapPanelStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,7 +48,6 @@ abstract class _$MapPanelState extends $Notifier<bool> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -58,6 +57,6 @@ abstract class _$MapPanelState extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

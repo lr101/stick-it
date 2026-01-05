@@ -10,11 +10,11 @@ part of 'marker_window_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(MarkerWindowState)
-const markerWindowStateProvider = MarkerWindowStateProvider._();
+final markerWindowStateProvider = MarkerWindowStateProvider._();
 
 final class MarkerWindowStateProvider
     extends $NotifierProvider<MarkerWindowState, LocalPinDto?> {
-  const MarkerWindowStateProvider._()
+  MarkerWindowStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,7 +48,6 @@ abstract class _$MarkerWindowState extends $Notifier<LocalPinDto?> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<LocalPinDto?, LocalPinDto?>;
     final element =
         ref.element
@@ -58,6 +57,6 @@ abstract class _$MarkerWindowState extends $Notifier<LocalPinDto?> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
