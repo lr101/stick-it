@@ -61,78 +61,33 @@ abstract class _$CameraIndex extends $Notifier<int> {
 }
 
 @ProviderFor(CameraValues)
-final cameraValuesProvider = CameraValuesFamily._();
+final cameraValuesProvider = CameraValuesProvider._();
 
 final class CameraValuesProvider
     extends $AsyncNotifierProvider<CameraValues, CameraState> {
-  CameraValuesProvider._({
-    required CameraValuesFamily super.from,
-    required CameraController super.argument,
-  }) : super(
-         retry: null,
-         name: r'cameraValuesProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
+  CameraValuesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'cameraValuesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$cameraValuesHash();
 
-  @override
-  String toString() {
-    return r'cameraValuesProvider'
-        ''
-        '($argument)';
-  }
-
   @$internal
   @override
   CameraValues create() => CameraValues();
-
-  @override
-  bool operator ==(Object other) {
-    return other is CameraValuesProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
 }
 
-String _$cameraValuesHash() => r'dc8cdd00db744bf7c31b244af90f84c55bff2103';
-
-final class CameraValuesFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          CameraValues,
-          AsyncValue<CameraState>,
-          CameraState,
-          FutureOr<CameraState>,
-          CameraController
-        > {
-  CameraValuesFamily._()
-    : super(
-        retry: null,
-        name: r'cameraValuesProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  CameraValuesProvider call(CameraController controller) =>
-      CameraValuesProvider._(argument: controller, from: this);
-
-  @override
-  String toString() => r'cameraValuesProvider';
-}
+String _$cameraValuesHash() => r'5cefd420ffd84674b5bad4884e32b9d5efc70b87';
 
 abstract class _$CameraValues extends $AsyncNotifier<CameraState> {
-  late final _$args = ref.$arg as CameraController;
-  CameraController get controller => _$args;
-
-  FutureOr<CameraState> build(CameraController controller);
+  FutureOr<CameraState> build();
   @$mustCallSuper
   @override
   void runBuild() {
@@ -145,9 +100,48 @@ abstract class _$CameraValues extends $AsyncNotifier<CameraState> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(cameraController)
+final cameraControllerProvider = CameraControllerProvider._();
+
+final class CameraControllerProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<CameraController>,
+          CameraController,
+          FutureOr<CameraController>
+        >
+    with $FutureModifier<CameraController>, $FutureProvider<CameraController> {
+  CameraControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'cameraControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$cameraControllerHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<CameraController> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<CameraController> create(Ref ref) {
+    return cameraController(ref);
+  }
+}
+
+String _$cameraControllerHash() => r'b86905301ef75bfa61c40e6e204b01312925699c';
 
 @ProviderFor(CameraGroupIndex)
 final cameraGroupIndexProvider = CameraGroupIndexProvider._();

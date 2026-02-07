@@ -8,9 +8,13 @@ class ImageEntity extends CacheEntity {
   @HiveField(3)
   final String filePath;
 
+  @HiveField(4)
+  final bool isEmpty;
+
 
   ImageEntity({
     required this.filePath,
+    this.isEmpty = false,
     super.keepAlive = false,
     super.hits,
     super.ttl,

@@ -30,7 +30,6 @@ class Camera extends ConsumerStatefulWidget {
 class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
 
   final PageController pageController = PageController(viewportFraction: 0.3);
-  late final CameraController controller;
   double scaleFactor = 1.0;
   double basScaleFactor = 1.0;
   final _m = Mutex();
@@ -39,55 +38,35 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    controller = CameraController(ref.read(globalDataServiceProvider).cameras[0], ResolutionPreset.medium, enableAudio: false);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // When this route becomes current again, resume preview if possible
-    final route = ModalRoute.of(context);
-    if (route?.isCurrent ?? false) {
-      if (controller.value.isInitialized) {
-        controller.resumePreview().catchError((_) {});
-      }
-    }
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (!mounted) return;
-    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
-      controller.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      // Recreate and initialize controller (same code as initState)
-      controller = CameraController(
-        ref.read(globalDataServiceProvider).cameras[ref.read(cameraIndexProvider)],
-        ResolutionPreset.medium,
-        enableAudio: false,
-      );
-      // Re-initialize via your existing provider:
-      ref.read(cameraValuesProvider(controller).notifier);
-    }
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    controller.dispose();
     pageController.dispose();
     super.dispose();
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    final route = ModalRoute.of(context);
+    if (route?.isCurrent ?? false) {
+      final controller = ref.read(cameraControllerProvider).value;
+      if (controller != null && controller.value.isInitialized) {
+        controller.resumePreview();
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // update torch mode
-    ref.listen(cameraTorchProvider, (_, next) => controller.setFlashMode(next ? FlashMode.off : FlashMode.auto));
-    // update selected camera and trigger reinitialization
-    ref.listen(cameraIndexProvider, (_, next) async {
-      await ref.read(cameraValuesProvider(controller).notifier).updateCamera(next);
+    ref.listen(cameraTorchProvider, (_, next) {
+      ref.read(cameraControllerProvider).value?.setFlashMode(next ? FlashMode.off : FlashMode.auto);
     });
-    final state = ref.watch(cameraValuesProvider(controller));
+    final controllerAsync = ref.watch(cameraControllerProvider);
+    final cameraStateAsync = ref.watch(cameraValuesProvider);
     final cameraIndex = ref.watch(cameraIndexProvider);
     final cameras = ref.watch(globalDataServiceProvider.select((t) => t.cameras));
     final cameraFlashMode = ref.watch(cameraTorchProvider);
@@ -99,18 +78,26 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
               children: [
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: state.when(
-                      data: (data) => GestureDetector(
-                            onDoubleTap: ref.read(cameraIndexProvider.notifier).increment,
-                            onScaleStart: (_) => basScaleFactor = scaleFactor,
-                            onScaleUpdate: handleZoom,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: CameraPreview(controller),
-                            ),
+                  // We handle the AsyncValue of the CONTROLLER here
+                  child: controllerAsync.when(
+                    loading: () => const Center(child: CircularProgressIndicator()),
+                    error: (err, stack) => Center(child: Text("Camera Error: $err")),
+                    data: (controller) {
+                      // Once controller is ready, we check the Values state
+                      return cameraStateAsync.when(
+                        loading: () => const Center(child: CircularProgressIndicator()),
+                        error: (err, stack) => Text(err.toString()),
+                        data: (cameraState) => GestureDetector(
+                          onDoubleTap: ref.read(cameraIndexProvider.notifier).increment,
+                          onScaleStart: (_) => basScaleFactor = scaleFactor,
+                          onScaleUpdate: (details) => handleZoom(details, controller, cameraState),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: CameraPreview(controller),
+                          ),
                         ),
-                      error: (error, stackTrace) => Text(error.toString()),
-                      loading: () =>  const Center(child: CircularProgressIndicator()),
+                      );
+                    },
                   ),
                 ),
                 Align(
@@ -213,23 +200,22 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
     );
   }
 
-  Future<void> handleZoom(ScaleUpdateDetails scale) async {
-    final state = ref.read(cameraValuesProvider(controller)).value;
-    if (state != null) {
-      if (scale.scale * basScaleFactor <= state.maxZoom && scale.scale * basScaleFactor >= state.minZoom) {
-        scaleFactor = basScaleFactor * scale.scale;
-        controller.setZoomLevel(scaleFactor);
-      }
+  Future<void> handleZoom(ScaleUpdateDetails scale, CameraController controller, CameraState state) async {
+    if (scale.scale * basScaleFactor <= state.maxZoom && scale.scale * basScaleFactor >= state.minZoom) {
+      scaleFactor = basScaleFactor * scale.scale;
+      await controller.setZoomLevel(scaleFactor);
     }
   }
+
 
   Future<void> uploadFileImage() async {
     final pickedFile = await CustomImagePicker.pick(context: context);
 
     if (pickedFile != null && mounted) {
+      final controller = ref.read(cameraControllerProvider).value;
       try {
         // Pause preview while another screen is placed on top
-        if (controller.value.isInitialized) {
+        if (controller != null && controller.value.isInitialized) {
           await controller.pausePreview().catchError((_) {});
         }
         final croppedImage = await CustomImagePicker.crop(res: pickedFile, minHeight: 500, minWidth: 500, context: context, initAspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4));
@@ -276,7 +262,8 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
       pageController.animateToPage(index, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
       return;
     }
-    if (_m.isLocked) return;
+    final controller = ref.read(cameraControllerProvider).value;
+    if (_m.isLocked || controller == null) return;
     await _m.acquire();
     ref.read(cameraCapturingProvider.notifier).setCapturing(true);
       try {

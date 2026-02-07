@@ -18,6 +18,7 @@ class ImageEntityAdapter extends TypeAdapter<ImageEntity> {
     };
     return ImageEntity(
       filePath: fields[3] as String,
+      isEmpty: fields[4] == null ? false : fields[4] as bool,
       keepAlive: fields[2] == null ? false : fields[2] as bool,
       hits: fields[1] == null ? 1 : (fields[1] as num).toInt(),
       ttl: fields[0] as DateTime?,
@@ -27,7 +28,7 @@ class ImageEntityAdapter extends TypeAdapter<ImageEntity> {
   @override
   void write(BinaryWriter writer, ImageEntity obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.ttl)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class ImageEntityAdapter extends TypeAdapter<ImageEntity> {
       ..writeByte(2)
       ..write(obj.keepAlive)
       ..writeByte(3)
-      ..write(obj.filePath);
+      ..write(obj.filePath)
+      ..writeByte(4)
+      ..write(obj.isEmpty);
   }
 
   @override

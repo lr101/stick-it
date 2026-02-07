@@ -1,5 +1,4 @@
 import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_cached_image.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
@@ -30,7 +29,7 @@ class GroupTile extends ConsumerWidget {
         ],
       ),
       leading: !userCachedImage ? RoundImage(imageCallback: ref.watch(groupProfilePictureSmallByIdProvider(groupDto.groupId)), size: 25.0, child: Container()) :
-        RoundCachedImage(url: "${ref.watch(globalDataServiceProvider).minioHost}/groups/${groupDto.groupId}/group_profile_small.png", size: 25.0),
+        RoundCachedImage(image: ref.watch(groupProfilePictureSmallByIdProvider(groupDto.groupId)).value, size: 25.0),
     );
     if (onTap == null) {
       return listTile;

@@ -14,8 +14,8 @@ class RankingTabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c1 = Theme.of(context).primaryColor; // Color when not selected
-    final c2 = Theme.of(context).colorScheme.secondary; // Color when selected
+    final c1 = Theme.of(context).colorScheme.surfaceContainerHighest; // Color when not selected
+    final c2 = Theme.of(context).primaryColor; // Color when selected
 
     return ListenableBuilder(
       listenable: tabController,

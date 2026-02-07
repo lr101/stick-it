@@ -1,5 +1,6 @@
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:buff_lisa/data/dto/local_user_dto.dart';
 import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
@@ -44,6 +45,7 @@ class SyncingService extends _$SyncingService {
     _groupRepository = ref.watch(groupRepositoryProvider);
     _pinRepository = ref.watch(pinRepositoryProvider);
     userId = ref.watch(userIdProvider);
+    final user = ref.watch(userServiceProvider(userId)); // keep provider alive
     return SyncState.init;
   }
 
@@ -72,7 +74,7 @@ class SyncingService extends _$SyncingService {
         syncPins(group.groupId, lastSeen); // run async
       }
       ref.read(lastSeenProvider(key).notifier).setLastSeenNow();
-      await ref.read(userServiceProvider(ref.read(userIdProvider)).notifier).updateRemote();
+      await ref.read(userServiceProvider(userId).notifier).updateRemote();
       state = SyncState.finished;
       _logger.i("Successfully finished syncing");
     } catch (e) {

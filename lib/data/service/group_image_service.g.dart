@@ -65,7 +65,7 @@ final class GroupProfilePictureByIdProvider
 }
 
 String _$groupProfilePictureByIdHash() =>
-    r'8e14966bae9a0242c11ed2b9fdfbe46715e4bb7c';
+    r'ea7d1bf4a2be882520454b0e6fe99184a1e4a2dd';
 
 final class GroupProfilePictureByIdFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Uint8List>, String> {
@@ -142,7 +142,7 @@ final class GroupProfilePictureSmallByIdProvider
 }
 
 String _$groupProfilePictureSmallByIdHash() =>
-    r'5fa7e69442528e19ce53f1b9a065515170ac60a8';
+    r'b8729fe5ecd84a9731356ac2e6f39b397566e0f1';
 
 final class GroupProfilePictureSmallByIdFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Uint8List>, String> {
@@ -216,7 +216,7 @@ final class GroupPinImageByIdProvider
   }
 }
 
-String _$groupPinImageByIdHash() => r'5b6665b376f67cc070663da29093c66528e1a170';
+String _$groupPinImageByIdHash() => r'1b8a79b4002e93062c5f1796fb478b5e75ffcf68';
 
 final class GroupPinImageByIdFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Uint8List>, String> {

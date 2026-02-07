@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/entity/image_entity.dart';
-import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/util/core/cache_impl.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -11,7 +11,7 @@ part 'image_repository.g.dart';
 
 class ImageRepository extends CacheImpl<ImageEntity> {
   ImageRepository(super.boxName, {
-    required this.ref,
+    required this.getImageUrl,
     required this.urlFileName,
     required this.urlSubFolder,
     super.maxItems,
@@ -20,7 +20,7 @@ class ImageRepository extends CacheImpl<ImageEntity> {
 
   final String urlFileName;
   final String urlSubFolder;
-  final Ref ref;
+  final Future<String?> Function(String) getImageUrl;
 
 
   Future<String?> _getImagePath(String id) async {
@@ -28,9 +28,12 @@ class ImageRepository extends CacheImpl<ImageEntity> {
     return '${directory.path}/${urlSubFolder}_${id}_$urlFileName';
   }
 
-  Future<Uint8List> fetchImage(String id, bool keepAlive) async {
+  Future<Uint8List?> fetchImage(String id, bool keepAlive) async {
     final cachedImage = await get(id);
-    if (cachedImage?.filePath != null && File(cachedImage!.filePath).existsSync()) {
+    if (cachedImage?.isEmpty == true) {
+      return null;
+    }
+    else if (cachedImage?.filePath != null && File(cachedImage!.filePath).existsSync()) {
       return await File(cachedImage.filePath).readAsBytes();
     }
     return await _fetchAndCacheImage(id, keepAlive);
@@ -52,10 +55,15 @@ class ImageRepository extends CacheImpl<ImageEntity> {
     }
   }
 
-  Future<Uint8List> _fetchAndCacheImage(String id, bool keepAlive) async {
+    /// Fetch and cache an image
+  Future<Uint8List?> _fetchAndCacheImage(String id, bool keepAlive) async {
     try {
-      final global = ref.watch(globalDataServiceProvider);
-      final imageUrl = "${global.minioHost}/$urlSubFolder/$id/$urlFileName";
+      final imageUrl = await getImageUrl(id);
+      
+      if (imageUrl == null) {
+        await put(id, ImageEntity(filePath: "", isEmpty: true, keepAlive: keepAlive));
+        return null;
+      }
       final image = await http.get(Uri.parse(imageUrl));
       final filePath = await _getImagePath(id);
 
@@ -101,16 +109,16 @@ class ImageRepository extends CacheImpl<ImageEntity> {
 }
 
 @Riverpod(keepAlive: true)
-ImageRepository groupProfileRepo(Ref ref) => ImageRepository("groupProfileRepo", ref: ref, urlSubFolder: "groups", urlFileName: "group_profile.png", maxItems: 20);
+ImageRepository groupProfileRepo(Ref ref) => ImageRepository("groupProfileRepo", getImageUrl: ref.watch(groupApiProvider).getGroupProfileImage, urlSubFolder: "groups", urlFileName: "group_profile.png", maxItems: 20);
 
 @Riverpod(keepAlive: true)
-ImageRepository groupProfileSmallRepo(Ref ref) => ImageRepository("groupProfileSmallRepo", ref: ref, urlSubFolder: "groups", urlFileName: "group_profile_small.png", maxItems: 500);
+ImageRepository groupProfileSmallRepo(Ref ref) => ImageRepository("groupProfileSmallRepo", getImageUrl: ref.watch(groupApiProvider).getGroupProfileImageSmall, urlSubFolder: "groups", urlFileName: "group_profile_small.png", maxItems: 500);
 
 @Riverpod(keepAlive: true)
-ImageRepository groupPinImageRepo(Ref ref) => ImageRepository("groupPinImageRepository", ref: ref, urlSubFolder: "groups", urlFileName: "group_pin.png", maxItems: 50);
+ImageRepository groupPinImageRepo(Ref ref) => ImageRepository("groupPinImageRepository", getImageUrl: ref.watch(groupApiProvider).getGroupPinImage, urlSubFolder: "groups", urlFileName: "group_pin.png", maxItems: 50);
 
 @Riverpod(keepAlive: true)
-ImageRepository userImageSmallRepo(Ref ref) => ImageRepository("userImageSmallRepository", ref: ref, urlSubFolder: "users", urlFileName: "profile_small.png", maxItems: 500);
+ImageRepository userImageSmallRepo(Ref ref) => ImageRepository("userImageSmallRepository", getImageUrl: ref.watch(userApiProvider).getUserProfileImageSmall, urlSubFolder: "users", urlFileName: "profile_small.png", maxItems: 500);
 
 @Riverpod(keepAlive: true)
-ImageRepository userImageRepo(Ref ref) => ImageRepository("userImageRepository", ref: ref, urlSubFolder: "users", urlFileName: "profile.png", maxItems: 50);
+ImageRepository userImageRepo(Ref ref) => ImageRepository("userImageRepository", getImageUrl: ref.watch(userApiProvider).getUserProfileImage, urlSubFolder: "users", urlFileName: "profile.png", maxItems: 50);

@@ -9,7 +9,6 @@ class GlobalDataDto {
   final String? userId;
   final String? refreshToken;
   final String host = dotenv.env['API_HOST']!;
-  final String minioHost = dotenv.env['MINIO_HOST']!;
   final List<CameraDescription> cameras;
 
   GlobalDataDto({
