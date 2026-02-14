@@ -65,6 +65,7 @@ All URIs are relative to *https://stick-it.lr-projects.de*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AdminApi* | [**sendAdminMail**](doc//AdminApi.md#sendadminmail) | **POST** /api/v2/admin/mail | Send an admin mail
+*AdminApi* | [**sendNotification**](doc//AdminApi.md#sendnotification) | **POST** /api/v2/admin/notification | Post a notification to a specific topic
 *AuthApi* | [**createUser**](doc//AuthApi.md#createuser) | **POST** /api/v2/public/signup | User registration
 *AuthApi* | [**generateDeleteCode**](doc//AuthApi.md#generatedeletecode) | **GET** /api/v2/public/delete-code/{username} | Generate delete code
 *AuthApi* | [**getStatus**](doc//AuthApi.md#getstatus) | **GET** /api/v2/status | Gets the status of the server and user specific information
@@ -122,6 +123,7 @@ Class | Method | HTTP request | Description
  - [InfoDto](doc//InfoDto.md)
  - [MapInfoDto](doc//MapInfoDto.md)
  - [MemberResponseDto](doc//MemberResponseDto.md)
+ - [NotificationDto](doc//NotificationDto.md)
  - [PinLikeDto](doc//PinLikeDto.md)
  - [PinRequestDto](doc//PinRequestDto.md)
  - [PinWithOptionalImageDto](doc//PinWithOptionalImageDto.md)

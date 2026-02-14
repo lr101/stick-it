@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'geojson_service.dart';
+part of 'view_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,51 +9,51 @@ part of 'geojson_service.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(DistrictService)
-final districtServiceProvider = DistrictServiceProvider._();
+@ProviderFor(ViewService)
+final viewServiceProvider = ViewServiceProvider._();
 
-final class DistrictServiceProvider
-    extends $NotifierProvider<DistrictService, MapInfoDto?> {
-  DistrictServiceProvider._()
+final class ViewServiceProvider
+    extends $NotifierProvider<ViewService, ViewState> {
+  ViewServiceProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'districtServiceProvider',
+        name: r'viewServiceProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$districtServiceHash();
+  String debugGetCreateSourceHash() => _$viewServiceHash();
 
   @$internal
   @override
-  DistrictService create() => DistrictService();
+  ViewService create() => ViewService();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(MapInfoDto? value) {
+  Override overrideWithValue(ViewState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<MapInfoDto?>(value),
+      providerOverride: $SyncValueProvider<ViewState>(value),
     );
   }
 }
 
-String _$districtServiceHash() => r'3105ddce80480b3aa0027e3cba2ed281bae8d107';
+String _$viewServiceHash() => r'7a900cc560e5fe74c52a9192ebde738fb14b5763';
 
-abstract class _$DistrictService extends $Notifier<MapInfoDto?> {
-  MapInfoDto? build();
+abstract class _$ViewService extends $Notifier<ViewState> {
+  ViewState build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<MapInfoDto?, MapInfoDto?>;
+    final ref = this.ref as $Ref<ViewState, ViewState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<MapInfoDto?, MapInfoDto?>,
-              MapInfoDto?,
+              AnyNotifier<ViewState, ViewState>,
+              ViewState,
               Object?,
               Object?
             >;

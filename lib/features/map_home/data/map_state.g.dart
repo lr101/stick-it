@@ -93,3 +93,55 @@ final class CurrentLocationProvider
 }
 
 String _$currentLocationHash() => r'd5de2759b915419e2ede395268475714aae4e37a';
+
+@ProviderFor(MapZoomLevel)
+final mapZoomLevelProvider = MapZoomLevelProvider._();
+
+final class MapZoomLevelProvider
+    extends $NotifierProvider<MapZoomLevel, double> {
+  MapZoomLevelProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'mapZoomLevelProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$mapZoomLevelHash();
+
+  @$internal
+  @override
+  MapZoomLevel create() => MapZoomLevel();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(double value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<double>(value),
+    );
+  }
+}
+
+String _$mapZoomLevelHash() => r'c9def2bf637381bd76c5843eaea03962db319b40';
+
+abstract class _$MapZoomLevel extends $Notifier<double> {
+  double build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<double, double>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<double, double>,
+              double,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}

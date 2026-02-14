@@ -16,6 +16,9 @@ Name | Type | Description | Notes
 **image** | **String** |  | [optional] 
 **groupId** | **String** |  | 
 **description** | **String** |  | [optional] 
+**gid0** | **String** |  | [optional] 
+**gid1** | **String** |  | [optional] 
+**gid2** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

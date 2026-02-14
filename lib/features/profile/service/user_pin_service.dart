@@ -31,7 +31,7 @@ class UserPinService extends _$UserPinService {
     }
     try {
       final pins = await pinApi.getPinImagesByIds(userId: userId, withImage: false);
-      final localPins = pins!.items.map((e) => LocalPinDto.fromDtoWithImage(e)).toList();
+      final localPins = pins!.items.map((e) => LocalPinDto.fromDto(e)).toList();
       final pinEntities =  pins.items.map((e) => PinEntity.fromDto(e)).toList();
       localPins.sort((a, b) => b.creationDate.compareTo(a.creationDate));
       userPinsRepo.put(userId, UserPinsEntity(pins: pinEntities, keepAlive: _isCurrentUser));

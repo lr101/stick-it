@@ -11,7 +11,7 @@ class CustomMarkerWidget extends Marker {
 
   CustomMarkerWidget({required this.pinDto, this.withAnimation = false}) : super(
     point: LatLng(pinDto.latitude, pinDto.longitude),
-    child: CustomMarkerContent(pinDto: pinDto, withAnimation: withAnimation),
+    child: CustomMarkerContent(pinDto: pinDto, withAnimation: withAnimation, gid0: pinDto.gid0, gid1: pinDto.groupId, gid2: pinDto.groupId),
     width: 80,
     height: 80,
   );

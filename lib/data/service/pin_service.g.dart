@@ -50,7 +50,7 @@ final class PinServiceProvider
   }
 }
 
-String _$pinServiceHash() => r'5d0f7fd436de04ef7c53590ce229da0b2735805e';
+String _$pinServiceHash() => r'8492c2564f8ff95d1e0d9bd7d327a310971184ab';
 
 final class PinServiceFamily extends $Family
     with
@@ -184,7 +184,7 @@ final class ActivatedPinsWithoutLoadingProvider
 }
 
 String _$activatedPinsWithoutLoadingHash() =>
-    r'963dd78336b37523f60edb3a6781a0fca960ef4a';
+    r'1aebe2a92fd41b78f6d7c5e14eed7fdbc2a62b2b';
 
 @ProviderFor(sortedActivatedPins)
 final sortedActivatedPinsProvider = SortedActivatedPinsProvider._();

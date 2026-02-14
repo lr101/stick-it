@@ -9,53 +9,57 @@ part of 'ranking_service.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(Top3GroupService)
-final top3GroupServiceProvider = Top3GroupServiceProvider._();
+@ProviderFor(CurrentUserTopRanking)
+final currentUserTopRankingProvider = CurrentUserTopRankingProvider._();
 
-final class Top3GroupServiceProvider
+final class CurrentUserTopRankingProvider
     extends
-        $AsyncNotifierProvider<Top3GroupService, List<GroupRankingDtoInner>?> {
-  Top3GroupServiceProvider._()
+        $AsyncNotifierProvider<
+          CurrentUserTopRanking,
+          List<UserRankingDtoInner>?
+        > {
+  CurrentUserTopRankingProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'top3GroupServiceProvider',
+        name: r'currentUserTopRankingProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$top3GroupServiceHash();
+  String debugGetCreateSourceHash() => _$currentUserTopRankingHash();
 
   @$internal
   @override
-  Top3GroupService create() => Top3GroupService();
+  CurrentUserTopRanking create() => CurrentUserTopRanking();
 }
 
-String _$top3GroupServiceHash() => r'55a40d39d11aa068fbbdfea3ed2495ac9c6d6995';
+String _$currentUserTopRankingHash() =>
+    r'2df4e7c6b0cd4fc635bc0ba7eaf2f980a724a2cf';
 
-abstract class _$Top3GroupService
-    extends $AsyncNotifier<List<GroupRankingDtoInner>?> {
-  FutureOr<List<GroupRankingDtoInner>?> build();
+abstract class _$CurrentUserTopRanking
+    extends $AsyncNotifier<List<UserRankingDtoInner>?> {
+  FutureOr<List<UserRankingDtoInner>?> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final ref =
         this.ref
             as $Ref<
-              AsyncValue<List<GroupRankingDtoInner>?>,
-              List<GroupRankingDtoInner>?
+              AsyncValue<List<UserRankingDtoInner>?>,
+              List<UserRankingDtoInner>?
             >;
     final element =
         ref.element
             as $ClassProviderElement<
               AnyNotifier<
-                AsyncValue<List<GroupRankingDtoInner>?>,
-                List<GroupRankingDtoInner>?
+                AsyncValue<List<UserRankingDtoInner>?>,
+                List<UserRankingDtoInner>?
               >,
-              AsyncValue<List<GroupRankingDtoInner>?>,
+              AsyncValue<List<UserRankingDtoInner>?>,
               Object?,
               Object?
             >;

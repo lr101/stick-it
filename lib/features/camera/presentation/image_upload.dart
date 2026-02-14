@@ -49,6 +49,11 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   @override
   Widget build(BuildContext context) {
     final group = ref.watch(cameraSelectedGroupProvider);
+    final groupId = group.value?.groupId;
+    if (groupId != null) {
+      ref.watch(pinServiceProvider(groupId));
+    }
+    
     final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return CustomCloseKeyboardScaffold(
       appBar: AppBar(

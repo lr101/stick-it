@@ -26,6 +26,9 @@ class PinEntityAdapter extends TypeAdapter<PinEntity> {
       group: fields[9] as String,
       isHidden: fields[10] == null ? false : fields[10] as bool,
       lastSynced: fields[11] as DateTime?,
+      gid0: fields[12] as String?,
+      gid1: fields[13] as String?,
+      gid2: fields[14] as String?,
       keepAlive: fields[2] == null ? false : fields[2] as bool,
       hits: fields[1] == null ? 1 : (fields[1] as num).toInt(),
       ttl: fields[0] as DateTime?,
@@ -35,7 +38,7 @@ class PinEntityAdapter extends TypeAdapter<PinEntity> {
   @override
   void write(BinaryWriter writer, PinEntity obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.ttl)
       ..writeByte(1)
@@ -59,7 +62,13 @@ class PinEntityAdapter extends TypeAdapter<PinEntity> {
       ..writeByte(10)
       ..write(obj.isHidden)
       ..writeByte(11)
-      ..write(obj.lastSynced);
+      ..write(obj.lastSynced)
+      ..writeByte(12)
+      ..write(obj.gid0)
+      ..writeByte(13)
+      ..write(obj.gid1)
+      ..writeByte(14)
+      ..write(obj.gid2);
   }
 
   @override

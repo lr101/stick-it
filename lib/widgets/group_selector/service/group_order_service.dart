@@ -1,5 +1,6 @@
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -38,3 +39,39 @@ class GroupOrderService extends _$GroupOrderService {
 
 @riverpod
 String roundGroupId(Ref ref) => throw UnimplementedError();
+
+@riverpod
+class GroupActiveService extends _$GroupActiveService {
+  
+  @override
+  List<String> build() {
+    final userGroups = ref.watch(userGroupServiceProvider).value ?? {};
+    final orderedIds = ref.watch(groupOrderServiceProvider);
+
+    final backendActiveIds = <String>[];
+    for (final id in orderedIds) {
+      final group = userGroups.firstWhereOrNull(
+        (g) => g.groupId == id
+      );
+      if (group != null && group.isActivated) {
+        backendActiveIds.add(id);
+      }
+    }
+    return backendActiveIds;
+  }
+
+  /// Toggles the activation state INSTANTLY locally, then calls the backend.
+  void toggle(String groupId, bool isActive) {
+    final orderedIds = ref.read(groupOrderServiceProvider);
+    final currentActiveSet = state.toSet();
+
+    if (!isActive && currentActiveSet.contains(groupId)) {
+      currentActiveSet.remove(groupId);
+    } else if (isActive && !currentActiveSet.contains(groupId)) {
+      currentActiveSet.add(groupId);
+    }
+
+    state = orderedIds.where((id) => currentActiveSet.contains(id)).toList();
+    ref.read(userGroupServiceProvider.notifier).setIsActive(groupId, isActive);
+  }
+}

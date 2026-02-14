@@ -6,22 +6,22 @@ import 'package:url_launcher/url_launcher.dart';
 // ignore: avoid_classes_with_only_static_members
 class Routing {
 
-  static Future<dynamic> to(BuildContext context, Widget to, [bool transition = true]) async {
-    return await Navigator.of(context).push(
+  static Future<dynamic> to(BuildContext context, Widget destination, [bool transition = true]) async {
+    if (transition) {
+      // Uses the native Android "Zoom" transition automatically
+      return await Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => destination),
+      );
+    } else {
+      // No transition (Instant)
+      return await Navigator.of(context).push(
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => to,
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.ease;
-            final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          },
+          pageBuilder: (context, animation, secondaryAnimation) => destination,
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
         ),
-    );
+      );
+    }
   }
 
   static Future<dynamic> toAndDelete(BuildContext context, Widget to, String routeName) async {

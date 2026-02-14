@@ -1,125 +1,111 @@
+import 'package:buff_lisa/data/dto/pin_dto.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_group.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/feed_description.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_description.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/like_button_animated.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 
-class LikeButtons extends ConsumerWidget {
+class FeedCardSubtitle extends ConsumerWidget {
+  final LocalPinDto pin;
 
-  final String pinId;
-  final String creatorId;
-
-  const LikeButtons({super.key, required this.pinId, required this.creatorId});
+  const FeedCardSubtitle({super.key, required this.pin});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pinLike = ref.watch(likeServiceProvider(pinId));
+    final pinLike = ref.watch(likeServiceProvider(pin.id));
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    return Row(
+    // Watch the group data to display the name
+    final groupAsync = ref.watch(groupByIdProvider(pin.groupId));
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 1. ACTION ROW (Likes, etc.)
+        Row(
           children: [
             LikeButtonAnimated(
-              isLikedProvider: likeServiceProvider(pinId).select((e) => e.value?.likedByUser),
+              isLikedProvider: likeServiceProvider(pin.id).select((e) => e.value?.likedByUser),
               isLiked: pinLike.value?.likedByUser ?? false,
               likeBuilder: (isLiked) {
                 return Icon(
-                  Icons.favorite,
-                  color: isLiked ? Colors.red : Colors.grey,
-                  size: 25,
+                  isLiked ? Icons.favorite : Icons.favorite_border,
+                  color: isLiked ? Colors.red : Theme.of(context).colorScheme.onSurface,
+                  size: 26,
                 );
               },
               likeCount: pinLike.value?.likeCount ?? 0,
               onTap: (isLiked) async {
                 try {
+                  final service = ref.read(likeServiceProvider(pin.id).notifier);
                   if (isLiked) {
-                    await ref.read(likeServiceProvider(pinId).notifier).addLike(creatorId, CreateLikeDto(userId: userId, like: false));
+                    await service.addLike(pin.creatorId, CreateLikeDto(userId: userId, like: false));
                   } else {
-                    await ref.read(likeServiceProvider(pinId).notifier).addLike(creatorId, CreateLikeDto(userId: userId, like: true));
+                    await service.addLike(pin.creatorId, CreateLikeDto(userId: userId, like: true));
                   }
-                } catch(e) {
+                } catch (e) {
                   return false;
                 }
                 return true;
               },
             ),
-            const SizedBox(width: 10),
-            LikeButtonAnimated(
-              isLikedProvider: likeServiceProvider(pinId).select((e) => e.value?.likedLocationByUser),
-              isLiked: pinLike.value?.likedLocationByUser ?? false,
-              likeBuilder: (isLiked) {
-                return Icon(
-                  CupertinoIcons.location_solid,
-                  color: isLiked ? Colors.red : Colors.grey,
-                  size: 25,
-                );
-              },
-              likeCount: pinLike.value?.likeLocationCount ?? 0,
-              onTap: (isLiked) async {
-                try {
-                  if (isLiked) {
-                    await ref.read(likeServiceProvider(pinId).notifier).addLike(creatorId, CreateLikeDto(userId: userId, likeLocation: false));
-                  } else {
-                    await ref.read(likeServiceProvider(pinId).notifier).addLike(creatorId, CreateLikeDto(userId: userId, likeLocation: true));
-                  }
-                } catch(e) {
-                  return false;
-                }
-                return true;
-              },
+      
+
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+              child: Text("•", style: TextStyle(color: Colors.grey, fontSize: 12)),
             ),
-            const SizedBox(width: 10),
-            LikeButtonAnimated(
-              isLikedProvider: likeServiceProvider(pinId).select((e) => e.value?.likedPhotographyByUser),
-              isLiked: pinLike.value?.likedPhotographyByUser ?? false,
-              likeBuilder: (isLiked) {
-                return Icon(
-                  Icons.photo_camera,
-                  color: isLiked ? Colors.red : Colors.grey,
-                  size: 25,
-                );
-              },
-              likeCount: pinLike.value?.likePhotographyCount ?? 0,
-              onTap: (isLiked) async {
-                try {
-                  if (isLiked) {
-                    await ref.read(likeServiceProvider(pinId).notifier).addLike(creatorId, CreateLikeDto(userId: userId, likePhotography: false));
-                  } else {
-                    await ref.read(likeServiceProvider(pinId).notifier).addLike(creatorId, CreateLikeDto(userId: userId, likePhotography: true));
-                  }
-                } catch(e) {
-                  return false;
-                }
-                return true;
-              },
+            
+            groupAsync.when(
+              data: (group) => ClickableGroup(groupId: group?.groupId ?? "", child:  Text(
+                group?.name ?? "",
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12
+                    ),
+              )),
+              loading: () => const SizedBox.shrink(),
+              error: (_, __) => const Text("Unknown Group"),
             ),
-            const SizedBox(width: 10),
-            LikeButtonAnimated(
-              isLikedProvider: likeServiceProvider(pinId).select((e) => e.value?.likedArtByUser),
-              isLiked: pinLike.value?.likedArtByUser ?? false,
-              likeBuilder: (isLiked) {
-                return Icon(
-                  Icons.brush,
-                  color: isLiked ? Colors.red : Colors.grey,
-                  size: 25,
-                );
-              },
-              likeCount: pinLike.value?.likeArtCount ?? 0,
-              onTap: (isLiked) async {
-                try {
-                  if (isLiked) {
-                    await ref.read(likeServiceProvider(pinId).notifier).addLike(creatorId, CreateLikeDto(userId: userId, likeArt: false));
-                  } else {
-                    await ref.read(likeServiceProvider(pinId).notifier).addLike(creatorId, CreateLikeDto(userId: userId, likeArt: true));
-                  }
-                } catch(e) {
-                  return false;
-                }
-                return true;
-              },
+            
+            // Separator dot
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+              child: Text("•", style: TextStyle(color: Colors.grey, fontSize: 12)),
             ),
-          ],
-        );
+
+            // Time Ago
+            Text(
+              _formatTimeAgo(pin.creationDate), 
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.grey, fontSize: 12),
+            ),
+                
+
+          ]
+        ),
+        if (pin.description != null && pin.description!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                child: FeedDescriptionExpandable(pin: pin),
+              ),
+      ],
+    );
   }
 
+  // Simple helper to format time like "2h", "5d"
+  String _formatTimeAgo(DateTime date) {
+    final diff = DateTime.now().difference(date);
+    if (diff.inDays > 365) return "${(diff.inDays / 365).floor()}y";
+    if (diff.inDays > 30) return "${(diff.inDays / 30).floor()}mo";
+    if (diff.inDays > 0) return "${diff.inDays}d";
+    if (diff.inHours > 0) return "${diff.inHours}h";
+    if (diff.inMinutes > 0) return "${diff.inMinutes}m";
+    return "now";
+  }
 }
+

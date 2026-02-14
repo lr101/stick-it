@@ -3,7 +3,6 @@ import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/like_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
-import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
 import 'package:buff_lisa/features/profile/presentation/user_like_icon.dart';
 import 'package:buff_lisa/features/profile/service/user_pin_service.dart';
 import 'package:buff_lisa/features/settings/presentation/settings.dart';
@@ -128,14 +127,6 @@ class UserProfile extends ConsumerWidget {
       ],
       body: ImageGrid(
         pinProvider: userPinProvider(userId),
-        onTab: (index) => Routing.to(
-          context,
-          UserImageFeed(
-            index: index,
-            userId: userId,
-            userPinNotifier: userPinProvider(userId),
-          ),
-        ),
       ),
     );
   }

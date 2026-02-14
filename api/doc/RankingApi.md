@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 
 # **getGeoJson**
-> List<String> getGeoJson(gid2)
+> List<String> getGeoJson(gid2, gid1, gid0)
 
 
 
@@ -35,9 +35,11 @@ import 'package:openapi/api.dart';
 
 final api_instance = RankingApi();
 final gid2 = gid2_example; // String | County ID. Only one allowed
+final gid1 = gid1_example; // String | State ID. Only one allowed
+final gid0 = gid0_example; // String | Country ID. Only one allowed
 
 try {
-    final result = api_instance.getGeoJson(gid2);
+    final result = api_instance.getGeoJson(gid2, gid1, gid0);
     print(result);
 } catch (e) {
     print('Exception when calling RankingApi->getGeoJson: $e\n');
@@ -49,6 +51,8 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **gid2** | **String**| County ID. Only one allowed | [optional] 
+ **gid1** | **String**| State ID. Only one allowed | [optional] 
+ **gid0** | **String**| Country ID. Only one allowed | [optional] 
 
 ### Return type
 

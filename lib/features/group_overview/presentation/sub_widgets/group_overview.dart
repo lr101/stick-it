@@ -3,7 +3,6 @@ import 'package:buff_lisa/data/service/group_image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
-import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_image_feed.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
@@ -116,8 +115,6 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
               loading: () => const Center(child: CircularProgressIndicator()),),
           ImageGrid(
             pinProvider: sortedGroupPinsProvider(widget.groupId),
-            onTab: (index) => Routing.to(context,
-                GroupImageFeed(index: index, groupId: widget.groupId),),
           ),
         ],),);
   }

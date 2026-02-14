@@ -59,11 +59,9 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
       _pins = next.value ?? [];
       widget.pagingController.refresh();
     });
-    return PagedListView<int, LocalPinDto>(
+    return PagedSliverList<int, LocalPinDto>(
       pagingController: widget.pagingController,
       addAutomaticKeepAlives: false,
-      physics: const BouncingScrollPhysics(),
-      scrollController: scrollController,
       builderDelegate: PagedChildBuilderDelegate<LocalPinDto>(
         animateTransitions: true,
         itemBuilder: (context, item, index) => ProviderScope(

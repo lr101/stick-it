@@ -1,4 +1,6 @@
 import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/features/pin/presentation/view_image.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/square_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,10 +9,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 
 class ImageGrid extends ConsumerStatefulWidget {
-  const ImageGrid({super.key, required this.pinProvider, required this.onTab});
+  const ImageGrid({super.key, required this.pinProvider});
 
   final ProviderListenable<AsyncValue<List<LocalPinDto>?>> pinProvider;
-  final Function(int index) onTab;
 
   @override
   ConsumerState<ImageGrid> createState() => _ImageGridState();
@@ -58,7 +59,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
           pinId: item.id,
           index: index,
           groupId: item.groupId,
-          onTap: widget.onTab,
+          onTap: (index) => Routing.to(context, ViewImage(pin: item)),
         ),
         noItemsFoundIndicatorBuilder: (context) => Center(
           child: isInitial ? const CircularProgressIndicator() : const Text("No images found"),

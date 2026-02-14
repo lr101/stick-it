@@ -158,7 +158,6 @@ class MaterialTheme {
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
             color: colorScheme.outlineVariant.withValues(alpha: 0.3),
-            width: 1,
           ),
         ),
         color: colorScheme.surfaceContainer, // Lighter than background

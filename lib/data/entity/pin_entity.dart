@@ -36,6 +36,15 @@ class PinEntity extends CacheEntity {
   @HiveField(11)
   final DateTime? lastSynced;
 
+  @HiveField(12)
+  final String? gid0;
+
+  @HiveField(13)
+  final String? gid1;
+
+  @HiveField(14)
+  final String? gid2;
+
   PinEntity({
     required this.pinId,
     required this.latitude,
@@ -46,6 +55,9 @@ class PinEntity extends CacheEntity {
     required this.group,
     this.isHidden = false,
     this.lastSynced,
+    this.gid0,
+    this.gid1,
+    this.gid2,
     super.keepAlive,
     super.hits,
     super.ttl,
@@ -62,6 +74,9 @@ class PinEntity extends CacheEntity {
       description: pinDto.description,
       lastSynced: DateTime.now(),
       keepAlive: keepAlive,
+      gid0: pinDto.gid0,
+      gid1: pinDto.gid1,
+      gid2: pinDto.gid2,
     );
   }
 

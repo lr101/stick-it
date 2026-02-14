@@ -50,7 +50,7 @@ final class UserPinServiceProvider
   }
 }
 
-String _$userPinServiceHash() => r'2548b902d1b6bc4f11ba284a6e50fe7171d42c0d';
+String _$userPinServiceHash() => r'ad1651dae16b5b8e1bbfa710c7567f04fa2bddc8';
 
 final class UserPinServiceFamily extends $Family
     with

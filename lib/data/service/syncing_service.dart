@@ -1,6 +1,5 @@
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/dto/local_user_dto.dart';
 import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
@@ -45,6 +44,7 @@ class SyncingService extends _$SyncingService {
     _groupRepository = ref.watch(groupRepositoryProvider);
     _pinRepository = ref.watch(pinRepositoryProvider);
     userId = ref.watch(userIdProvider);
+    // ignore: unused_local_variable
     final user = ref.watch(userServiceProvider(userId)); // keep provider alive
     return SyncState.init;
   }

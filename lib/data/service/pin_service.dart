@@ -9,6 +9,7 @@ import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/data/service/view_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/features/profile/service/user_pin_service.dart';
 import 'package:buff_lisa/util/core/cache_api.dart';
@@ -48,7 +49,7 @@ class PinService extends _$PinService {
   Future<Set<LocalPinDto>> _fetchOtherUserGroupPins() async {
     final pinsApi = ref.watch(pinApiProvider);
     final remotePins = await pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
-    final localPins = remotePins!.items.map((e) => LocalPinDto.fromDtoWithImage(e)).toSet();
+    final localPins = remotePins!.items.map((e) => LocalPinDto.fromDto(e)).toSet();
     final storage = _pinRepository as CacheApi<PinEntity>;
     final map = <String, PinEntity>{};
     for (final pin in remotePins.items) {
@@ -158,10 +159,19 @@ Future<Set<LocalPinDto>> activatedPins(Ref ref) async {
 
 @riverpod
 Set<LocalPinDto> activatedPinsWithoutLoading(Ref ref) {
-  final groups = ref.watch(activeGroupsProvider).value ?? {};
+  final viewState = ref.watch(viewServiceProvider);
   final pins = <LocalPinDto>{};
-  for (final group in groups) {
-    final p = ref.watch(pinServiceProvider(group.groupId)).value ?? {};
+  if (viewState == ViewState.group) {
+    final groups = ref.watch(activeGroupsProvider).value ?? {};
+    
+    for (final group in groups) {
+      final p = ref.watch(pinServiceProvider(group.groupId)).value ?? {};
+      pins.addAll(p);
+    }
+    
+  } else {
+    final userId = ref.watch(userIdProvider);
+    final p = ref.watch(userPinServiceProvider(userId)).value ?? [];
     pins.addAll(p);
   }
   return pins;

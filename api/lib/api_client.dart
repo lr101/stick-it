@@ -200,6 +200,8 @@ class ApiClient {
           return MapInfoDto.fromJson(value);
         case 'MemberResponseDto':
           return MemberResponseDto.fromJson(value);
+        case 'NotificationDto':
+          return NotificationDto.fromJson(value);
         case 'PinLikeDto':
           return PinLikeDto.fromJson(value);
         case 'PinRequestDto':

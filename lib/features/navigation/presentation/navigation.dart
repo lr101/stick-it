@@ -4,10 +4,7 @@ import 'package:buff_lisa/features/feed/presentation/active_group_feed.dart';
 import 'package:buff_lisa/features/group_user_list/presentation/user_groups.dart';
 import 'package:buff_lisa/features/map_home/presentation/map_home.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
-import 'package:buff_lisa/features/navigation/presentation/syncing_preview.dart';
-import 'package:buff_lisa/features/navigation/presentation/tab_group_preview.dart';
 import 'package:buff_lisa/features/profile/presentation/user_profile.dart';
-import 'package:buff_lisa/widgets/group_selector/presentation/group_selector.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,42 +49,14 @@ class _NavigationState extends ConsumerState<Navigation> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height * 0.09;
-    final groupSelector = GroupSelector(height: height);
-
+    ref.watch(syncingServiceProvider); // keep to run sync
     final state = ref.watch(navigationStateProvider);
     return  Scaffold(
         backgroundColor: state == 2 ? Colors.transparent : null,
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                if (state == 3) SizedBox(height: height),
-                Expanded(
-                  child: PageView(
-                    controller: _pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: widgetOptions,
-                  ),
-                ),
-              ],
-            ),
-            if (state == 2 || state == 3)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  groupSelector,
-                  if (state == 2) const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TopGroupsPreview(),
-                      SyncingPreview(),
-                    ],
-                  ),
-
-                ],),
-          ],
+        body: PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: widgetOptions,
         ),
         bottomNavigationBar: BottomNavigationBar(
           showUnselectedLabels: true,
