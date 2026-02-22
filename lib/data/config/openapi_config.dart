@@ -1,4 +1,5 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 import 'package:mutex/mutex.dart';
@@ -119,6 +120,7 @@ class _RateLimitedAuthClient extends http.BaseClient {
       }
 
       // 3. Send the request
+      debugPrint("---------------------->>>>>>> ${request.toString()}");
       final response = await inner.send(request);
 
       // 4. Rate-limit delay (150ms) to bypass CrowdSec probing heuristics

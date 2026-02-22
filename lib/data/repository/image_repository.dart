@@ -37,7 +37,8 @@ class ImageRepository extends CacheImpl<ImageEntity> {
   }
 
   Future<Uint8List?> fetchImage(String id, bool keepAlive) async {
-    final cachedImage = await get(id);
+    final isarId = fastHash('${type.name}_$id');
+    final cachedImage = await box.get(isarId);
     if (cachedImage?.isEmpty == true) {
       return null;
     }
@@ -112,14 +113,15 @@ class ImageRepository extends CacheImpl<ImageEntity> {
 
   @override
   Future<void> delete(String id) async {
-    final cachedImage = await get(id);
+    final isarId = fastHash('${type.name}_$id');
+    final cachedImage = await box.get(isarId);
     if (cachedImage?.filePath != null) {
       final file = File(cachedImage!.filePath);
       if (await file.exists()) {
         await file.delete();
       }
     }
-    await super.delete(id);
+    await box.delete(isarId);
   }
 
   @override
