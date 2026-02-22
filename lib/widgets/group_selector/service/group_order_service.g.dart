@@ -10,11 +10,11 @@ part of 'group_order_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(GroupOrderService)
-final groupOrderServiceProvider = GroupOrderServiceProvider._();
+const groupOrderServiceProvider = GroupOrderServiceProvider._();
 
 final class GroupOrderServiceProvider
     extends $NotifierProvider<GroupOrderService, List<String>> {
-  GroupOrderServiceProvider._()
+  const GroupOrderServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,6 +48,7 @@ abstract class _$GroupOrderService extends $Notifier<List<String>> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<List<String>, List<String>>;
     final element =
         ref.element
@@ -57,17 +58,17 @@ abstract class _$GroupOrderService extends $Notifier<List<String>> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(roundGroupId)
-final roundGroupIdProvider = RoundGroupIdProvider._();
+const roundGroupIdProvider = RoundGroupIdProvider._();
 
 final class RoundGroupIdProvider
     extends $FunctionalProvider<String, String, String>
     with $Provider<String> {
-  RoundGroupIdProvider._()
+  const RoundGroupIdProvider._()
     : super(
         from: null,
         argument: null,
@@ -103,11 +104,11 @@ final class RoundGroupIdProvider
 String _$roundGroupIdHash() => r'dd926cf843566b1db3f10083769172177a6cd74e';
 
 @ProviderFor(GroupActiveService)
-final groupActiveServiceProvider = GroupActiveServiceProvider._();
+const groupActiveServiceProvider = GroupActiveServiceProvider._();
 
 final class GroupActiveServiceProvider
     extends $NotifierProvider<GroupActiveService, List<String>> {
-  GroupActiveServiceProvider._()
+  const GroupActiveServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -135,13 +136,14 @@ final class GroupActiveServiceProvider
 }
 
 String _$groupActiveServiceHash() =>
-    r'ba2d6f9f19e06974d3a11222fb16e70ff960a5e4';
+    r'31d474372c4894295c62908658824023187691f0';
 
 abstract class _$GroupActiveService extends $Notifier<List<String>> {
   List<String> build();
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<List<String>, List<String>>;
     final element =
         ref.element
@@ -151,6 +153,6 @@ abstract class _$GroupActiveService extends $Notifier<List<String>> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }

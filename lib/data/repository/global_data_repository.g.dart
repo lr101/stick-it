@@ -10,7 +10,7 @@ part of 'global_data_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(globalDataRepository)
-final globalDataRepositoryProvider = GlobalDataRepositoryProvider._();
+const globalDataRepositoryProvider = GlobalDataRepositoryProvider._();
 
 final class GlobalDataRepositoryProvider
     extends
@@ -20,7 +20,7 @@ final class GlobalDataRepositoryProvider
           GlobalDataRepository
         >
     with $Provider<GlobalDataRepository> {
-  GlobalDataRepositoryProvider._()
+  const GlobalDataRepositoryProvider._()
     : super(
         from: null,
         argument: null,
@@ -58,12 +58,12 @@ String _$globalDataRepositoryHash() =>
     r'52018c90eb3d4d4a9b0367097eaa4aa0695da2f0';
 
 @ProviderFor(globalDataOnce)
-final globalDataOnceProvider = GlobalDataOnceProvider._();
+const globalDataOnceProvider = GlobalDataOnceProvider._();
 
 final class GlobalDataOnceProvider
     extends $FunctionalProvider<GlobalDataDto, GlobalDataDto, GlobalDataDto>
     with $Provider<GlobalDataDto> {
-  GlobalDataOnceProvider._()
+  const GlobalDataOnceProvider._()
     : super(
         from: null,
         argument: null,
@@ -99,12 +99,12 @@ final class GlobalDataOnceProvider
 String _$globalDataOnceHash() => r'94d894761acf917a095162ba6b7f044cef140fee';
 
 @ProviderFor(currentUserOnce)
-final currentUserOnceProvider = CurrentUserOnceProvider._();
+const currentUserOnceProvider = CurrentUserOnceProvider._();
 
 final class CurrentUserOnceProvider
     extends $FunctionalProvider<CurrentUserDto, CurrentUserDto, CurrentUserDto>
     with $Provider<CurrentUserDto> {
-  CurrentUserOnceProvider._()
+  const CurrentUserOnceProvider._()
     : super(
         from: null,
         argument: null,
@@ -140,7 +140,7 @@ final class CurrentUserOnceProvider
 String _$currentUserOnceHash() => r'6e4d8bf13ea35b7f3d7ab3c08a4dfeb35e59ed6f';
 
 @ProviderFor(flutterSecureStorage)
-final flutterSecureStorageProvider = FlutterSecureStorageProvider._();
+const flutterSecureStorageProvider = FlutterSecureStorageProvider._();
 
 final class FlutterSecureStorageProvider
     extends
@@ -150,7 +150,7 @@ final class FlutterSecureStorageProvider
           FlutterSecureStorage
         >
     with $Provider<FlutterSecureStorage> {
-  FlutterSecureStorageProvider._()
+  const FlutterSecureStorageProvider._()
     : super(
         from: null,
         argument: null,

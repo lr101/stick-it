@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_group_service.dart';
+part of 'group_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -99,81 +99,6 @@ abstract class _$GroupService extends $StreamNotifier<GroupEntity?> {
   }
 }
 
-@ProviderFor(groupById)
-const groupByIdProvider = GroupByIdFamily._();
-
-final class GroupByIdProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<GroupEntity?>,
-          GroupEntity?,
-          Stream<GroupEntity?>
-        >
-    with $FutureModifier<GroupEntity?>, $StreamProvider<GroupEntity?> {
-  const GroupByIdProvider._({
-    required GroupByIdFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'groupByIdProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$groupByIdHash();
-
-  @override
-  String toString() {
-    return r'groupByIdProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $StreamProviderElement<GroupEntity?> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
-
-  @override
-  Stream<GroupEntity?> create(Ref ref) {
-    final argument = this.argument as String;
-    return groupById(ref, argument);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is GroupByIdProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
-String _$groupByIdHash() => r'9904c8cf7fbc805cfb2f549d18071e98ae4315dd';
-
-final class GroupByIdFamily extends $Family
-    with $FunctionalFamilyOverride<Stream<GroupEntity?>, String> {
-  const GroupByIdFamily._()
-    : super(
-        retry: null,
-        name: r'groupByIdProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  GroupByIdProvider call(String groupId) =>
-      GroupByIdProvider._(argument: groupId, from: this);
-
-  @override
-  String toString() => r'groupByIdProvider';
-}
-
 @ProviderFor(UserGroupService)
 const userGroupServiceProvider = UserGroupServiceProvider._();
 
@@ -198,7 +123,7 @@ final class UserGroupServiceProvider
   UserGroupService create() => UserGroupService();
 }
 
-String _$userGroupServiceHash() => r'fdb24760cb783beed089765cfd37a27de709ba0f';
+String _$userGroupServiceHash() => r'b2b17e5b6d9aa78e0bf57daa8a4396568ea1fbd0';
 
 abstract class _$UserGroupService extends $StreamNotifier<List<GroupEntity>> {
   Stream<List<GroupEntity>> build();
@@ -350,7 +275,7 @@ final class GroupByIdActivatedProvider
 }
 
 String _$groupByIdActivatedHash() =>
-    r'da2fe9a4e5d68bed683918b0c3e9836fcaa0342a';
+    r'54a9a6471cfa0c997eed015d7c982a4e3934ac0a';
 
 final class GroupByIdActivatedFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<bool>, String> {
@@ -368,80 +293,4 @@ final class GroupByIdActivatedFamily extends $Family
 
   @override
   String toString() => r'groupByIdActivatedProvider';
-}
-
-@ProviderFor(groupByIdWithoutState)
-const groupByIdWithoutStateProvider = GroupByIdWithoutStateFamily._();
-
-final class GroupByIdWithoutStateProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<GroupEntity?>,
-          GroupEntity?,
-          FutureOr<GroupEntity?>
-        >
-    with $FutureModifier<GroupEntity?>, $FutureProvider<GroupEntity?> {
-  const GroupByIdWithoutStateProvider._({
-    required GroupByIdWithoutStateFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'groupByIdWithoutStateProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$groupByIdWithoutStateHash();
-
-  @override
-  String toString() {
-    return r'groupByIdWithoutStateProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $FutureProviderElement<GroupEntity?> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<GroupEntity?> create(Ref ref) {
-    final argument = this.argument as String;
-    return groupByIdWithoutState(ref, argument);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is GroupByIdWithoutStateProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
-String _$groupByIdWithoutStateHash() =>
-    r'dfe30fd9b45c5bbc5217042aca4496fd430587a2';
-
-final class GroupByIdWithoutStateFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<GroupEntity?>, String> {
-  const GroupByIdWithoutStateFamily._()
-    : super(
-        retry: null,
-        name: r'groupByIdWithoutStateProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  GroupByIdWithoutStateProvider call(String groupId) =>
-      GroupByIdWithoutStateProvider._(argument: groupId, from: this);
-
-  @override
-  String toString() => r'groupByIdWithoutStateProvider';
 }

@@ -10,11 +10,11 @@ part of 'feed_description.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(FeedDescription)
-final feedDescriptionProvider = FeedDescriptionFamily._();
+const feedDescriptionProvider = FeedDescriptionFamily._();
 
 final class FeedDescriptionProvider
     extends $NotifierProvider<FeedDescription, bool> {
-  FeedDescriptionProvider._({
+  const FeedDescriptionProvider._({
     required FeedDescriptionFamily super.from,
     required String super.argument,
   }) : super(
@@ -62,7 +62,7 @@ String _$feedDescriptionHash() => r'4e20e4c6792428ebd9a65a43cfda7fabb4928471';
 
 final class FeedDescriptionFamily extends $Family
     with $ClassFamilyOverride<FeedDescription, bool, bool, bool, String> {
-  FeedDescriptionFamily._()
+  const FeedDescriptionFamily._()
     : super(
         retry: null,
         name: r'feedDescriptionProvider',
@@ -86,6 +86,7 @@ abstract class _$FeedDescription extends $Notifier<bool> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build(_$args);
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -95,18 +96,18 @@ abstract class _$FeedDescription extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(FeedDescriptionHeight)
-final feedDescriptionHeightProvider = FeedDescriptionHeightFamily._();
+const feedDescriptionHeightProvider = FeedDescriptionHeightFamily._();
 
 final class FeedDescriptionHeightProvider
     extends $NotifierProvider<FeedDescriptionHeight, double> {
-  FeedDescriptionHeightProvider._({
+  const FeedDescriptionHeightProvider._({
     required FeedDescriptionHeightFamily super.from,
-    required LocalPinDto super.argument,
+    required PinEntity super.argument,
   }) : super(
          retry: null,
          name: r'feedDescriptionHeightProvider',
@@ -149,7 +150,7 @@ final class FeedDescriptionHeightProvider
 }
 
 String _$feedDescriptionHeightHash() =>
-    r'663449be5326eeaa5b08380e257fe05f2ad62d70';
+    r'73472a1880b28feb5d279e29d11dcc35b1760628';
 
 final class FeedDescriptionHeightFamily extends $Family
     with
@@ -158,9 +159,9 @@ final class FeedDescriptionHeightFamily extends $Family
           double,
           double,
           double,
-          LocalPinDto
+          PinEntity
         > {
-  FeedDescriptionHeightFamily._()
+  const FeedDescriptionHeightFamily._()
     : super(
         retry: null,
         name: r'feedDescriptionHeightProvider',
@@ -169,7 +170,7 @@ final class FeedDescriptionHeightFamily extends $Family
         isAutoDispose: true,
       );
 
-  FeedDescriptionHeightProvider call(LocalPinDto pin) =>
+  FeedDescriptionHeightProvider call(PinEntity pin) =>
       FeedDescriptionHeightProvider._(argument: pin, from: this);
 
   @override
@@ -177,13 +178,14 @@ final class FeedDescriptionHeightFamily extends $Family
 }
 
 abstract class _$FeedDescriptionHeight extends $Notifier<double> {
-  late final _$args = ref.$arg as LocalPinDto;
-  LocalPinDto get pin => _$args;
+  late final _$args = ref.$arg as PinEntity;
+  PinEntity get pin => _$args;
 
-  double build(LocalPinDto pin);
+  double build(PinEntity pin);
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build(_$args);
     final ref = this.ref as $Ref<double, double>;
     final element =
         ref.element
@@ -193,6 +195,6 @@ abstract class _$FeedDescriptionHeight extends $Notifier<double> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleValue(ref, created);
   }
 }

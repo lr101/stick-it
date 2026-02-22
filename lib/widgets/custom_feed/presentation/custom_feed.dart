@@ -1,19 +1,19 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
-import 'package:buff_lisa/data/service/pin_image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_item_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class CustomFeed extends ConsumerStatefulWidget {
   const CustomFeed({super.key, required this.pinProvider, this.index, required this.pagingController});
 
-  final ProviderListenable<AsyncValue<List<LocalPinDto>?>> pinProvider;
-  final PagingController<int, LocalPinDto> pagingController;
+  final ProviderListenable<AsyncValue<List<PinEntity>?>> pinProvider;
+  final PagingController<int, PinEntity> pagingController;
   final int? index;
 
   @override
@@ -26,7 +26,7 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
   static const int _pageSize = 3;
 
 
-  List<LocalPinDto> _pins = [];
+  List<PinEntity> _pins = [];
 
 
 
@@ -59,10 +59,10 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
       _pins = next.value ?? [];
       widget.pagingController.refresh();
     });
-    return PagedSliverList<int, LocalPinDto>(
+    return PagedSliverList<int, PinEntity>(
       pagingController: widget.pagingController,
       addAutomaticKeepAlives: false,
-      builderDelegate: PagedChildBuilderDelegate<LocalPinDto>(
+      builderDelegate: PagedChildBuilderDelegate<PinEntity>(
         animateTransitions: true,
         itemBuilder: (context, item, index) => ProviderScope(
             child: ProviderScope(
@@ -86,9 +86,9 @@ class _CustomFeedState extends ConsumerState<CustomFeed> {
       final idList = _pins.getRange(pageKey, end).toList();
       for (final pin in idList) {
         // prefetch data
-        ref.read(getPinImageAndFetchProvider(pin.id));
-        ref.read(userServiceProvider(pin.creatorId));
-        ref.read(getUserProfileSmallProvider(pin.creatorId));
+        ref.read(pinImageRepositoryProvider).fetchImage(pin.pinId, false);
+        ref.read(userServiceProvider(pin.creator));
+        ref.read(getUserProfileSmallProvider(pin.creator));
       }
       if (end == _pins.length) {
         widget.pagingController.appendLastPage(idList);

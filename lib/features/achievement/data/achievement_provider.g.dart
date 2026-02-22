@@ -10,12 +10,12 @@ part of 'achievement_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(Achievements)
-final achievementsProvider = AchievementsProvider._();
+const achievementsProvider = AchievementsProvider._();
 
 final class AchievementsProvider
     extends
         $AsyncNotifierProvider<Achievements, List<UserAchievementsDtoInner>> {
-  AchievementsProvider._()
+  const AchievementsProvider._()
     : super(
         from: null,
         argument: null,
@@ -34,7 +34,7 @@ final class AchievementsProvider
   Achievements create() => Achievements();
 }
 
-String _$achievementsHash() => r'c9ffccced6dde16974a1284fd58d43bffaa2b907';
+String _$achievementsHash() => r'641e221073fa798a4a9cc29f2e0ec7a1e981c0a7';
 
 abstract class _$Achievements
     extends $AsyncNotifier<List<UserAchievementsDtoInner>> {
@@ -42,6 +42,7 @@ abstract class _$Achievements
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref =
         this.ref
             as $Ref<
@@ -59,6 +60,6 @@ abstract class _$Achievements
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }

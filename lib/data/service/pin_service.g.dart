@@ -9,39 +9,39 @@ part of 'pin_service.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(PinService)
-final pinServiceProvider = PinServiceFamily._();
+@ProviderFor(PinUserService)
+const pinUserServiceProvider = PinUserServiceFamily._();
 
-final class PinServiceProvider
-    extends $AsyncNotifierProvider<PinService, Set<LocalPinDto>> {
-  PinServiceProvider._({
-    required PinServiceFamily super.from,
+final class PinUserServiceProvider
+    extends $StreamNotifierProvider<PinUserService, List<PinEntity>> {
+  const PinUserServiceProvider._({
+    required PinUserServiceFamily super.from,
     required String super.argument,
   }) : super(
          retry: null,
-         name: r'pinServiceProvider',
+         name: r'pinUserServiceProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$pinServiceHash();
+  String debugGetCreateSourceHash() => _$pinUserServiceHash();
 
   @override
   String toString() {
-    return r'pinServiceProvider'
+    return r'pinUserServiceProvider'
         ''
         '($argument)';
   }
 
   @$internal
   @override
-  PinService create() => PinService();
+  PinUserService create() => PinUserService();
 
   @override
   bool operator ==(Object other) {
-    return other is PinServiceProvider && other.argument == argument;
+    return other is PinUserServiceProvider && other.argument == argument;
   }
 
   @override
@@ -50,67 +50,272 @@ final class PinServiceProvider
   }
 }
 
-String _$pinServiceHash() => r'8492c2564f8ff95d1e0d9bd7d327a310971184ab';
+String _$pinUserServiceHash() => r'0de1ccc25f60d19be7abc5a4c3237c02fa2183f2';
 
-final class PinServiceFamily extends $Family
+final class PinUserServiceFamily extends $Family
     with
         $ClassFamilyOverride<
-          PinService,
-          AsyncValue<Set<LocalPinDto>>,
-          Set<LocalPinDto>,
-          FutureOr<Set<LocalPinDto>>,
+          PinUserService,
+          AsyncValue<List<PinEntity>>,
+          List<PinEntity>,
+          Stream<List<PinEntity>>,
           String
         > {
-  PinServiceFamily._()
+  const PinUserServiceFamily._()
     : super(
         retry: null,
-        name: r'pinServiceProvider',
+        name: r'pinUserServiceProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  PinServiceProvider call(String groupId) =>
-      PinServiceProvider._(argument: groupId, from: this);
+  PinUserServiceProvider call(String userId) =>
+      PinUserServiceProvider._(argument: userId, from: this);
 
   @override
-  String toString() => r'pinServiceProvider';
+  String toString() => r'pinUserServiceProvider';
 }
 
-abstract class _$PinService extends $AsyncNotifier<Set<LocalPinDto>> {
+abstract class _$PinUserService extends $StreamNotifier<List<PinEntity>> {
   late final _$args = ref.$arg as String;
-  String get groupId => _$args;
+  String get userId => _$args;
 
-  FutureOr<Set<LocalPinDto>> build(String groupId);
+  Stream<List<PinEntity>> build(String userId);
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref =
-        this.ref as $Ref<AsyncValue<Set<LocalPinDto>>, Set<LocalPinDto>>;
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<List<PinEntity>>, List<PinEntity>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<Set<LocalPinDto>>, Set<LocalPinDto>>,
-              AsyncValue<Set<LocalPinDto>>,
+              AnyNotifier<AsyncValue<List<PinEntity>>, List<PinEntity>>,
+              AsyncValue<List<PinEntity>>,
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleValue(ref, created);
   }
 }
 
+@ProviderFor(pinById)
+const pinByIdProvider = PinByIdFamily._();
+
+final class PinByIdProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<PinEntity?>,
+          PinEntity?,
+          Stream<PinEntity?>
+        >
+    with $FutureModifier<PinEntity?>, $StreamProvider<PinEntity?> {
+  const PinByIdProvider._({
+    required PinByIdFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'pinByIdProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$pinByIdHash();
+
+  @override
+  String toString() {
+    return r'pinByIdProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<PinEntity?> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<PinEntity?> create(Ref ref) {
+    final argument = this.argument as String;
+    return pinById(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PinByIdProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$pinByIdHash() => r'1a1e4f501efa48ab7da6797122bd08e222d42fd5';
+
+final class PinByIdFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<PinEntity?>, String> {
+  const PinByIdFamily._()
+    : super(
+        retry: null,
+        name: r'pinByIdProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  PinByIdProvider call(String pinId) =>
+      PinByIdProvider._(argument: pinId, from: this);
+
+  @override
+  String toString() => r'pinByIdProvider';
+}
+
+@ProviderFor(PinGroupService)
+const pinGroupServiceProvider = PinGroupServiceFamily._();
+
+final class PinGroupServiceProvider
+    extends $StreamNotifierProvider<PinGroupService, List<PinEntity>> {
+  const PinGroupServiceProvider._({
+    required PinGroupServiceFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'pinGroupServiceProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$pinGroupServiceHash();
+
+  @override
+  String toString() {
+    return r'pinGroupServiceProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  PinGroupService create() => PinGroupService();
+
+  @override
+  bool operator ==(Object other) {
+    return other is PinGroupServiceProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$pinGroupServiceHash() => r'cfea71e6e44811698a17c4c367edbc9cba4063b4';
+
+final class PinGroupServiceFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          PinGroupService,
+          AsyncValue<List<PinEntity>>,
+          List<PinEntity>,
+          Stream<List<PinEntity>>,
+          String
+        > {
+  const PinGroupServiceFamily._()
+    : super(
+        retry: null,
+        name: r'pinGroupServiceProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  PinGroupServiceProvider call(String groupId) =>
+      PinGroupServiceProvider._(argument: groupId, from: this);
+
+  @override
+  String toString() => r'pinGroupServiceProvider';
+}
+
+abstract class _$PinGroupService extends $StreamNotifier<List<PinEntity>> {
+  late final _$args = ref.$arg as String;
+  String get groupId => _$args;
+
+  Stream<List<PinEntity>> build(String groupId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<List<PinEntity>>, List<PinEntity>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<PinEntity>>, List<PinEntity>>,
+              AsyncValue<List<PinEntity>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+@ProviderFor(pinService)
+const pinServiceProvider = PinServiceProvider._();
+
+final class PinServiceProvider
+    extends $FunctionalProvider<PinService, PinService, PinService>
+    with $Provider<PinService> {
+  const PinServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pinServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pinServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<PinService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  PinService create(Ref ref) {
+    return pinService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PinService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PinService>(value),
+    );
+  }
+}
+
+String _$pinServiceHash() => r'd6a0c27cba6a7bf7c80844deac1efa6a24b5ac81';
+
 @ProviderFor(activatedPins)
-final activatedPinsProvider = ActivatedPinsProvider._();
+const activatedPinsProvider = ActivatedPinsProvider._();
 
 final class ActivatedPinsProvider
     extends
         $FunctionalProvider<
-          AsyncValue<Set<LocalPinDto>>,
-          Set<LocalPinDto>,
-          FutureOr<Set<LocalPinDto>>
+          AsyncValue<Set<PinEntity>>,
+          Set<PinEntity>,
+          FutureOr<Set<PinEntity>>
         >
-    with $FutureModifier<Set<LocalPinDto>>, $FutureProvider<Set<LocalPinDto>> {
-  ActivatedPinsProvider._()
+    with $FutureModifier<Set<PinEntity>>, $FutureProvider<Set<PinEntity>> {
+  const ActivatedPinsProvider._()
     : super(
         from: null,
         argument: null,
@@ -126,31 +331,26 @@ final class ActivatedPinsProvider
 
   @$internal
   @override
-  $FutureProviderElement<Set<LocalPinDto>> $createElement(
+  $FutureProviderElement<Set<PinEntity>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<Set<LocalPinDto>> create(Ref ref) {
+  FutureOr<Set<PinEntity>> create(Ref ref) {
     return activatedPins(ref);
   }
 }
 
-String _$activatedPinsHash() => r'9573209725906800de2b5007857da8873c02f5b6';
+String _$activatedPinsHash() => r'08f0dc0b824ea3827ca6421dde19930763503783';
 
 @ProviderFor(activatedPinsWithoutLoading)
-final activatedPinsWithoutLoadingProvider =
+const activatedPinsWithoutLoadingProvider =
     ActivatedPinsWithoutLoadingProvider._();
 
 final class ActivatedPinsWithoutLoadingProvider
-    extends
-        $FunctionalProvider<
-          Set<LocalPinDto>,
-          Set<LocalPinDto>,
-          Set<LocalPinDto>
-        >
-    with $Provider<Set<LocalPinDto>> {
-  ActivatedPinsWithoutLoadingProvider._()
+    extends $FunctionalProvider<Set<PinEntity>, Set<PinEntity>, Set<PinEntity>>
+    with $Provider<Set<PinEntity>> {
+  const ActivatedPinsWithoutLoadingProvider._()
     : super(
         from: null,
         argument: null,
@@ -166,40 +366,38 @@ final class ActivatedPinsWithoutLoadingProvider
 
   @$internal
   @override
-  $ProviderElement<Set<LocalPinDto>> $createElement($ProviderPointer pointer) =>
+  $ProviderElement<Set<PinEntity>> $createElement($ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
-  Set<LocalPinDto> create(Ref ref) {
+  Set<PinEntity> create(Ref ref) {
     return activatedPinsWithoutLoading(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Set<LocalPinDto> value) {
+  Override overrideWithValue(Set<PinEntity> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<Set<LocalPinDto>>(value),
+      providerOverride: $SyncValueProvider<Set<PinEntity>>(value),
     );
   }
 }
 
 String _$activatedPinsWithoutLoadingHash() =>
-    r'1aebe2a92fd41b78f6d7c5e14eed7fdbc2a62b2b';
+    r'6020447e25360c0eb88bfebca6404816dabdc570';
 
 @ProviderFor(sortedActivatedPins)
-final sortedActivatedPinsProvider = SortedActivatedPinsProvider._();
+const sortedActivatedPinsProvider = SortedActivatedPinsProvider._();
 
 final class SortedActivatedPinsProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<LocalPinDto>>,
-          List<LocalPinDto>,
-          FutureOr<List<LocalPinDto>>
+          AsyncValue<List<PinEntity>>,
+          List<PinEntity>,
+          FutureOr<List<PinEntity>>
         >
-    with
-        $FutureModifier<List<LocalPinDto>>,
-        $FutureProvider<List<LocalPinDto>> {
-  SortedActivatedPinsProvider._()
+    with $FutureModifier<List<PinEntity>>, $FutureProvider<List<PinEntity>> {
+  const SortedActivatedPinsProvider._()
     : super(
         from: null,
         argument: null,
@@ -215,33 +413,31 @@ final class SortedActivatedPinsProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<LocalPinDto>> $createElement(
+  $FutureProviderElement<List<PinEntity>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<LocalPinDto>> create(Ref ref) {
+  FutureOr<List<PinEntity>> create(Ref ref) {
     return sortedActivatedPins(ref);
   }
 }
 
 String _$sortedActivatedPinsHash() =>
-    r'b7ae537c50ec211ab28a4700ca28060c8891fc88';
+    r'27a2653d9890640454aff23540f37a48c7658814';
 
 @ProviderFor(sortedGroupPins)
-final sortedGroupPinsProvider = SortedGroupPinsFamily._();
+const sortedGroupPinsProvider = SortedGroupPinsFamily._();
 
 final class SortedGroupPinsProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<LocalPinDto>?>,
-          List<LocalPinDto>?,
-          FutureOr<List<LocalPinDto>?>
+          AsyncValue<List<PinEntity>?>,
+          List<PinEntity>?,
+          FutureOr<List<PinEntity>?>
         >
-    with
-        $FutureModifier<List<LocalPinDto>?>,
-        $FutureProvider<List<LocalPinDto>?> {
-  SortedGroupPinsProvider._({
+    with $FutureModifier<List<PinEntity>?>, $FutureProvider<List<PinEntity>?> {
+  const SortedGroupPinsProvider._({
     required SortedGroupPinsFamily super.from,
     required String super.argument,
   }) : super(
@@ -264,12 +460,12 @@ final class SortedGroupPinsProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<LocalPinDto>?> $createElement(
+  $FutureProviderElement<List<PinEntity>?> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<LocalPinDto>?> create(Ref ref) {
+  FutureOr<List<PinEntity>?> create(Ref ref) {
     final argument = this.argument as String;
     return sortedGroupPins(ref, argument);
   }
@@ -285,11 +481,11 @@ final class SortedGroupPinsProvider
   }
 }
 
-String _$sortedGroupPinsHash() => r'23dbccfee5ac1e9dd3c262c0bcb63e500539867a';
+String _$sortedGroupPinsHash() => r'b50b036f312a2b0383c9e505a14257fd8cdecfbf';
 
 final class SortedGroupPinsFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<List<LocalPinDto>?>, String> {
-  SortedGroupPinsFamily._()
+    with $FunctionalFamilyOverride<FutureOr<List<PinEntity>?>, String> {
+  const SortedGroupPinsFamily._()
     : super(
         retry: null,
         name: r'sortedGroupPinsProvider',
@@ -304,55 +500,3 @@ final class SortedGroupPinsFamily extends $Family
   @override
   String toString() => r'sortedGroupPinsProvider';
 }
-
-@ProviderFor(pinsSortedByDistance)
-final pinsSortedByDistanceProvider = PinsSortedByDistanceProvider._();
-
-final class PinsSortedByDistanceProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<MapEntry<LocalPinDto, double>>>,
-          AsyncValue<List<MapEntry<LocalPinDto, double>>>,
-          AsyncValue<List<MapEntry<LocalPinDto, double>>>
-        >
-    with $Provider<AsyncValue<List<MapEntry<LocalPinDto, double>>>> {
-  PinsSortedByDistanceProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'pinsSortedByDistanceProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$pinsSortedByDistanceHash();
-
-  @$internal
-  @override
-  $ProviderElement<AsyncValue<List<MapEntry<LocalPinDto, double>>>>
-  $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
-
-  @override
-  AsyncValue<List<MapEntry<LocalPinDto, double>>> create(Ref ref) {
-    return pinsSortedByDistance(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(
-    AsyncValue<List<MapEntry<LocalPinDto, double>>> value,
-  ) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride:
-          $SyncValueProvider<AsyncValue<List<MapEntry<LocalPinDto, double>>>>(
-            value,
-          ),
-    );
-  }
-}
-
-String _$pinsSortedByDistanceHash() =>
-    r'bc056691a0787e10359700bd7ac8645c4a89e2ef';

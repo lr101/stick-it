@@ -1,7 +1,7 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/custom_feed.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,7 +11,7 @@ class UserImageFeed extends ConsumerWidget {
 
   final int index;
   final String userId;
-  final ProviderListenable<AsyncValue<List<LocalPinDto>>> userPinNotifier;
+  final ProviderListenable<AsyncValue<List<PinEntity>>> userPinNotifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +24,7 @@ class UserImageFeed extends ConsumerWidget {
                   pinProvider: userPinNotifier,
                   index: index,
                   pagingController: PagingController.fromValue(
-                      PagingState<int, LocalPinDto>(
+                      PagingState<int, PinEntity>(
                           nextPageKey: index + 1,
                           itemList: data.getRange(0, index + 1).toList(),),
                       firstPageKey: 0,),),

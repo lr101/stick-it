@@ -1,4 +1,4 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/custom_feed.dart';
 import 'package:buff_lisa/widgets/group_selector/presentation/top_status_bar.dart';
@@ -14,7 +14,7 @@ class ActiveGroupFeed extends ConsumerStatefulWidget {
 }
 
 class _ActiveGroupFeedState extends ConsumerState<ActiveGroupFeed> with AutomaticKeepAliveClientMixin {
-  final PagingController<int, LocalPinDto> _pagingController =
+  final PagingController<int, PinEntity> _pagingController =
       PagingController(firstPageKey: 0, invisibleItemsThreshold: 5);
 
   @override

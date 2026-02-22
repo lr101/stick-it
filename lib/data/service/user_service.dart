@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/dto/global_data_dto.dart';
-import 'package:buff_lisa/data/dto/local_user_dto.dart';
+import 'package:buff_lisa/data/entity/season_entity.dart';
 import 'package:buff_lisa/data/entity/user_entity.dart';
 import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -18,35 +16,29 @@ part 'user_service.g.dart';
 
 @riverpod
 class UserService extends _$UserService {
-  late UserRepository _repo;
-  late GlobalDataDto _global;
+  late final UserRepository _repo;
+  late final GlobalDataDto _global;
 
   @override
-  Future<LocalUserDto> build(String userId) async {
+  Stream<UserEntity?> build(String userId) async* {
     _repo = ref.watch(userRepositoryProvider);
     _global = ref.watch(globalDataServiceProvider);
-    final repo = ref.watch(userRepositoryProvider);
-    final user = await repo.get(userId);
-    if (user == null) {
-      return await _updateRemote();
-    } else {
-      return LocalUserDto.fromEntity(user);
-    }
-  }
-
-  Future<LocalUserDto> _updateRemote() async {
     final userApi = ref.watch(userApiProvider);
+
+    _updateRemoteIfMissing(_repo, _global, userApi);
+
+    final stream = await _repo.watchById(userId);
+    yield* stream;
+    
+  }
+
+  Future<void> _updateRemoteIfMissing(UserRepository repo, GlobalDataDto global, UsersApi userApi) async {
+    final localUser = await _repo.get(this.userId);
+    if (localUser != null) return;
+    final bool isCurrentUser = this.userId == _global.userId;
     final userDto = await userApi.getUser(this.userId);
-    await _repo.put(this.userId,
-        UserEntity.fromDto(userDto!, keepAlive: this.userId == _global.userId),);
-    final user = LocalUserDto.fromInfoDto(userDto);
-    return user;
+    await _repo.put(UserEntity.fromDto(userDto!, !isCurrentUser, keepAlive: isCurrentUser,),);
   }
-
-  Future<void> updateRemote() async {
-    state = AsyncData(await _updateRemote());
-  }
-
 
   Future<String?> changeUser({
     String? password,
@@ -66,14 +58,13 @@ class UserService extends _$UserService {
               description: description,
               username: username,
               selectedBatch: selectedBatch,
-              image: profilePicture == null ? null : base64Encode(
-                  profilePicture,),),
+              image: profilePicture == null ? null : base64Encode(profilePicture,),),
       );
-      final userEntity = await _repo.get(this.userId);
+
+      final userEntity = state.value;
       if (result != null && userEntity != null) {
         final userDto = userEntity.copyUserWith(result, selectedBatch);
-        await _repo.put(this.userId, userDto);
-        state = AsyncData(LocalUserDto.fromEntity(userDto));
+        await _repo.put(userDto);
         if (profilePicture != null) {
           ref.read(userImageRepoProvider).overrideUrl(
               this.userId, result.profileImage!, true,);
@@ -90,26 +81,26 @@ class UserService extends _$UserService {
 
 @riverpod
 Future<String?> userByIdUsername(Ref ref, String userId) async {
-  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e.username));
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e?.username));
 }
 
 @riverpod
 Future<int?> userByIdSelectedBatch(Ref ref, String userId) async {
-  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e.selectedBatch));
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e?.selectedBatch));
 }
 
 @riverpod
 Future<String?> userByIdDescription(Ref ref, String userId) async {
-  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e.description));
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e?.description));
 }
 
 @riverpod
-Future<SeasonItemDto?> userByIdBestSeason(Ref ref, String userId) async {
-  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e.bestSeason));
+Future<SeasonEntity?> userByIdBestSeason(Ref ref, String userId) async {
+  return await ref.watch(userServiceProvider(userId).selectAsync((e) => e?.bestSeason));
 }
 
 @riverpod
-Future<LocalUserDto> currentUser(Ref ref) async {
+Future<UserEntity?> currentUser(Ref ref) async {
   final userId = ref.watch(userIdProvider);
-  return await ref.watch(userServiceProvider(userId).future);
+  return ref.watch(userServiceProvider(userId)).value;
 }

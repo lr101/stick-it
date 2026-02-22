@@ -10,7 +10,7 @@ part of 'member_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(memberRepository)
-final memberRepositoryProvider = MemberRepositoryProvider._();
+const memberRepositoryProvider = MemberRepositoryProvider._();
 
 final class MemberRepositoryProvider
     extends
@@ -20,7 +20,7 @@ final class MemberRepositoryProvider
           MemberRepository
         >
     with $Provider<MemberRepository> {
-  MemberRepositoryProvider._()
+  const MemberRepositoryProvider._()
     : super(
         from: null,
         argument: null,
@@ -53,4 +53,4 @@ final class MemberRepositoryProvider
   }
 }
 
-String _$memberRepositoryHash() => r'8845acef2c6282885af327c50407377f781b674f';
+String _$memberRepositoryHash() => r'14d123190e693c4af1953fa2b841fd70bfbba0b5';

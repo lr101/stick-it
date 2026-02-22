@@ -1,27 +1,28 @@
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
-import 'package:buff_lisa/data/entity/pin_entity.dart';
-import 'package:hive_ce_flutter/adapters.dart';
+import 'package:buff_lisa/util/core/fast_hash.dart';
+import 'package:isar_community/isar.dart';
 
 part 'user_pins_entity.g.dart';
 
-@HiveType(typeId: 9)
+@Collection()
 class UserPinsEntity extends CacheEntity {
 
-  @HiveField(3)
-  List<PinEntity> pins = [];
-
-  UserPinsEntity({required this.pins, super.keepAlive = false, super.hits, super.ttl});
-
-
-
   @override
-  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+  Id get isarId => fastHash(userId);
+  String userId;
+  List<String> pins = [];
+  UserPinsEntity({required this.pins, required this.userId, super.keepAlive = false, super.hits, required super.ttl, required super.onlySession});
+ 
+  @override
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive, bool? onlySession}) {
     return UserPinsEntity(
       pins: pins,
+      userId: userId,
       ttl: ttl ?? this.ttl,
       hits: hits ?? this.hits,
       keepAlive: keepAlive ?? this.keepAlive,
+      onlySession: onlySession ?? this.onlySession
     );
   }
 

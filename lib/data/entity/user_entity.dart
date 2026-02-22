@@ -1,25 +1,20 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/data/entity/season_entity.dart';
-import 'package:hive_ce_flutter/adapters.dart';
+import 'package:buff_lisa/util/core/fast_hash.dart';
+import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
 part 'user_entity.g.dart'; // This will be generated
 
-@HiveType(typeId: 6) // Unique type ID for this entity
+@Collection()
 class UserEntity extends CacheEntity {
-  @HiveField(3)
+
+  @override
+  Id get isarId => fastHash(userId);
   final String userId;
-
-  @HiveField(4)
   final String username;
-
-  @HiveField(5)
   final int? selectedBatch;
-
-  @HiveField(6)
   final String? description;
-
-  @HiveField(7)
   final SeasonEntity? bestSeason;
 
   UserEntity({
@@ -30,10 +25,11 @@ class UserEntity extends CacheEntity {
     this.bestSeason,
     super.keepAlive,
     super.hits,
-    super.ttl,
+    required super.ttl,
+    required super.onlySession
   });
 
-  factory UserEntity.fromDto(UserInfoDto user, {bool keepAlive = false}) {
+  factory UserEntity.fromDto(UserInfoDto user, bool onlySession, {bool keepAlive = false}) {
     return UserEntity(
       userId: user.userId,
       username: user.username,
@@ -41,6 +37,8 @@ class UserEntity extends CacheEntity {
       description: user.description,
       bestSeason: user.bestSeason == null ? null : SeasonEntity.fromDto(user.bestSeason!),
       keepAlive: keepAlive,
+      ttl: DateTime.now(),
+      onlySession: onlySession
     );
   }
 
@@ -54,11 +52,12 @@ class UserEntity extends CacheEntity {
       keepAlive: keepAlive,
       ttl: ttl,
       hits: hits,
+      onlySession: onlySession
     );
   }
 
   @override
-  CacheEntity copyWith({DateTime? ttl, int? hits, bool?keepAlive}) {
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool?keepAlive, bool? onlySession}) {
     return UserEntity(
       userId: userId,
       username: username,
@@ -68,6 +67,7 @@ class UserEntity extends CacheEntity {
       keepAlive: keepAlive ?? this.keepAlive,
       ttl: ttl ?? this.ttl,
       hits: hits ?? this.hits,
+      onlySession: onlySession ?? this.onlySession
     );
   }
 

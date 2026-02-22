@@ -1,5 +1,5 @@
 
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ViewImage extends ConsumerWidget {
   const ViewImage({super.key, required this.pin});
 
-  final LocalPinDto pin;
+  final PinEntity pin;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

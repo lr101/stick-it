@@ -1,5 +1,5 @@
-import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_cached_image.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GroupTile extends ConsumerWidget {
 
-  final LocalGroupDto groupDto;
+  final GroupEntity groupDto;
   final VoidCallback? onTap;
   final bool userCachedImage;
   final Widget? tailing;

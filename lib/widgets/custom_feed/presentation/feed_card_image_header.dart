@@ -1,5 +1,4 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
-import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_user.dart';
@@ -11,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 
 class FeedCardImageHeader extends ConsumerWidget {
-  final LocalPinDto pin;
+  final PinEntity pin;
   final double? distance;
 
   const FeedCardImageHeader({super.key, required this.pin, this.distance});
@@ -19,11 +18,11 @@ class FeedCardImageHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // 1. Fetch images
-    final userImage = ref.watch(getUserProfileSmallProvider(pin.creatorId));
+    final userImage = ref.watch(getUserProfileSmallProvider(pin.creator));
     final groupImage = ref.watch(groupProfilePictureSmallByIdProvider(pin.groupId));
     
-    final selectedBatch = ref.watch(userByIdSelectedBatchProvider(pin.creatorId));
-    final username = ref.watch(userByIdUsernameProvider(pin.creatorId));
+    final selectedBatch = ref.watch(userByIdSelectedBatchProvider(pin.creator));
+    final username = ref.watch(userByIdUsernameProvider(pin.creator));
 
     // Common size for both avatars
     const double avatarSize = 14.0; // Radius (so diameter is 36)
@@ -56,7 +55,7 @@ class FeedCardImageHeader extends ConsumerWidget {
                   Positioned(
                     left: 0,
                     child: ClickableUser(
-                      userId: pin.creatorId,
+                      userId: pin.creator,
                       child:RoundImage(
                           imageCallback: userImage, 
                           size: avatarSize, 
@@ -78,7 +77,7 @@ class FeedCardImageHeader extends ConsumerWidget {
                     children: [
                       Flexible(
                         child: ClickableUser(
-                          userId: pin.creatorId,
+                          userId: pin.creator,
                           child: Text(
                             username.value ?? "",
                             style: const TextStyle(

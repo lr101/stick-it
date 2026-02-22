@@ -7,6 +7,7 @@ import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -108,8 +109,9 @@ class AuthService extends _$AuthService {
   Future<String?> getDeleteCode() async {
     final authApi = ref.read(authApiProvider);
     try {
-      final username = await ref.read(userServiceProvider(ref.read(userIdProvider)).future);
-      await authApi.generateDeleteCode(username.username);
+      final userId = ref.read(userIdProvider);
+      final username = await ref.read(userByIdUsernameProvider(userId).future);
+      await authApi.generateDeleteCode(username!);
       return null;
     } on ApiException catch (e) {
       return e.message;
@@ -132,7 +134,7 @@ class AuthService extends _$AuthService {
 }
 
 @riverpod
-String userId(Ref ref) => ref.watch(globalDataServiceProvider).userId!;
+String userId(Ref ref) => ref.watch(globalDataServiceProvider).userId ?? "";
 
 @riverpod
 class CameraTorch extends _$CameraTorch {
@@ -163,6 +165,10 @@ class LastSeen extends _$LastSeen {
   void setLastSeenNow() {
     state = DateTime.now();
     ref.watch(sharedPreferencesProvider).setInt(key, state!.microsecondsSinceEpoch);
+  }
+
+  void resetLastSeen() {
+    state = null;
   }
 
 

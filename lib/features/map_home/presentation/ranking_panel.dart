@@ -1,8 +1,7 @@
 import 'package:buff_lisa/data/repository/geo_json_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/view_service.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/group_ranking_tile.dart';
@@ -141,7 +140,7 @@ class _RankingSlidingPanelState extends ConsumerState<RankingSlidingPanel> {
     if (rankings == null || rankings.isEmpty) return null;
 
     if (view == ViewState.group) {
-      final myUserGroups = ref.read(userGroupServiceProvider).value ?? {};
+      final myUserGroups = ref.read(userGroupServiceProvider).value ?? [];
       final myGroupIds = myUserGroups.map((e) => e.groupId).toSet();
       
       try {

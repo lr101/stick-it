@@ -1,4 +1,4 @@
-import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';

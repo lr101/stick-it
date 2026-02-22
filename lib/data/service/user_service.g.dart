@@ -10,11 +10,11 @@ part of 'user_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(UserService)
-final userServiceProvider = UserServiceFamily._();
+const userServiceProvider = UserServiceFamily._();
 
 final class UserServiceProvider
-    extends $AsyncNotifierProvider<UserService, LocalUserDto> {
-  UserServiceProvider._({
+    extends $StreamNotifierProvider<UserService, UserEntity?> {
+  const UserServiceProvider._({
     required UserServiceFamily super.from,
     required String super.argument,
   }) : super(
@@ -50,18 +50,18 @@ final class UserServiceProvider
   }
 }
 
-String _$userServiceHash() => r'b4eeea30011fad2f165ebfd8d088bbbc087d8f6b';
+String _$userServiceHash() => r'50294ae60f830669e3aaaf3551202b27bd99ea31';
 
 final class UserServiceFamily extends $Family
     with
         $ClassFamilyOverride<
           UserService,
-          AsyncValue<LocalUserDto>,
-          LocalUserDto,
-          FutureOr<LocalUserDto>,
+          AsyncValue<UserEntity?>,
+          UserEntity?,
+          Stream<UserEntity?>,
           String
         > {
-  UserServiceFamily._()
+  const UserServiceFamily._()
     : super(
         retry: null,
         name: r'userServiceProvider',
@@ -77,34 +77,35 @@ final class UserServiceFamily extends $Family
   String toString() => r'userServiceProvider';
 }
 
-abstract class _$UserService extends $AsyncNotifier<LocalUserDto> {
+abstract class _$UserService extends $StreamNotifier<UserEntity?> {
   late final _$args = ref.$arg as String;
   String get userId => _$args;
 
-  FutureOr<LocalUserDto> build(String userId);
+  Stream<UserEntity?> build(String userId);
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<LocalUserDto>, LocalUserDto>;
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<UserEntity?>, UserEntity?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<LocalUserDto>, LocalUserDto>,
-              AsyncValue<LocalUserDto>,
+              AnyNotifier<AsyncValue<UserEntity?>, UserEntity?>,
+              AsyncValue<UserEntity?>,
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(userByIdUsername)
-final userByIdUsernameProvider = UserByIdUsernameFamily._();
+const userByIdUsernameProvider = UserByIdUsernameFamily._();
 
 final class UserByIdUsernameProvider
     extends $FunctionalProvider<AsyncValue<String?>, String?, FutureOr<String?>>
     with $FutureModifier<String?>, $FutureProvider<String?> {
-  UserByIdUsernameProvider._({
+  const UserByIdUsernameProvider._({
     required UserByIdUsernameFamily super.from,
     required String super.argument,
   }) : super(
@@ -147,11 +148,11 @@ final class UserByIdUsernameProvider
   }
 }
 
-String _$userByIdUsernameHash() => r'21f7b6f196858c93791b1ddd6b8de7a6653c9361';
+String _$userByIdUsernameHash() => r'27fbfa2239f745e103be782eb3049d83e5b6e14e';
 
 final class UserByIdUsernameFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<String?>, String> {
-  UserByIdUsernameFamily._()
+  const UserByIdUsernameFamily._()
     : super(
         retry: null,
         name: r'userByIdUsernameProvider',
@@ -168,12 +169,12 @@ final class UserByIdUsernameFamily extends $Family
 }
 
 @ProviderFor(userByIdSelectedBatch)
-final userByIdSelectedBatchProvider = UserByIdSelectedBatchFamily._();
+const userByIdSelectedBatchProvider = UserByIdSelectedBatchFamily._();
 
 final class UserByIdSelectedBatchProvider
     extends $FunctionalProvider<AsyncValue<int?>, int?, FutureOr<int?>>
     with $FutureModifier<int?>, $FutureProvider<int?> {
-  UserByIdSelectedBatchProvider._({
+  const UserByIdSelectedBatchProvider._({
     required UserByIdSelectedBatchFamily super.from,
     required String super.argument,
   }) : super(
@@ -217,11 +218,11 @@ final class UserByIdSelectedBatchProvider
 }
 
 String _$userByIdSelectedBatchHash() =>
-    r'bb4422c45e4eaa9289924d021e6cfb9fcf155584';
+    r'1bf0914796a3e386b1614785a42300ea62ac0e1c';
 
 final class UserByIdSelectedBatchFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<int?>, String> {
-  UserByIdSelectedBatchFamily._()
+  const UserByIdSelectedBatchFamily._()
     : super(
         retry: null,
         name: r'userByIdSelectedBatchProvider',
@@ -238,12 +239,12 @@ final class UserByIdSelectedBatchFamily extends $Family
 }
 
 @ProviderFor(userByIdDescription)
-final userByIdDescriptionProvider = UserByIdDescriptionFamily._();
+const userByIdDescriptionProvider = UserByIdDescriptionFamily._();
 
 final class UserByIdDescriptionProvider
     extends $FunctionalProvider<AsyncValue<String?>, String?, FutureOr<String?>>
     with $FutureModifier<String?>, $FutureProvider<String?> {
-  UserByIdDescriptionProvider._({
+  const UserByIdDescriptionProvider._({
     required UserByIdDescriptionFamily super.from,
     required String super.argument,
   }) : super(
@@ -287,11 +288,11 @@ final class UserByIdDescriptionProvider
 }
 
 String _$userByIdDescriptionHash() =>
-    r'52cd243d3b92c403e20b6f260cd3632e52cad0a3';
+    r'807d617e46eed0e31274313a7f979efaea71c64e';
 
 final class UserByIdDescriptionFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<String?>, String> {
-  UserByIdDescriptionFamily._()
+  const UserByIdDescriptionFamily._()
     : super(
         retry: null,
         name: r'userByIdDescriptionProvider',
@@ -308,17 +309,17 @@ final class UserByIdDescriptionFamily extends $Family
 }
 
 @ProviderFor(userByIdBestSeason)
-final userByIdBestSeasonProvider = UserByIdBestSeasonFamily._();
+const userByIdBestSeasonProvider = UserByIdBestSeasonFamily._();
 
 final class UserByIdBestSeasonProvider
     extends
         $FunctionalProvider<
-          AsyncValue<SeasonItemDto?>,
-          SeasonItemDto?,
-          FutureOr<SeasonItemDto?>
+          AsyncValue<SeasonEntity?>,
+          SeasonEntity?,
+          FutureOr<SeasonEntity?>
         >
-    with $FutureModifier<SeasonItemDto?>, $FutureProvider<SeasonItemDto?> {
-  UserByIdBestSeasonProvider._({
+    with $FutureModifier<SeasonEntity?>, $FutureProvider<SeasonEntity?> {
+  const UserByIdBestSeasonProvider._({
     required UserByIdBestSeasonFamily super.from,
     required String super.argument,
   }) : super(
@@ -341,12 +342,12 @@ final class UserByIdBestSeasonProvider
 
   @$internal
   @override
-  $FutureProviderElement<SeasonItemDto?> $createElement(
+  $FutureProviderElement<SeasonEntity?> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<SeasonItemDto?> create(Ref ref) {
+  FutureOr<SeasonEntity?> create(Ref ref) {
     final argument = this.argument as String;
     return userByIdBestSeason(ref, argument);
   }
@@ -363,11 +364,11 @@ final class UserByIdBestSeasonProvider
 }
 
 String _$userByIdBestSeasonHash() =>
-    r'53a9d7bda722a4624996914e4bcf27960eed7da1';
+    r'4c63d7313024bb3ff3a92e5cfd8764cd9c4e7a77';
 
 final class UserByIdBestSeasonFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<SeasonItemDto?>, String> {
-  UserByIdBestSeasonFamily._()
+    with $FunctionalFamilyOverride<FutureOr<SeasonEntity?>, String> {
+  const UserByIdBestSeasonFamily._()
     : super(
         retry: null,
         name: r'userByIdBestSeasonProvider',
@@ -384,17 +385,17 @@ final class UserByIdBestSeasonFamily extends $Family
 }
 
 @ProviderFor(currentUser)
-final currentUserProvider = CurrentUserProvider._();
+const currentUserProvider = CurrentUserProvider._();
 
 final class CurrentUserProvider
     extends
         $FunctionalProvider<
-          AsyncValue<LocalUserDto>,
-          LocalUserDto,
-          FutureOr<LocalUserDto>
+          AsyncValue<UserEntity?>,
+          UserEntity?,
+          FutureOr<UserEntity?>
         >
-    with $FutureModifier<LocalUserDto>, $FutureProvider<LocalUserDto> {
-  CurrentUserProvider._()
+    with $FutureModifier<UserEntity?>, $FutureProvider<UserEntity?> {
+  const CurrentUserProvider._()
     : super(
         from: null,
         argument: null,
@@ -410,14 +411,14 @@ final class CurrentUserProvider
 
   @$internal
   @override
-  $FutureProviderElement<LocalUserDto> $createElement(
+  $FutureProviderElement<UserEntity?> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<LocalUserDto> create(Ref ref) {
+  FutureOr<UserEntity?> create(Ref ref) {
     return currentUser(ref);
   }
 }
 
-String _$currentUserHash() => r'927740f606c86610d797fce1ba06c27f5f781982';
+String _$currentUserHash() => r'eab8608f49497a11342ee6ca703b94e5ca4bc34f';

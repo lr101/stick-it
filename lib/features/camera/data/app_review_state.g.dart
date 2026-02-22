@@ -10,11 +10,11 @@ part of 'app_review_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(AppReviewState)
-final appReviewStateProvider = AppReviewStateProvider._();
+const appReviewStateProvider = AppReviewStateProvider._();
 
 final class AppReviewStateProvider
     extends $NotifierProvider<AppReviewState, bool> {
-  AppReviewStateProvider._()
+  const AppReviewStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,6 +48,7 @@ abstract class _$AppReviewState extends $Notifier<bool> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -57,6 +58,6 @@ abstract class _$AppReviewState extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }

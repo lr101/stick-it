@@ -10,12 +10,12 @@ part of 'pin_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(pinRepository)
-final pinRepositoryProvider = PinRepositoryProvider._();
+const pinRepositoryProvider = PinRepositoryProvider._();
 
 final class PinRepositoryProvider
     extends $FunctionalProvider<PinRepository, PinRepository, PinRepository>
     with $Provider<PinRepository> {
-  PinRepositoryProvider._()
+  const PinRepositoryProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,58 +48,10 @@ final class PinRepositoryProvider
   }
 }
 
-String _$pinRepositoryHash() => r'e9c71e7ad4bb7fd09e023aa9cba6cf667c79a130';
-
-@ProviderFor(otherPinRepository)
-final otherPinRepositoryProvider = OtherPinRepositoryProvider._();
-
-final class OtherPinRepositoryProvider
-    extends
-        $FunctionalProvider<
-          OtherPinRepository,
-          OtherPinRepository,
-          OtherPinRepository
-        >
-    with $Provider<OtherPinRepository> {
-  OtherPinRepositoryProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'otherPinRepositoryProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$otherPinRepositoryHash();
-
-  @$internal
-  @override
-  $ProviderElement<OtherPinRepository> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
-
-  @override
-  OtherPinRepository create(Ref ref) {
-    return otherPinRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(OtherPinRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<OtherPinRepository>(value),
-    );
-  }
-}
-
-String _$otherPinRepositoryHash() =>
-    r'909a627aa32009f2ca3f9bdee01de11a17b537fa';
+String _$pinRepositoryHash() => r'084d9641b14485c6161ee7d96334fbd9a068e4f2';
 
 @ProviderFor(pinLikeRepository)
-final pinLikeRepositoryProvider = PinLikeRepositoryProvider._();
+const pinLikeRepositoryProvider = PinLikeRepositoryProvider._();
 
 final class PinLikeRepositoryProvider
     extends
@@ -109,7 +61,7 @@ final class PinLikeRepositoryProvider
           PinLikeRepository
         >
     with $Provider<PinLikeRepository> {
-  PinLikeRepositoryProvider._()
+  const PinLikeRepositoryProvider._()
     : super(
         from: null,
         argument: null,
@@ -143,4 +95,4 @@ final class PinLikeRepositoryProvider
   }
 }
 
-String _$pinLikeRepositoryHash() => r'53271d6bffe942634475e82b91423fe4c49626e2';
+String _$pinLikeRepositoryHash() => r'e545e1ddb50fd7deaee25134f67c37c631dfcd14';

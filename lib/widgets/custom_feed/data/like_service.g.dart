@@ -10,11 +10,11 @@ part of 'like_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(LikeService)
-final likeServiceProvider = LikeServiceFamily._();
+const likeServiceProvider = LikeServiceFamily._();
 
 final class LikeServiceProvider
     extends $AsyncNotifierProvider<LikeService, PinLikeDto> {
-  LikeServiceProvider._({
+  const LikeServiceProvider._({
     required LikeServiceFamily super.from,
     required String super.argument,
   }) : super(
@@ -50,7 +50,7 @@ final class LikeServiceProvider
   }
 }
 
-String _$likeServiceHash() => r'0eb728498b1b3a391cb31a5f1023ee5a36b339a2';
+String _$likeServiceHash() => r'5406521a2630f22f3b430c945bd30310b76fdf45';
 
 final class LikeServiceFamily extends $Family
     with
@@ -61,7 +61,7 @@ final class LikeServiceFamily extends $Family
           FutureOr<PinLikeDto>,
           String
         > {
-  LikeServiceFamily._()
+  const LikeServiceFamily._()
     : super(
         retry: null,
         name: r'likeServiceProvider',
@@ -85,6 +85,7 @@ abstract class _$LikeService extends $AsyncNotifier<PinLikeDto> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build(_$args);
     final ref = this.ref as $Ref<AsyncValue<PinLikeDto>, PinLikeDto>;
     final element =
         ref.element
@@ -94,6 +95,6 @@ abstract class _$LikeService extends $AsyncNotifier<PinLikeDto> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleValue(ref, created);
   }
 }

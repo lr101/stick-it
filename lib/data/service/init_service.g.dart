@@ -10,11 +10,11 @@ part of 'init_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(InitService)
-final initServiceProvider = InitServiceProvider._();
+const initServiceProvider = InitServiceProvider._();
 
 final class InitServiceProvider
     extends $AsyncNotifierProvider<InitService, bool> {
-  InitServiceProvider._()
+  const InitServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -40,6 +40,7 @@ abstract class _$InitService extends $AsyncNotifier<bool> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
     final element =
         ref.element
@@ -49,6 +50,6 @@ abstract class _$InitService extends $AsyncNotifier<bool> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }

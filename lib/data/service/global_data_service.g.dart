@@ -10,11 +10,11 @@ part of 'global_data_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(GlobalDataService)
-final globalDataServiceProvider = GlobalDataServiceProvider._();
+const globalDataServiceProvider = GlobalDataServiceProvider._();
 
 final class GlobalDataServiceProvider
     extends $NotifierProvider<GlobalDataService, GlobalDataDto> {
-  GlobalDataServiceProvider._()
+  const GlobalDataServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,6 +48,7 @@ abstract class _$GlobalDataService extends $Notifier<GlobalDataDto> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<GlobalDataDto, GlobalDataDto>;
     final element =
         ref.element
@@ -57,16 +58,16 @@ abstract class _$GlobalDataService extends $Notifier<GlobalDataDto> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(AuthService)
-final authServiceProvider = AuthServiceProvider._();
+const authServiceProvider = AuthServiceProvider._();
 
 final class AuthServiceProvider
     extends $AsyncNotifierProvider<AuthService, bool> {
-  AuthServiceProvider._()
+  const AuthServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -85,13 +86,14 @@ final class AuthServiceProvider
   AuthService create() => AuthService();
 }
 
-String _$authServiceHash() => r'88897fc1e960bb06e76e0dd64cd2c7bd3df5d7ed';
+String _$authServiceHash() => r'3d03c9c95d823fab4fa4a9475c3befc344851028';
 
 abstract class _$AuthService extends $AsyncNotifier<bool> {
   FutureOr<bool> build();
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
     final element =
         ref.element
@@ -101,16 +103,16 @@ abstract class _$AuthService extends $AsyncNotifier<bool> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(userId)
-final userIdProvider = UserIdProvider._();
+const userIdProvider = UserIdProvider._();
 
 final class UserIdProvider extends $FunctionalProvider<String, String, String>
     with $Provider<String> {
-  UserIdProvider._()
+  const UserIdProvider._()
     : super(
         from: null,
         argument: null,
@@ -143,13 +145,13 @@ final class UserIdProvider extends $FunctionalProvider<String, String, String>
   }
 }
 
-String _$userIdHash() => r'f2c97313ee210fb250e363e4fcf6288210cac59b';
+String _$userIdHash() => r'24095f82a714ab05f319cce80838bae05c12d114';
 
 @ProviderFor(CameraTorch)
-final cameraTorchProvider = CameraTorchProvider._();
+const cameraTorchProvider = CameraTorchProvider._();
 
 final class CameraTorchProvider extends $NotifierProvider<CameraTorch, bool> {
-  CameraTorchProvider._()
+  const CameraTorchProvider._()
     : super(
         from: null,
         argument: null,
@@ -183,6 +185,7 @@ abstract class _$CameraTorch extends $Notifier<bool> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -192,15 +195,15 @@ abstract class _$CameraTorch extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(LastSeen)
-final lastSeenProvider = LastSeenFamily._();
+const lastSeenProvider = LastSeenFamily._();
 
 final class LastSeenProvider extends $NotifierProvider<LastSeen, DateTime?> {
-  LastSeenProvider._({
+  const LastSeenProvider._({
     required LastSeenFamily super.from,
     required String super.argument,
   }) : super(
@@ -255,7 +258,7 @@ final class LastSeenFamily extends $Family
           DateTime?,
           String
         > {
-  LastSeenFamily._()
+  const LastSeenFamily._()
     : super(
         retry: null,
         name: r'lastSeenProvider',
@@ -279,6 +282,7 @@ abstract class _$LastSeen extends $Notifier<DateTime?> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build(_$args);
     final ref = this.ref as $Ref<DateTime?, DateTime?>;
     final element =
         ref.element
@@ -288,17 +292,17 @@ abstract class _$LastSeen extends $Notifier<DateTime?> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(lastKnownLocation)
-final lastKnownLocationProvider = LastKnownLocationProvider._();
+const lastKnownLocationProvider = LastKnownLocationProvider._();
 
 final class LastKnownLocationProvider
     extends $FunctionalProvider<LatLng, LatLng, LatLng>
     with $Provider<LatLng> {
-  LastKnownLocationProvider._()
+  const LastKnownLocationProvider._()
     : super(
         from: null,
         argument: null,

@@ -10,11 +10,11 @@ part of 'geo_json_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(zoomGeoLevel)
-final zoomGeoLevelProvider = ZoomGeoLevelProvider._();
+const zoomGeoLevelProvider = ZoomGeoLevelProvider._();
 
 final class ZoomGeoLevelProvider extends $FunctionalProvider<int?, int?, int?>
     with $Provider<int?> {
-  ZoomGeoLevelProvider._()
+  const ZoomGeoLevelProvider._()
     : super(
         from: null,
         argument: null,
@@ -50,7 +50,7 @@ final class ZoomGeoLevelProvider extends $FunctionalProvider<int?, int?, int?>
 String _$zoomGeoLevelHash() => r'02c843dd153e196be180e495f78910f26ffcc17a';
 
 @ProviderFor(zoomGid)
-final zoomGidProvider = ZoomGidProvider._();
+const zoomGidProvider = ZoomGidProvider._();
 
 final class ZoomGidProvider
     extends
@@ -60,7 +60,7 @@ final class ZoomGidProvider
           (String?, String?)
         >
     with $Provider<(String?, String?)> {
-  ZoomGidProvider._()
+  const ZoomGidProvider._()
     : super(
         from: null,
         argument: null,
@@ -97,7 +97,7 @@ final class ZoomGidProvider
 String _$zoomGidHash() => r'63e2ba1434ffa4f2807b245a03d840c9e835a579';
 
 @ProviderFor(groupRanking)
-final groupRankingProvider = GroupRankingFamily._();
+const groupRankingProvider = GroupRankingFamily._();
 
 final class GroupRankingProvider
     extends
@@ -109,7 +109,7 @@ final class GroupRankingProvider
     with
         $FutureModifier<List<GroupRankingDtoInner>?>,
         $FutureProvider<List<GroupRankingDtoInner>?> {
-  GroupRankingProvider._({
+  const GroupRankingProvider._({
     required GroupRankingFamily super.from,
     required String super.argument,
   }) : super(
@@ -161,7 +161,7 @@ final class GroupRankingFamily extends $Family
           FutureOr<List<GroupRankingDtoInner>?>,
           String
         > {
-  GroupRankingFamily._()
+  const GroupRankingFamily._()
     : super(
         retry: null,
         name: r'groupRankingProvider',
@@ -178,7 +178,7 @@ final class GroupRankingFamily extends $Family
 }
 
 @ProviderFor(userRanking)
-final userRankingProvider = UserRankingFamily._();
+const userRankingProvider = UserRankingFamily._();
 
 final class UserRankingProvider
     extends
@@ -190,7 +190,7 @@ final class UserRankingProvider
     with
         $FutureModifier<List<UserRankingDtoInner>?>,
         $FutureProvider<List<UserRankingDtoInner>?> {
-  UserRankingProvider._({
+  const UserRankingProvider._({
     required UserRankingFamily super.from,
     required String super.argument,
   }) : super(
@@ -242,7 +242,7 @@ final class UserRankingFamily extends $Family
           FutureOr<List<UserRankingDtoInner>?>,
           String
         > {
-  UserRankingFamily._()
+  const UserRankingFamily._()
     : super(
         retry: null,
         name: r'userRankingProvider',

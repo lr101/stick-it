@@ -10,12 +10,12 @@ part of 'login_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(loginService)
-final loginServiceProvider = LoginServiceProvider._();
+const loginServiceProvider = LoginServiceProvider._();
 
 final class LoginServiceProvider
     extends $FunctionalProvider<LoginService, LoginService, LoginService>
     with $Provider<LoginService> {
-  LoginServiceProvider._()
+  const LoginServiceProvider._()
     : super(
         from: null,
         argument: null,

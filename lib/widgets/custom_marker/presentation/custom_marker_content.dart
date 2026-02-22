@@ -1,5 +1,5 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
-import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/circle_with_indicator.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
@@ -11,19 +11,13 @@ import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 
 class CustomMarkerContent extends ConsumerStatefulWidget {
-  final LocalPinDto pinDto;
+  final PinEntity pinDto;
   final bool withAnimation;
-  final String? gid0;
-  final String? gid1;
-  final String? gid2;
 
   const CustomMarkerContent({
     super.key,
     required this.pinDto,
     required this.withAnimation,
-    required this.gid0,
-    required this.gid1,
-    required this.gid2,
   });
 
   @override
@@ -57,11 +51,7 @@ class _CustomMarkerContentState extends ConsumerState<CustomMarkerContent> with 
   @override
   Widget build(BuildContext context) {
     final isInRange = ref.watch(currentLocationProvider.select((e) => e.whenOrNull(data: (data) => _isWithinDistance(data))));
-    final markerImage = ref.watch(groupPinImageByIdProvider(widget.pinDto.groupId)).when(
-      data: (data) => Image.memory(data),
-      error: (e, s) => Image.memory(ref.read(defaultGroupPinImageProvider)),
-      loading: () => Image.memory(ref.read(defaultGroupPinImageProvider)),
-    );
+    final markerImage = Image.memory(ref.watch(groupPinImageByIdProvider(widget.pinDto.groupId)).value ?? ref.read(defaultGroupPinImageProvider));
     if (widget.withAnimation == false || isInRange == null) {
      return Column(
         mainAxisAlignment: MainAxisAlignment.center,

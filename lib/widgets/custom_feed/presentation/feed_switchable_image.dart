@@ -1,7 +1,7 @@
 
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_map_state.dart';
-import 'package:buff_lisa/widgets/custom_feed/data/image_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
@@ -11,7 +11,7 @@ class FeedSwitchableImage extends ConsumerWidget {
   
   
   
-  final LocalPinDto item;
+  final PinEntity item;
   final PinImageInfo? image;
   final VoidCallback likeImage;
   final Function(LatLng, double)? onTab;
@@ -20,8 +20,8 @@ class FeedSwitchableImage extends ConsumerWidget {
   
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final switchFun = ref.read(feedMapStateProvider(item.id).notifier).update;
-    final isBig = ref.watch(feedMapStateProvider(item.id));
+    final switchFun = ref.read(feedMapStateProvider(item.pinId).notifier).update;
+    final isBig = ref.watch(feedMapStateProvider(item.pinId));
     return GestureDetector(
         onDoubleTap: isBig ? () => likeImage() : null,
         onTap: isBig && onTab != null ? () => onTab!(

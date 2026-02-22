@@ -12,13 +12,13 @@ class Achievements extends _$Achievements {
 
   @override
   Future<List<UserAchievementsDtoInner>> build() async {
-    final userId = ref.watch(globalDataServiceProvider).userId!;
+    final userId = ref.watch(userIdProvider);
     final achievement = await ref.watch(userApiProvider).getUserAchievements(userId);
     return achievement!;
   }
 
   Future<String?> claimAchievement(int achievementId) async {
-    final userId = ref.watch(globalDataServiceProvider).userId!;
+    final userId = ref.watch(userIdProvider);
     try {
       await ref.watch(userApiProvider).claimUserAchievement(userId, achievementId);
       if (state.hasValue) {

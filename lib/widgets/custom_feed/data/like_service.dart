@@ -24,7 +24,7 @@ class LikeService extends _$LikeService {
         return pinLike.toDto();
       } else {
         final pinLikeDto = await _fetchLike(pinId);
-        pinLikeRepo.put(pinId, PinLikeEntity.fromDto(pinLikeDto));
+        pinLikeRepo.put(PinLikeEntity.fromDto(pinLikeDto, pinId));
         return pinLikeDto;
       }
     } finally {
@@ -60,7 +60,7 @@ class LikeService extends _$LikeService {
         likedByUser: createLikeDto.like ?? currentState.likedByUser ?? false,
       );
       state = AsyncData(pinDto);
-      pinLikeRepo.put(pinId, PinLikeEntity.fromDto(pinDto));
+      pinLikeRepo.put(PinLikeEntity.fromDto(pinDto, pinId));
       final likeApi = ref.watch(likeApiProvider);
       await likeApi.createOrUpdateLike(pinId, createLikeDto);
       ref.read(userLikeServiceProvider(creatorId).notifier).updateLikeCount(createLikeDto);

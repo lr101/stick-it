@@ -1,5 +1,5 @@
-import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
@@ -121,7 +121,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
 
 
 
-  void clickedOnInviteCode(LocalGroupDto? group) {
+  void clickedOnInviteCode(GroupEntity? group) {
     if (group?.inviteUrl != null) {
       Clipboard.setData(ClipboardData(text: group!.inviteUrl!));
     }

@@ -10,11 +10,11 @@ part of 'view_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(ViewService)
-final viewServiceProvider = ViewServiceProvider._();
+const viewServiceProvider = ViewServiceProvider._();
 
 final class ViewServiceProvider
     extends $NotifierProvider<ViewService, ViewState> {
-  ViewServiceProvider._()
+  const ViewServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,6 +48,7 @@ abstract class _$ViewService extends $Notifier<ViewState> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<ViewState, ViewState>;
     final element =
         ref.element
@@ -57,6 +58,6 @@ abstract class _$ViewService extends $Notifier<ViewState> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }

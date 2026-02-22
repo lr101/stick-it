@@ -1,7 +1,7 @@
-import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/group_edit/presentation/group_edit.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_menu_item.dart';
@@ -15,7 +15,7 @@ class PopUpMenuLeave extends ConsumerWidget {
 
   const PopUpMenuLeave({super.key, required this.groupDto});
 
-  final LocalGroupDto groupDto;
+  final GroupEntity groupDto;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,9 +52,10 @@ class PopUpMenuLeave extends ConsumerWidget {
   }
 
   Future<void> leaveGroup(WidgetRef ref, BuildContext context) async {
-    final result = await ref.read(userGroupServiceProvider.notifier).leaveGroup(groupDto.groupId, () => Navigator.of(context).pop());
+    final result = await ref.read(userGroupServiceProvider.notifier).leaveGroup(groupDto.groupId);
     if (result != null) {
       CustomErrorSnackBar.message(message: result, type: CustomErrorSnackBarType.error);
+      Navigator.of(context).pop();
     }
   }
 }

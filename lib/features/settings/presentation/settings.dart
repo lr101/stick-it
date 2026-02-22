@@ -1,7 +1,6 @@
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/repository/member_repository.dart';
-import 'package:buff_lisa/data/repository/pin_image_repository.dart';
 import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/repository/user_pins_repository.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
@@ -207,7 +206,8 @@ class _SettingsState extends ConsumerState<Settings> {
             "Deleting the cache can fix wrong states of the app caused by outdated data. This does not log you out and an automatic refresh of all deleted data is performed. IMPORTANT: Posts that are not synced to the server will be lost forever.",
             maxLines: 10,), onPressed: () async {
           await invalidateCache();
-          ref.invalidate(syncingServiceProvider);
+          ref.read(syncingServiceProvider.notifier).toInit();
+          ref.read(syncingServiceProvider.notifier).syncToBackend();
           if (!context.mounted) return;
           Navigator.of(context).pop();
         },
@@ -239,27 +239,50 @@ class _SettingsState extends ConsumerState<Settings> {
     );
   }
 
-  Future<void> invalidateCache() async {
+Future<void> invalidateCache() async {
     showLoading();
-    await ref.read(pinImageRepositoryProvider).deleteAll();
-    await ref.read(groupRepositoryProvider).deleteAll();
-    await ref.read(groupProfileRepoProvider).deleteAll();
-    await ref.read(groupProfileSmallRepoProvider).deleteAll();
-    await ref.read(groupPinImageRepoProvider).deleteAll();
-    await ref.read(memberRepositoryProvider).deleteAll();
-    await ref.read(pinRepositoryProvider).deleteAll();
-    await ref.read(userImageRepoProvider).deleteAll();
-    await ref.read(userImageSmallRepoProvider).deleteAll();
-    await ref.read(userLikeRepositoryProvider).deleteAll();
-    await ref.read(userRepositoryProvider).deleteAll();
-    await ref.read(userPinsRepositoryProvider).deleteAll();
-    ref.invalidate(memberServiceProvider);
+
+    // 1. Safely read all repositories and dependencies BEFORE any async gap
+    final pinImageRepo = ref.read(pinImageRepositoryProvider);
+    final groupRepo = ref.read(groupRepositoryProvider);
+    final groupProfileRepo = ref.read(groupProfileRepoProvider);
+    final groupProfileSmallRepo = ref.read(groupProfileSmallRepoProvider);
+    final groupPinImageRepo = ref.read(groupPinImageRepoProvider);
+    final memberRepo = ref.read(memberRepositoryProvider);
+    final pinRepo = ref.read(pinRepositoryProvider);
+    final userImageRepo = ref.read(userImageRepoProvider);
+    final userImageSmallRepo = ref.read(userImageSmallRepoProvider);
+    final userLikeRepo = ref.read(userLikeRepositoryProvider);
+    final userRepo = ref.read(userRepositoryProvider);
+    final userPinsRepo = ref.read(userPinsRepositoryProvider);
+    
+    // Changed to read() to prevent Riverpod crashes
+    final sharedPreferences = ref.read(sharedPreferencesProvider); 
+
+    await Future.wait([
+      pinImageRepo.deleteAll(),
+      groupRepo.deleteAll(),
+      groupProfileRepo.deleteAll(),
+      groupProfileSmallRepo.deleteAll(),
+      groupPinImageRepo.deleteAll(),
+      memberRepo.deleteAll(),
+      pinRepo.deleteAll(),
+      userImageRepo.deleteAll(),
+      userImageSmallRepo.deleteAll(),
+      userLikeRepo.deleteAll(),
+      userRepo.deleteAll(),
+      userPinsRepo.deleteAll(),
+    ]);
+
+    // 3. Clear remaining external caches
     final mgmt = const FMTCStore('tileStore').manage;
     await mgmt.reset();
-    final sharedPreferences = ref.watch(sharedPreferencesProvider);
+    
     await sharedPreferences.clear();
     await DefaultCacheManager().emptyCache();
+    
+    // 4. Invalidate the syncing service last
     ref.invalidate(lastSeenProvider);
-    ref.invalidate(groupOrderServiceProvider);
+    ref.invalidate(globalDataServiceProvider);
   }
 }

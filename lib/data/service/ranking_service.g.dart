@@ -10,7 +10,7 @@ part of 'ranking_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(CurrentUserTopRanking)
-final currentUserTopRankingProvider = CurrentUserTopRankingProvider._();
+const currentUserTopRankingProvider = CurrentUserTopRankingProvider._();
 
 final class CurrentUserTopRankingProvider
     extends
@@ -18,7 +18,7 @@ final class CurrentUserTopRankingProvider
           CurrentUserTopRanking,
           List<UserRankingDtoInner>?
         > {
-  CurrentUserTopRankingProvider._()
+  const CurrentUserTopRankingProvider._()
     : super(
         from: null,
         argument: null,
@@ -46,6 +46,7 @@ abstract class _$CurrentUserTopRanking
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref =
         this.ref
             as $Ref<
@@ -63,6 +64,6 @@ abstract class _$CurrentUserTopRanking
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }

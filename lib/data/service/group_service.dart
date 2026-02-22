@@ -1,22 +1,15 @@
-import 'dart:typed_data';
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/repository/group_repository.dart';
 import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/repository/pin_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'user_group_service.g.dart';
+part 'group_service.g.dart';
 
 
 @riverpod
@@ -49,21 +42,10 @@ class GroupService extends _$GroupService {
     }
   }
 
-}
 
 
-@riverpod
-Stream<GroupEntity?> groupById(Ref ref, String groupId) async* {
-  final repo = ref.watch(groupRepositoryProvider);
-  final userGroups = ref.watch(userGroupServiceProvider).value ?? [];
-  final isUserGroup = userGroups.any((e) => e.groupId == groupId);
-  final exists = await repo.get(groupId);
-  if (exists == null) {
-    final pin = await  ref.watch(groupApiProvider).getGroup(groupId);
-    await repo.put(GroupEntity.fromGroupDto(pin!, true, isUserGroup));
-  }
-  yield* repo.watchById(groupId);
 }
+
 
 @riverpod
 class UserGroupService extends _$UserGroupService {
@@ -90,24 +72,53 @@ class UserGroupService extends _$UserGroupService {
     yield* stream;
   }
 
+  Future<void> sync(DateTime? lastSeen) async {
+    final remoteGroups = await _groupsApi.getGroupsByIds(userId: _userId, withUser: true, withImages: true, updatedAfter: lastSeen);
+    if (remoteGroups == null) throw Exception("no sync possible");
+    for (final groupId in remoteGroups.deleted) {
+      await _syncLeave(groupId);
+    }
+    for (final group in remoteGroups.items) {
+      await _syncJoin(group);
+    }
+  }
+
+  Future<void> _syncJoin(GroupDto groupDto) async {
+    // update group entity
+    final groupId = groupDto.id;
+    final groupEntity = GroupEntity.fromGroupDto(groupDto, false, true, keepAlive: true, isActivated: true);
+    await _groupRepository.put(groupEntity);
+
+    // update group pins
+    final pins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
+    final pinEntities = pins?.items.map((e) => PinEntity.fromDto(e, false)).toList() ?? [];
+    await _pinRepository.putMultiple(pinEntities);
+
+    // update group pictures
+    ref.read(groupProfileRepoProvider).overrideUrl(groupId, groupDto.profileImage!, true);
+    ref.read(groupProfileSmallRepoProvider).overrideUrl(groupId, groupDto.profileImageSmall!, true);
+    ref.read(groupPinImageRepoProvider).overrideUrl(groupId, groupDto.pinImage!, true);
+    
+
+    // sync pins
+    final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
+    if (remotePins != null) {
+      final pins = remotePins.items.map((e) => PinEntity.fromDto(e, false));
+      await _pinRepository.putMultiple(pins);
+    }
+  }
+
+  Future<void> _syncLeave(String groupId) async {
+      await _groupRepository.delete(groupId);
+      // make group pins not keepAlive and onlySession
+      await _pinRepository.updateKeepAlive(groupId, false, true);
+  }
+
   Future<String?> joinGroup(String groupId, {String? inviteUrl}) async {
     try {
       final result = await _membersApi.joinGroup(groupId, _userId, inviteUrl: inviteUrl);
       if (result != null) {
-        // update group entity
-        final entity = GroupEntity.fromGroupDto(result, false, true,isActivated: true,keepAlive: true);
-        _groupRepository.put(entity);
-
-        // update group pins
-        final pins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
-        final pinEntities = pins?.items.map((e) => PinEntity.fromDto(e, false)).toList() ?? [];
-        await _pinRepository.putMultiple(pinEntities);
-
-        // update group pictures
-        ref.read(groupProfileRepoProvider).overrideUrl(groupId, result.profileImage!, true);
-        ref.read(groupProfileSmallRepoProvider).overrideUrl(groupId, result.profileImageSmall!, true);
-        ref.read(groupPinImageRepoProvider).overrideUrl(groupId, result.pinImage!, true);
-        ref.read(syncingServiceProvider.notifier).syncPins(groupId, null);
+        await _syncJoin(result);
       } else {
         return "Failed to join group remotely";
       }
@@ -117,30 +128,28 @@ class UserGroupService extends _$UserGroupService {
     return null;
   }
 
-  Future<String?> _leaveGroup(String groupId) async {
+  Future<String?> leaveGroup(String groupId) async {
     try {
       await _membersApi.deleteMemberFromGroup(groupId, _userId);
-      final groupEntity = await _groupRepository.get(groupId);
-      if (groupEntity != null) {
-
-        // remove from userGroups
-        groupEntity.userIsMember = false;
-        await _groupRepository.put(groupEntity);
-
-        // make group pins not keepAlive and onlySession
-        await _pinRepository.updateKeepAlive(groupId, false, true);
-      }
+      await _syncLeave(groupId);
     } on ApiException catch(_) {
       return "Failed ro leave group";
     }
-    return null; 
+    return null;
+  }
+
+  Future<void> setIsActive(String groupId, bool active) async {
+    final group = await _groupRepository.get(groupId);
+    if (group != null) {
+      group.isActivated = active;
+      await _groupRepository.put(group);
+    } 
   }
 
 
-    Future<String?> createGroup(GroupEntity data, Uint8List image) async {
+    Future<String?> createGroup(CreateGroupDto data) async {
     try {
-      final createDto = data.toCreateGroupDto(image);
-      final result = await _groupsApi.addGroup(createDto);
+      final result = await _groupsApi.addGroup(data);
       if (result != null) {
         final entity = GroupEntity.fromGroupDto(
           result,
@@ -159,10 +168,9 @@ class UserGroupService extends _$UserGroupService {
     }
   }
 
-  Future<String?> updateGroup(GroupEntity data, String groupId, {Uint8List? image}) async {
+  Future<String?> updateGroup(UpdateGroupDto data, String groupId) async {
     try {
-      final updateDto = data.toUpdateGroupDto(image);
-      final result = await _groupsApi.updateGroup(groupId, updateDto);
+      final result = await _groupsApi.updateGroup(groupId, data);
       if (result != null) {
         final entity = GroupEntity.fromGroupDto(result,/* onlySession */ false,/* userIsMember */ true,isActivated: true,keepAlive: true,);
         await _groupRepository.put(entity);
@@ -200,10 +208,5 @@ Future<List<GroupEntity>> orderedGroups(Ref ref) async {
 
 @riverpod
 Future<bool> groupByIdActivated(Ref ref, String groupId) async {
-  return await ref.watch(groupByIdProvider(groupId).selectAsync((group) => group!.isActivated));
-}
-
-@riverpod
-Future<GroupEntity?> groupByIdWithoutState(Ref ref, String groupId) async {
-  return await ref.watch(groupRepositoryProvider).get(groupId);
+  return await ref.watch(groupServiceProvider(groupId).selectAsync((group) => group!.isActivated));
 }

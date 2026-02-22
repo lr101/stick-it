@@ -10,7 +10,7 @@ part of 'user_pins_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(userPinsRepository)
-final userPinsRepositoryProvider = UserPinsRepositoryProvider._();
+const userPinsRepositoryProvider = UserPinsRepositoryProvider._();
 
 final class UserPinsRepositoryProvider
     extends
@@ -20,7 +20,7 @@ final class UserPinsRepositoryProvider
           UserPinsRepository
         >
     with $Provider<UserPinsRepository> {
-  UserPinsRepositoryProvider._()
+  const UserPinsRepositoryProvider._()
     : super(
         from: null,
         argument: null,
@@ -55,4 +55,4 @@ final class UserPinsRepositoryProvider
 }
 
 String _$userPinsRepositoryHash() =>
-    r'c82f52472f70384e797c59dbee38b68b22f84fd3';
+    r'a3db19a7af556e17ae4cb7965b1c9f2f3e641d69';

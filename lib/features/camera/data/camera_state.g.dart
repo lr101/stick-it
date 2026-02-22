@@ -10,10 +10,10 @@ part of 'camera_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(CameraIndex)
-final cameraIndexProvider = CameraIndexProvider._();
+const cameraIndexProvider = CameraIndexProvider._();
 
 final class CameraIndexProvider extends $NotifierProvider<CameraIndex, int> {
-  CameraIndexProvider._()
+  const CameraIndexProvider._()
     : super(
         from: null,
         argument: null,
@@ -47,6 +47,7 @@ abstract class _$CameraIndex extends $Notifier<int> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<int, int>;
     final element =
         ref.element
@@ -56,16 +57,16 @@ abstract class _$CameraIndex extends $Notifier<int> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(CameraValues)
-final cameraValuesProvider = CameraValuesProvider._();
+const cameraValuesProvider = CameraValuesProvider._();
 
 final class CameraValuesProvider
     extends $AsyncNotifierProvider<CameraValues, CameraState> {
-  CameraValuesProvider._()
+  const CameraValuesProvider._()
     : super(
         from: null,
         argument: null,
@@ -91,6 +92,7 @@ abstract class _$CameraValues extends $AsyncNotifier<CameraState> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<AsyncValue<CameraState>, CameraState>;
     final element =
         ref.element
@@ -100,12 +102,12 @@ abstract class _$CameraValues extends $AsyncNotifier<CameraState> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(cameraController)
-final cameraControllerProvider = CameraControllerProvider._();
+const cameraControllerProvider = CameraControllerProvider._();
 
 final class CameraControllerProvider
     extends
@@ -115,7 +117,7 @@ final class CameraControllerProvider
           FutureOr<CameraController>
         >
     with $FutureModifier<CameraController>, $FutureProvider<CameraController> {
-  CameraControllerProvider._()
+  const CameraControllerProvider._()
     : super(
         from: null,
         argument: null,
@@ -144,11 +146,11 @@ final class CameraControllerProvider
 String _$cameraControllerHash() => r'b86905301ef75bfa61c40e6e204b01312925699c';
 
 @ProviderFor(CameraGroupIndex)
-final cameraGroupIndexProvider = CameraGroupIndexProvider._();
+const cameraGroupIndexProvider = CameraGroupIndexProvider._();
 
 final class CameraGroupIndexProvider
     extends $NotifierProvider<CameraGroupIndex, int> {
-  CameraGroupIndexProvider._()
+  const CameraGroupIndexProvider._()
     : super(
         from: null,
         argument: null,
@@ -182,6 +184,7 @@ abstract class _$CameraGroupIndex extends $Notifier<int> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<int, int>;
     final element =
         ref.element
@@ -191,22 +194,22 @@ abstract class _$CameraGroupIndex extends $Notifier<int> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(cameraSelectedGroup)
-final cameraSelectedGroupProvider = CameraSelectedGroupProvider._();
+const cameraSelectedGroupProvider = CameraSelectedGroupProvider._();
 
 final class CameraSelectedGroupProvider
     extends
         $FunctionalProvider<
-          AsyncValue<LocalGroupDto>,
-          LocalGroupDto,
-          FutureOr<LocalGroupDto>
+          AsyncValue<GroupEntity>,
+          GroupEntity,
+          FutureOr<GroupEntity>
         >
-    with $FutureModifier<LocalGroupDto>, $FutureProvider<LocalGroupDto> {
-  CameraSelectedGroupProvider._()
+    with $FutureModifier<GroupEntity>, $FutureProvider<GroupEntity> {
+  const CameraSelectedGroupProvider._()
     : super(
         from: null,
         argument: null,
@@ -222,25 +225,25 @@ final class CameraSelectedGroupProvider
 
   @$internal
   @override
-  $FutureProviderElement<LocalGroupDto> $createElement(
+  $FutureProviderElement<GroupEntity> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<LocalGroupDto> create(Ref ref) {
+  FutureOr<GroupEntity> create(Ref ref) {
     return cameraSelectedGroup(ref);
   }
 }
 
 String _$cameraSelectedGroupHash() =>
-    r'e34f8df3bcae7820db52382e7eb2854077fa2e4c';
+    r'a6b6c9d05747f1d8914948b51f18cb49909be0cd';
 
 @ProviderFor(CameraCapturing)
-final cameraCapturingProvider = CameraCapturingProvider._();
+const cameraCapturingProvider = CameraCapturingProvider._();
 
 final class CameraCapturingProvider
     extends $NotifierProvider<CameraCapturing, bool> {
-  CameraCapturingProvider._()
+  const CameraCapturingProvider._()
     : super(
         from: null,
         argument: null,
@@ -274,6 +277,7 @@ abstract class _$CameraCapturing extends $Notifier<bool> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -283,6 +287,6 @@ abstract class _$CameraCapturing extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }

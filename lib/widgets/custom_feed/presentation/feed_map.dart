@@ -1,4 +1,4 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_map_state.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
@@ -13,7 +13,7 @@ import 'package:openapi/api.dart';
 class FeedMap extends ConsumerStatefulWidget {
 
   const FeedMap({super.key, required this.item});
-  final LocalPinDto item;
+  final PinEntity item;
 
   @override
   ConsumerState<FeedMap> createState() => FeedMapState();
@@ -36,8 +36,8 @@ class FeedMapState extends ConsumerState<FeedMap> {
 
   @override
   Widget build(BuildContext context) {
-    final isExpanded = !ref.watch(feedMapStateProvider(widget.item.id));
-    final switchFun = ref.read(feedMapStateProvider(widget.item.id).notifier).update;
+    final isExpanded = !ref.watch(feedMapStateProvider(widget.item.pinId));
+    final switchFun = ref.read(feedMapStateProvider(widget.item.pinId).notifier).update;
     return Stack(
       children: [
         GestureDetector(
@@ -92,8 +92,8 @@ class FeedMapState extends ConsumerState<FeedMap> {
 
   void like() {
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    ref.read(likeServiceProvider(widget.item.id).notifier)
-        .addLike(widget.item.creatorId, CreateLikeDto(userId: userId, likeLocation: true));
+    ref.read(likeServiceProvider(widget.item.pinId).notifier)
+        .addLike(widget.item.creator, CreateLikeDto(userId: userId, likeLocation: true));
   }
 }
 
@@ -124,7 +124,6 @@ class _MapControlButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
               color: theme.colorScheme.outlineVariant.withOpacity(0.2),
-              width: 1,
             ),
             boxShadow: [
               BoxShadow(

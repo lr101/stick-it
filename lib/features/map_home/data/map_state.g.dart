@@ -10,10 +10,10 @@ part of 'map_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(MapStates)
-final mapStatesProvider = MapStatesProvider._();
+const mapStatesProvider = MapStatesProvider._();
 
 final class MapStatesProvider extends $NotifierProvider<MapStates, MapState> {
-  MapStatesProvider._()
+  const MapStatesProvider._()
     : super(
         from: null,
         argument: null,
@@ -47,6 +47,7 @@ abstract class _$MapStates extends $Notifier<MapState> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<MapState, MapState>;
     final element =
         ref.element
@@ -56,18 +57,18 @@ abstract class _$MapStates extends $Notifier<MapState> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(currentLocation)
-final currentLocationProvider = CurrentLocationProvider._();
+const currentLocationProvider = CurrentLocationProvider._();
 
 final class CurrentLocationProvider
     extends
         $FunctionalProvider<AsyncValue<Position>, Position, Stream<Position>>
     with $FutureModifier<Position>, $StreamProvider<Position> {
-  CurrentLocationProvider._()
+  const CurrentLocationProvider._()
     : super(
         from: null,
         argument: null,
@@ -95,11 +96,11 @@ final class CurrentLocationProvider
 String _$currentLocationHash() => r'd5de2759b915419e2ede395268475714aae4e37a';
 
 @ProviderFor(MapZoomLevel)
-final mapZoomLevelProvider = MapZoomLevelProvider._();
+const mapZoomLevelProvider = MapZoomLevelProvider._();
 
 final class MapZoomLevelProvider
     extends $NotifierProvider<MapZoomLevel, double> {
-  MapZoomLevelProvider._()
+  const MapZoomLevelProvider._()
     : super(
         from: null,
         argument: null,
@@ -133,6 +134,7 @@ abstract class _$MapZoomLevel extends $Notifier<double> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<double, double>;
     final element =
         ref.element
@@ -142,6 +144,6 @@ abstract class _$MapZoomLevel extends $Notifier<double> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }

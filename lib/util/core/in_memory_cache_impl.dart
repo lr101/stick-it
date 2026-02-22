@@ -3,56 +3,61 @@ import 'dart:async';
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 
 import 'package:buff_lisa/util/core/cache_api.dart';
+import 'package:buff_lisa/util/core/fast_hash.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
-  final Map<String, T> _cache = {};
+
+  @protected
+  final Map<int, T> cache = {};
   final int maxItems;
   final Duration? ttlDuration;
 
   InMemoryCache({this.maxItems = 100, this.ttlDuration = const Duration(days: 1)});
 
+
   @override
-  Future<void> put(String id, T item) async {
-    if (maxItems > 0 && _cache.length >= maxItems) {
+  Future<void> put(T item) async {
+    if (maxItems > 0 && cache.length >= maxItems) {
       await deleteOldestItems();
     }
-    _cache[id] = item;
+    cache[item.isarId] = item;
   }
 
   @override
   Future<T?> get(String id) async {
-    return _cache[id];
+    return cache[fastHash(id)];
   }
 
   @override
   Future<void> delete(String id) async {
-    _cache.remove(id);
+    cache.remove(fastHash(id));
   }
 
   @override
   Future<List<T>> getAll() async {
-    return _cache.values.toList();
+    return cache.values.toList();
   }
 
-  @override
-  Future<Map<String, T>> getAllAsMap() async {
-    return Map.from(_cache);
-  }
 
   @override
   Future<void> deleteAll() async {
-    _cache.clear();
+    cache.clear();
   }
 
   @override
-  Future<void> deleteByFilter(bool Function(T) filter) async {
-    _cache.removeWhere((key, value) => filter(value));
+  Future<List<T?>> getList(List<String> ids) async {
+    final List<T?> result = [];
+    for (final id in ids) {
+      result.add(cache[fastHash(id)]);
+    }
+    return result;
   }
 
   @override
-  Future<void> putMultiple(Map<String, T> items) async {
-    for (final entry in items.entries) {
-      await put(entry.key, entry.value);
+  Future<void> putMultiple(List<T> items) async {
+    for (final entry in items) {
+      await put(entry);
     }
   }
 
@@ -61,7 +66,7 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
   @override
   Future<void> deleteOldestItems() async {
 
-    final entries = _cache.entries.toList();
+    final entries = cache.entries.toList();
 
     entries.sort((a, b) {
       final aHits = a.value.hits;
@@ -69,16 +74,16 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
       return aHits.compareTo(bHits);
     });
 
-    final itemsToDelete = _cache.length - maxItems;
+    final itemsToDelete = cache.length - maxItems;
     int itemsDeleted = 0;
     final duration = ttlDuration != null ? (ttlDuration!.inSeconds * 0.1).toInt() : 3600;
     final ttlTime = DateTime.now().subtract(Duration(seconds: duration));
 
     for (int i = 0; i < entries.length && itemsDeleted < itemsToDelete; i++) {
       final key = entries[i].key;
-      final value = _cache[key]!;
+      final value = cache[key]!;
       if (value.keepAlive == false && value.ttl.isBefore(ttlTime)) {
-        _cache.remove(key);
+        cache.remove(key);
         itemsDeleted++;
       }
     }

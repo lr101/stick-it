@@ -1,5 +1,5 @@
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -45,7 +45,7 @@ class GroupActiveService extends _$GroupActiveService {
   
   @override
   List<String> build() {
-    final userGroups = ref.watch(userGroupServiceProvider).value ?? {};
+    final userGroups = ref.watch(userGroupServiceProvider).value ?? [];
     final orderedIds = ref.watch(groupOrderServiceProvider);
 
     final backendActiveIds = <String>[];

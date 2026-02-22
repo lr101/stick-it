@@ -10,11 +10,11 @@ part of 'group_create_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(GroupCreateService)
-final groupCreateServiceProvider = GroupCreateServiceProvider._();
+const groupCreateServiceProvider = GroupCreateServiceProvider._();
 
 final class GroupCreateServiceProvider
     extends $NotifierProvider<GroupCreateService, GroupCreateState> {
-  GroupCreateServiceProvider._()
+  const GroupCreateServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -42,13 +42,14 @@ final class GroupCreateServiceProvider
 }
 
 String _$groupCreateServiceHash() =>
-    r'adb0e3be739d8531f7c742e18b5c8c42bd4581a0';
+    r'1d6b6d08ea2880b3abcca0d5b9618c020363d07b';
 
 abstract class _$GroupCreateService extends $Notifier<GroupCreateState> {
   GroupCreateState build();
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<GroupCreateState, GroupCreateState>;
     final element =
         ref.element
@@ -58,17 +59,17 @@ abstract class _$GroupCreateService extends $Notifier<GroupCreateState> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }
 
 @ProviderFor(createGroupProfileImage)
-final createGroupProfileImageProvider = CreateGroupProfileImageProvider._();
+const createGroupProfileImageProvider = CreateGroupProfileImageProvider._();
 
 final class CreateGroupProfileImageProvider
     extends $FunctionalProvider<Uint8List?, Uint8List?, Uint8List?>
     with $Provider<Uint8List?> {
-  CreateGroupProfileImageProvider._()
+  const CreateGroupProfileImageProvider._()
     : super(
         from: null,
         argument: null,

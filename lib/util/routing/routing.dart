@@ -1,6 +1,5 @@
 
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 // ignore: avoid_classes_with_only_static_members

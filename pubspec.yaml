@@ -71,25 +71,22 @@ dependencies:
   url_launcher:
   uuid:
   webview_flutter:
-  hive_ce:
-  hive_ce_flutter:
   shared_preferences:
   firebase_messaging:
-  firebase_core:
-  logger: ^2.6.2
+  firebase_core: 
+  logger: 
+  isar_community: 
+  isar_community_flutter_libs: 
 
 dev_dependencies:
   build_runner:
   change_app_package_name:
   flutter_launcher_icons:
   flutter_lints:
-  flutter_test:
-    sdk: flutter
-  freezed:
-  hive_ce_generator:
   lint:
   meta:
   test:
+  isar_community_generator:
 
 flutter:
   assets:

@@ -10,11 +10,11 @@ part of 'syncing_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(SyncingService)
-final syncingServiceProvider = SyncingServiceProvider._();
+const syncingServiceProvider = SyncingServiceProvider._();
 
 final class SyncingServiceProvider
     extends $NotifierProvider<SyncingService, SyncState> {
-  SyncingServiceProvider._()
+  const SyncingServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -41,13 +41,14 @@ final class SyncingServiceProvider
   }
 }
 
-String _$syncingServiceHash() => r'74ce068d0a9e64b2d903cd5cedc0a85dc67fa9c4';
+String _$syncingServiceHash() => r'82598996270b49da5a2b557152de13551575533a';
 
 abstract class _$SyncingService extends $Notifier<SyncState> {
   SyncState build();
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<SyncState, SyncState>;
     final element =
         ref.element
@@ -57,6 +58,6 @@ abstract class _$SyncingService extends $Notifier<SyncState> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }

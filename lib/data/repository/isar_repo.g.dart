@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'feed_item_service.dart';
+part of 'isar_repo.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,43 +9,42 @@ part of 'feed_item_service.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(feedItem)
-const feedItemProvider = FeedItemProvider._();
+@ProviderFor(isarRepo)
+const isarRepoProvider = IsarRepoProvider._();
 
-final class FeedItemProvider
-    extends $FunctionalProvider<PinEntity, PinEntity, PinEntity>
-    with $Provider<PinEntity> {
-  const FeedItemProvider._()
+final class IsarRepoProvider extends $FunctionalProvider<Isar, Isar, Isar>
+    with $Provider<Isar> {
+  const IsarRepoProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'feedItemProvider',
+        name: r'isarRepoProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$feedItemHash();
+  String debugGetCreateSourceHash() => _$isarRepoHash();
 
   @$internal
   @override
-  $ProviderElement<PinEntity> $createElement($ProviderPointer pointer) =>
+  $ProviderElement<Isar> $createElement($ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
-  PinEntity create(Ref ref) {
-    return feedItem(ref);
+  Isar create(Ref ref) {
+    return isarRepo(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(PinEntity value) {
+  Override overrideWithValue(Isar value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<PinEntity>(value),
+      providerOverride: $SyncValueProvider<Isar>(value),
     );
   }
 }
 
-String _$feedItemHash() => r'31bad5c5be6e299d2bd22303c32cf7b51c5d8ce5';
+String _$isarRepoHash() => r'3bad998f3cb7eb5da2d931948cc89ba107cce6ab';

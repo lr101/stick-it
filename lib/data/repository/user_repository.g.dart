@@ -10,12 +10,12 @@ part of 'user_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(userRepository)
-final userRepositoryProvider = UserRepositoryProvider._();
+const userRepositoryProvider = UserRepositoryProvider._();
 
 final class UserRepositoryProvider
     extends $FunctionalProvider<UserRepository, UserRepository, UserRepository>
     with $Provider<UserRepository> {
-  UserRepositoryProvider._()
+  const UserRepositoryProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,10 +48,10 @@ final class UserRepositoryProvider
   }
 }
 
-String _$userRepositoryHash() => r'6f33c0662d4bd5e514fd4f4f99ff0bcb31cd094d';
+String _$userRepositoryHash() => r'e52acd5275070ead411b92c3fb58049a1496cf1c';
 
 @ProviderFor(userLikeRepository)
-final userLikeRepositoryProvider = UserLikeRepositoryProvider._();
+const userLikeRepositoryProvider = UserLikeRepositoryProvider._();
 
 final class UserLikeRepositoryProvider
     extends
@@ -61,7 +61,7 @@ final class UserLikeRepositoryProvider
           UserLikeRepository
         >
     with $Provider<UserLikeRepository> {
-  UserLikeRepositoryProvider._()
+  const UserLikeRepositoryProvider._()
     : super(
         from: null,
         argument: null,
@@ -96,4 +96,4 @@ final class UserLikeRepositoryProvider
 }
 
 String _$userLikeRepositoryHash() =>
-    r'aa5331a3d8ca02c10b25d92a92e421f9ff8ae956';
+    r'6adba68a8b19fd6871a847e3c164d1e69e402ee1';

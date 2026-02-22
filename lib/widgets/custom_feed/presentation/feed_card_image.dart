@@ -1,7 +1,7 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_map_state.dart';
-import 'package:buff_lisa/widgets/custom_feed/data/image_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image_header.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_map.dart';
@@ -23,7 +23,7 @@ class FeedCardImage extends ConsumerStatefulWidget {
     this.onTab,
   });
 
-  final LocalPinDto item;
+  final PinEntity item;
   final double maxWidth;
   final double maxHeight;
   final double? distance;
@@ -45,9 +45,9 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
 
   @override
   Widget build(BuildContext context) {
-    final data = ref.watch(getPinImageInfoProvider(widget.item));
+    final data = ref.watch(getPinImageInfoProvider(widget.item.pinId));
     // Determine which view is currently active in the main area
-    final isMainViewShowingImage = ref.watch(feedMapStateProvider(widget.item.id));
+    final isMainViewShowingImage = ref.watch(feedMapStateProvider(widget.item.pinId));
 
     final feedImage = FeedSwitchableImage(
       item: widget.item,
@@ -100,7 +100,6 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                 
                     ],
                   ),
-                // The Header sitting on top of the whole card structure
                 SizedBox(
                   width: widget.maxWidth,
                   height: 65,
@@ -109,7 +108,6 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
                     distance: widget.distance,
                   ),
                 ),
-                // (Old Positioned widget removed from here)
               ],
             ),
             const SizedBox(
@@ -124,8 +122,8 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
 
   void likeImage() {
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    ref.read(likeServiceProvider(widget.item.id).notifier).addLike(
-          widget.item.creatorId,
+    ref.read(likeServiceProvider(widget.item.pinId).notifier).addLike(
+          widget.item.creator,
           CreateLikeDto(userId: userId, like: true),
         );
   }

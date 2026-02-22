@@ -1,47 +1,48 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/data/entity/season_entity.dart';
-import 'package:hive_ce_flutter/adapters.dart';
+import 'package:buff_lisa/util/core/fast_hash.dart';
+import 'package:buff_lisa/widgets/tiles/presentation/best_season.dart';
+import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
 part 'group_entity.g.dart'; // This will be generated
 
-@HiveType(typeId: 1) // Unique type ID for this entity
+@collection
 class GroupEntity extends CacheEntity {
 
-  @HiveField(3)
+  @override
+  Id get isarId => fastHash(groupId);
+
   final String groupId;
 
-  @HiveField(4)
   final String name;
 
-  @HiveField(5)
   final int visibility;
 
-  @HiveField(6)
+  bool userIsMember;
+
   final String? inviteUrl;
 
-  @HiveField(7)
   final String? groupAdmin;
 
-  @HiveField(8)
   final String? description;
 
-  @HiveField(9)
-  final bool isActivated;
+  bool isActivated;
 
-  @HiveField(10)
   final DateTime? lastUpdated;
 
-  @HiveField(11)
   final String? link;
 
-  @HiveField(12)
   final SeasonEntity? bestSeason;
 
   GroupEntity({
     required this.groupId,
     required this.name,
     required this.visibility,
+    required this.userIsMember,
     this.inviteUrl,
     this.groupAdmin,
     this.description,
@@ -51,13 +52,15 @@ class GroupEntity extends CacheEntity {
     this.bestSeason,
     super.keepAlive,
     super.hits,
-    super.ttl,
+    required super.ttl,
+    required super.onlySession
   });
   
-  factory GroupEntity.fromGroupDto(GroupDto groupDto, {bool keepAlive = false, bool isActivated = false}) {
+  factory GroupEntity.fromGroupDto(GroupDto groupDto, bool onlySession, bool userIsMember, {bool keepAlive = false, bool isActivated = false}) {
     return GroupEntity(
       groupId: groupDto.id,
       name: groupDto.name,
+      userIsMember: userIsMember,
       visibility: groupDto.visibility,
       isActivated: isActivated,
       description: groupDto.description,
@@ -67,14 +70,40 @@ class GroupEntity extends CacheEntity {
       bestSeason: groupDto.bestSeason == null ? null : SeasonEntity.fromDto(groupDto.bestSeason!),
       link: groupDto.link,
       keepAlive: keepAlive,
+      ttl: DateTime.now(),
+      onlySession: onlySession
+    );
+  }
+
+
+  CreateGroupDto toCreateGroupDto(Uint8List image) {
+    return CreateGroupDto(
+      name: name,
+      groupAdmin: groupAdmin!,
+      description: description!,
+      profileImage: base64Encode(image),
+      visibility: visibility,
+      link: link,
+    );
+  }
+
+  UpdateGroupDto toUpdateGroupDto(Uint8List? image) {
+    return UpdateGroupDto(
+      name: name,
+      description: description,
+      profileImage: image != null ? base64Encode(image) : null,
+      visibility: visibility,
+      groupAdmin: groupAdmin,
+      link: link,
     );
   }
 
   @override
-  GroupEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+  GroupEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive, bool? onlySession}) {
     return GroupEntity(
       groupId: groupId,
       name: name,
+      userIsMember: userIsMember,
       visibility: visibility,
       description: description,
       inviteUrl: inviteUrl,
@@ -85,7 +114,8 @@ class GroupEntity extends CacheEntity {
       bestSeason: bestSeason,
       keepAlive: keepAlive ?? this.keepAlive,
       hits: hits ?? this.hits,
-      ttl: ttl,
+      ttl: ttl ?? this.ttl,
+      onlySession: onlySession ?? this.onlySession
     );
   }
 }

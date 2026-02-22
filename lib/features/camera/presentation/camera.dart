@@ -1,6 +1,6 @@
 
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
 import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/camera/presentation/select_location.dart';

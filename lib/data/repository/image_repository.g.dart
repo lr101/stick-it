@@ -10,13 +10,13 @@ part of 'image_repository.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(groupProfileRepo)
-final groupProfileRepoProvider = GroupProfileRepoProvider._();
+const groupProfileRepoProvider = GroupProfileRepoProvider._();
 
 final class GroupProfileRepoProvider
     extends
         $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
     with $Provider<ImageRepository> {
-  GroupProfileRepoProvider._()
+  const GroupProfileRepoProvider._()
     : super(
         from: null,
         argument: null,
@@ -49,16 +49,16 @@ final class GroupProfileRepoProvider
   }
 }
 
-String _$groupProfileRepoHash() => r'6dc2655c8de2d38f59914085e2b823a02c3c67c8';
+String _$groupProfileRepoHash() => r'a705f33234c6167f4cf0fa01c3b641bb71ced8b5';
 
 @ProviderFor(groupProfileSmallRepo)
-final groupProfileSmallRepoProvider = GroupProfileSmallRepoProvider._();
+const groupProfileSmallRepoProvider = GroupProfileSmallRepoProvider._();
 
 final class GroupProfileSmallRepoProvider
     extends
         $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
     with $Provider<ImageRepository> {
-  GroupProfileSmallRepoProvider._()
+  const GroupProfileSmallRepoProvider._()
     : super(
         from: null,
         argument: null,
@@ -92,16 +92,16 @@ final class GroupProfileSmallRepoProvider
 }
 
 String _$groupProfileSmallRepoHash() =>
-    r'b9e78807480615e00baa9a5bb7818ff0189e8e8c';
+    r'a84cf6c341798c19e314e8da5bb6f14b6f742cc6';
 
 @ProviderFor(groupPinImageRepo)
-final groupPinImageRepoProvider = GroupPinImageRepoProvider._();
+const groupPinImageRepoProvider = GroupPinImageRepoProvider._();
 
 final class GroupPinImageRepoProvider
     extends
         $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
     with $Provider<ImageRepository> {
-  GroupPinImageRepoProvider._()
+  const GroupPinImageRepoProvider._()
     : super(
         from: null,
         argument: null,
@@ -134,16 +134,16 @@ final class GroupPinImageRepoProvider
   }
 }
 
-String _$groupPinImageRepoHash() => r'dfdd8f997dcf4a807d557c0773234d7a38b7cc09';
+String _$groupPinImageRepoHash() => r'49244c1e82f10f43171eed44cd71430684a27263';
 
 @ProviderFor(userImageSmallRepo)
-final userImageSmallRepoProvider = UserImageSmallRepoProvider._();
+const userImageSmallRepoProvider = UserImageSmallRepoProvider._();
 
 final class UserImageSmallRepoProvider
     extends
         $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
     with $Provider<ImageRepository> {
-  UserImageSmallRepoProvider._()
+  const UserImageSmallRepoProvider._()
     : super(
         from: null,
         argument: null,
@@ -177,16 +177,16 @@ final class UserImageSmallRepoProvider
 }
 
 String _$userImageSmallRepoHash() =>
-    r'9715defbf6cd1931e26e55d87e995300c8ec9e48';
+    r'5a6322d3fb9b73f167b587e6e2cee16c24af48ca';
 
 @ProviderFor(userImageRepo)
-final userImageRepoProvider = UserImageRepoProvider._();
+const userImageRepoProvider = UserImageRepoProvider._();
 
 final class UserImageRepoProvider
     extends
         $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
     with $Provider<ImageRepository> {
-  UserImageRepoProvider._()
+  const UserImageRepoProvider._()
     : super(
         from: null,
         argument: null,
@@ -219,4 +219,47 @@ final class UserImageRepoProvider
   }
 }
 
-String _$userImageRepoHash() => r'b92f742e6e6d1f87af13385f1b36830a1ef763c6';
+String _$userImageRepoHash() => r'd3785cda6a9cdd9ca679e658d4c65be702f1c8c4';
+
+@ProviderFor(pinImageRepository)
+const pinImageRepositoryProvider = PinImageRepositoryProvider._();
+
+final class PinImageRepositoryProvider
+    extends
+        $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
+    with $Provider<ImageRepository> {
+  const PinImageRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pinImageRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pinImageRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<ImageRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ImageRepository create(Ref ref) {
+    return pinImageRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ImageRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ImageRepository>(value),
+    );
+  }
+}
+
+String _$pinImageRepositoryHash() =>
+    r'1fecadd5bb20e520e73e563d5279a40d57561b9c';

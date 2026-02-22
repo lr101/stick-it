@@ -1,5 +1,5 @@
 
-import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
@@ -90,10 +90,11 @@ class CameraGroupIndex extends _$CameraGroupIndex {
 }
 
 @riverpod
-Future<LocalGroupDto> cameraSelectedGroup(Ref ref) async {
+Future<GroupEntity> cameraSelectedGroup(Ref ref) async {
   final groupIds = ref.watch(groupOrderServiceProvider);
   final groupCameraIndex = ref.watch(cameraGroupIndexProvider);
-  return await ref.watch(groupByIdWithoutStateProvider(groupIds[groupCameraIndex]).future);
+  final group =  ref.watch(groupByIdProvider(groupIds[groupCameraIndex]));
+  return group.value!;
 }
 
 @Riverpod(keepAlive: true)

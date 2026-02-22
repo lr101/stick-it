@@ -10,10 +10,10 @@ part of 'feed_map_state.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(FeedMapState)
-final feedMapStateProvider = FeedMapStateFamily._();
+const feedMapStateProvider = FeedMapStateFamily._();
 
 final class FeedMapStateProvider extends $NotifierProvider<FeedMapState, bool> {
-  FeedMapStateProvider._({
+  const FeedMapStateProvider._({
     required FeedMapStateFamily super.from,
     required String super.argument,
   }) : super(
@@ -61,7 +61,7 @@ String _$feedMapStateHash() => r'a7d42ddf7eb5756f0bc5d2e604d8a367c485af93';
 
 final class FeedMapStateFamily extends $Family
     with $ClassFamilyOverride<FeedMapState, bool, bool, bool, String> {
-  FeedMapStateFamily._()
+  const FeedMapStateFamily._()
     : super(
         retry: null,
         name: r'feedMapStateProvider',
@@ -85,6 +85,7 @@ abstract class _$FeedMapState extends $Notifier<bool> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build(_$args);
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -94,6 +95,6 @@ abstract class _$FeedMapState extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, () => build(_$args));
+    element.handleValue(ref, created);
   }
 }

@@ -10,11 +10,11 @@ part of 'geojson_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(DistrictService)
-final districtServiceProvider = DistrictServiceProvider._();
+const districtServiceProvider = DistrictServiceProvider._();
 
 final class DistrictServiceProvider
     extends $NotifierProvider<DistrictService, MapInfoDto?> {
-  DistrictServiceProvider._()
+  const DistrictServiceProvider._()
     : super(
         from: null,
         argument: null,
@@ -48,6 +48,7 @@ abstract class _$DistrictService extends $Notifier<MapInfoDto?> {
   @$mustCallSuper
   @override
   void runBuild() {
+    final created = build();
     final ref = this.ref as $Ref<MapInfoDto?, MapInfoDto?>;
     final element =
         ref.element
@@ -57,6 +58,6 @@ abstract class _$DistrictService extends $Notifier<MapInfoDto?> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    element.handleValue(ref, created);
   }
 }

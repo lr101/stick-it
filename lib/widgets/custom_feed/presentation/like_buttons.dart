@@ -1,8 +1,7 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_group.dart';
-import 'package:buff_lisa/widgets/custom_feed/data/feed_description.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_description.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/like_button_animated.dart';
@@ -11,13 +10,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 
 class FeedCardSubtitle extends ConsumerWidget {
-  final LocalPinDto pin;
+  final PinEntity pin;
 
   const FeedCardSubtitle({super.key, required this.pin});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pinLike = ref.watch(likeServiceProvider(pin.id));
+    final pinLike = ref.watch(likeServiceProvider(pin.pinId));
     final userId = ref.watch(globalDataServiceProvider).userId!;
     // Watch the group data to display the name
     final groupAsync = ref.watch(groupByIdProvider(pin.groupId));
@@ -29,7 +28,7 @@ class FeedCardSubtitle extends ConsumerWidget {
         Row(
           children: [
             LikeButtonAnimated(
-              isLikedProvider: likeServiceProvider(pin.id).select((e) => e.value?.likedByUser),
+              isLikedProvider: likeServiceProvider(pin.pinId).select((e) => e.value?.likedByUser),
               isLiked: pinLike.value?.likedByUser ?? false,
               likeBuilder: (isLiked) {
                 return Icon(
@@ -41,11 +40,11 @@ class FeedCardSubtitle extends ConsumerWidget {
               likeCount: pinLike.value?.likeCount ?? 0,
               onTap: (isLiked) async {
                 try {
-                  final service = ref.read(likeServiceProvider(pin.id).notifier);
+                  final service = ref.read(likeServiceProvider(pin.pinId).notifier);
                   if (isLiked) {
-                    await service.addLike(pin.creatorId, CreateLikeDto(userId: userId, like: false));
+                    await service.addLike(pin.creator, CreateLikeDto(userId: userId, like: false));
                   } else {
-                    await service.addLike(pin.creatorId, CreateLikeDto(userId: userId, like: true));
+                    await service.addLike(pin.creator, CreateLikeDto(userId: userId, like: true));
                   }
                 } catch (e) {
                   return false;

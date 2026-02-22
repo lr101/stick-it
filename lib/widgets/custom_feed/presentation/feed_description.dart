@@ -1,6 +1,5 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_description.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,7 +9,7 @@ class FeedDescriptionExpandable extends ConsumerWidget {
     required this.pin,
   });
 
-  final LocalPinDto pin;
+  final PinEntity pin;
 
   static const showLessOrMoreStyle = TextStyle(
     fontWeight: FontWeight.bold,
@@ -20,8 +19,8 @@ class FeedDescriptionExpandable extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // NOTE: Ensure feedDescriptionProvider is defined in your state management
-    final isExpanded = ref.watch(feedDescriptionProvider(pin.id));
-    final toggleExpansion = ref.watch(feedDescriptionProvider(pin.id).notifier);
+    final isExpanded = ref.watch(feedDescriptionProvider(pin.pinId));
+    final toggleExpansion = ref.watch(feedDescriptionProvider(pin.pinId).notifier);
     final text = pin.description ?? "";
 
     return LayoutBuilder(

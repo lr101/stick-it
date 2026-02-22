@@ -1,4 +1,4 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/custom_feed.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class GroupImageFeed extends ConsumerWidget {
                   pinProvider: sortedGroupPinsProvider(groupId),
                   index: index,
                   pagingController: PagingController.fromValue(
-                      PagingState<int, LocalPinDto>(
+                      PagingState<int, PinEntity>(
                           nextPageKey: index + 1,
                           itemList: data?.getRange(0, index + 1).toList(),),
                       firstPageKey: 0,),),
