@@ -21,6 +21,9 @@ class PinWithOptionalImageDto {
     this.image,
     required this.groupId,
     this.description,
+    this.gid0,
+    this.gid1,
+    this.gid2,
   });
 
   String id;
@@ -49,6 +52,30 @@ class PinWithOptionalImageDto {
 
   String? description;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? gid0;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? gid1;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? gid2;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is PinWithOptionalImageDto &&
     other.id == id &&
@@ -58,7 +85,10 @@ class PinWithOptionalImageDto {
     other.creationUser == creationUser &&
     other.image == image &&
     other.groupId == groupId &&
-    other.description == description;
+    other.description == description &&
+    other.gid0 == gid0 &&
+    other.gid1 == gid1 &&
+    other.gid2 == gid2;
 
   @override
   int get hashCode =>
@@ -70,10 +100,13 @@ class PinWithOptionalImageDto {
     (creationUser.hashCode) +
     (image == null ? 0 : image!.hashCode) +
     (groupId.hashCode) +
-    (description == null ? 0 : description!.hashCode);
+    (description == null ? 0 : description!.hashCode) +
+    (gid0 == null ? 0 : gid0!.hashCode) +
+    (gid1 == null ? 0 : gid1!.hashCode) +
+    (gid2 == null ? 0 : gid2!.hashCode);
 
   @override
-  String toString() => 'PinWithOptionalImageDto[id=$id, creationDate=$creationDate, latitude=$latitude, longitude=$longitude, creationUser=$creationUser, image=$image, groupId=$groupId, description=$description]';
+  String toString() => 'PinWithOptionalImageDto[id=$id, creationDate=$creationDate, latitude=$latitude, longitude=$longitude, creationUser=$creationUser, image=$image, groupId=$groupId, description=$description, gid0=$gid0, gid1=$gid1, gid2=$gid2]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -92,6 +125,21 @@ class PinWithOptionalImageDto {
       json[r'description'] = this.description;
     } else {
       json[r'description'] = null;
+    }
+    if (this.gid0 != null) {
+      json[r'gid0'] = this.gid0;
+    } else {
+      json[r'gid0'] = null;
+    }
+    if (this.gid1 != null) {
+      json[r'gid1'] = this.gid1;
+    } else {
+      json[r'gid1'] = null;
+    }
+    if (this.gid2 != null) {
+      json[r'gid2'] = this.gid2;
+    } else {
+      json[r'gid2'] = null;
     }
     return json;
   }
@@ -123,6 +171,9 @@ class PinWithOptionalImageDto {
         image: mapValueOfType<String>(json, r'image'),
         groupId: mapValueOfType<String>(json, r'groupId')!,
         description: mapValueOfType<String>(json, r'description'),
+        gid0: mapValueOfType<String>(json, r'gid0'),
+        gid1: mapValueOfType<String>(json, r'gid1'),
+        gid2: mapValueOfType<String>(json, r'gid2'),
       );
     }
     return null;

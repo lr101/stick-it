@@ -102,3 +102,57 @@ final class RoundGroupIdProvider
 }
 
 String _$roundGroupIdHash() => r'dd926cf843566b1db3f10083769172177a6cd74e';
+
+@ProviderFor(GroupActiveService)
+const groupActiveServiceProvider = GroupActiveServiceProvider._();
+
+final class GroupActiveServiceProvider
+    extends $NotifierProvider<GroupActiveService, List<String>> {
+  const GroupActiveServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'groupActiveServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$groupActiveServiceHash();
+
+  @$internal
+  @override
+  GroupActiveService create() => GroupActiveService();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<String> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<String>>(value),
+    );
+  }
+}
+
+String _$groupActiveServiceHash() =>
+    r'31d474372c4894295c62908658824023187691f0';
+
+abstract class _$GroupActiveService extends $Notifier<List<String>> {
+  List<String> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<List<String>, List<String>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<List<String>, List<String>>,
+              List<String>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

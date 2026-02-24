@@ -1,6 +1,6 @@
 
 
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'marker_window_state.g.dart';
@@ -9,12 +9,12 @@ part 'marker_window_state.g.dart';
 class MarkerWindowState extends _$MarkerWindowState {
 
   @override
-  LocalPinDto? build() {
+  PinEntity? build() {
     return null;
   }
 
   // ignore: use_setters_to_change_properties
-  void openPopup(LocalPinDto pin) {
+  void openPopup(PinEntity pin) {
     state = pin;
   }
 

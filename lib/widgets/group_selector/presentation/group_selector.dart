@@ -57,6 +57,7 @@ class _GroupSelectorState extends ConsumerState<GroupSelector>  with AutomaticKe
                       ),
                       child: ReorderableListView.builder(
                                 onReorder: (int start, int current) => _onReorder(start, current, groups),
+                                key: const ValueKey('group_selector_list'),
                               scrollDirection: Axis.horizontal,
                              proxyDecorator: _proxyDecorator,
                              itemBuilder: (context, index) {

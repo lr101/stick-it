@@ -1,4 +1,6 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
+import 'package:buff_lisa/features/pin/presentation/view_image.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/square_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,22 +9,21 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 
 class ImageGrid extends ConsumerStatefulWidget {
-  const ImageGrid({super.key, required this.pinProvider, required this.onTab});
+  const ImageGrid({super.key, required this.pinProvider});
 
-  final ProviderListenable<AsyncValue<List<LocalPinDto>?>> pinProvider;
-  final Function(int index) onTab;
+  final ProviderListenable<AsyncValue<List<PinEntity>?>> pinProvider;
 
   @override
   ConsumerState<ImageGrid> createState() => _ImageGridState();
 }
 
 class _ImageGridState extends ConsumerState<ImageGrid> {
-  final PagingController<int, LocalPinDto> _pagingController =
+  final PagingController<int, PinEntity> _pagingController =
       PagingController(firstPageKey: 0, invisibleItemsThreshold: 4);
 
   final int _pageSize = 18;
 
-  List<LocalPinDto> _images = [];
+  List<PinEntity> _images = [];
 
   bool isInitial = true;
 
@@ -32,7 +33,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.watch(widget.pinProvider).whenData((data) {
         if (data != null) {
           _images = data;
@@ -50,15 +51,15 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
       _images = next.value ?? [];
       _pagingController.refresh();
     });
-    return PagedGridView<int, LocalPinDto>(
+    return PagedGridView<int, PinEntity>(
       pagingController: _pagingController,
       showNewPageProgressIndicatorAsGridChild: false,
-      builderDelegate: PagedChildBuilderDelegate<LocalPinDto>(
+      builderDelegate: PagedChildBuilderDelegate<PinEntity>(
         itemBuilder: (context, item, index) => SquareImage(
-          pinId: item.id,
+          pinId: item.pinId,
           index: index,
           groupId: item.groupId,
-          onTap: widget.onTab,
+          onTap: (index) => Routing.to(context, ViewImage(pin: item)),
         ),
         noItemsFoundIndicatorBuilder: (context) => Center(
           child: isInitial ? const CircularProgressIndicator() : const Text("No images found"),

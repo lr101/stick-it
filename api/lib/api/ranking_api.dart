@@ -24,7 +24,13 @@ class RankingApi {
   ///
   /// * [String] gid2:
   ///   County ID. Only one allowed
-  Future<Response> getGeoJsonWithHttpInfo({ String? gid2, }) async {
+  ///
+  /// * [String] gid1:
+  ///   State ID. Only one allowed
+  ///
+  /// * [String] gid0:
+  ///   Country ID. Only one allowed
+  Future<Response> getGeoJsonWithHttpInfo({ String? gid2, String? gid1, String? gid0, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/v2/map/geojson';
 
@@ -37,6 +43,12 @@ class RankingApi {
 
     if (gid2 != null) {
       queryParams.addAll(_queryParams('', 'gid2', gid2));
+    }
+    if (gid1 != null) {
+      queryParams.addAll(_queryParams('', 'gid1', gid1));
+    }
+    if (gid0 != null) {
+      queryParams.addAll(_queryParams('', 'gid0', gid0));
     }
 
     const contentTypes = <String>[];
@@ -59,8 +71,14 @@ class RankingApi {
   ///
   /// * [String] gid2:
   ///   County ID. Only one allowed
-  Future<List<String>?> getGeoJson({ String? gid2, }) async {
-    final response = await getGeoJsonWithHttpInfo( gid2: gid2, );
+  ///
+  /// * [String] gid1:
+  ///   State ID. Only one allowed
+  ///
+  /// * [String] gid0:
+  ///   Country ID. Only one allowed
+  Future<List<String>?> getGeoJson({ String? gid2, String? gid1, String? gid0, }) async {
+    final response = await getGeoJsonWithHttpInfo( gid2: gid2, gid1: gid1, gid0: gid0, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

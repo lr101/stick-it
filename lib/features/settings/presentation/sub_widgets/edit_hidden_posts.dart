@@ -1,5 +1,9 @@
+import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
-import 'package:buff_lisa/data/service/pin_image_service.dart';
+import 'package:buff_lisa/data/service/pin_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/data/feed_item_service.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
+import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,18 +36,8 @@ class _EditHiddenPostsState extends ConsumerState<EditHiddenPosts> {
                     onPressed: () => ref
                         .read(hiddenPostsServiceProvider.notifier)
                         .removeHiddenPost(hiddenPosts[index]),),
-                title: ref
-                        .watch(getPinImageAndFetchProvider(hiddenPosts[index]))
-                        .whenOrNull(
-                          data: (data) {
-                            return FadeInImage(
-                                placeholder: MemoryImage(kTransparentImage),
-                                image: MemoryImage(data),);
-                          },
-                          error: (_, __) => const Icon(Icons.error),
-                        ) ??
-                    const CircularProgressIndicator(),),
-          ),
+                title: const Text("test")))
+          
         ],),);
   }
 }

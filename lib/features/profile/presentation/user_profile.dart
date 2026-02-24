@@ -1,11 +1,11 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/like_service.dart';
+import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
-import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
 import 'package:buff_lisa/features/profile/presentation/user_like_icon.dart';
-import 'package:buff_lisa/features/profile/service/user_pin_service.dart';
 import 'package:buff_lisa/features/settings/presentation/settings.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
@@ -22,7 +22,7 @@ class UserProfile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(userIdProvider);
-    final userPins = ref.watch(userPinProvider(userId));
+    final userPins = ref.watch(pinUserServiceProvider(userId));
     final currentUser = ref.watch(currentUserProvider);
     final likes = ref.watch(userLikeServiceProvider(userId));
     final profileImage = ref.watch(getUserProfileProvider(userId));
@@ -82,7 +82,7 @@ class UserProfile extends ConsumerWidget {
                       maxLines: 1,
                     ),
                     subtitle: Text(
-                        ref.watch(numberOfGroupProvider)?.toString() ?? "---",),
+                        ref.watch(userGroupServiceProvider).value?.length.toString() ?? "---",),
                   ),
                 ),
               ],
@@ -127,15 +127,7 @@ class UserProfile extends ConsumerWidget {
           ),
       ],
       body: ImageGrid(
-        pinProvider: userPinProvider(userId),
-        onTab: (index) => Routing.to(
-          context,
-          UserImageFeed(
-            index: index,
-            userId: userId,
-            userPinNotifier: userPinProvider(userId),
-          ),
-        ),
+        pinProvider: pinUserServiceProvider(userId),
       ),
     );
   }

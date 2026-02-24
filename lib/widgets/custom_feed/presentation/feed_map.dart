@@ -1,6 +1,5 @@
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/feed_map_state.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
@@ -14,7 +13,7 @@ import 'package:openapi/api.dart';
 class FeedMap extends ConsumerStatefulWidget {
 
   const FeedMap({super.key, required this.item});
-  final LocalPinDto item;
+  final PinEntity item;
 
   @override
   ConsumerState<FeedMap> createState() => FeedMapState();
@@ -37,8 +36,8 @@ class FeedMapState extends ConsumerState<FeedMap> {
 
   @override
   Widget build(BuildContext context) {
-    final isExpanded = !ref.watch(feedMapStateProvider(widget.item.id));
-    final switchFun = ref.read(feedMapStateProvider(widget.item.id).notifier).update;
+    final isExpanded = !ref.watch(feedMapStateProvider(widget.item.pinId));
+    final switchFun = ref.read(feedMapStateProvider(widget.item.pinId).notifier).update;
     return Stack(
       children: [
         GestureDetector(
@@ -58,32 +57,25 @@ class FeedMapState extends ConsumerState<FeedMap> {
           children: [
             CustomTileLayer(),
             MarkerLayer(markers: [CustomMarkerWidget(pinDto: widget.item),]),
-            if(isExpanded) const OsmCopyright(),
           ],
         ),),),
         if(isExpanded) Align(
             alignment: Alignment.bottomLeft,
             child: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  FloatingActionButton(
-                    heroTag: "${widget.item.id}zoomIn",
-                      onPressed: () => zoomIn(center),
-                      backgroundColor:
-                      Colors.grey.withValues(alpha: 0.5),
-                      child: const Icon(Icons.zoom_in),),
+                  _MapControlButton(
+                      onTap: () => zoomIn(center),
+                      theme: Theme.of(context),
+                      icon: Icons.zoom_in,),
                   const SizedBox(height: 5,),
-                  FloatingActionButton(
-                    onPressed: () => zoomOut(center),
-                    heroTag: "${widget.item.id}zoomOut",
-                    backgroundColor:
-                    Colors.grey.withValues(alpha: 0.5),
-                    child: const Icon(Icons.zoom_out),
-                  ),
-                  const SizedBox(height: 30,),
+                   _MapControlButton(
+                      onTap: () => zoomOut(center),
+                      theme: Theme.of(context),
+                      icon: Icons.zoom_out_rounded,),
                 ],
               ),
             ),),
@@ -100,7 +92,54 @@ class FeedMapState extends ConsumerState<FeedMap> {
 
   void like() {
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    ref.read(likeServiceProvider(widget.item.id).notifier)
-        .addLike(widget.item.creatorId, CreateLikeDto(userId: userId, likeLocation: true));
+    ref.read(likeServiceProvider(widget.item.pinId).notifier)
+        .addLike(widget.item.creator, CreateLikeDto(userId: userId, likeLocation: true));
+  }
+}
+
+class _MapControlButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final ThemeData theme;
+
+  const _MapControlButton({
+    required this.icon,
+    required this.onTap,
+    required this.theme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          width: 45, // Smaller than FAB (56)
+          height: 45,
+          decoration: BoxDecoration(
+            // Semi-transparent surface color (frosted glass effect)
+            color: theme.colorScheme.surface.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: theme.colorScheme.outlineVariant.withOpacity(0.2),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Icon(
+            icon,
+            color: theme.colorScheme.onSurface,
+            size: 20,
+          ),
+        ),
+      ),
+    );
   }
 }

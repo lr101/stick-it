@@ -1,68 +1,97 @@
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_geojson/flutter_map_geojson.dart';
+import 'package:logger/logger.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'geojson_service.g.dart';
 
 @Riverpod(keepAlive: true)
-class GeojsonService extends _$GeojsonService {
-
-
-  static const String geojsonStart = '{"features": [{"properties": {},"geometry":';
-  static const String geojsonEnd = "}]}";
-
-  @override
-  Future<List<Polygon>> build() async {
-    final GeoJsonParser myGeoJson = GeoJsonParser(defaultPolygonFillColor: Colors.orange.withValues(alpha: 0.05));
-    final district =  ref.watch(districtServiceProvider);
-    if (district == null) return [];
-    final geojson = await ref.watch(rankingApiProvider).getGeoJson(gid2: district.gid2);
-    if (geojson != null) {
-      myGeoJson.parseGeoJsonAsString(geojsonStart + geojson.first + geojsonEnd);
-      return myGeoJson.polygons;
-    }
-    return [];
-  }
-
-}
-
-
-@Riverpod(keepAlive: true)
 class DistrictService extends _$DistrictService {
   
-  double? _lat;
-  double? _long;
+  double _lat = 0;
+  double _long = 0;
+  double _zoom = 0;
+  double? _latitudeNew;
+  double? _longitudeNew;
+  late final RankingApi rankingApi;
+  final Logger _logger = Logger();
   
+  // --- Mutex State ---
+  bool _isFetching = false;
+  bool _hasPendingRequest = false;
+
   @override
   MapInfoDto? build()  {
+    rankingApi = ref.watch(rankingApiProvider);
     return null;
   }
 
-  Future<void> updateLatLong(double latitude, double longitude) async {
-    const latPrecision = 0.0001; // approximately 10m
-    const longPrecision = 0.0001; // approximately 10m
+  Future<void> updateLatLong(double latitude, double longitude, double zoom) async {
+    _latitudeNew = latitude;
+    _longitudeNew = longitude;
+    _zoom = zoom;
+  }
 
-    if ((_lat == null || (latitude - _lat!).abs() > latPrecision) ||
-        (_long == null || (longitude - _long!).abs() > longPrecision)) {
-      _lat = latitude;
-      _long = longitude;
-      final rankingApi = ref.watch(rankingApiProvider);
+  double calculatedPrecision(double zoom) => 1.454 - (0.0908 * zoom).clamp(0.005, 2.0);
+
+  Future<void> refetch() async {
+    if (_latitudeNew == null || _longitudeNew == null) return;
+
+    // 1. If we are currently fetching, flag that a new request came in and exit.
+    if (_isFetching) {
+      _hasPendingRequest = true;
+      return;
+    }
+
+    // 2. Lock the mutex and clear any pending flags.
+    _isFetching = true;
+    _hasPendingRequest = false;
+
+    try {
+      // Extracting the actual work makes the mutex logic easier to read
+      await _performFetch();
+    } finally {
+      // 3. Unlock the mutex. (Using 'finally' ensures it unlocks even if the API throws an error!)
+      _isFetching = false;
+      
+      // 4. If the user moved the map WHILE we were fetching, trigger the last scheduled request.
+      // Because updateLatLong updates the class variables, this will naturally use the newest coordinates.
+      if (_hasPendingRequest) {
+        _hasPendingRequest = false;
+        refetch(); 
+      }
+    }
+  }
+
+  // Moved your core logic here
+  Future<void> _performFetch() async {
+    final precision = calculatedPrecision(_zoom);
+  
+    // Check if we moved enough to warrant a fetch
+    if (((_latitudeNew! - _lat).abs() > precision) ||
+        (_longitudeNew! - _long).abs() > precision) {
+      
+      _lat = _latitudeNew!;
+      _long = _longitudeNew!;
+      
+      final rankingApi = ref.read(rankingApiProvider); 
+      
       try {
         final mapInfo = await rankingApi.getMapInfo(
-            latitude: latitude, longitude: longitude,);
+          latitude: _lat, 
+          longitude: _long,
+        );
+        _logger.i("Fetched map info: $mapInfo");
+        
         if (mapInfo != null && mapInfo.isNotEmpty &&
             state?.gid2 != mapInfo.first.gid2) {
           state = mapInfo.first;
         }
-      } catch(e) {
+      } catch (e) {
         debugPrint(e.toString());
-        state = null;
       }
     }
-    
   }
 }

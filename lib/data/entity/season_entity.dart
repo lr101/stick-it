@@ -1,37 +1,29 @@
-import 'package:hive_ce_flutter/adapters.dart';
+import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
 part 'season_entity.g.dart';
 
-@HiveType(typeId: 10)
+@embedded
 class SeasonEntity {
-  @HiveField(0)
-  final String id;
-  @HiveField(1)
+
   final String seasonId;
-  @HiveField(2)
   final int month;
-  @HiveField(3)
   final int year;
-  @HiveField(4)
   final int seasonNumber;
-  @HiveField(5)
   final int rank;
-  @HiveField(6)
   final int points;
 
-  SeasonEntity(
-      {required this.id,
-      required this.seasonId,
-      required this.month,
-      required this.year,
-      required this.seasonNumber,
-      required this.rank,
-      required this.points,});
+  SeasonEntity({
+      this.seasonId = "",
+      this.month = 0,
+      this.year = 0,
+      this.seasonNumber = 0,
+      this.rank = 0,
+      this.points = 0,
+      });
 
   factory SeasonEntity.fromDto(SeasonItemDto dto) {
     return SeasonEntity(
-      id: dto.id,
       seasonId: dto.season.id,
       month: dto.season.month,
       year: dto.season.year,
@@ -42,6 +34,7 @@ class SeasonEntity {
   }
 
   SeasonItemDto toDto() {
-    return SeasonItemDto(id: id, season: SeasonDto(id: seasonId, month: month, year: year, seasonNumber: seasonNumber), points: points, rank: rank);
+    return SeasonItemDto(id: seasonId, season: SeasonDto(id: seasonId, month: month, year: year, seasonNumber: seasonNumber), points: points, rank: rank);
   }
+  
 }

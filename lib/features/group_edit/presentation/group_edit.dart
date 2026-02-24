@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/group_edit/service/group_edit_service.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
@@ -15,7 +15,7 @@ import 'package:openapi/api.dart' as api;
 class GroupEdit extends ConsumerStatefulWidget {
   const GroupEdit({super.key, required this.groupDto});
 
-  final LocalGroupDto groupDto;
+  final GroupEntity groupDto;
 
   @override
   ConsumerState<GroupEdit> createState() => _GroupEditState();
@@ -67,13 +67,11 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
                           items: ref
                                   .watch(
                                       memberServiceProvider(widget.groupDto.groupId),)
-                                  .whenOrNull(
-                                      data: (data) => data
-                                          .map((e) =>
+                                  .value?.map((e) =>
                                               DropdownMenuItem<String>(
                                                   value: e.userId,
                                                   child: Text(e.username),),)
-                                          .toList(),) ??
+                                          .toList() ??
                               [
                                 DropdownMenuItem<String>(
                                     value: global.userId,

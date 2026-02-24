@@ -9,45 +9,89 @@ part of 'user_group_service.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(UserGroupService)
-const userGroupServiceProvider = UserGroupServiceProvider._();
+@ProviderFor(GroupService)
+const groupServiceProvider = GroupServiceFamily._();
 
-final class UserGroupServiceProvider
-    extends $AsyncNotifierProvider<UserGroupService, Set<LocalGroupDto>> {
-  const UserGroupServiceProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'userGroupServiceProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+final class GroupServiceProvider
+    extends $StreamNotifierProvider<GroupService, GroupEntity?> {
+  const GroupServiceProvider._({
+    required GroupServiceFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'groupServiceProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
-  String debugGetCreateSourceHash() => _$userGroupServiceHash();
+  String debugGetCreateSourceHash() => _$groupServiceHash();
+
+  @override
+  String toString() {
+    return r'groupServiceProvider'
+        ''
+        '($argument)';
+  }
 
   @$internal
   @override
-  UserGroupService create() => UserGroupService();
+  GroupService create() => GroupService();
+
+  @override
+  bool operator ==(Object other) {
+    return other is GroupServiceProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
-String _$userGroupServiceHash() => r'3a5513afbed3e557f4bfcc6221832c36acd84060';
+String _$groupServiceHash() => r'759390bbb8bb6a8a4eda7e3accf565579006ce36';
 
-abstract class _$UserGroupService extends $AsyncNotifier<Set<LocalGroupDto>> {
-  FutureOr<Set<LocalGroupDto>> build();
+final class GroupServiceFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          GroupService,
+          AsyncValue<GroupEntity?>,
+          GroupEntity?,
+          Stream<GroupEntity?>,
+          String
+        > {
+  const GroupServiceFamily._()
+    : super(
+        retry: null,
+        name: r'groupServiceProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  GroupServiceProvider call(String groupId) =>
+      GroupServiceProvider._(argument: groupId, from: this);
+
+  @override
+  String toString() => r'groupServiceProvider';
+}
+
+abstract class _$GroupService extends $StreamNotifier<GroupEntity?> {
+  late final _$args = ref.$arg as String;
+  String get groupId => _$args;
+
+  Stream<GroupEntity?> build(String groupId);
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
-    final ref =
-        this.ref as $Ref<AsyncValue<Set<LocalGroupDto>>, Set<LocalGroupDto>>;
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<GroupEntity?>, GroupEntity?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<Set<LocalGroupDto>>, Set<LocalGroupDto>>,
-              AsyncValue<Set<LocalGroupDto>>,
+              AnyNotifier<AsyncValue<GroupEntity?>, GroupEntity?>,
+              AsyncValue<GroupEntity?>,
               Object?,
               Object?
             >;
@@ -61,11 +105,11 @@ const groupByIdProvider = GroupByIdFamily._();
 final class GroupByIdProvider
     extends
         $FunctionalProvider<
-          AsyncValue<LocalGroupDto?>,
-          LocalGroupDto?,
-          FutureOr<LocalGroupDto?>
+          AsyncValue<GroupEntity?>,
+          GroupEntity?,
+          Stream<GroupEntity?>
         >
-    with $FutureModifier<LocalGroupDto?>, $FutureProvider<LocalGroupDto?> {
+    with $FutureModifier<GroupEntity?>, $StreamProvider<GroupEntity?> {
   const GroupByIdProvider._({
     required GroupByIdFamily super.from,
     required String super.argument,
@@ -89,12 +133,12 @@ final class GroupByIdProvider
 
   @$internal
   @override
-  $FutureProviderElement<LocalGroupDto?> $createElement(
+  $StreamProviderElement<GroupEntity?> $createElement(
     $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
+  ) => $StreamProviderElement(pointer);
 
   @override
-  FutureOr<LocalGroupDto?> create(Ref ref) {
+  Stream<GroupEntity?> create(Ref ref) {
     final argument = this.argument as String;
     return groupById(ref, argument);
   }
@@ -110,10 +154,10 @@ final class GroupByIdProvider
   }
 }
 
-String _$groupByIdHash() => r'8e8485b96fd0837f8c4dc719977ef2de91738583';
+String _$groupByIdHash() => r'9904c8cf7fbc805cfb2f549d18071e98ae4315dd';
 
 final class GroupByIdFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<LocalGroupDto?>, String> {
+    with $FunctionalFamilyOverride<Stream<GroupEntity?>, String> {
   const GroupByIdFamily._()
     : super(
         retry: null,
@@ -130,19 +174,63 @@ final class GroupByIdFamily extends $Family
   String toString() => r'groupByIdProvider';
 }
 
+@ProviderFor(UserGroupService)
+const userGroupServiceProvider = UserGroupServiceProvider._();
+
+final class UserGroupServiceProvider
+    extends $StreamNotifierProvider<UserGroupService, List<GroupEntity>> {
+  const UserGroupServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userGroupServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userGroupServiceHash();
+
+  @$internal
+  @override
+  UserGroupService create() => UserGroupService();
+}
+
+String _$userGroupServiceHash() => r'fdb24760cb783beed089765cfd37a27de709ba0f';
+
+abstract class _$UserGroupService extends $StreamNotifier<List<GroupEntity>> {
+  Stream<List<GroupEntity>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<List<GroupEntity>>, List<GroupEntity>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<GroupEntity>>, List<GroupEntity>>,
+              AsyncValue<List<GroupEntity>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
 @ProviderFor(activeGroups)
 const activeGroupsProvider = ActiveGroupsProvider._();
 
 final class ActiveGroupsProvider
     extends
         $FunctionalProvider<
-          AsyncValue<Set<LocalGroupDto>>,
-          Set<LocalGroupDto>,
-          FutureOr<Set<LocalGroupDto>>
+          AsyncValue<Set<GroupEntity>>,
+          Set<GroupEntity>,
+          FutureOr<Set<GroupEntity>>
         >
-    with
-        $FutureModifier<Set<LocalGroupDto>>,
-        $FutureProvider<Set<LocalGroupDto>> {
+    with $FutureModifier<Set<GroupEntity>>, $FutureProvider<Set<GroupEntity>> {
   const ActiveGroupsProvider._()
     : super(
         from: null,
@@ -159,17 +247,17 @@ final class ActiveGroupsProvider
 
   @$internal
   @override
-  $FutureProviderElement<Set<LocalGroupDto>> $createElement(
+  $FutureProviderElement<Set<GroupEntity>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<Set<LocalGroupDto>> create(Ref ref) {
+  FutureOr<Set<GroupEntity>> create(Ref ref) {
     return activeGroups(ref);
   }
 }
 
-String _$activeGroupsHash() => r'51791894bb2bc2701a868d5fde855c52b87dd383';
+String _$activeGroupsHash() => r'e5d7ef886f3600d64c19bca0f8fc43746086e078';
 
 @ProviderFor(orderedGroups)
 const orderedGroupsProvider = OrderedGroupsProvider._();
@@ -177,13 +265,13 @@ const orderedGroupsProvider = OrderedGroupsProvider._();
 final class OrderedGroupsProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<LocalGroupDto>>,
-          List<LocalGroupDto>,
-          FutureOr<List<LocalGroupDto>>
+          AsyncValue<List<GroupEntity>>,
+          List<GroupEntity>,
+          FutureOr<List<GroupEntity>>
         >
     with
-        $FutureModifier<List<LocalGroupDto>>,
-        $FutureProvider<List<LocalGroupDto>> {
+        $FutureModifier<List<GroupEntity>>,
+        $FutureProvider<List<GroupEntity>> {
   const OrderedGroupsProvider._()
     : super(
         from: null,
@@ -200,17 +288,17 @@ final class OrderedGroupsProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<LocalGroupDto>> $createElement(
+  $FutureProviderElement<List<GroupEntity>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<LocalGroupDto>> create(Ref ref) {
+  FutureOr<List<GroupEntity>> create(Ref ref) {
     return orderedGroups(ref);
   }
 }
 
-String _$orderedGroupsHash() => r'd6c9fb1bad23f80f667fc0677a6ae12626fe8a8d';
+String _$orderedGroupsHash() => r'90a66bed9252066fc88c4fd459f456d72505c7ed';
 
 @ProviderFor(groupByIdActivated)
 const groupByIdActivatedProvider = GroupByIdActivatedFamily._();
@@ -288,11 +376,11 @@ const groupByIdWithoutStateProvider = GroupByIdWithoutStateFamily._();
 final class GroupByIdWithoutStateProvider
     extends
         $FunctionalProvider<
-          AsyncValue<LocalGroupDto>,
-          LocalGroupDto,
-          FutureOr<LocalGroupDto>
+          AsyncValue<GroupEntity?>,
+          GroupEntity?,
+          FutureOr<GroupEntity?>
         >
-    with $FutureModifier<LocalGroupDto>, $FutureProvider<LocalGroupDto> {
+    with $FutureModifier<GroupEntity?>, $FutureProvider<GroupEntity?> {
   const GroupByIdWithoutStateProvider._({
     required GroupByIdWithoutStateFamily super.from,
     required String super.argument,
@@ -316,12 +404,12 @@ final class GroupByIdWithoutStateProvider
 
   @$internal
   @override
-  $FutureProviderElement<LocalGroupDto> $createElement(
+  $FutureProviderElement<GroupEntity?> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<LocalGroupDto> create(Ref ref) {
+  FutureOr<GroupEntity?> create(Ref ref) {
     final argument = this.argument as String;
     return groupByIdWithoutState(ref, argument);
   }
@@ -338,10 +426,10 @@ final class GroupByIdWithoutStateProvider
 }
 
 String _$groupByIdWithoutStateHash() =>
-    r'8dbd0d6024cc1243e0e5637c99a058c7a3d0afdc';
+    r'dfe30fd9b45c5bbc5217042aca4496fd430587a2';
 
 final class GroupByIdWithoutStateFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<LocalGroupDto>, String> {
+    with $FunctionalFamilyOverride<FutureOr<GroupEntity?>, String> {
   const GroupByIdWithoutStateFamily._()
     : super(
         retry: null,

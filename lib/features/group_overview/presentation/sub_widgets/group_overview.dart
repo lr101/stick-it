@@ -1,9 +1,8 @@
-import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
-import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_image_feed.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
@@ -112,19 +111,17 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
                         MemberTile(memberDto: data[index], adminId: group?.groupAdmin ?? "", ),
                     itemCount: data.length,
                   ),
-              error: (err, __) => const Center(child: Text("Ups something went wrong")),
+              error: (err, _) => const Center(child: Text("Ups something went wrong")),
               loading: () => const Center(child: CircularProgressIndicator()),),
           ImageGrid(
             pinProvider: sortedGroupPinsProvider(widget.groupId),
-            onTab: (index) => Routing.to(context,
-                GroupImageFeed(index: index, groupId: widget.groupId),),
           ),
         ],),);
   }
 
 
 
-  void clickedOnInviteCode(LocalGroupDto? group) {
+  void clickedOnInviteCode(GroupEntity? group) {
     if (group?.inviteUrl != null) {
       Clipboard.setData(ClipboardData(text: group!.inviteUrl!));
     }

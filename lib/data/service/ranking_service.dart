@@ -6,13 +6,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'ranking_service.g.dart';
 
+
 @Riverpod(keepAlive: true)
-class Top3GroupService extends _$Top3GroupService {
+class CurrentUserTopRanking extends _$CurrentUserTopRanking {
 
   @override
-  Future<List<GroupRankingDtoInner>?> build() async {
+  Future<List<UserRankingDtoInner>?> build() async {
     final district = ref.watch(districtServiceProvider);
     if (district == null) return null;
-    return await ref.watch(rankingApiProvider).groupRanking(gid2: district.gid2, page: 0, size: 3);
+    return await ref.watch(rankingApiProvider).userRanking(gid2: district.gid2, page: 0, size: 3);
   }
 }

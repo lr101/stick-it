@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/camera/data/app_review_state.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:mutex/mutex.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
 import 'package:select_dialog/select_dialog.dart';
 import 'package:uuid/uuid.dart';
@@ -33,7 +32,6 @@ class ImageUpload extends ConsumerStatefulWidget {
 class _ImageUploadState extends ConsumerState<ImageUpload> {
   final _controller = TextEditingController();
 
-  final Mutex _m = Mutex();
   late final int _groupIndexWhenOpened;
 
   @override
@@ -51,6 +49,11 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
   @override
   Widget build(BuildContext context) {
     final group = ref.watch(cameraSelectedGroupProvider);
+    final groupId = group.value?.groupId;
+    if (groupId != null) {
+      ref.watch(pinServiceProvider);
+    }
+    
     final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return CustomCloseKeyboardScaffold(
       appBar: AppBar(
@@ -109,26 +112,27 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
 
 
   Future<void> handleApprove() async {
-    if (_m.isLocked) return;
-    await _m.acquire();
     final group = await ref.watch(cameraSelectedGroupProvider.future);
-    final pin = LocalPinDto(
-        id: const Uuid().v4(),
+    final pin = PinEntity(
+        pinId: const Uuid().v4(),
         latitude: widget.position.latitude,
         longitude: widget.position.longitude,
         creationDate: DateTime.now(),
         description: _controller.text.isEmpty ? null : _controller.text,
-        creatorId: ref.watch(globalDataServiceProvider).userId!,
+        creator: ref.watch(globalDataServiceProvider).userId!,
         groupId: group.groupId,
-        isHidden: false,);
-    _m.release();
-    final returnValue = await ref.read(pinServiceProvider(group.groupId).notifier).addPinToGroup(pin, widget.image);
-    if (returnValue != null) {
-      CustomErrorSnackBar.message(message: returnValue);
-    } else {
-      CustomErrorSnackBar.message(message: "Successfully synced to server",);
-    }
-    await Posthog().screen(screenName: "uploadPin", properties: {"result": returnValue != null, "error": returnValue?.toString() ?? ""});
+        onlySession: false,
+        keepAlive: true,
+        ttl: DateTime.now()
+        );
+    ref.read(pinServiceProvider).addPinToGroup(pin, widget.image).then(postUploadActions); // async adding pin
+    ref.read(cameraGroupIndexProvider.notifier).updateIndex(_groupIndexWhenOpened);
+    if (!mounted) return;
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  Future<void> postUploadActions(String? errorMessage) async {
+    await Posthog().screen(screenName: "uploadPin", properties: {"result": errorMessage != null, "error": errorMessage?.toString() ?? ""});
     if (ref.read(appReviewStateProvider)) {
       ref.read(appReviewStateProvider.notifier).updateLastReviewDate();
       final InAppReview inAppReview = InAppReview.instance;
@@ -136,9 +140,6 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         await inAppReview.requestReview();
       }
     }
-    ref.read(cameraGroupIndexProvider.notifier).updateIndex(_groupIndexWhenOpened);
-    if (!mounted) return;
-    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Future<void> handleEdit() async {

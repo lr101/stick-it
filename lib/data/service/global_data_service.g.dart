@@ -41,7 +41,7 @@ final class GlobalDataServiceProvider
   }
 }
 
-String _$globalDataServiceHash() => r'e4281575bf51ae5456daf4e3694243ac85d3ae31';
+String _$globalDataServiceHash() => r'068a0253f2a4ce071d3ee9fa866cb93f0bfd4695';
 
 abstract class _$GlobalDataService extends $Notifier<GlobalDataDto> {
   GlobalDataDto build();
@@ -86,7 +86,7 @@ final class AuthServiceProvider
   AuthService create() => AuthService();
 }
 
-String _$authServiceHash() => r'c5e69c64abcaabf82fb42dc9d93e6305cba96df0';
+String _$authServiceHash() => r'3d03c9c95d823fab4fa4a9475c3befc344851028';
 
 abstract class _$AuthService extends $AsyncNotifier<bool> {
   FutureOr<bool> build();
@@ -145,7 +145,7 @@ final class UserIdProvider extends $FunctionalProvider<String, String, String>
   }
 }
 
-String _$userIdHash() => r'f2c97313ee210fb250e363e4fcf6288210cac59b';
+String _$userIdHash() => r'24095f82a714ab05f319cce80838bae05c12d114';
 
 @ProviderFor(CameraTorch)
 const cameraTorchProvider = CameraTorchProvider._();

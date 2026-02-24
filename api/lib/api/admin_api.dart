@@ -59,4 +59,52 @@ class AdminApi {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
+
+  /// Post a notification to a specific topic
+  ///
+  /// Post a notification with a given title and body to a specific topic
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [NotificationDto] notificationDto (required):
+  Future<Response> sendNotificationWithHttpInfo(NotificationDto notificationDto,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/v2/admin/notification';
+
+    // ignore: prefer_final_locals
+    Object? postBody = notificationDto;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Post a notification to a specific topic
+  ///
+  /// Post a notification with a given title and body to a specific topic
+  ///
+  /// Parameters:
+  ///
+  /// * [NotificationDto] notificationDto (required):
+  Future<void> sendNotification(NotificationDto notificationDto,) async {
+    final response = await sendNotificationWithHttpInfo(notificationDto,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
 }

@@ -1,11 +1,9 @@
 import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/like_service.dart';
+import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:buff_lisa/features/profile/presentation/pop_up_menu_other_user.dart';
-import 'package:buff_lisa/features/profile/presentation/user_image_feed.dart';
 import 'package:buff_lisa/features/profile/presentation/user_like_icon.dart';
-import 'package:buff_lisa/features/profile/service/user_pin_service.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
 import 'package:buff_lisa/widgets/slivers/season_tile.dart';
@@ -21,7 +19,7 @@ class OtherUserProfile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userPins = ref.watch(userPinProvider(userId));
+    final userPins = ref.watch(pinUserServiceProvider(userId));
     final username = ref.watch(userByIdUsernameProvider(userId));
     final description = ref.watch(userByIdDescriptionProvider(userId));
     final bestSeason = ref.watch(userByIdBestSeasonProvider(userId));
@@ -70,8 +68,7 @@ class OtherUserProfile extends ConsumerWidget {
           ),
       ],
       body: ImageGrid(
-        pinProvider: userPinProvider(userId),
-        onTab: (index) => Routing.to(context, UserImageFeed(index: index, userId: userId, userPinNotifier: userPinProvider(userId))),
+        pinProvider: pinUserServiceProvider(userId),
       ),
     );
   }

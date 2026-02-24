@@ -42,7 +42,7 @@ final class GroupCreateServiceProvider
 }
 
 String _$groupCreateServiceHash() =>
-    r'adb0e3be739d8531f7c742e18b5c8c42bd4581a0';
+    r'1d6b6d08ea2880b3abcca0d5b9618c020363d07b';
 
 abstract class _$GroupCreateService extends $Notifier<GroupCreateState> {
   GroupCreateState build();

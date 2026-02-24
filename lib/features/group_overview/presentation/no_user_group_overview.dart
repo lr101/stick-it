@@ -1,5 +1,5 @@
-import 'package:buff_lisa/data/service/group_image_service.dart';
-import 'package:buff_lisa/data/service/no_user_group_service.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
+import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_join_action_button.dart';
 import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_overview.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
@@ -14,10 +14,12 @@ class NoUserGroupOverview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupAsync = ref.watch(noUserGroupServiceProvider(groupId));
+    final groupAsync = ref.watch(groupByIdProvider(groupId));
     return groupAsync.when(
       data: (data) {
-        if (data.visibility == 0) {
+        if (data == null) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (data.visibility == 0) {
           return GroupOverview(groupId: data.groupId, floatingActionButton: GroupJoinActionButton(groupDto: data, key: Key("group-join-$groupId"),));
         } else {
           return CustomAvatarScaffold(

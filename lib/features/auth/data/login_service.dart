@@ -1,5 +1,4 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/cupertino.dart';

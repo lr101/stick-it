@@ -76,7 +76,7 @@ class _ReportIssuePageState extends ConsumerState<ReportIssuePage> {
                 const Text('Select Issue Type'),
                 const SizedBox(height: 8.0),
                 DropdownButtonFormField<String>(
-                  value: _selectedIssueType,
+                  initialValue: _selectedIssueType,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),

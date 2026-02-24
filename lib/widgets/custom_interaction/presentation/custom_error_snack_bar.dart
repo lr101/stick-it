@@ -13,6 +13,30 @@ class CustomErrorSnackBar {
       backgroundColor: type.color,
     );
   }
+
+  static void loadingMessage({required String message, CustomErrorSnackBarType type = CustomErrorSnackBarType.info,}) {
+    final snack = SnackBar(
+    behavior: SnackBarBehavior.floating, // Make the SnackBar floating
+    margin: const EdgeInsets.all(20), // Set margin around the SnackBar
+    duration: const Duration(milliseconds: 4000), // Default duration if not provided
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10)), // Rounded corners for the SnackBar
+    content: Row(
+      children: [
+        const SizedBox.square(dimension: 10, child: CircularProgressIndicator(),),
+        const SizedBox(width: 10,),
+        Text(message,style: const TextStyle(color: Colors.white),
+    ),
+    ],), 
+    backgroundColor: type.color
+  );
+
+  // Hide any currently displayed SnackBar
+  ScaffoldMessenger.of(navigatorKey.currentContext!).hideCurrentSnackBar();
+
+  // Show the created SnackBar
+  ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(snack);
+  }
 }
 
 enum CustomErrorSnackBarType {

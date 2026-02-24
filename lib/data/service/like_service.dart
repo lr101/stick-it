@@ -23,7 +23,7 @@ class UserLikeService extends _$UserLikeService {
       );
     } else {
       final likeDto = await likeApi.getUserLikes(userId);
-      await userLikeRepo.put(userId, UserLikeEntity.fromDto(likeDto!));
+      await userLikeRepo.put(UserLikeEntity.fromDto(likeDto!, userId, true));
       return likeDto;
     }
   }
@@ -38,7 +38,7 @@ class UserLikeService extends _$UserLikeService {
     );
     state = AsyncData(likes);
     final userLikeRepo = ref.read(userLikeRepositoryProvider);
-    userLikeRepo.put(userId, UserLikeEntity.fromDto(likes));
+    userLikeRepo.put(UserLikeEntity.fromDto(likes, userId, true));
   }
 
   int _likeUpdate(bool? like) {
