@@ -14,8 +14,12 @@ part 'like_service.g.dart';
 class LikeService extends _$LikeService {
 
   final Mutex _mutex = Mutex();
+
+  late final LikesApi _likesApi;
+
   @override
   Future<PinLikeDto> build(String pinId) async {
+    _likesApi = ref.watch(likeApiProvider);
     try {
       await _mutex.acquire();
       final pinLikeRepo = ref.watch(pinLikeRepositoryProvider);
@@ -35,8 +39,7 @@ class LikeService extends _$LikeService {
 
   Future<PinLikeDto> _fetchLike(String pinId) async {
     try {
-      final likeApi = ref.watch(likeApiProvider);
-      final like = await likeApi.getPinLikes(pinId);
+      final like = await _likesApi.getPinLikes(pinId);
       return like!;
     } catch(e) {
       if (kDebugMode) print(e);
@@ -61,8 +64,7 @@ class LikeService extends _$LikeService {
       );
       state = AsyncData(pinDto);
       pinLikeRepo.put(PinLikeEntity.fromDto(pinDto, pinId));
-      final likeApi = ref.watch(likeApiProvider);
-      await likeApi.createOrUpdateLike(pinId, createLikeDto);
+      await _likesApi.createOrUpdateLike(pinId, createLikeDto);
       ref.read(userLikeServiceProvider(creatorId).notifier).updateLikeCount(createLikeDto);
     } on ApiException catch (_) {
       state = AsyncData(currentState);

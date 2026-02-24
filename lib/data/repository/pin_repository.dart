@@ -25,7 +25,14 @@ class PinRepository extends CacheImpl<PinEntity>  {
   
   Future<void> deleteByGroupId(String groupId) async {
     await box.filter().groupIdEqualTo(groupId).deleteAll();
-  }  
+  }
+
+  Future<void> replacePin(String oldPinId, PinEntity newPin) async {
+    await isar.writeTxn(() async {
+      await box.delete(fastHash(oldPinId));
+      await box.put(newPin);
+    });
+  }
 
   Future<void> updateKeepAlive(String groupId, bool keepAlive, bool onlySession) async {
     final all = await box.filter().groupFastIdEqualTo(fastHash(groupId)).findAll();

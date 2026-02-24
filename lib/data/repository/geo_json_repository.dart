@@ -44,11 +44,24 @@ int? zoomGeoLevel(Ref ref) {
 
 
 @riverpod
-Future<List<GroupRankingDtoInner>?> groupRanking(Ref ref, String gid) async{
+Future<List<GroupRankingDtoInner>?> groupRanking(Ref ref, String gid) async {
   final rankingApi = ref.watch(rankingApiProvider);
   final zoomLevel = ref.watch(zoomGeoLevelProvider);
-  if (zoomLevel == null) return Future.value([]);
   
+  if (zoomLevel == null) return [];
+
+  // --- Rate Limiting (Debounce) ---
+  bool isCancelled = false;
+  // If `zoomLevel` changes or the widget unmounts, this provider instance is disposed.
+  ref.onDispose(() => isCancelled = true);
+
+  // Wait for 2 seconds before making the network request.
+  await Future<void>.delayed(const Duration(seconds: 1));
+
+  // If the provider was disposed during the wait, abort the API call.
+  if (isCancelled) return null;
+  // --------------------------------
+
   if (zoomLevel == -1) {
     return await rankingApi.groupRanking();
   } else if (zoomLevel == 0) {
@@ -58,16 +71,26 @@ Future<List<GroupRankingDtoInner>?> groupRanking(Ref ref, String gid) async{
   } else if (zoomLevel == 2) {
     return await rankingApi.groupRanking(gid2: gid);
   } else {
-    return Future.value([]);
+    return [];
   }
 }
 
 @riverpod
-Future<List<UserRankingDtoInner>?> userRanking(Ref ref, String gid) async{
+Future<List<UserRankingDtoInner>?> userRanking(Ref ref, String gid) async {
   final rankingApi = ref.watch(rankingApiProvider);
   final zoomLevel = ref.watch(zoomGeoLevelProvider);
-  if (zoomLevel == null) return Future.value([]);
   
+  if (zoomLevel == null) return [];
+
+  // --- Rate Limiting (Debounce) ---
+  bool isCancelled = false;
+  ref.onDispose(() => isCancelled = true);
+
+  await Future<void>.delayed(const Duration(seconds: 1));
+
+  if (isCancelled) return null;
+  // --------------------------------
+
   if (zoomLevel == -1) {
     return await rankingApi.userRanking();
   } else if (zoomLevel == 0) {
@@ -77,6 +100,6 @@ Future<List<UserRankingDtoInner>?> userRanking(Ref ref, String gid) async{
   } else if (zoomLevel == 2) {
     return await rankingApi.userRanking(gid2: gid);
   } else {
-    return Future.value([]);
+    return [];
   }
 }

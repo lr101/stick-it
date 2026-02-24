@@ -77,7 +77,7 @@ abstract class CacheImpl<T extends CacheEntity> {
     isar.writeTxn(() async {
       // clear all from previous session and where TTL is expired
       final all = await box.where().findAll();
-      final filtered = all.where((entry) => entry.onlySession || (ttlTime != null && entry.keepAlive == false && entry.ttl.isBefore(ttlTime)));
+      final filtered = all.where((entry) => (entry.onlySession && !entry.keepAlive) || (ttlTime != null && entry.keepAlive == false && entry.ttl.isBefore(ttlTime)));
       await box.deleteAll(filtered.map((e) => e.isarId).toList());
     });
 

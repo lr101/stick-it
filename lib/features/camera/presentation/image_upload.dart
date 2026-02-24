@@ -125,19 +125,13 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         keepAlive: true,
         ttl: DateTime.now()
         );
-    final errorMessage = await ref.read(pinServiceProvider).addPinToGroup(pin, widget.image);
-    await postUploadActions(errorMessage);
+    ref.read(pinServiceProvider).addPinToGroup(pin, widget.image).then(postUploadActions); // async adding pin
     ref.read(cameraGroupIndexProvider.notifier).updateIndex(_groupIndexWhenOpened);
     if (!mounted) return;
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Future<void> postUploadActions(String? errorMessage) async {
-    if (errorMessage != null) {
-      CustomErrorSnackBar.message(message: errorMessage);
-    } else {
-      CustomErrorSnackBar.message(message: "Successfully synced to server",);
-    }
     await Posthog().screen(screenName: "uploadPin", properties: {"result": errorMessage != null, "error": errorMessage?.toString() ?? ""});
     if (ref.read(appReviewStateProvider)) {
       ref.read(appReviewStateProvider.notifier).updateLastReviewDate();

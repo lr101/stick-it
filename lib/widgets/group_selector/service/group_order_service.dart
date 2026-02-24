@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'group_order_service.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class GroupOrderService extends _$GroupOrderService {
   @override
   List<String> build() {

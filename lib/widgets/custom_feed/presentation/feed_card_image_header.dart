@@ -79,7 +79,7 @@ class FeedCardImageHeader extends ConsumerWidget {
                         child: ClickableUser(
                           userId: pin.creator,
                           child: Text(
-                            username.value ?? "",
+                            username.value ?? "...",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -150,7 +150,12 @@ class FeedCardImageHeader extends ConsumerWidget {
             ),
           );
         } else {
-          return const Text("");
+          return const Text("", style: TextStyle(
+              fontStyle: FontStyle.italic,
+              color: Colors.white,
+              fontSize: 10,
+            ),
+          );
         }
       },
     );
