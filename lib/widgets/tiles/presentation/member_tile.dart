@@ -1,4 +1,4 @@
-import 'package:buff_lisa/data/dto/member_dto.dart';
+import 'package:buff_lisa/data/entity/member_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
@@ -12,7 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MemberTile extends ConsumerWidget {
 
-  final MemberDto memberDto;
+  final MemberEntity memberDto;
   final String adminId;
 
   const MemberTile({super.key, required this.memberDto, required this.adminId});

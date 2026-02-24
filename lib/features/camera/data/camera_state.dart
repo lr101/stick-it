@@ -1,5 +1,5 @@
 
-import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
@@ -39,31 +39,41 @@ class CameraIndex extends _$CameraIndex {
 
 @riverpod
 class CameraValues extends _$CameraValues {
-
-  late final CameraController _controller;
-
+  // Remove the argument from build()
   @override
-  Future<CameraState> build(CameraController controller) async {
-    _controller = controller;
-    await _controller.initialize();
+  Future<CameraState> build() async {
+    // Watch the controller provider. 
+    // This waits for the camera to initialize before running the logic below.
+    final controller = await ref.watch(cameraControllerProvider.future);
+
+    // Return the calculated state
     return CameraState(
-        ratio: _controller.value.aspectRatio,
-        minZoom: await _controller.getMinZoomLevel(),
-        maxZoom: await _controller.getMaxZoomLevel(),
+      ratio: controller.value.aspectRatio,
+      minZoom: await controller.getMinZoomLevel(),
+      maxZoom: await controller.getMaxZoomLevel(),
     );
   }
+}
 
-  Future<void> updateCamera(int cameraIndex) async {
-    state = const AsyncLoading();
-    await _controller.setDescription(ref.read(globalDataServiceProvider).cameras[cameraIndex]);
-    await _controller.initialize();
-    state = AsyncData(CameraState(
-        ratio: controller.value.aspectRatio,
-        minZoom: await controller.getMinZoomLevel(),
-        maxZoom: await controller.getMaxZoomLevel(),
-    ),);
-  }
+@riverpod
+Future<CameraController> cameraController(Ref ref) async {
+  final cameraIndex = ref.watch(cameraIndexProvider);
+  final cameras = ref.watch(globalDataServiceProvider.select((d) => d.cameras));
+  
+  final controller = CameraController(
+    cameras[cameraIndex],
+    ResolutionPreset.medium,
+    enableAudio: false,
+  );
 
+  // 3. Register disposal (This fixes the "disposed" bug automatically)
+  ref.onDispose(() {
+    controller.dispose();
+  });
+
+  // 4. Initialize
+  await controller.initialize();
+  return controller;
 }
 
 @Riverpod(keepAlive: true)
@@ -80,13 +90,14 @@ class CameraGroupIndex extends _$CameraGroupIndex {
 }
 
 @riverpod
-Future<LocalGroupDto> cameraSelectedGroup(Ref ref) async {
+Future<GroupEntity> cameraSelectedGroup(Ref ref) async {
   final groupIds = ref.watch(groupOrderServiceProvider);
   final groupCameraIndex = ref.watch(cameraGroupIndexProvider);
-  return await ref.watch(groupByIdWithoutStateProvider(groupIds[groupCameraIndex]).future);
+  final group =  ref.watch(groupByIdProvider(groupIds[groupCameraIndex]));
+  return group.value!;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class CameraCapturing extends _$CameraCapturing {
 
   @override

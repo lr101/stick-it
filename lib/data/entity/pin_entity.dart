@@ -2,38 +2,32 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
-import 'package:hive_ce_flutter/adapters.dart';
+import 'package:buff_lisa/util/core/fast_hash.dart';
+import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
 part 'pin_entity.g.dart'; // This will be generated
 
-@HiveType(typeId: 5) // Unique type ID for this entity
+@Collection()
 class PinEntity extends CacheEntity {
-  @HiveField(3)
+  @override
+  Id get isarId => fastHash(pinId);
   final String pinId;
-
-  @HiveField(4)
   final double latitude;
-
-  @HiveField(5)
   final double longitude;
-
-  @HiveField(6)
   final DateTime creationDate;
-
-  @HiveField(7)
   final String? description;
 
-  @HiveField(8)
+  @Index()
+  int get creatorFastId => fastHash(creator);
   final String creator; // Assuming this is a userId
 
-  @HiveField(9)
-  final String group; // Assuming this is a groupId
+  @Index()
+  int get groupFastId => fastHash(groupId);
 
-  @HiveField(10)
+
+  final String groupId; // Assuming this is a groupId
   final bool isHidden;
-
-  @HiveField(11)
   final DateTime? lastSynced;
 
   PinEntity({
@@ -43,25 +37,31 @@ class PinEntity extends CacheEntity {
     required this.creationDate,
     this.description,
     required this.creator,
-    required this.group,
+    required this.groupId,
     this.isHidden = false,
     this.lastSynced,
     super.keepAlive,
     super.hits,
-    super.ttl,
+    required super.ttl,
+    required super.onlySession,
   });
 
-  factory PinEntity.fromDto(PinWithOptionalImageDto pinDto, {bool keepAlive = false}) {
+  factory PinEntity.fromDto(
+    PinWithOptionalImageDto pinDto, bool onlySession, {
+    bool keepAlive = false,
+  }) {
     return PinEntity(
       pinId: pinDto.id,
       latitude: pinDto.latitude as double,
       longitude: pinDto.longitude as double,
       creationDate: pinDto.creationDate,
       creator: pinDto.creationUser,
-      group: pinDto.groupId,
+      groupId: pinDto.groupId,
       description: pinDto.description,
       lastSynced: DateTime.now(),
       keepAlive: keepAlive,
+      onlySession: onlySession,
+      ttl: DateTime.now(),
     );
   }
 
@@ -71,14 +71,14 @@ class PinEntity extends CacheEntity {
       latitude: latitude,
       longitude: longitude,
       userId: creator,
-      groupId: group,
+      groupId: groupId,
       creationDate: creationDate,
       description: description,
     );
   }
 
   @override
-  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive, bool? onlySession}) {
     return PinEntity(
       pinId: pinId,
       latitude: latitude,
@@ -86,13 +86,13 @@ class PinEntity extends CacheEntity {
       creationDate: creationDate,
       description: description,
       creator: creator,
-      group: group,
+      groupId: groupId,
       isHidden: isHidden,
       lastSynced: lastSynced,
       hits: hits ?? this.hits,
       ttl: ttl ?? this.ttl,
       keepAlive: keepAlive ?? this.keepAlive,
+      onlySession: onlySession ?? this.onlySession
     );
   }
-
 }

@@ -1,52 +1,56 @@
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
-import 'package:hive_ce_flutter/adapters.dart';
+import 'package:buff_lisa/util/core/fast_hash.dart';
+import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
 part 'user_like_entity.g.dart';
 
-@HiveType(typeId: 7)
+@Collection()
 class UserLikeEntity extends CacheEntity {
 
-  @HiveField(3)
+  @override
+  Id get isarId => fastHash(userId);
+  String userId;
   final int likeCount;
-
-  @HiveField(4)
   final int likePhotographyCount;
-
-  @HiveField(5)
   final int likeLocationCount;
-
-  @HiveField(6)
   final int likeArtCount;
 
   UserLikeEntity({
+    required this.userId,
     required this.likeCount,
     required this.likePhotographyCount,
     required this.likeLocationCount,
     required this.likeArtCount,
     super.hits,
-    super.ttl,
+    required super.ttl,
+    required super.onlySession
   });
 
-  factory UserLikeEntity.fromDto(UserLikesDto likes) {
+  factory UserLikeEntity.fromDto(UserLikesDto likes, String userId, bool onlySession) {
     return UserLikeEntity(
+        userId: userId,
         likeCount: likes.likeCount,
         likePhotographyCount: likes.likePhotographyCount,
         likeLocationCount: likes.likeLocationCount,
         likeArtCount: likes.likeArtCount,
+        ttl: DateTime.now(),
+        onlySession: onlySession
     );
   }
 
   @override
-  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive, bool? onlySession}) {
     return UserLikeEntity(
+      userId: userId,
       likeCount: likeCount,
       likePhotographyCount: likePhotographyCount,
       likeLocationCount: likeLocationCount,
       likeArtCount: likeArtCount,
       hits: hits ?? this.hits,
       ttl: ttl ?? this.ttl,
+      onlySession: onlySession ?? this.onlySession
     );
   }
 

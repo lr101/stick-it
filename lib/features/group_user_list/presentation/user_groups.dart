@@ -1,5 +1,5 @@
-import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/features/group_overview/presentation/user_group_overview.dart';
 import 'package:buff_lisa/features/group_user_list/presentation/pop_up_menu_create_group.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
@@ -18,7 +18,7 @@ class UserGroups extends ConsumerStatefulWidget {
 
 class _UserGroupsState extends ConsumerState<UserGroups> {
 
-  final _pagingController = PagingController<int, LocalGroupDto>(firstPageKey: 0);
+  final _pagingController = PagingController<int, GroupEntity>(firstPageKey: 0);
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _UserGroupsState extends ConsumerState<UserGroups> {
   @override
   Widget build(BuildContext context) {
     ref.listen(orderedGroupsProvider, (_, next) => updatePage(next.value ?? []));
-    return CustomScaffold<LocalGroupDto>(
+    return CustomScaffold<GroupEntity>(
         title: const Text("Your groups", style: TextStyle(fontWeight: FontWeight.bold)),
         actions: const [PopUpMenuCreateGroup()],
         listBuilder: (context, item, index) => GroupTile(
@@ -49,12 +49,12 @@ class _UserGroupsState extends ConsumerState<UserGroups> {
     );
   }
   
-  void updatePage(List<LocalGroupDto> groups) {
+  void updatePage(List<GroupEntity> groups) {
     _pagingController.refresh();
     _pagingController.appendLastPage(groups);
   }
 
-  void openGroupOverview(LocalGroupDto group) {
+  void openGroupOverview(GroupEntity group) {
     Routing.to(context, UserGroupOverview(groupId: group.groupId));
   }
 

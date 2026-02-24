@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
-import 'package:buff_lisa/data/dto/group_dto.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/features/group_overview/presentation/no_user_group_overview.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
@@ -20,7 +20,7 @@ class GroupSearch extends ConsumerStatefulWidget {
 
 class _GroupSearchState extends ConsumerState<GroupSearch> {
   final _pagingController =
-      PagingController<int, LocalGroupDto>(firstPageKey: 0);
+      PagingController<int, GroupEntity>(firstPageKey: 0);
 
   final _textEditController = TextEditingController();
 
@@ -47,7 +47,7 @@ class _GroupSearchState extends ConsumerState<GroupSearch> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold<LocalGroupDto>(
+    return CustomScaffold<GroupEntity>(
         title: SizedBox(
           height: 40,
         child: SearchBar(
@@ -81,9 +81,9 @@ class _GroupSearchState extends ConsumerState<GroupSearch> {
       _pagingController.error = "Groups could not be fetched";
       return;
     }
-    final groupDtos = <LocalGroupDto>[];
+    final groupDtos = <GroupEntity>[];
     for (final e in groups.items) {
-      groupDtos.add(LocalGroupDto.fromDto(e));
+      groupDtos.add(GroupEntity.fromGroupDto(e, true, false));
     }
     if (groupDtos.length < _pageSize) {
       _pagingController.appendLastPage(groupDtos);

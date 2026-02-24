@@ -10,7 +10,7 @@ class SyncingPreview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final syncing = ref.watch(syncingServiceProvider);
-    final init = ref.watch(initServiceProvider);
+    ref.watch(initServiceProvider); // request permissions
     if (syncing == SyncState.syncing) {
       return  _content(true);
     } else if (syncing == SyncState.failed) {

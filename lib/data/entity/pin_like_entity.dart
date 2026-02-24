@@ -1,38 +1,27 @@
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
-import 'package:hive_ce_flutter/adapters.dart';
+import 'package:buff_lisa/util/core/fast_hash.dart';
+import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
 part 'pin_like_entity.g.dart';
 
-@HiveType(typeId: 8)
+@Collection()
 class PinLikeEntity extends CacheEntity {
-
-  @HiveField(3)
+  @override
+  Id get isarId => fastHash(id);
+  final String id;
   final int likeCount;
-
-  @HiveField(4)
   final int likePhotographyCount;
-
-  @HiveField(5)
   final int likeLocationCount;
-
-  @HiveField(6)
   final int likeArtCount;
-
-  @HiveField(7)
   final bool hasLike;
-
-  @HiveField(8)
   final bool hasLikePhotography;
-
-  @HiveField(9)
   final bool hasLikeLocation;
-
-  @HiveField(10)
   final bool hasLikeArt;
 
   PinLikeEntity({
+    required this.id,
     required this.likeCount,
     required this.likePhotographyCount,
     required this.likeLocationCount,
@@ -42,11 +31,13 @@ class PinLikeEntity extends CacheEntity {
     required this.hasLikeLocation,
     required this.hasLikePhotography,
     super.hits,
-    super.ttl,
+    super.onlySession = true,
+    required super.ttl,
   });
 
-  factory PinLikeEntity.fromDto(PinLikeDto likes) {
+  factory PinLikeEntity.fromDto(PinLikeDto likes, String pinId) {
     return PinLikeEntity(
+      id: pinId,
       likeCount: likes.likeCount ?? 0,
       likePhotographyCount: likes.likePhotographyCount ?? 0,
       likeLocationCount: likes.likeLocationCount ?? 0,
@@ -55,6 +46,7 @@ class PinLikeEntity extends CacheEntity {
       hasLikeLocation: likes.likedLocationByUser ?? false,
       hasLikeArt: likes.likedArtByUser ?? false,
       hasLikePhotography: likes.likedPhotographyByUser ?? false,
+      ttl: DateTime.now()
     );
   }
 
@@ -73,8 +65,9 @@ class PinLikeEntity extends CacheEntity {
   }
 
   @override
-  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive}) {
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive, bool? onlySession}) {
     return PinLikeEntity(
+      id: id,
       likeCount: likeCount,
       likePhotographyCount: likePhotographyCount,
       likeLocationCount: likeLocationCount,
@@ -85,6 +78,7 @@ class PinLikeEntity extends CacheEntity {
       hasLikePhotography: hasLikePhotography,
       hits: hits ?? this.hits,
       ttl: ttl ?? this.ttl,
+      onlySession: onlySession ?? this.onlySession
     );
   }
 

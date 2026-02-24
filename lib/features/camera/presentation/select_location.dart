@@ -1,4 +1,4 @@
-import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
 import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
@@ -84,15 +84,10 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                         height: 80,
                         child: Column(
                           children: [
+                            Image.memory(
                             ref
                                 .watch(groupPinImageByIdProvider(groupIds[groupIndex]))
-                                .when(
-                                  data: (data) => Image.memory(data),
-                                  error: (e, s) => Image.memory(
-                                      ref.read(defaultGroupPinImageProvider),),
-                                  loading: () => Image.memory(
-                                      ref.read(defaultGroupPinImageProvider),),
-                                ),
+                                .value ?? ref.watch(defaultGroupPinImageProvider),),
                             const SizedBox(width: 40, height: 40),
                           ],
                         ),

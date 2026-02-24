@@ -1,9 +1,9 @@
+import 'package:buff_lisa/data/entity/season_entity.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:openapi/api.dart';
 
 class SeasonTile extends StatelessWidget {
-  final SeasonItemDto bestSeason;
+  final SeasonEntity bestSeason;
 
   const SeasonTile({super.key, required this.bestSeason});
 
@@ -43,7 +43,7 @@ class SeasonTile extends StatelessWidget {
               return AlertDialog(
                 title: const Text("Season Details"),
                 content: Text(
-                  "You achieved rank #${bestSeason.rank} in Season ${bestSeason.season.seasonNumber} (${DateFormat('MMMM').format(DateTime(0, bestSeason.season.month))} ${bestSeason.season.year}), "
+                  "You achieved rank #${bestSeason.rank} in Season ${bestSeason.seasonNumber} (${DateFormat('MMMM').format(DateTime(0, bestSeason.month))} ${bestSeason.year}), "
                   "with ${bestSeason.points} points! Keep on sticking!",
                 ),
                 actions: [
@@ -76,7 +76,7 @@ class SeasonTile extends StatelessWidget {
 
 
   String _getCurrentMonth() {
-    final now = DateTime(bestSeason.season.year, bestSeason.season.month);
+    final now = DateTime(bestSeason.year, bestSeason.month);
     final formatter = DateFormat('MMM. yy');
     final currentMonth = formatter.format(now);
     return currentMonth;

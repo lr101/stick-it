@@ -34,7 +34,7 @@ final class AchievementsProvider
   Achievements create() => Achievements();
 }
 
-String _$achievementsHash() => r'c9ffccced6dde16974a1284fd58d43bffaa2b907';
+String _$achievementsHash() => r'641e221073fa798a4a9cc29f2e0ec7a1e981c0a7';
 
 abstract class _$Achievements
     extends $AsyncNotifier<List<UserAchievementsDtoInner>> {

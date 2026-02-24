@@ -1,20 +1,19 @@
 
-import 'package:hive_ce_flutter/adapters.dart';
+import 'package:isar_community/isar.dart';
 
 abstract class CacheEntity {
 
-  CacheEntity({this.keepAlive = false, this.hits = 1, DateTime? ttl}) {
-    this.ttl = ttl ?? DateTime.now();
-  }
+  late Id isarId;
 
-  @HiveField(0)
-  late final DateTime ttl;
+  CacheEntity({this.keepAlive = false, this.hits = 1, required this.ttl, required this.onlySession});
 
-  @HiveField(1)
+  final DateTime ttl;
+
   final int hits;
 
-  @HiveField(2)
   final bool keepAlive;
 
-  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive});
+  final bool onlySession;
+
+  CacheEntity copyWith({DateTime? ttl, int? hits, bool? keepAlive, bool? onlySession});
 }

@@ -49,7 +49,7 @@ final class GroupProfileRepoProvider
   }
 }
 
-String _$groupProfileRepoHash() => r'99b9ceab07018ae305fc2a9c44ceb0e461a1ef95';
+String _$groupProfileRepoHash() => r'a705f33234c6167f4cf0fa01c3b641bb71ced8b5';
 
 @ProviderFor(groupProfileSmallRepo)
 const groupProfileSmallRepoProvider = GroupProfileSmallRepoProvider._();
@@ -92,7 +92,7 @@ final class GroupProfileSmallRepoProvider
 }
 
 String _$groupProfileSmallRepoHash() =>
-    r'bc3cbceca4c78cade47eb6881c750f8ff4108133';
+    r'a84cf6c341798c19e314e8da5bb6f14b6f742cc6';
 
 @ProviderFor(groupPinImageRepo)
 const groupPinImageRepoProvider = GroupPinImageRepoProvider._();
@@ -134,7 +134,7 @@ final class GroupPinImageRepoProvider
   }
 }
 
-String _$groupPinImageRepoHash() => r'3ef389b4e9ca9f6fb53c7c0d91dbcb7ca72596cc';
+String _$groupPinImageRepoHash() => r'49244c1e82f10f43171eed44cd71430684a27263';
 
 @ProviderFor(userImageSmallRepo)
 const userImageSmallRepoProvider = UserImageSmallRepoProvider._();
@@ -177,7 +177,7 @@ final class UserImageSmallRepoProvider
 }
 
 String _$userImageSmallRepoHash() =>
-    r'19e688a800d4a47d5f7c2700d06988a2d772ff0b';
+    r'5a6322d3fb9b73f167b587e6e2cee16c24af48ca';
 
 @ProviderFor(userImageRepo)
 const userImageRepoProvider = UserImageRepoProvider._();
@@ -219,4 +219,47 @@ final class UserImageRepoProvider
   }
 }
 
-String _$userImageRepoHash() => r'19e63bb03e26fffe443fe18df75149607690384d';
+String _$userImageRepoHash() => r'd3785cda6a9cdd9ca679e658d4c65be702f1c8c4';
+
+@ProviderFor(pinImageRepository)
+const pinImageRepositoryProvider = PinImageRepositoryProvider._();
+
+final class PinImageRepositoryProvider
+    extends
+        $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
+    with $Provider<ImageRepository> {
+  const PinImageRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pinImageRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pinImageRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<ImageRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ImageRepository create(Ref ref) {
+    return pinImageRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ImageRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ImageRepository>(value),
+    );
+  }
+}
+
+String _$pinImageRepositoryHash() =>
+    r'1fecadd5bb20e520e73e563d5279a40d57561b9c';

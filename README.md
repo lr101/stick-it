@@ -64,11 +64,16 @@ flutter run -d ios
 ### Optional: API generator setup
 If you are working on the API client, clone the API repository next to this project and regenerate API code.
 ```
+# Install the OpenAPI generator
+pip install openapi-generator-cli
+
+
 # Clone API repo next to this project
 git clone git@github.com:lr101/MonaServerApi.git ../MonaServerApi
 
 # Generate OpenAPI client
 flutter pub global activate openapi_generator_cli
+export PATH="$PATH":"$HOME/.pub-cache/bin"
 openapi-generator generate -i ../MonaServerApi/openapi.yaml -g dart -o ./api
 ```
 

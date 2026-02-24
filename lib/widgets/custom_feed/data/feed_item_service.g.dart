@@ -13,8 +13,8 @@ part of 'feed_item_service.dart';
 const feedItemProvider = FeedItemProvider._();
 
 final class FeedItemProvider
-    extends $FunctionalProvider<LocalPinDto, LocalPinDto, LocalPinDto>
-    with $Provider<LocalPinDto> {
+    extends $FunctionalProvider<PinEntity, PinEntity, PinEntity>
+    with $Provider<PinEntity> {
   const FeedItemProvider._()
     : super(
         from: null,
@@ -31,21 +31,21 @@ final class FeedItemProvider
 
   @$internal
   @override
-  $ProviderElement<LocalPinDto> $createElement($ProviderPointer pointer) =>
+  $ProviderElement<PinEntity> $createElement($ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
-  LocalPinDto create(Ref ref) {
+  PinEntity create(Ref ref) {
     return feedItem(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(LocalPinDto value) {
+  Override overrideWithValue(PinEntity value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<LocalPinDto>(value),
+      providerOverride: $SyncValueProvider<PinEntity>(value),
     );
   }
 }
 
-String _$feedItemHash() => r'ce9040449c2cc46184ea37206fb640c1ea53d34b';
+String _$feedItemHash() => r'31bad5c5be6e299d2bd22303c32cf7b51c5d8ce5';

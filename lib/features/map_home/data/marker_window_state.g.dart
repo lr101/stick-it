@@ -13,7 +13,7 @@ part of 'marker_window_state.dart';
 const markerWindowStateProvider = MarkerWindowStateProvider._();
 
 final class MarkerWindowStateProvider
-    extends $NotifierProvider<MarkerWindowState, LocalPinDto?> {
+    extends $NotifierProvider<MarkerWindowState, PinEntity?> {
   const MarkerWindowStateProvider._()
     : super(
         from: null,
@@ -33,28 +33,28 @@ final class MarkerWindowStateProvider
   MarkerWindowState create() => MarkerWindowState();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(LocalPinDto? value) {
+  Override overrideWithValue(PinEntity? value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<LocalPinDto?>(value),
+      providerOverride: $SyncValueProvider<PinEntity?>(value),
     );
   }
 }
 
-String _$markerWindowStateHash() => r'c8e3a5a92d864922fa5301bb85431ddaff04b184';
+String _$markerWindowStateHash() => r'd14e0a56e4530d2b3908c27cec199e80f1daae03';
 
-abstract class _$MarkerWindowState extends $Notifier<LocalPinDto?> {
-  LocalPinDto? build();
+abstract class _$MarkerWindowState extends $Notifier<PinEntity?> {
+  PinEntity? build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<LocalPinDto?, LocalPinDto?>;
+    final ref = this.ref as $Ref<PinEntity?, PinEntity?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<LocalPinDto?, LocalPinDto?>,
-              LocalPinDto?,
+              AnyNotifier<PinEntity?, PinEntity?>,
+              PinEntity?,
               Object?,
               Object?
             >;

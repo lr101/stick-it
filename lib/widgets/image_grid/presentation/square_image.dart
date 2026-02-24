@@ -1,4 +1,4 @@
-import 'package:buff_lisa/data/service/pin_image_service.dart';
+import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -18,17 +18,22 @@ class SquareImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final item = ref.watch(getPinImageAndFetchProvider(pinId));
-    return item.when(
-        data: (data) => GestureDetector(
+    return FutureBuilder(
+      future: ref.watch(pinImageRepositoryProvider).fetchImage(pinId, false), 
+      builder: (context, future) {
+            if (future.data != null) {
+              return GestureDetector(
                 onTap: () => onTap(index),
                 child: FadeInImage(
                     fadeInDuration: const Duration(milliseconds: 100),
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
                     placeholder: MemoryImage(kTransparentImage),
-                    image: MemoryImage(data),),),
-        error: (_, __) => const Center(child: Icon(Icons.error)),
-        loading: () => const SizedBox.shrink(),);
+                    image: MemoryImage(future.data!),),);
+            } else {
+             return const SizedBox.shrink();
+            }
+            }
+            );
   }
 }

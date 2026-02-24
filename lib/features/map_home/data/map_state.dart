@@ -57,3 +57,15 @@ Stream<Position> currentLocation(Ref ref) async* {
     CustomErrorSnackBar.message(message: "Some functions do not work without location permission", type: CustomErrorSnackBarType.error);
   }
 }
+
+@Riverpod(keepAlive: true)
+class MapZoomLevel extends _$MapZoomLevel {
+  @override
+  double build() {
+    return 5;
+  }
+
+  void setZoom(double zoom) {
+    state = zoom;
+  }
+}

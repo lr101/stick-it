@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:buff_lisa/data/dto/group_dto.dart';
-import 'package:buff_lisa/data/service/group_image_service.dart';
+import 'package:buff_lisa/data/entity/group_entity.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/group_edit_template/service/group_create_service.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image_picker.dart';
@@ -26,7 +26,7 @@ class GroupEditTemplate extends ConsumerStatefulWidget {
   ) onSubmit;
 
   final List<Widget>? rowItems;
-  final LocalGroupDto? groupDto;
+  final GroupEntity? groupDto;
   final String title;
 
   @override
@@ -45,7 +45,7 @@ class _GroupEditTemplate extends ConsumerState<GroupEditTemplate> {
   void initState() {
     super.initState();
     if (widget.groupDto != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         final image = ref
             .watch(groupProfilePictureByIdProvider(widget.groupDto!.groupId))
             .value; // should exists because editing can only be done to a user group but better solution needed in the future

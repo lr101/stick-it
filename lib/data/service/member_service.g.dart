@@ -13,7 +13,7 @@ part of 'member_service.dart';
 const memberServiceProvider = MemberServiceFamily._();
 
 final class MemberServiceProvider
-    extends $AsyncNotifierProvider<MemberService, List<MemberDto>> {
+    extends $StreamNotifierProvider<MemberService, List<MemberEntity>> {
   const MemberServiceProvider._({
     required MemberServiceFamily super.from,
     required String super.argument,
@@ -50,15 +50,15 @@ final class MemberServiceProvider
   }
 }
 
-String _$memberServiceHash() => r'35a9991be1170204ddba2d34239967b23307e751';
+String _$memberServiceHash() => r'd88c7bdf0ffc03972129d21f18a6cc10c86d8ff5';
 
 final class MemberServiceFamily extends $Family
     with
         $ClassFamilyOverride<
           MemberService,
-          AsyncValue<List<MemberDto>>,
-          List<MemberDto>,
-          FutureOr<List<MemberDto>>,
+          AsyncValue<List<MemberEntity>>,
+          List<MemberEntity>,
+          Stream<List<MemberEntity>>,
           String
         > {
   const MemberServiceFamily._()
@@ -77,21 +77,22 @@ final class MemberServiceFamily extends $Family
   String toString() => r'memberServiceProvider';
 }
 
-abstract class _$MemberService extends $AsyncNotifier<List<MemberDto>> {
+abstract class _$MemberService extends $StreamNotifier<List<MemberEntity>> {
   late final _$args = ref.$arg as String;
   String get groupId => _$args;
 
-  FutureOr<List<MemberDto>> build(String groupId);
+  Stream<List<MemberEntity>> build(String groupId);
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build(_$args);
-    final ref = this.ref as $Ref<AsyncValue<List<MemberDto>>, List<MemberDto>>;
+    final ref =
+        this.ref as $Ref<AsyncValue<List<MemberEntity>>, List<MemberEntity>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<MemberDto>>, List<MemberDto>>,
-              AsyncValue<List<MemberDto>>,
+              AnyNotifier<AsyncValue<List<MemberEntity>>, List<MemberEntity>>,
+              AsyncValue<List<MemberEntity>>,
               Object?,
               Object?
             >;

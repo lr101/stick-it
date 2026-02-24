@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 
 class AchievementCard extends StatelessWidget {
   final double progress; // Progress between 0.0 and 1.0

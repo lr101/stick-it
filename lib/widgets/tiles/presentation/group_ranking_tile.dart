@@ -1,5 +1,5 @@
-import 'package:buff_lisa/data/service/group_image_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
+import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/features/group_overview/presentation/no_user_group_overview.dart';
 import 'package:buff_lisa/features/group_overview/presentation/user_group_overview.dart';
 import 'package:buff_lisa/util/routing/routing.dart';

@@ -1,5 +1,5 @@
 
-import 'package:buff_lisa/data/dto/pin_dto.dart';
+import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
@@ -16,13 +16,13 @@ class PopUpMenuFeed extends ConsumerWidget {
 
   const PopUpMenuFeed({super.key, required this.pinDto});
 
-  final LocalPinDto pinDto;
+  final PinEntity pinDto;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(globalDataServiceProvider).userId!;
     final adminId = ref.watch(groupByIdProvider(pinDto.groupId)).whenOrNull(data: (d) => d?.groupAdmin);
-    final bool isNotCreator =  userId != pinDto.creatorId;
+    final bool isNotCreator =  userId != pinDto.creator;
     return PopupMenuButton(
         itemBuilder: (context) {
           return [
@@ -55,10 +55,10 @@ class PopUpMenuFeed extends ConsumerWidget {
         },
         onSelected:(value){
           switch (value) {
-            case 0: ref.read(hiddenPostsServiceProvider.notifier).addHiddenPost(pinDto.id);
-            case 1: Routing.to(context, ReportIssuePage(issueTypes: const ["Report post"], pinId: pinDto.id,));
-            case 2: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(pinDto.creatorId);
-            case 3: Routing.to(context, ReportIssuePage(issueTypes: const ["Report user"], userId: pinDto.creatorId,));
+            case 0: ref.read(hiddenPostsServiceProvider.notifier).addHiddenPost(pinDto.pinId);
+            case 1: Routing.to(context, ReportIssuePage(issueTypes: const ["Report post"], pinId: pinDto.pinId,));
+            case 2: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(pinDto.creator);
+            case 3: Routing.to(context, ReportIssuePage(issueTypes: const ["Report user"], userId: pinDto.creator,));
             case 4: _deleteStick(ref, context);
           }
         },
@@ -72,7 +72,7 @@ class PopUpMenuFeed extends ConsumerWidget {
         title: "Delete this sticker?",
         cancelText: "Cancel",
         onPressed: () async {
-          final result = await ref.read(pinServiceProvider(pinDto.groupId).notifier).deletePinFromGroup(pinDto.id);
+          final result = await ref.read(pinServiceProvider).deletePinFromGroup(pinDto.pinId);
           if (result != null) {
             CustomErrorSnackBar.message(message: result);
           }
