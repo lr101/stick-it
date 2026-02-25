@@ -66,7 +66,7 @@ const UserEntitySchema = CollectionSchema(
   getId: _userEntityGetId,
   getLinks: _userEntityGetLinks,
   attach: _userEntityAttach,
-  version: '3.3.0',
+  version: '3.3.0-dev.1',
 );
 
 int _userEntityEstimateSize(

@@ -6,53 +6,23 @@ part of 'user_pins_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(userPinsRepository)
-const userPinsRepositoryProvider = UserPinsRepositoryProvider._();
-
-final class UserPinsRepositoryProvider
-    extends
-        $FunctionalProvider<
-          UserPinsRepository,
-          UserPinsRepository,
-          UserPinsRepository
-        >
-    with $Provider<UserPinsRepository> {
-  const UserPinsRepositoryProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'userPinsRepositoryProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$userPinsRepositoryHash();
-
-  @$internal
-  @override
-  $ProviderElement<UserPinsRepository> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
-
-  @override
-  UserPinsRepository create(Ref ref) {
-    return userPinsRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(UserPinsRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<UserPinsRepository>(value),
-    );
-  }
-}
-
 String _$userPinsRepositoryHash() =>
     r'a3db19a7af556e17ae4cb7965b1c9f2f3e641d69';
+
+/// See also [userPinsRepository].
+@ProviderFor(userPinsRepository)
+final userPinsRepositoryProvider = Provider<UserPinsRepository>.internal(
+  userPinsRepository,
+  name: r'userPinsRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$userPinsRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef UserPinsRepositoryRef = ProviderRef<UserPinsRepository>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

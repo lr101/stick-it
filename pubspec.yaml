@@ -15,7 +15,6 @@ dependencies:
   choice:
   collection:
   connectivity_plus:
-  custom_lint:
   drift:
   drift_dev:
   drift_flutter:
@@ -34,7 +33,7 @@ dependencies:
   flutter_map_marker_cluster:
   flutter_map_tile_caching:
   flutter_native_splash:
-  flutter_riverpod:
+  flutter_riverpod: 2.6.1
   flutter_secure_storage: ^9.2.4
   fluttertoast:
   freezed_annotation:
@@ -59,7 +58,6 @@ dependencies:
   posthog_flutter:
   riverpod_annotation:
   riverpod_generator:
-  riverpod_lint:
   select_dialog:
   settings_ui:
   shimmer:
@@ -83,10 +81,12 @@ dev_dependencies:
   change_app_package_name:
   flutter_launcher_icons:
   flutter_lints:
+  riverpod_lint:
   lint:
+  custom_lint:
   meta:
-  test:
   isar_community_generator:
+
 
 flutter:
   assets:

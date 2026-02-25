@@ -6,96 +6,169 @@ part of 'member_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
+String _$memberServiceHash() => r'd88c7bdf0ffc03972129d21f18a6cc10c86d8ff5';
 
-@ProviderFor(MemberService)
-const memberServiceProvider = MemberServiceFamily._();
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
 
-final class MemberServiceProvider
-    extends $StreamNotifierProvider<MemberService, List<MemberEntity>> {
-  const MemberServiceProvider._({
-    required MemberServiceFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'memberServiceProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$memberServiceHash();
-
-  @override
-  String toString() {
-    return r'memberServiceProvider'
-        ''
-        '($argument)';
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
   }
 
-  @$internal
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+abstract class _$MemberService
+    extends BuildlessAutoDisposeStreamNotifier<List<MemberEntity>> {
+  late final String groupId;
+
+  Stream<List<MemberEntity>> build(String groupId);
+}
+
+/// See also [MemberService].
+@ProviderFor(MemberService)
+const memberServiceProvider = MemberServiceFamily();
+
+/// See also [MemberService].
+class MemberServiceFamily extends Family<AsyncValue<List<MemberEntity>>> {
+  /// See also [MemberService].
+  const MemberServiceFamily();
+
+  /// See also [MemberService].
+  MemberServiceProvider call(String groupId) {
+    return MemberServiceProvider(groupId);
+  }
+
   @override
-  MemberService create() => MemberService();
+  MemberServiceProvider getProviderOverride(
+    covariant MemberServiceProvider provider,
+  ) {
+    return call(provider.groupId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'memberServiceProvider';
+}
+
+/// See also [MemberService].
+class MemberServiceProvider
+    extends
+        AutoDisposeStreamNotifierProviderImpl<
+          MemberService,
+          List<MemberEntity>
+        > {
+  /// See also [MemberService].
+  MemberServiceProvider(String groupId)
+    : this._internal(
+        () => MemberService()..groupId = groupId,
+        from: memberServiceProvider,
+        name: r'memberServiceProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$memberServiceHash,
+        dependencies: MemberServiceFamily._dependencies,
+        allTransitiveDependencies:
+            MemberServiceFamily._allTransitiveDependencies,
+        groupId: groupId,
+      );
+
+  MemberServiceProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.groupId,
+  }) : super.internal();
+
+  final String groupId;
+
+  @override
+  Stream<List<MemberEntity>> runNotifierBuild(
+    covariant MemberService notifier,
+  ) {
+    return notifier.build(groupId);
+  }
+
+  @override
+  Override overrideWith(MemberService Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: MemberServiceProvider._internal(
+        () => create()..groupId = groupId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        groupId: groupId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamNotifierProviderElement<MemberService, List<MemberEntity>>
+  createElement() {
+    return _MemberServiceProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
-    return other is MemberServiceProvider && other.argument == argument;
+    return other is MemberServiceProvider && other.groupId == groupId;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, groupId.hashCode);
+
+    return _SystemHash.finish(hash);
   }
 }
 
-String _$memberServiceHash() => r'd88c7bdf0ffc03972129d21f18a6cc10c86d8ff5';
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin MemberServiceRef
+    on AutoDisposeStreamNotifierProviderRef<List<MemberEntity>> {
+  /// The parameter `groupId` of this provider.
+  String get groupId;
+}
 
-final class MemberServiceFamily extends $Family
-    with
-        $ClassFamilyOverride<
+class _MemberServiceProviderElement
+    extends
+        AutoDisposeStreamNotifierProviderElement<
           MemberService,
-          AsyncValue<List<MemberEntity>>,
-          List<MemberEntity>,
-          Stream<List<MemberEntity>>,
-          String
-        > {
-  const MemberServiceFamily._()
-    : super(
-        retry: null,
-        name: r'memberServiceProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  MemberServiceProvider call(String groupId) =>
-      MemberServiceProvider._(argument: groupId, from: this);
+          List<MemberEntity>
+        >
+    with MemberServiceRef {
+  _MemberServiceProviderElement(super.provider);
 
   @override
-  String toString() => r'memberServiceProvider';
+  String get groupId => (origin as MemberServiceProvider).groupId;
 }
 
-abstract class _$MemberService extends $StreamNotifier<List<MemberEntity>> {
-  late final _$args = ref.$arg as String;
-  String get groupId => _$args;
-
-  Stream<List<MemberEntity>> build(String groupId);
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build(_$args);
-    final ref =
-        this.ref as $Ref<AsyncValue<List<MemberEntity>>, List<MemberEntity>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<MemberEntity>>, List<MemberEntity>>,
-              AsyncValue<List<MemberEntity>>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
-}
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

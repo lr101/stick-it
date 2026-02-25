@@ -6,50 +6,21 @@ part of 'init_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(InitService)
-const initServiceProvider = InitServiceProvider._();
-
-final class InitServiceProvider
-    extends $AsyncNotifierProvider<InitService, bool> {
-  const InitServiceProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'initServiceProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$initServiceHash();
-
-  @$internal
-  @override
-  InitService create() => InitService();
-}
-
 String _$initServiceHash() => r'c3354894ce07645d0cff0f2c51ad88cfa13f1346';
 
-abstract class _$InitService extends $AsyncNotifier<bool> {
-  FutureOr<bool> build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build();
-    final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<bool>, bool>,
-              AsyncValue<bool>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
-}
+/// See also [InitService].
+@ProviderFor(InitService)
+final initServiceProvider =
+    AutoDisposeAsyncNotifierProvider<InitService, bool>.internal(
+      InitService.new,
+      name: r'initServiceProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$initServiceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$InitService = AutoDisposeAsyncNotifier<bool>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

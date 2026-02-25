@@ -45,7 +45,7 @@ const UserPinsEntitySchema = CollectionSchema(
   getId: _userPinsEntityGetId,
   getLinks: _userPinsEntityGetLinks,
   attach: _userPinsEntityAttach,
-  version: '3.3.0',
+  version: '3.3.0-dev.1',
 );
 
 int _userPinsEntityEstimateSize(

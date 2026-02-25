@@ -6,58 +6,21 @@ part of 'syncing_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
+String _$syncingServiceHash() => r'ee0eb02826aee516158309e439e5e49d0a210ade';
 
+/// See also [SyncingService].
 @ProviderFor(SyncingService)
-const syncingServiceProvider = SyncingServiceProvider._();
-
-final class SyncingServiceProvider
-    extends $NotifierProvider<SyncingService, SyncState> {
-  const SyncingServiceProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'syncingServiceProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$syncingServiceHash();
-
-  @$internal
-  @override
-  SyncingService create() => SyncingService();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SyncState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<SyncState>(value),
+final syncingServiceProvider =
+    AutoDisposeNotifierProvider<SyncingService, SyncState>.internal(
+      SyncingService.new,
+      name: r'syncingServiceProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$syncingServiceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
     );
-  }
-}
 
-String _$syncingServiceHash() => r'82598996270b49da5a2b557152de13551575533a';
-
-abstract class _$SyncingService extends $Notifier<SyncState> {
-  SyncState build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build();
-    final ref = this.ref as $Ref<SyncState, SyncState>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<SyncState, SyncState>,
-              SyncState,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
-}
+typedef _$SyncingService = AutoDisposeNotifier<SyncState>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

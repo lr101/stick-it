@@ -51,7 +51,7 @@ const MembersEntitySchema = CollectionSchema(
   getId: _membersEntityGetId,
   getLinks: _membersEntityGetLinks,
   attach: _membersEntityAttach,
-  version: '3.3.0',
+  version: '3.3.0-dev.1',
 );
 
 int _membersEntityEstimateSize(

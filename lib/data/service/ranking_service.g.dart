@@ -6,64 +6,25 @@ part of 'ranking_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(CurrentUserTopRanking)
-const currentUserTopRankingProvider = CurrentUserTopRankingProvider._();
-
-final class CurrentUserTopRankingProvider
-    extends
-        $AsyncNotifierProvider<
-          CurrentUserTopRanking,
-          List<UserRankingDtoInner>?
-        > {
-  const CurrentUserTopRankingProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'currentUserTopRankingProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$currentUserTopRankingHash();
-
-  @$internal
-  @override
-  CurrentUserTopRanking create() => CurrentUserTopRanking();
-}
-
 String _$currentUserTopRankingHash() =>
     r'2df4e7c6b0cd4fc635bc0ba7eaf2f980a724a2cf';
 
-abstract class _$CurrentUserTopRanking
-    extends $AsyncNotifier<List<UserRankingDtoInner>?> {
-  FutureOr<List<UserRankingDtoInner>?> build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build();
-    final ref =
-        this.ref
-            as $Ref<
-              AsyncValue<List<UserRankingDtoInner>?>,
-              List<UserRankingDtoInner>?
-            >;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<
-                AsyncValue<List<UserRankingDtoInner>?>,
-                List<UserRankingDtoInner>?
-              >,
-              AsyncValue<List<UserRankingDtoInner>?>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
-}
+/// See also [CurrentUserTopRanking].
+@ProviderFor(CurrentUserTopRanking)
+final currentUserTopRankingProvider =
+    AsyncNotifierProvider<
+      CurrentUserTopRanking,
+      List<UserRankingDtoInner>?
+    >.internal(
+      CurrentUserTopRanking.new,
+      name: r'currentUserTopRankingProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$currentUserTopRankingHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$CurrentUserTopRanking = AsyncNotifier<List<UserRankingDtoInner>?>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
