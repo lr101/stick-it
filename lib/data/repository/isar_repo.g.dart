@@ -6,45 +6,22 @@ part of 'isar_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(isarRepo)
-const isarRepoProvider = IsarRepoProvider._();
-
-final class IsarRepoProvider extends $FunctionalProvider<Isar, Isar, Isar>
-    with $Provider<Isar> {
-  const IsarRepoProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'isarRepoProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$isarRepoHash();
-
-  @$internal
-  @override
-  $ProviderElement<Isar> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  Isar create(Ref ref) {
-    return isarRepo(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Isar value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<Isar>(value),
-    );
-  }
-}
-
 String _$isarRepoHash() => r'3bad998f3cb7eb5da2d931948cc89ba107cce6ab';
+
+/// See also [isarRepo].
+@ProviderFor(isarRepo)
+final isarRepoProvider = AutoDisposeProvider<Isar>.internal(
+  isarRepo,
+  name: r'isarRepoProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$isarRepoHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef IsarRepoRef = AutoDisposeProviderRef<Isar>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

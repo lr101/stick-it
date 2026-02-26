@@ -80,7 +80,7 @@ const PinLikeEntitySchema = CollectionSchema(
   getId: _pinLikeEntityGetId,
   getLinks: _pinLikeEntityGetLinks,
   attach: _pinLikeEntityAttach,
-  version: '3.3.0',
+  version: '3.3.0-dev.1',
 );
 
 int _pinLikeEntityEstimateSize(

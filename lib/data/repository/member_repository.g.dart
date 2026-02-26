@@ -6,51 +6,22 @@ part of 'member_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(memberRepository)
-const memberRepositoryProvider = MemberRepositoryProvider._();
-
-final class MemberRepositoryProvider
-    extends
-        $FunctionalProvider<
-          MemberRepository,
-          MemberRepository,
-          MemberRepository
-        >
-    with $Provider<MemberRepository> {
-  const MemberRepositoryProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'memberRepositoryProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$memberRepositoryHash();
-
-  @$internal
-  @override
-  $ProviderElement<MemberRepository> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  MemberRepository create(Ref ref) {
-    return memberRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(MemberRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<MemberRepository>(value),
-    );
-  }
-}
-
 String _$memberRepositoryHash() => r'14d123190e693c4af1953fa2b841fd70bfbba0b5';
+
+/// See also [memberRepository].
+@ProviderFor(memberRepository)
+final memberRepositoryProvider = Provider<MemberRepository>.internal(
+  memberRepository,
+  name: r'memberRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$memberRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef MemberRepositoryRef = ProviderRef<MemberRepository>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

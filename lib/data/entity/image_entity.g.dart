@@ -70,7 +70,7 @@ const ImageEntitySchema = CollectionSchema(
   getId: _imageEntityGetId,
   getLinks: _imageEntityGetLinks,
   attach: _imageEntityAttach,
-  version: '3.3.0',
+  version: '3.3.0-dev.1',
 );
 
 int _imageEntityEstimateSize(

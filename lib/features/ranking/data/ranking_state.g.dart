@@ -6,167 +6,54 @@ part of 'ranking_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(RankingGid)
-const rankingGidProvider = RankingGidProvider._();
-
-final class RankingGidProvider
-    extends $NotifierProvider<RankingGid, RankingSearchDtoInner?> {
-  const RankingGidProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'rankingGidProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$rankingGidHash();
-
-  @$internal
-  @override
-  RankingGid create() => RankingGid();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(RankingSearchDtoInner? value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<RankingSearchDtoInner?>(value),
-    );
-  }
-}
-
 String _$rankingGidHash() => r'b97a0c2715209e17aca9908bd67d31323a9a3506';
 
-abstract class _$RankingGid extends $Notifier<RankingSearchDtoInner?> {
-  RankingSearchDtoInner? build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build();
-    final ref =
-        this.ref as $Ref<RankingSearchDtoInner?, RankingSearchDtoInner?>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<RankingSearchDtoInner?, RankingSearchDtoInner?>,
-              RankingSearchDtoInner?,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
-}
+/// See also [RankingGid].
+@ProviderFor(RankingGid)
+final rankingGidProvider =
+    AutoDisposeNotifierProvider<RankingGid, RankingSearchDtoInner?>.internal(
+      RankingGid.new,
+      name: r'rankingGidProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$rankingGidHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
-@ProviderFor(RankingSearch)
-const rankingSearchProvider = RankingSearchProvider._();
-
-final class RankingSearchProvider
-    extends $AsyncNotifierProvider<RankingSearch, List<RankingSearchDtoInner>> {
-  const RankingSearchProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'rankingSearchProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$rankingSearchHash();
-
-  @$internal
-  @override
-  RankingSearch create() => RankingSearch();
-}
-
+typedef _$RankingGid = AutoDisposeNotifier<RankingSearchDtoInner?>;
 String _$rankingSearchHash() => r'160b6ac38994aeda2cabe3c1f7808fcb71351706';
 
-abstract class _$RankingSearch
-    extends $AsyncNotifier<List<RankingSearchDtoInner>> {
-  FutureOr<List<RankingSearchDtoInner>> build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build();
-    final ref =
-        this.ref
-            as $Ref<
-              AsyncValue<List<RankingSearchDtoInner>>,
-              List<RankingSearchDtoInner>
-            >;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<
-                AsyncValue<List<RankingSearchDtoInner>>,
-                List<RankingSearchDtoInner>
-              >,
-              AsyncValue<List<RankingSearchDtoInner>>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
-}
-
-@ProviderFor(RankingTimeSelector)
-const rankingTimeSelectorProvider = RankingTimeSelectorProvider._();
-
-final class RankingTimeSelectorProvider
-    extends $NotifierProvider<RankingTimeSelector, int> {
-  const RankingTimeSelectorProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'rankingTimeSelectorProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$rankingTimeSelectorHash();
-
-  @$internal
-  @override
-  RankingTimeSelector create() => RankingTimeSelector();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(int value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<int>(value),
+/// See also [RankingSearch].
+@ProviderFor(RankingSearch)
+final rankingSearchProvider =
+    AsyncNotifierProvider<RankingSearch, List<RankingSearchDtoInner>>.internal(
+      RankingSearch.new,
+      name: r'rankingSearchProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$rankingSearchHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
     );
-  }
-}
 
+typedef _$RankingSearch = AsyncNotifier<List<RankingSearchDtoInner>>;
 String _$rankingTimeSelectorHash() =>
     r'1f05a6bea0fa72649132ceee63bd4a122e852f4d';
 
-abstract class _$RankingTimeSelector extends $Notifier<int> {
-  int build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build();
-    final ref = this.ref as $Ref<int, int>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<int, int>,
-              int,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
-}
+/// See also [RankingTimeSelector].
+@ProviderFor(RankingTimeSelector)
+final rankingTimeSelectorProvider =
+    AutoDisposeNotifierProvider<RankingTimeSelector, int>.internal(
+      RankingTimeSelector.new,
+      name: r'rankingTimeSelectorProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$rankingTimeSelectorHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$RankingTimeSelector = AutoDisposeNotifier<int>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

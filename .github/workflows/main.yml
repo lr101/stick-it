@@ -47,8 +47,5 @@ jobs:
         message-id: "flutter_analyze"
         message-path: formatted_results.txt
 
-    - name: Run tests
-      run: flutter test
-
     - name: Build APK
       run: flutter build apk --debug

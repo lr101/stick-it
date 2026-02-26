@@ -6,60 +6,25 @@ part of 'achievement_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(Achievements)
-const achievementsProvider = AchievementsProvider._();
-
-final class AchievementsProvider
-    extends
-        $AsyncNotifierProvider<Achievements, List<UserAchievementsDtoInner>> {
-  const AchievementsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'achievementsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$achievementsHash();
-
-  @$internal
-  @override
-  Achievements create() => Achievements();
-}
-
 String _$achievementsHash() => r'641e221073fa798a4a9cc29f2e0ec7a1e981c0a7';
 
-abstract class _$Achievements
-    extends $AsyncNotifier<List<UserAchievementsDtoInner>> {
-  FutureOr<List<UserAchievementsDtoInner>> build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build();
-    final ref =
-        this.ref
-            as $Ref<
-              AsyncValue<List<UserAchievementsDtoInner>>,
-              List<UserAchievementsDtoInner>
-            >;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<
-                AsyncValue<List<UserAchievementsDtoInner>>,
-                List<UserAchievementsDtoInner>
-              >,
-              AsyncValue<List<UserAchievementsDtoInner>>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
-}
+/// See also [Achievements].
+@ProviderFor(Achievements)
+final achievementsProvider =
+    AutoDisposeAsyncNotifierProvider<
+      Achievements,
+      List<UserAchievementsDtoInner>
+    >.internal(
+      Achievements.new,
+      name: r'achievementsProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$achievementsHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$Achievements =
+    AutoDisposeAsyncNotifier<List<UserAchievementsDtoInner>>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

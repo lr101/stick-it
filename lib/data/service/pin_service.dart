@@ -9,6 +9,7 @@ import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/view_service.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

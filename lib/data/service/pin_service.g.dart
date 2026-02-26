@@ -6,497 +6,616 @@ part of 'pin_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(PinUserService)
-const pinUserServiceProvider = PinUserServiceFamily._();
-
-final class PinUserServiceProvider
-    extends $StreamNotifierProvider<PinUserService, List<PinEntity>> {
-  const PinUserServiceProvider._({
-    required PinUserServiceFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'pinUserServiceProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$pinUserServiceHash();
-
-  @override
-  String toString() {
-    return r'pinUserServiceProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  PinUserService create() => PinUserService();
-
-  @override
-  bool operator ==(Object other) {
-    return other is PinUserServiceProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
-String _$pinUserServiceHash() => r'0de1ccc25f60d19be7abc5a4c3237c02fa2183f2';
-
-final class PinUserServiceFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          PinUserService,
-          AsyncValue<List<PinEntity>>,
-          List<PinEntity>,
-          Stream<List<PinEntity>>,
-          String
-        > {
-  const PinUserServiceFamily._()
-    : super(
-        retry: null,
-        name: r'pinUserServiceProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  PinUserServiceProvider call(String userId) =>
-      PinUserServiceProvider._(argument: userId, from: this);
-
-  @override
-  String toString() => r'pinUserServiceProvider';
-}
-
-abstract class _$PinUserService extends $StreamNotifier<List<PinEntity>> {
-  late final _$args = ref.$arg as String;
-  String get userId => _$args;
-
-  Stream<List<PinEntity>> build(String userId);
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build(_$args);
-    final ref = this.ref as $Ref<AsyncValue<List<PinEntity>>, List<PinEntity>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<PinEntity>>, List<PinEntity>>,
-              AsyncValue<List<PinEntity>>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
-}
-
-@ProviderFor(pinById)
-const pinByIdProvider = PinByIdFamily._();
-
-final class PinByIdProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<PinEntity?>,
-          PinEntity?,
-          Stream<PinEntity?>
-        >
-    with $FutureModifier<PinEntity?>, $StreamProvider<PinEntity?> {
-  const PinByIdProvider._({
-    required PinByIdFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'pinByIdProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$pinByIdHash();
-
-  @override
-  String toString() {
-    return r'pinByIdProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $StreamProviderElement<PinEntity?> $createElement($ProviderPointer pointer) =>
-      $StreamProviderElement(pointer);
-
-  @override
-  Stream<PinEntity?> create(Ref ref) {
-    final argument = this.argument as String;
-    return pinById(ref, argument);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is PinByIdProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
 String _$pinByIdHash() => r'1a1e4f501efa48ab7da6797122bd08e222d42fd5';
 
-final class PinByIdFamily extends $Family
-    with $FunctionalFamilyOverride<Stream<PinEntity?>, String> {
-  const PinByIdFamily._()
-    : super(
-        retry: null,
-        name: r'pinByIdProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
 
-  PinByIdProvider call(String pinId) =>
-      PinByIdProvider._(argument: pinId, from: this);
-
-  @override
-  String toString() => r'pinByIdProvider';
-}
-
-@ProviderFor(PinGroupService)
-const pinGroupServiceProvider = PinGroupServiceFamily._();
-
-final class PinGroupServiceProvider
-    extends $StreamNotifierProvider<PinGroupService, List<PinEntity>> {
-  const PinGroupServiceProvider._({
-    required PinGroupServiceFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'pinGroupServiceProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$pinGroupServiceHash();
-
-  @override
-  String toString() {
-    return r'pinGroupServiceProvider'
-        ''
-        '($argument)';
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
   }
 
-  @$internal
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+/// See also [pinById].
+@ProviderFor(pinById)
+const pinByIdProvider = PinByIdFamily();
+
+/// See also [pinById].
+class PinByIdFamily extends Family<AsyncValue<PinEntity?>> {
+  /// See also [pinById].
+  const PinByIdFamily();
+
+  /// See also [pinById].
+  PinByIdProvider call(String pinId) {
+    return PinByIdProvider(pinId);
+  }
+
   @override
-  PinGroupService create() => PinGroupService();
+  PinByIdProvider getProviderOverride(covariant PinByIdProvider provider) {
+    return call(provider.pinId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'pinByIdProvider';
+}
+
+/// See also [pinById].
+class PinByIdProvider extends AutoDisposeStreamProvider<PinEntity?> {
+  /// See also [pinById].
+  PinByIdProvider(String pinId)
+    : this._internal(
+        (ref) => pinById(ref as PinByIdRef, pinId),
+        from: pinByIdProvider,
+        name: r'pinByIdProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$pinByIdHash,
+        dependencies: PinByIdFamily._dependencies,
+        allTransitiveDependencies: PinByIdFamily._allTransitiveDependencies,
+        pinId: pinId,
+      );
+
+  PinByIdProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.pinId,
+  }) : super.internal();
+
+  final String pinId;
+
+  @override
+  Override overrideWith(
+    Stream<PinEntity?> Function(PinByIdRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: PinByIdProvider._internal(
+        (ref) => create(ref as PinByIdRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        pinId: pinId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<PinEntity?> createElement() {
+    return _PinByIdProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
-    return other is PinGroupServiceProvider && other.argument == argument;
+    return other is PinByIdProvider && other.pinId == pinId;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, pinId.hashCode);
+
+    return _SystemHash.finish(hash);
   }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin PinByIdRef on AutoDisposeStreamProviderRef<PinEntity?> {
+  /// The parameter `pinId` of this provider.
+  String get pinId;
+}
+
+class _PinByIdProviderElement
+    extends AutoDisposeStreamProviderElement<PinEntity?>
+    with PinByIdRef {
+  _PinByIdProviderElement(super.provider);
+
+  @override
+  String get pinId => (origin as PinByIdProvider).pinId;
+}
+
+String _$pinServiceHash() => r'125f27d3d84ea8c990785b11cf252759f4176706';
+
+/// See also [pinService].
+@ProviderFor(pinService)
+final pinServiceProvider = Provider<PinService>.internal(
+  pinService,
+  name: r'pinServiceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$pinServiceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef PinServiceRef = ProviderRef<PinService>;
+String _$activatedPinsHash() => r'08f0dc0b824ea3827ca6421dde19930763503783';
+
+/// See also [activatedPins].
+@ProviderFor(activatedPins)
+final activatedPinsProvider =
+    AutoDisposeFutureProvider<Set<PinEntity>>.internal(
+      activatedPins,
+      name: r'activatedPinsProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$activatedPinsHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ActivatedPinsRef = AutoDisposeFutureProviderRef<Set<PinEntity>>;
+String _$activatedPinsWithoutLoadingHash() =>
+    r'6020447e25360c0eb88bfebca6404816dabdc570';
+
+/// See also [activatedPinsWithoutLoading].
+@ProviderFor(activatedPinsWithoutLoading)
+final activatedPinsWithoutLoadingProvider =
+    AutoDisposeProvider<Set<PinEntity>>.internal(
+      activatedPinsWithoutLoading,
+      name: r'activatedPinsWithoutLoadingProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$activatedPinsWithoutLoadingHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ActivatedPinsWithoutLoadingRef = AutoDisposeProviderRef<Set<PinEntity>>;
+String _$sortedActivatedPinsHash() =>
+    r'27a2653d9890640454aff23540f37a48c7658814';
+
+/// See also [sortedActivatedPins].
+@ProviderFor(sortedActivatedPins)
+final sortedActivatedPinsProvider =
+    AutoDisposeFutureProvider<List<PinEntity>>.internal(
+      sortedActivatedPins,
+      name: r'sortedActivatedPinsProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$sortedActivatedPinsHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SortedActivatedPinsRef = AutoDisposeFutureProviderRef<List<PinEntity>>;
+String _$sortedGroupPinsHash() => r'b50b036f312a2b0383c9e505a14257fd8cdecfbf';
+
+/// See also [sortedGroupPins].
+@ProviderFor(sortedGroupPins)
+const sortedGroupPinsProvider = SortedGroupPinsFamily();
+
+/// See also [sortedGroupPins].
+class SortedGroupPinsFamily extends Family<AsyncValue<List<PinEntity>?>> {
+  /// See also [sortedGroupPins].
+  const SortedGroupPinsFamily();
+
+  /// See also [sortedGroupPins].
+  SortedGroupPinsProvider call(String groupId) {
+    return SortedGroupPinsProvider(groupId);
+  }
+
+  @override
+  SortedGroupPinsProvider getProviderOverride(
+    covariant SortedGroupPinsProvider provider,
+  ) {
+    return call(provider.groupId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'sortedGroupPinsProvider';
+}
+
+/// See also [sortedGroupPins].
+class SortedGroupPinsProvider
+    extends AutoDisposeFutureProvider<List<PinEntity>?> {
+  /// See also [sortedGroupPins].
+  SortedGroupPinsProvider(String groupId)
+    : this._internal(
+        (ref) => sortedGroupPins(ref as SortedGroupPinsRef, groupId),
+        from: sortedGroupPinsProvider,
+        name: r'sortedGroupPinsProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$sortedGroupPinsHash,
+        dependencies: SortedGroupPinsFamily._dependencies,
+        allTransitiveDependencies:
+            SortedGroupPinsFamily._allTransitiveDependencies,
+        groupId: groupId,
+      );
+
+  SortedGroupPinsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.groupId,
+  }) : super.internal();
+
+  final String groupId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<PinEntity>?> Function(SortedGroupPinsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SortedGroupPinsProvider._internal(
+        (ref) => create(ref as SortedGroupPinsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        groupId: groupId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<PinEntity>?> createElement() {
+    return _SortedGroupPinsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SortedGroupPinsProvider && other.groupId == groupId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, groupId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin SortedGroupPinsRef on AutoDisposeFutureProviderRef<List<PinEntity>?> {
+  /// The parameter `groupId` of this provider.
+  String get groupId;
+}
+
+class _SortedGroupPinsProviderElement
+    extends AutoDisposeFutureProviderElement<List<PinEntity>?>
+    with SortedGroupPinsRef {
+  _SortedGroupPinsProviderElement(super.provider);
+
+  @override
+  String get groupId => (origin as SortedGroupPinsProvider).groupId;
+}
+
+String _$pinUserServiceHash() => r'fae6ae8bf42755812e7fb6157ad47e56454cd776';
+
+abstract class _$PinUserService
+    extends BuildlessAutoDisposeStreamNotifier<List<PinEntity>> {
+  late final String userId;
+
+  Stream<List<PinEntity>> build(String userId);
+}
+
+/// See also [PinUserService].
+@ProviderFor(PinUserService)
+const pinUserServiceProvider = PinUserServiceFamily();
+
+/// See also [PinUserService].
+class PinUserServiceFamily extends Family<AsyncValue<List<PinEntity>>> {
+  /// See also [PinUserService].
+  const PinUserServiceFamily();
+
+  /// See also [PinUserService].
+  PinUserServiceProvider call(String userId) {
+    return PinUserServiceProvider(userId);
+  }
+
+  @override
+  PinUserServiceProvider getProviderOverride(
+    covariant PinUserServiceProvider provider,
+  ) {
+    return call(provider.userId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'pinUserServiceProvider';
+}
+
+/// See also [PinUserService].
+class PinUserServiceProvider
+    extends
+        AutoDisposeStreamNotifierProviderImpl<PinUserService, List<PinEntity>> {
+  /// See also [PinUserService].
+  PinUserServiceProvider(String userId)
+    : this._internal(
+        () => PinUserService()..userId = userId,
+        from: pinUserServiceProvider,
+        name: r'pinUserServiceProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$pinUserServiceHash,
+        dependencies: PinUserServiceFamily._dependencies,
+        allTransitiveDependencies:
+            PinUserServiceFamily._allTransitiveDependencies,
+        userId: userId,
+      );
+
+  PinUserServiceProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+  }) : super.internal();
+
+  final String userId;
+
+  @override
+  Stream<List<PinEntity>> runNotifierBuild(covariant PinUserService notifier) {
+    return notifier.build(userId);
+  }
+
+  @override
+  Override overrideWith(PinUserService Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: PinUserServiceProvider._internal(
+        () => create()..userId = userId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamNotifierProviderElement<PinUserService, List<PinEntity>>
+  createElement() {
+    return _PinUserServiceProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PinUserServiceProvider && other.userId == userId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin PinUserServiceRef
+    on AutoDisposeStreamNotifierProviderRef<List<PinEntity>> {
+  /// The parameter `userId` of this provider.
+  String get userId;
+}
+
+class _PinUserServiceProviderElement
+    extends
+        AutoDisposeStreamNotifierProviderElement<
+          PinUserService,
+          List<PinEntity>
+        >
+    with PinUserServiceRef {
+  _PinUserServiceProviderElement(super.provider);
+
+  @override
+  String get userId => (origin as PinUserServiceProvider).userId;
 }
 
 String _$pinGroupServiceHash() => r'cfea71e6e44811698a17c4c367edbc9cba4063b4';
 
-final class PinGroupServiceFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          PinGroupService,
-          AsyncValue<List<PinEntity>>,
-          List<PinEntity>,
-          Stream<List<PinEntity>>,
-          String
-        > {
-  const PinGroupServiceFamily._()
-    : super(
-        retry: null,
-        name: r'pinGroupServiceProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  PinGroupServiceProvider call(String groupId) =>
-      PinGroupServiceProvider._(argument: groupId, from: this);
-
-  @override
-  String toString() => r'pinGroupServiceProvider';
-}
-
-abstract class _$PinGroupService extends $StreamNotifier<List<PinEntity>> {
-  late final _$args = ref.$arg as String;
-  String get groupId => _$args;
+abstract class _$PinGroupService
+    extends BuildlessAutoDisposeStreamNotifier<List<PinEntity>> {
+  late final String groupId;
 
   Stream<List<PinEntity>> build(String groupId);
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build(_$args);
-    final ref = this.ref as $Ref<AsyncValue<List<PinEntity>>, List<PinEntity>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<PinEntity>>, List<PinEntity>>,
-              AsyncValue<List<PinEntity>>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
 }
 
-@ProviderFor(pinService)
-const pinServiceProvider = PinServiceProvider._();
+/// See also [PinGroupService].
+@ProviderFor(PinGroupService)
+const pinGroupServiceProvider = PinGroupServiceFamily();
 
-final class PinServiceProvider
-    extends $FunctionalProvider<PinService, PinService, PinService>
-    with $Provider<PinService> {
-  const PinServiceProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'pinServiceProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+/// See also [PinGroupService].
+class PinGroupServiceFamily extends Family<AsyncValue<List<PinEntity>>> {
+  /// See also [PinGroupService].
+  const PinGroupServiceFamily();
 
-  @override
-  String debugGetCreateSourceHash() => _$pinServiceHash();
-
-  @$internal
-  @override
-  $ProviderElement<PinService> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  PinService create(Ref ref) {
-    return pinService(ref);
+  /// See also [PinGroupService].
+  PinGroupServiceProvider call(String groupId) {
+    return PinGroupServiceProvider(groupId);
   }
 
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(PinService value) {
-    return $ProviderOverride(
+  @override
+  PinGroupServiceProvider getProviderOverride(
+    covariant PinGroupServiceProvider provider,
+  ) {
+    return call(provider.groupId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'pinGroupServiceProvider';
+}
+
+/// See also [PinGroupService].
+class PinGroupServiceProvider
+    extends
+        AutoDisposeStreamNotifierProviderImpl<
+          PinGroupService,
+          List<PinEntity>
+        > {
+  /// See also [PinGroupService].
+  PinGroupServiceProvider(String groupId)
+    : this._internal(
+        () => PinGroupService()..groupId = groupId,
+        from: pinGroupServiceProvider,
+        name: r'pinGroupServiceProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$pinGroupServiceHash,
+        dependencies: PinGroupServiceFamily._dependencies,
+        allTransitiveDependencies:
+            PinGroupServiceFamily._allTransitiveDependencies,
+        groupId: groupId,
+      );
+
+  PinGroupServiceProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.groupId,
+  }) : super.internal();
+
+  final String groupId;
+
+  @override
+  Stream<List<PinEntity>> runNotifierBuild(covariant PinGroupService notifier) {
+    return notifier.build(groupId);
+  }
+
+  @override
+  Override overrideWith(PinGroupService Function() create) {
+    return ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<PinService>(value),
+      override: PinGroupServiceProvider._internal(
+        () => create()..groupId = groupId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        groupId: groupId,
+      ),
     );
   }
-}
-
-String _$pinServiceHash() => r'd6a0c27cba6a7bf7c80844deac1efa6a24b5ac81';
-
-@ProviderFor(activatedPins)
-const activatedPinsProvider = ActivatedPinsProvider._();
-
-final class ActivatedPinsProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<Set<PinEntity>>,
-          Set<PinEntity>,
-          FutureOr<Set<PinEntity>>
-        >
-    with $FutureModifier<Set<PinEntity>>, $FutureProvider<Set<PinEntity>> {
-  const ActivatedPinsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'activatedPinsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
 
   @override
-  String debugGetCreateSourceHash() => _$activatedPinsHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<Set<PinEntity>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<Set<PinEntity>> create(Ref ref) {
-    return activatedPins(ref);
-  }
-}
-
-String _$activatedPinsHash() => r'08f0dc0b824ea3827ca6421dde19930763503783';
-
-@ProviderFor(activatedPinsWithoutLoading)
-const activatedPinsWithoutLoadingProvider =
-    ActivatedPinsWithoutLoadingProvider._();
-
-final class ActivatedPinsWithoutLoadingProvider
-    extends $FunctionalProvider<Set<PinEntity>, Set<PinEntity>, Set<PinEntity>>
-    with $Provider<Set<PinEntity>> {
-  const ActivatedPinsWithoutLoadingProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'activatedPinsWithoutLoadingProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$activatedPinsWithoutLoadingHash();
-
-  @$internal
-  @override
-  $ProviderElement<Set<PinEntity>> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  Set<PinEntity> create(Ref ref) {
-    return activatedPinsWithoutLoading(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Set<PinEntity> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<Set<PinEntity>>(value),
-    );
-  }
-}
-
-String _$activatedPinsWithoutLoadingHash() =>
-    r'6020447e25360c0eb88bfebca6404816dabdc570';
-
-@ProviderFor(sortedActivatedPins)
-const sortedActivatedPinsProvider = SortedActivatedPinsProvider._();
-
-final class SortedActivatedPinsProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<PinEntity>>,
-          List<PinEntity>,
-          FutureOr<List<PinEntity>>
-        >
-    with $FutureModifier<List<PinEntity>>, $FutureProvider<List<PinEntity>> {
-  const SortedActivatedPinsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'sortedActivatedPinsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$sortedActivatedPinsHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<List<PinEntity>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<List<PinEntity>> create(Ref ref) {
-    return sortedActivatedPins(ref);
-  }
-}
-
-String _$sortedActivatedPinsHash() =>
-    r'27a2653d9890640454aff23540f37a48c7658814';
-
-@ProviderFor(sortedGroupPins)
-const sortedGroupPinsProvider = SortedGroupPinsFamily._();
-
-final class SortedGroupPinsProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<PinEntity>?>,
-          List<PinEntity>?,
-          FutureOr<List<PinEntity>?>
-        >
-    with $FutureModifier<List<PinEntity>?>, $FutureProvider<List<PinEntity>?> {
-  const SortedGroupPinsProvider._({
-    required SortedGroupPinsFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'sortedGroupPinsProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$sortedGroupPinsHash();
-
-  @override
-  String toString() {
-    return r'sortedGroupPinsProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $FutureProviderElement<List<PinEntity>?> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<List<PinEntity>?> create(Ref ref) {
-    final argument = this.argument as String;
-    return sortedGroupPins(ref, argument);
+  AutoDisposeStreamNotifierProviderElement<PinGroupService, List<PinEntity>>
+  createElement() {
+    return _PinGroupServiceProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SortedGroupPinsProvider && other.argument == argument;
+    return other is PinGroupServiceProvider && other.groupId == groupId;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, groupId.hashCode);
+
+    return _SystemHash.finish(hash);
   }
 }
 
-String _$sortedGroupPinsHash() => r'b50b036f312a2b0383c9e505a14257fd8cdecfbf';
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin PinGroupServiceRef
+    on AutoDisposeStreamNotifierProviderRef<List<PinEntity>> {
+  /// The parameter `groupId` of this provider.
+  String get groupId;
+}
 
-final class SortedGroupPinsFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<List<PinEntity>?>, String> {
-  const SortedGroupPinsFamily._()
-    : super(
-        retry: null,
-        name: r'sortedGroupPinsProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  SortedGroupPinsProvider call(String groupId) =>
-      SortedGroupPinsProvider._(argument: groupId, from: this);
+class _PinGroupServiceProviderElement
+    extends
+        AutoDisposeStreamNotifierProviderElement<
+          PinGroupService,
+          List<PinEntity>
+        >
+    with PinGroupServiceRef {
+  _PinGroupServiceProviderElement(super.provider);
 
   @override
-  String toString() => r'sortedGroupPinsProvider';
+  String get groupId => (origin as PinGroupServiceProvider).groupId;
 }
+
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

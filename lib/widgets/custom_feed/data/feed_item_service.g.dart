@@ -6,46 +6,22 @@ part of 'feed_item_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(feedItem)
-const feedItemProvider = FeedItemProvider._();
-
-final class FeedItemProvider
-    extends $FunctionalProvider<PinEntity, PinEntity, PinEntity>
-    with $Provider<PinEntity> {
-  const FeedItemProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'feedItemProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$feedItemHash();
-
-  @$internal
-  @override
-  $ProviderElement<PinEntity> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  PinEntity create(Ref ref) {
-    return feedItem(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(PinEntity value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<PinEntity>(value),
-    );
-  }
-}
-
 String _$feedItemHash() => r'31bad5c5be6e299d2bd22303c32cf7b51c5d8ce5';
+
+/// See also [feedItem].
+@ProviderFor(feedItem)
+final feedItemProvider = AutoDisposeProvider<PinEntity>.internal(
+  feedItem,
+  name: r'feedItemProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$feedItemHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef FeedItemRef = AutoDisposeProviderRef<PinEntity>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
