@@ -109,7 +109,7 @@ const PinEntitySchema = CollectionSchema(
   getId: _pinEntityGetId,
   getLinks: _pinEntityGetLinks,
   attach: _pinEntityAttach,
-  version: '3.3.0',
+  version: '3.3.0-dev.1',
 );
 
 int _pinEntityEstimateSize(

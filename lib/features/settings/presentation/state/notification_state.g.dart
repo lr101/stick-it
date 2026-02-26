@@ -6,50 +6,21 @@ part of 'notification_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(NotificationState)
-const notificationStateProvider = NotificationStateProvider._();
-
-final class NotificationStateProvider
-    extends $AsyncNotifierProvider<NotificationState, bool> {
-  const NotificationStateProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'notificationStateProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$notificationStateHash();
-
-  @$internal
-  @override
-  NotificationState create() => NotificationState();
-}
-
 String _$notificationStateHash() => r'c9fff555869543f4e1be115381540d18e449fe4b';
 
-abstract class _$NotificationState extends $AsyncNotifier<bool> {
-  FutureOr<bool> build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build();
-    final ref = this.ref as $Ref<AsyncValue<bool>, bool>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<bool>, bool>,
-              AsyncValue<bool>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
-}
+/// See also [NotificationState].
+@ProviderFor(NotificationState)
+final notificationStateProvider =
+    AutoDisposeAsyncNotifierProvider<NotificationState, bool>.internal(
+      NotificationState.new,
+      name: r'notificationStateProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$notificationStateHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$NotificationState = AutoDisposeAsyncNotifier<bool>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

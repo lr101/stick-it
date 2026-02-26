@@ -64,7 +64,7 @@ const UserLikeEntitySchema = CollectionSchema(
   getId: _userLikeEntityGetId,
   getLinks: _userLikeEntityGetLinks,
   attach: _userLikeEntityAttach,
-  version: '3.3.0',
+  version: '3.3.0-dev.1',
 );
 
 int _userLikeEntityEstimateSize(

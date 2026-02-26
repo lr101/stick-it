@@ -6,95 +6,160 @@ part of 'like_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
+String _$userLikeServiceHash() => r'374aa3d4c4243fa9960f9aae79860991ba6f3413';
 
-@ProviderFor(UserLikeService)
-const userLikeServiceProvider = UserLikeServiceFamily._();
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
 
-final class UserLikeServiceProvider
-    extends $AsyncNotifierProvider<UserLikeService, UserLikesDto> {
-  const UserLikeServiceProvider._({
-    required UserLikeServiceFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'userLikeServiceProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$userLikeServiceHash();
-
-  @override
-  String toString() {
-    return r'userLikeServiceProvider'
-        ''
-        '($argument)';
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
   }
 
-  @$internal
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+abstract class _$UserLikeService
+    extends BuildlessAutoDisposeAsyncNotifier<UserLikesDto> {
+  late final String userId;
+
+  FutureOr<UserLikesDto> build(String userId);
+}
+
+/// See also [UserLikeService].
+@ProviderFor(UserLikeService)
+const userLikeServiceProvider = UserLikeServiceFamily();
+
+/// See also [UserLikeService].
+class UserLikeServiceFamily extends Family<AsyncValue<UserLikesDto>> {
+  /// See also [UserLikeService].
+  const UserLikeServiceFamily();
+
+  /// See also [UserLikeService].
+  UserLikeServiceProvider call(String userId) {
+    return UserLikeServiceProvider(userId);
+  }
+
   @override
-  UserLikeService create() => UserLikeService();
+  UserLikeServiceProvider getProviderOverride(
+    covariant UserLikeServiceProvider provider,
+  ) {
+    return call(provider.userId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'userLikeServiceProvider';
+}
+
+/// See also [UserLikeService].
+class UserLikeServiceProvider
+    extends
+        AutoDisposeAsyncNotifierProviderImpl<UserLikeService, UserLikesDto> {
+  /// See also [UserLikeService].
+  UserLikeServiceProvider(String userId)
+    : this._internal(
+        () => UserLikeService()..userId = userId,
+        from: userLikeServiceProvider,
+        name: r'userLikeServiceProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$userLikeServiceHash,
+        dependencies: UserLikeServiceFamily._dependencies,
+        allTransitiveDependencies:
+            UserLikeServiceFamily._allTransitiveDependencies,
+        userId: userId,
+      );
+
+  UserLikeServiceProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+  }) : super.internal();
+
+  final String userId;
+
+  @override
+  FutureOr<UserLikesDto> runNotifierBuild(covariant UserLikeService notifier) {
+    return notifier.build(userId);
+  }
+
+  @override
+  Override overrideWith(UserLikeService Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: UserLikeServiceProvider._internal(
+        () => create()..userId = userId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeAsyncNotifierProviderElement<UserLikeService, UserLikesDto>
+  createElement() {
+    return _UserLikeServiceProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
-    return other is UserLikeServiceProvider && other.argument == argument;
+    return other is UserLikeServiceProvider && other.userId == userId;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+
+    return _SystemHash.finish(hash);
   }
 }
 
-String _$userLikeServiceHash() => r'374aa3d4c4243fa9960f9aae79860991ba6f3413';
-
-final class UserLikeServiceFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          UserLikeService,
-          AsyncValue<UserLikesDto>,
-          UserLikesDto,
-          FutureOr<UserLikesDto>,
-          String
-        > {
-  const UserLikeServiceFamily._()
-    : super(
-        retry: null,
-        name: r'userLikeServiceProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  UserLikeServiceProvider call(String userId) =>
-      UserLikeServiceProvider._(argument: userId, from: this);
-
-  @override
-  String toString() => r'userLikeServiceProvider';
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UserLikeServiceRef on AutoDisposeAsyncNotifierProviderRef<UserLikesDto> {
+  /// The parameter `userId` of this provider.
+  String get userId;
 }
 
-abstract class _$UserLikeService extends $AsyncNotifier<UserLikesDto> {
-  late final _$args = ref.$arg as String;
-  String get userId => _$args;
+class _UserLikeServiceProviderElement
+    extends
+        AutoDisposeAsyncNotifierProviderElement<UserLikeService, UserLikesDto>
+    with UserLikeServiceRef {
+  _UserLikeServiceProviderElement(super.provider);
 
-  FutureOr<UserLikesDto> build(String userId);
-  @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build(_$args);
-    final ref = this.ref as $Ref<AsyncValue<UserLikesDto>, UserLikesDto>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<UserLikesDto>, UserLikesDto>,
-              AsyncValue<UserLikesDto>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
+  String get userId => (origin as UserLikeServiceProvider).userId;
 }
+
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

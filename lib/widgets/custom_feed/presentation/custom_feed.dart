@@ -6,7 +6,6 @@ import 'package:buff_lisa/widgets/custom_feed/data/feed_item_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/misc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CustomFeed extends ConsumerStatefulWidget {

@@ -17,6 +17,7 @@ import 'package:buff_lisa/features/auth/presentation/auth.dart';
 import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
 import 'package:buff_lisa/firebase_options.dart';
+import 'package:buff_lisa/util/core/cache_migrator.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
@@ -42,6 +43,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
+  final cacheMigrator = CacheMigrator(prefs: sharedPreferences, latestVersion: 2);
+  await cacheMigrator.noDatabaseMigrate();
 
 
   const bool isProduction = bool.fromEnvironment('dart.vm.product');
@@ -52,18 +55,19 @@ Future<void> main() async {
   }
 
 
-    await Isar.initializeIsarCore(download: true);
-    final dir =( await getApplicationDocumentsDirectory()).path;
-    final isar = await Isar.open([
-        GroupEntitySchema,
-        ImageEntitySchema,
-        MembersEntitySchema,
-        PinEntitySchema,
-        PinLikeEntitySchema,
-        UserEntitySchema,
-        UserLikeEntitySchema,
-        UserPinsEntitySchema
-      ], directory: dir);
+  await Isar.initializeIsarCore(download: true);
+  final dir =( await getApplicationDocumentsDirectory()).path;
+  final isar = await Isar.open([
+      GroupEntitySchema,
+      ImageEntitySchema,
+      MembersEntitySchema,
+      PinEntitySchema,
+      PinLikeEntitySchema,
+      UserEntitySchema,
+      UserLikeEntitySchema,
+      UserPinsEntitySchema
+    ], directory: dir);
+  await cacheMigrator.migrate();
 
   try {
     await FMTCObjectBoxBackend().initialise();

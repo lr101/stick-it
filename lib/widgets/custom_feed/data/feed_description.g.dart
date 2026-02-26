@@ -6,195 +6,289 @@ part of 'feed_description.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(FeedDescription)
-const feedDescriptionProvider = FeedDescriptionFamily._();
-
-final class FeedDescriptionProvider
-    extends $NotifierProvider<FeedDescription, bool> {
-  const FeedDescriptionProvider._({
-    required FeedDescriptionFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'feedDescriptionProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$feedDescriptionHash();
-
-  @override
-  String toString() {
-    return r'feedDescriptionProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  FeedDescription create() => FeedDescription();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(bool value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<bool>(value),
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is FeedDescriptionProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
 String _$feedDescriptionHash() => r'4e20e4c6792428ebd9a65a43cfda7fabb4928471';
 
-final class FeedDescriptionFamily extends $Family
-    with $ClassFamilyOverride<FeedDescription, bool, bool, bool, String> {
-  const FeedDescriptionFamily._()
-    : super(
-        retry: null,
-        name: r'feedDescriptionProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
 
-  FeedDescriptionProvider call(String pinId) =>
-      FeedDescriptionProvider._(argument: pinId, from: this);
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
 
-  @override
-  String toString() => r'feedDescriptionProvider';
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
 }
 
-abstract class _$FeedDescription extends $Notifier<bool> {
-  late final _$args = ref.$arg as String;
-  String get pinId => _$args;
+abstract class _$FeedDescription extends BuildlessAutoDisposeNotifier<bool> {
+  late final String pinId;
 
   bool build(String pinId);
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final created = build(_$args);
-    final ref = this.ref as $Ref<bool, bool>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<bool, bool>,
-              bool,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
 }
 
-@ProviderFor(FeedDescriptionHeight)
-const feedDescriptionHeightProvider = FeedDescriptionHeightFamily._();
+/// See also [FeedDescription].
+@ProviderFor(FeedDescription)
+const feedDescriptionProvider = FeedDescriptionFamily();
 
-final class FeedDescriptionHeightProvider
-    extends $NotifierProvider<FeedDescriptionHeight, double> {
-  const FeedDescriptionHeightProvider._({
-    required FeedDescriptionHeightFamily super.from,
-    required PinEntity super.argument,
-  }) : super(
-         retry: null,
-         name: r'feedDescriptionHeightProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
+/// See also [FeedDescription].
+class FeedDescriptionFamily extends Family<bool> {
+  /// See also [FeedDescription].
+  const FeedDescriptionFamily();
 
-  @override
-  String debugGetCreateSourceHash() => _$feedDescriptionHeightHash();
-
-  @override
-  String toString() {
-    return r'feedDescriptionHeightProvider'
-        ''
-        '($argument)';
+  /// See also [FeedDescription].
+  FeedDescriptionProvider call(String pinId) {
+    return FeedDescriptionProvider(pinId);
   }
 
-  @$internal
   @override
-  FeedDescriptionHeight create() => FeedDescriptionHeight();
+  FeedDescriptionProvider getProviderOverride(
+    covariant FeedDescriptionProvider provider,
+  ) {
+    return call(provider.pinId);
+  }
 
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(double value) {
-    return $ProviderOverride(
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'feedDescriptionProvider';
+}
+
+/// See also [FeedDescription].
+class FeedDescriptionProvider
+    extends AutoDisposeNotifierProviderImpl<FeedDescription, bool> {
+  /// See also [FeedDescription].
+  FeedDescriptionProvider(String pinId)
+    : this._internal(
+        () => FeedDescription()..pinId = pinId,
+        from: feedDescriptionProvider,
+        name: r'feedDescriptionProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$feedDescriptionHash,
+        dependencies: FeedDescriptionFamily._dependencies,
+        allTransitiveDependencies:
+            FeedDescriptionFamily._allTransitiveDependencies,
+        pinId: pinId,
+      );
+
+  FeedDescriptionProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.pinId,
+  }) : super.internal();
+
+  final String pinId;
+
+  @override
+  bool runNotifierBuild(covariant FeedDescription notifier) {
+    return notifier.build(pinId);
+  }
+
+  @override
+  Override overrideWith(FeedDescription Function() create) {
+    return ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<double>(value),
+      override: FeedDescriptionProvider._internal(
+        () => create()..pinId = pinId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        pinId: pinId,
+      ),
     );
   }
 
   @override
+  AutoDisposeNotifierProviderElement<FeedDescription, bool> createElement() {
+    return _FeedDescriptionProviderElement(this);
+  }
+
+  @override
   bool operator ==(Object other) {
-    return other is FeedDescriptionHeightProvider && other.argument == argument;
+    return other is FeedDescriptionProvider && other.pinId == pinId;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, pinId.hashCode);
+
+    return _SystemHash.finish(hash);
   }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin FeedDescriptionRef on AutoDisposeNotifierProviderRef<bool> {
+  /// The parameter `pinId` of this provider.
+  String get pinId;
+}
+
+class _FeedDescriptionProviderElement
+    extends AutoDisposeNotifierProviderElement<FeedDescription, bool>
+    with FeedDescriptionRef {
+  _FeedDescriptionProviderElement(super.provider);
+
+  @override
+  String get pinId => (origin as FeedDescriptionProvider).pinId;
 }
 
 String _$feedDescriptionHeightHash() =>
     r'73472a1880b28feb5d279e29d11dcc35b1760628';
 
-final class FeedDescriptionHeightFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          FeedDescriptionHeight,
-          double,
-          double,
-          double,
-          PinEntity
-        > {
-  const FeedDescriptionHeightFamily._()
-    : super(
-        retry: null,
-        name: r'feedDescriptionHeightProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  FeedDescriptionHeightProvider call(PinEntity pin) =>
-      FeedDescriptionHeightProvider._(argument: pin, from: this);
-
-  @override
-  String toString() => r'feedDescriptionHeightProvider';
-}
-
-abstract class _$FeedDescriptionHeight extends $Notifier<double> {
-  late final _$args = ref.$arg as PinEntity;
-  PinEntity get pin => _$args;
+abstract class _$FeedDescriptionHeight
+    extends BuildlessAutoDisposeNotifier<double> {
+  late final PinEntity pin;
 
   double build(PinEntity pin);
-  @$mustCallSuper
+}
+
+/// See also [FeedDescriptionHeight].
+@ProviderFor(FeedDescriptionHeight)
+const feedDescriptionHeightProvider = FeedDescriptionHeightFamily();
+
+/// See also [FeedDescriptionHeight].
+class FeedDescriptionHeightFamily extends Family<double> {
+  /// See also [FeedDescriptionHeight].
+  const FeedDescriptionHeightFamily();
+
+  /// See also [FeedDescriptionHeight].
+  FeedDescriptionHeightProvider call(PinEntity pin) {
+    return FeedDescriptionHeightProvider(pin);
+  }
+
   @override
-  void runBuild() {
-    final created = build(_$args);
-    final ref = this.ref as $Ref<double, double>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<double, double>,
-              double,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
+  FeedDescriptionHeightProvider getProviderOverride(
+    covariant FeedDescriptionHeightProvider provider,
+  ) {
+    return call(provider.pin);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'feedDescriptionHeightProvider';
+}
+
+/// See also [FeedDescriptionHeight].
+class FeedDescriptionHeightProvider
+    extends AutoDisposeNotifierProviderImpl<FeedDescriptionHeight, double> {
+  /// See also [FeedDescriptionHeight].
+  FeedDescriptionHeightProvider(PinEntity pin)
+    : this._internal(
+        () => FeedDescriptionHeight()..pin = pin,
+        from: feedDescriptionHeightProvider,
+        name: r'feedDescriptionHeightProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$feedDescriptionHeightHash,
+        dependencies: FeedDescriptionHeightFamily._dependencies,
+        allTransitiveDependencies:
+            FeedDescriptionHeightFamily._allTransitiveDependencies,
+        pin: pin,
+      );
+
+  FeedDescriptionHeightProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.pin,
+  }) : super.internal();
+
+  final PinEntity pin;
+
+  @override
+  double runNotifierBuild(covariant FeedDescriptionHeight notifier) {
+    return notifier.build(pin);
+  }
+
+  @override
+  Override overrideWith(FeedDescriptionHeight Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: FeedDescriptionHeightProvider._internal(
+        () => create()..pin = pin,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        pin: pin,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeNotifierProviderElement<FeedDescriptionHeight, double>
+  createElement() {
+    return _FeedDescriptionHeightProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FeedDescriptionHeightProvider && other.pin == pin;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, pin.hashCode);
+
+    return _SystemHash.finish(hash);
   }
 }
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin FeedDescriptionHeightRef on AutoDisposeNotifierProviderRef<double> {
+  /// The parameter `pin` of this provider.
+  PinEntity get pin;
+}
+
+class _FeedDescriptionHeightProviderElement
+    extends AutoDisposeNotifierProviderElement<FeedDescriptionHeight, double>
+    with FeedDescriptionHeightRef {
+  _FeedDescriptionHeightProviderElement(super.provider);
+
+  @override
+  PinEntity get pin => (origin as FeedDescriptionHeightProvider).pin;
+}
+
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -88,7 +88,7 @@ const GroupEntitySchema = CollectionSchema(
   getId: _groupEntityGetId,
   getLinks: _groupEntityGetLinks,
   attach: _groupEntityAttach,
-  version: '3.3.0',
+  version: '3.3.0-dev.1',
 );
 
 int _groupEntityEstimateSize(
