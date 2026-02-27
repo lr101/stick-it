@@ -184,7 +184,7 @@ class _GroupByIdActivatedProviderElement
   String get groupId => (origin as GroupByIdActivatedProvider).groupId;
 }
 
-String _$groupServiceHash() => r'759390bbb8bb6a8a4eda7e3accf565579006ce36';
+String _$groupServiceHash() => r'01b08b285312430f258bd5141683623d9a5c3bd8';
 
 abstract class _$GroupService
     extends BuildlessAutoDisposeStreamNotifier<GroupEntity?> {
@@ -316,7 +316,7 @@ class _GroupServiceProviderElement
   String get groupId => (origin as GroupServiceProvider).groupId;
 }
 
-String _$userGroupServiceHash() => r'1bf5abf27104b6eb64fed0448e342565c5c48dec';
+String _$userGroupServiceHash() => r'be93bb1e34052ee0cc5b679b47c088884e8fab86';
 
 /// See also [UserGroupService].
 @ProviderFor(UserGroupService)

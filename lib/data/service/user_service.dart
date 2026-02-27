@@ -16,7 +16,7 @@ part 'user_service.g.dart';
 
 @riverpod
 class UserService extends _$UserService {
-  late final UserRepository _repo;
+  late final IUserRepository _repo;
   late final GlobalDataDto _global;
 
   @override
@@ -27,12 +27,12 @@ class UserService extends _$UserService {
 
     _updateRemoteIfMissing(_repo, _global, userApi);
 
-    final stream = await _repo.watchById(userId);
+    final stream = _repo.watchById(userId);
     yield* stream;
     
   }
 
-  Future<void> _updateRemoteIfMissing(UserRepository repo, GlobalDataDto global, UsersApi userApi) async {
+  Future<void> _updateRemoteIfMissing(IUserRepository repo, GlobalDataDto global, UsersApi userApi) async {
     final localUser = await _repo.get(this.userId);
     if (localUser != null) return;
     final bool isCurrentUser = this.userId == _global.userId;

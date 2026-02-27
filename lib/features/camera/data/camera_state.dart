@@ -1,7 +1,7 @@
 
 import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -93,7 +93,7 @@ class CameraGroupIndex extends _$CameraGroupIndex {
 Future<GroupEntity> cameraSelectedGroup(Ref ref) async {
   final groupIds = ref.watch(groupOrderServiceProvider);
   final groupCameraIndex = ref.watch(cameraGroupIndexProvider);
-  final group =  ref.watch(groupByIdProvider(groupIds[groupCameraIndex]));
+  final group =  ref.watch(groupServiceProvider(groupIds[groupCameraIndex]));
   return group.value!;
 }
 

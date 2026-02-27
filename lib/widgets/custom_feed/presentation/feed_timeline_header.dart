@@ -1,7 +1,7 @@
 
 
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_group.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +58,7 @@ class FeedTimelineHeader extends ConsumerWidget {
                       groupId: groupId,
                       child: RotatedBox(
                         quarterTurns: 1,
-                        child: Text(ref.watch(groupByIdProvider(groupId).select((e) => e.value?.name)) ?? "",
+                        child: Text(ref.watch(groupServiceProvider(groupId).select((e) => e.value?.name)) ?? "",
                           style: const TextStyle(color: Colors.grey, fontSize: 12),),
                       ),
                 ),),

@@ -1,6 +1,6 @@
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_group.dart';
 import 'package:buff_lisa/widgets/custom_feed/data/like_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_description.dart';
@@ -19,7 +19,7 @@ class FeedCardSubtitle extends ConsumerWidget {
     final pinLike = ref.watch(likeServiceProvider(pin.pinId));
     final userId = ref.watch(globalDataServiceProvider).userId!;
     // Watch the group data to display the name
-    final groupAsync = ref.watch(groupByIdProvider(pin.groupId));
+    final groupAsync = ref.watch(groupServiceProvider(pin.groupId));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

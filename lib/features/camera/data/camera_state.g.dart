@@ -25,7 +25,7 @@ final cameraControllerProvider =
 // ignore: unused_element
 typedef CameraControllerRef = AutoDisposeFutureProviderRef<CameraController>;
 String _$cameraSelectedGroupHash() =>
-    r'a6b6c9d05747f1d8914948b51f18cb49909be0cd';
+    r'20b2944e0366e993adcc4ccf61c088ef2ae0bff7';
 
 /// See also [cameraSelectedGroup].
 @ProviderFor(cameraSelectedGroup)

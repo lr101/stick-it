@@ -19,7 +19,7 @@ part 'pin_service.g.dart';
 @riverpod
 class PinUserService extends _$PinUserService {
 
-  late final PinRepository _pinRepository;
+  late final IPinRepository _pinRepository;
   late final PinsApi _pinsApi;
   late final String _userId;
 
@@ -60,7 +60,7 @@ class PinUserService extends _$PinUserService {
 @riverpod
 Stream<PinEntity?> pinById(Ref ref, String pinId) async* {
   final repo = ref.watch(pinRepositoryProvider);
-  final result = await repo.watchById(pinId);
+  final result = repo.watchById(pinId);
   if (await result.last == null) {
     final pin = await  ref.watch(pinApiProvider).getPin(pinId);
     await repo.put(PinEntity.fromDto(pin!, true));
@@ -71,7 +71,7 @@ Stream<PinEntity?> pinById(Ref ref, String pinId) async* {
 @riverpod
 class PinGroupService extends _$PinGroupService {
 
-  late final PinRepository _pinRepository;
+  late final IPinRepository _pinRepository;
   late final PinsApi _pinsApi;
 
   @override
@@ -115,8 +115,8 @@ PinService pinService(Ref ref) => PinService(ref: ref);
 class PinService {
 
   final Ref ref;
-  late final PinRepository _pinRepository;
-  late final ImageRepository _pinImageRepository;
+  late final IPinRepository _pinRepository;
+  late final IImageRepository _pinImageRepository;
   late final PinsApi _pinsApi;
 
   PinService({required this.ref}) {

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
-
 import 'package:buff_lisa/util/core/cache_api.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
 import 'package:flutter/foundation.dart';
@@ -13,8 +12,25 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
   final int maxItems;
   final Duration? ttlDuration;
 
+  // Broadcast controller to notify listeners of changes.
+  // It emits the 'isarId' of the changed item, or 'null' for global changes (like clear).
+  final StreamController<int?> _changeNotifier = StreamController<int?>.broadcast();
+  Stream<int?> get cacheChanges => _changeNotifier.stream;
+
   InMemoryCache({this.maxItems = 100, this.ttlDuration = const Duration(days: 1)});
 
+  @override
+  Stream<T?> watchById(String id) async* {
+    final key = fastHash(id);
+    
+    // 1. Fire immediately with the current value
+    yield cache[key];
+    
+    // 2. Yield subsequent changes when this specific key (or a global clear) is broadcast
+    yield* _changeNotifier.stream
+        .where((changedKey) => changedKey == key || changedKey == null)
+        .map((_) => cache[key]);
+  }
 
   @override
   Future<void> put(T item) async {
@@ -22,6 +38,7 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
       await deleteOldestItems();
     }
     cache[item.isarId] = item;
+    _changeNotifier.add(item.isarId); // Notify listeners of this specific key
   }
 
   @override
@@ -31,7 +48,18 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
 
   @override
   Future<void> delete(String id) async {
-    cache.remove(fastHash(id));
+    final key = fastHash(id);
+    if (cache.containsKey(key)) {
+      cache.remove(key);
+      _changeNotifier.add(key); // Notify listeners that this item was removed
+    }
+  }
+
+  @override
+  Future<void> deleteMultiple(List<String> ids) async {
+    for (final id in ids) {
+      await delete(id);
+    }
   }
 
   @override
@@ -39,10 +67,10 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
     return cache.values.toList();
   }
 
-
   @override
   Future<void> deleteAll() async {
     cache.clear();
+    _changeNotifier.add(null); // Passing null signifies a global wipe to all listeners
   }
 
   @override
@@ -55,9 +83,10 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
   }
 
   @override
-  Future<void> putMultiple(List<T> items) async {
+  Future<void> putMultiple(Iterable<T> items) async {
     for (final entry in items) {
-      await put(entry);
+      // Calling put() directly ensures maxItems is respected and the stream is updated
+      await put(entry); 
     }
   }
 
@@ -65,7 +94,6 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
   /// Not included are items with keepAlive == true and items younger than 10% of ttlDuration
   @override
   Future<void> deleteOldestItems() async {
-
     final entries = cache.entries.toList();
 
     entries.sort((a, b) {
@@ -84,8 +112,14 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
       final value = cache[key]!;
       if (value.keepAlive == false && value.ttl.isBefore(ttlTime)) {
         cache.remove(key);
+        _changeNotifier.add(key); // Notify listeners of the deleted key
         itemsDeleted++;
       }
     }
+  }
+
+  /// Closes the broadcast stream to prevent memory leaks when the cache is destroyed.
+  void dispose() {
+    _changeNotifier.close();
   }
 }

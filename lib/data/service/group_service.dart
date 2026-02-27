@@ -17,7 +17,7 @@ part 'group_service.g.dart';
 class GroupService extends _$GroupService {
 
 
-  late final GroupRepository _groupRepository;
+  late final IGroupRepository _groupRepository;
   late final GroupsApi _groupsApi;
 
   @override
@@ -28,7 +28,7 @@ class GroupService extends _$GroupService {
 
     _remoteFetchIfNotExist(userGroups);
 
-    final stream = await _groupRepository.watchById(groupId);
+    final stream = _groupRepository.watchById(groupId);
     yield* stream;
   }
 
@@ -51,10 +51,10 @@ class GroupService extends _$GroupService {
 @riverpod
 class UserGroupService extends _$UserGroupService {
 
-  late final GroupRepository _groupRepository;
+  late final IGroupRepository _groupRepository;
   late final MembersApi _membersApi;
   late final GroupsApi _groupsApi;
-  late final PinRepository _pinRepository;
+  late final IPinRepository _pinRepository;
   late final PinsApi _pinsApi;
   late final String _userId;
 
@@ -104,7 +104,7 @@ class UserGroupService extends _$UserGroupService {
     // sync pins
     final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false);
     if (remotePins != null) {
-      final pins = remotePins.items.map((e) => PinEntity.fromDto(e, false));
+      final pins = remotePins.items.map((e) => PinEntity.fromDto(e, false)).toList();
       await _pinRepository.putMultiple(pins);
     }
   }

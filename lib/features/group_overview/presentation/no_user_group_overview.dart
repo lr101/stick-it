@@ -1,5 +1,5 @@
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_join_action_button.dart';
 import 'package:buff_lisa/features/group_overview/presentation/sub_widgets/group_overview.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
@@ -14,7 +14,7 @@ class NoUserGroupOverview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupAsync = ref.watch(groupByIdProvider(groupId));
+    final groupAsync = ref.watch(groupServiceProvider(groupId));
     return groupAsync.when(
       data: (data) {
         if (data == null) {

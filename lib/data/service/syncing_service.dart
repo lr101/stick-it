@@ -1,6 +1,4 @@
 
-import 'dart:ffi';
-
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
@@ -28,10 +26,9 @@ enum SyncState {
 @riverpod
 class SyncingService extends _$SyncingService {
 
-  late GroupsApi _groupsApi;
   late PinsApi _pinsApi;
-  late GroupRepository _groupRepository;
-  late PinRepository _pinRepository;
+  late IGroupRepository _groupRepository;
+  late IPinRepository _pinRepository;
   late String userId;
   final Mutex _mutex = Mutex();
   final Logger _logger = Logger();
@@ -40,7 +37,6 @@ class SyncingService extends _$SyncingService {
   @override
   SyncState build() {
     ref.listen(userGroupServiceProvider, (_,__) => ());
-    _groupsApi = ref.watch(groupApiProvider);
     _pinsApi = ref.watch(pinApiProvider);
     _groupRepository = ref.watch(groupRepositoryProvider);
     _pinRepository = ref.watch(pinRepositoryProvider);
@@ -86,7 +82,7 @@ class SyncingService extends _$SyncingService {
       final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false, updatedAfter: lastSeen);
       if (remotePins != null) {
         await _pinRepository.deleteMultiple(remotePins.deleted);
-        await _pinRepository.putMultiple(remotePins.items.map((e) => PinEntity.fromDto(e, false)));
+        await _pinRepository.putMultiple(remotePins.items.map((e) => PinEntity.fromDto(e, false)).toList());
       }
     } catch (e) {
       if(kDebugMode) print(e);

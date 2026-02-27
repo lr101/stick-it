@@ -1,5 +1,5 @@
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
@@ -177,7 +177,7 @@ class _FilterSheetContentState extends ConsumerState<_FilterSheetContent> {
               itemBuilder: (context, index) {
                 final groupId = orderedIds[index];
                 
-                final groupData = ref.watch(groupByIdProvider(groupId)).value;
+                final groupData = ref.watch(groupServiceProvider(groupId)).value;
 
                 if (groupData == null) {
                   return SizedBox.shrink(key: ValueKey('empty_$groupId')); 

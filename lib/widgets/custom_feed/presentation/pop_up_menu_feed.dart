@@ -2,8 +2,8 @@
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_menu_item.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
@@ -21,7 +21,7 @@ class PopUpMenuFeed extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(globalDataServiceProvider).userId!;
-    final adminId = ref.watch(groupByIdProvider(pinDto.groupId)).whenOrNull(data: (d) => d?.groupAdmin);
+    final adminId = ref.watch(groupServiceProvider(pinDto.groupId)).whenOrNull(data: (d) => d?.groupAdmin);
     final bool isNotCreator =  userId != pinDto.creator;
     return PopupMenuButton(
         itemBuilder: (context) {

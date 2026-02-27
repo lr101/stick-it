@@ -1,18 +1,19 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
+import 'package:buff_lisa/util/core/cache_api.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
 import 'package:flutter/foundation.dart';
 import 'package:isar_community/isar.dart';
 
 typedef GetOne = Future<CacheEntity?> Function(String);
 
-abstract class CacheImpl<T extends CacheEntity> {
+abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
   final int? maxItems;
   final Duration? ttlDuration;
   
   
 
   CacheImpl({required this.box, required this.isar, this.maxItems, this.ttlDuration}) {
-    startup();
+    _startup();
   }
 
   @protected
@@ -21,6 +22,7 @@ abstract class CacheImpl<T extends CacheEntity> {
   @protected
   final Isar isar;
 
+  @override
   Future<void> put(T item) async {
     await isar.writeTxn(() async {
       await box.put(item);
@@ -30,31 +32,38 @@ abstract class CacheImpl<T extends CacheEntity> {
     });
   }
 
+  @override
   Stream<T?> watchById(String id) {
     return box.watchObject(fastHash(id), fireImmediately: true);
   }
 
+  @override
   Future<T?> get(String id) async {
       return await box.get(fastHash(id));
   }
 
+  @override
   Future<void> delete(String id) async {
     await isar.writeTxn(() async => await box.delete(fastHash(id)));
   }
 
+  @override
   Future<void> deleteMultiple(List<String> ids) async {
     final fastIds = ids.map(fastHash).toList();
     await isar.writeTxn(() async =>  await box.deleteAll(fastIds));
   }
 
+  @override
   Future<List<T>> getAll() async {
     return box.where().findAll();
   }
 
+  @override
   Future<void> deleteAll() async {
     await isar.writeTxn(() async =>  await box.clear());
   }
 
+  @override
   Future<void> putMultiple(Iterable<T> items) async {
     await isar.writeTxn(() async {
       await box.putAll(items.toList());
@@ -64,11 +73,12 @@ abstract class CacheImpl<T extends CacheEntity> {
     });
   }
 
+  @override
   Future<List<T?>> getList(List<String> ids) async {
     return await box.getAll(ids.map(fastHash).toList());
   }
 
-  void startup() {
+  void _startup() {
     DateTime? ttlTime;
     if (ttlDuration != null) {
       ttlTime = DateTime.now().subtract(ttlDuration!);
@@ -85,6 +95,7 @@ abstract class CacheImpl<T extends CacheEntity> {
 
   /// Delete the items with the lowest hit count
   /// Not included are items with keepAlive == true and items younger than 10% of ttlDuration
+  @override
   Future<void> deleteOldestItems() async {
 
       final size = await isar.getSize();
@@ -113,4 +124,3 @@ abstract class CacheImpl<T extends CacheEntity> {
   }
 
 }
-

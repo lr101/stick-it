@@ -6,11 +6,11 @@ part of 'pin_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pinRepositoryHash() => r'084d9641b14485c6161ee7d96334fbd9a068e4f2';
+String _$pinRepositoryHash() => r'87dc2f634b3ca6f35dba54560e4244a46497bd67';
 
 /// See also [pinRepository].
 @ProviderFor(pinRepository)
-final pinRepositoryProvider = Provider<PinRepository>.internal(
+final pinRepositoryProvider = Provider<IPinRepository>.internal(
   pinRepository,
   name: r'pinRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,12 +22,12 @@ final pinRepositoryProvider = Provider<PinRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef PinRepositoryRef = ProviderRef<PinRepository>;
-String _$pinLikeRepositoryHash() => r'e545e1ddb50fd7deaee25134f67c37c631dfcd14';
+typedef PinRepositoryRef = ProviderRef<IPinRepository>;
+String _$pinLikeRepositoryHash() => r'23620f71fd15d038ec8eaae871184ef5dd4b7fb0';
 
 /// See also [pinLikeRepository].
 @ProviderFor(pinLikeRepository)
-final pinLikeRepositoryProvider = Provider<PinLikeRepository>.internal(
+final pinLikeRepositoryProvider = Provider<IPinLikeRepository>.internal(
   pinLikeRepository,
   name: r'pinLikeRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -39,6 +39,6 @@ final pinLikeRepositoryProvider = Provider<PinLikeRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef PinLikeRepositoryRef = ProviderRef<PinLikeRepository>;
+typedef PinLikeRepositoryRef = ProviderRef<IPinLikeRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

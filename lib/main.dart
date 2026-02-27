@@ -53,20 +53,22 @@ Future<void> main() async {
   } else {
     await dotenv.load(fileName: ".env.dev");
   }
+  Isar? isar;
 
-
-  await Isar.initializeIsarCore(download: true);
-  final dir =( await getApplicationDocumentsDirectory()).path;
-  final isar = await Isar.open([
-      GroupEntitySchema,
-      ImageEntitySchema,
-      MembersEntitySchema,
-      PinEntitySchema,
-      PinLikeEntitySchema,
-      UserEntitySchema,
-      UserLikeEntitySchema,
-      UserPinsEntitySchema
-    ], directory: dir);
+  if (!kIsWeb) {
+    await Isar.initializeIsarCore(download: true);
+    final dir =( await getApplicationDocumentsDirectory()).path;
+    isar = await Isar.open([
+        GroupEntitySchema,
+        ImageEntitySchema,
+        MembersEntitySchema,
+        PinEntitySchema,
+        PinLikeEntitySchema,
+        UserEntitySchema,
+        UserLikeEntitySchema,
+        UserPinsEntitySchema
+      ], directory: dir);
+  }
   await cacheMigrator.migrate();
 
   try {
@@ -109,7 +111,7 @@ Future<void> main() async {
           currentUserOnceProvider.overrideWithValue(globalUserData),
           defaultGroupPinImageProvider.overrideWithValue(defaultGroupImage),
           defaultErrorImageProvider.overrideWithValue(defaultErrorImage),
-          isarRepoProvider.overrideWithValue(isar)
+          if(isar != null) isarRepoProvider.overrideWithValue(isar)
         ],
         child: const MyApp(),
     ),
