@@ -29,11 +29,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:isar_community/isar.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
-import 'package:isar_community/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// THIS IS THE START OF THE PROGRAMM
@@ -72,10 +71,12 @@ Future<void> main() async {
   await cacheMigrator.migrate();
 
   try {
-    await FMTCObjectBoxBackend().initialise();
-    final mgmt = const FMTCStore('tileStore').manage;
-    final ready = await mgmt.ready; // Check whether the store exists
-    if (!ready) await mgmt.create(maxLength: 2000); // Create the store
+    if (!kIsWeb) {
+      await FMTCObjectBoxBackend().initialise();
+      final mgmt = const FMTCStore('tileStore').manage;
+      final ready = await mgmt.ready; // Check whether the store exists
+      if (!ready) await mgmt.create(maxLength: 2000); // Create the store
+    }
   } catch (e) {
     if (!kIsWeb) {
       final dir = Directory(
@@ -87,7 +88,13 @@ Future<void> main() async {
         await FMTCObjectBoxBackend().initialise();
       }
   }
-  const storage = FlutterSecureStorage();
+  ISecureStorage storage;
+  if (kIsWeb) {
+    storage = WebSecureStorage();
+  } else {
+    storage = MobileSecureStorage();
+  }
+
   final globalData = await GlobalDataRepository.get(sharedPreferences, storage);
   final globalUserData = await GlobalDataRepository.getUser(sharedPreferences, storage);
   final defaultGroupImage =  (await rootBundle.load('assets/image/pin_border.png')).buffer.asUint8List();
@@ -131,19 +138,22 @@ class MyApp extends ConsumerWidget {
     ]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     final theme = MaterialTheme(Theme.of(context).textTheme);
+    final loginUserId = ref.watch(globalDataServiceProvider).userId != null;
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Mona App',
-      themeMode: ref.watch(themeStateProvider),
-      darkTheme: theme.dark(),
-      theme: theme.light(),
-      initialRoute: ref.watch(globalDataServiceProvider).userId != null ? '/home' : '/login',
-      routes: {
-        '/login': (context) => const Auth(),
-        '/home': (context) {
-          return const Navigation();
-        },
-      },
+        debugShowCheckedModeBanner: false,
+        title: 'Mona App',
+        themeMode: ref.watch(themeStateProvider),
+        darkTheme: theme.dark(),
+        theme: theme.light(),
+        initialRoute: loginUserId ? '/home' : '/login',
+        routes: {
+      // 2. Define the root '/' route to handle the web's default launch URL
+      '/': (context) => loginUserId ? const Navigation() : const Auth(),
+      
+      // 3. Keep your named routes for internal navigation
+      '/login': (context) => const Auth(),
+      '/home': (context) => const Navigation(),
+    },
       navigatorKey: navigatorKey,
     );
   }

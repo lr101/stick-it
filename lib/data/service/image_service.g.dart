@@ -6,7 +6,7 @@ part of 'image_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getUserProfileHash() => r'f6397c3ab42c29e669d0b6b292b7932609fd6f69';
+String _$getUserProfileHash() => r'4e9e391358dc51d40325fbd4ca88a77f469b7abd';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -148,7 +148,7 @@ class _GetUserProfileProviderElement
 }
 
 String _$getUserProfileSmallHash() =>
-    r'3021ddb650452e70423b0bf8c7923468724086ea';
+    r'62ab157081f46e2ffff02dcf2fc4b1382ab51284';
 
 /// See also [getUserProfileSmall].
 @ProviderFor(getUserProfileSmall)
@@ -270,7 +270,7 @@ class _GetUserProfileSmallProviderElement
 }
 
 String _$groupProfilePictureByIdHash() =>
-    r'd2d9fde436f4f976ebfb96e126ed4560033e39e5';
+    r'9a458c557a4900959238012f5475cbedd9d9fe98';
 
 /// See also [groupProfilePictureById].
 @ProviderFor(groupProfilePictureById)
@@ -393,7 +393,7 @@ class _GroupProfilePictureByIdProviderElement
 }
 
 String _$groupProfilePictureSmallByIdHash() =>
-    r'ebbd7314183e4864288e509571aa1f747e527397';
+    r'20b84fdad8516658fc133e920576f674fedc916a';
 
 /// See also [groupProfilePictureSmallById].
 @ProviderFor(groupProfilePictureSmallById)
@@ -523,7 +523,7 @@ class _GroupProfilePictureSmallByIdProviderElement
       (origin as GroupProfilePictureSmallByIdProvider).groupId;
 }
 
-String _$groupPinImageByIdHash() => r'a9faa7a2615f9316ba18e9ec2eae6f845454624b';
+String _$groupPinImageByIdHash() => r'4ae617ef41c760193168d8d09c12a53a3246e981';
 
 /// See also [groupPinImageById].
 @ProviderFor(groupPinImageById)

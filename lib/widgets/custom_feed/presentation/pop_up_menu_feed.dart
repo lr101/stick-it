@@ -21,6 +21,7 @@ class PopUpMenuFeed extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(globalDataServiceProvider).userId!;
+    final pinService = ref.watch(pinServiceProvider);
     final adminId = ref.watch(groupServiceProvider(pinDto.groupId)).whenOrNull(data: (d) => d?.groupAdmin);
     final bool isNotCreator =  userId != pinDto.creator;
     return PopupMenuButton(
@@ -59,20 +60,20 @@ class PopUpMenuFeed extends ConsumerWidget {
             case 1: Routing.to(context, ReportIssuePage(issueTypes: const ["Report post"], pinId: pinDto.pinId,));
             case 2: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(pinDto.creator);
             case 3: Routing.to(context, ReportIssuePage(issueTypes: const ["Report user"], userId: pinDto.creator,));
-            case 4: _deleteStick(ref, context);
+            case 4: _deleteStick(ref, context, pinService);
           }
         },
     );
   }
 
-  Future<void> _deleteStick(WidgetRef ref, BuildContext context) async {
+  Future<void> _deleteStick(WidgetRef ref, BuildContext context, PinService pinService) async {
     CustomDialog.show(
         context,
         acceptText: "Delete",
         title: "Delete this sticker?",
         cancelText: "Cancel",
         onPressed: () async {
-          final result = await ref.read(pinServiceProvider).deletePinFromGroup(pinDto.pinId);
+          final result = await pinService.deletePinFromGroup(pinDto.pinId);
           if (result != null) {
             CustomErrorSnackBar.message(message: result);
           }

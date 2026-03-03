@@ -25,12 +25,12 @@ final cameraControllerProvider =
 // ignore: unused_element
 typedef CameraControllerRef = AutoDisposeFutureProviderRef<CameraController>;
 String _$cameraSelectedGroupHash() =>
-    r'20b2944e0366e993adcc4ccf61c088ef2ae0bff7';
+    r'25fe15f4c2b72eebd84a4523a311324e0d5cae5f';
 
 /// See also [cameraSelectedGroup].
 @ProviderFor(cameraSelectedGroup)
 final cameraSelectedGroupProvider =
-    AutoDisposeFutureProvider<GroupEntity>.internal(
+    AutoDisposeFutureProvider<GroupEntity?>.internal(
       cameraSelectedGroup,
       name: r'cameraSelectedGroupProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -42,7 +42,7 @@ final cameraSelectedGroupProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef CameraSelectedGroupRef = AutoDisposeFutureProviderRef<GroupEntity>;
+typedef CameraSelectedGroupRef = AutoDisposeFutureProviderRef<GroupEntity?>;
 String _$cameraIndexHash() => r'1586261879e9dbbace237e964af490a507397937';
 
 /// See also [CameraIndex].
@@ -59,7 +59,7 @@ final cameraIndexProvider =
     );
 
 typedef _$CameraIndex = AutoDisposeNotifier<int>;
-String _$cameraValuesHash() => r'5cefd420ffd84674b5bad4884e32b9d5efc70b87';
+String _$cameraValuesHash() => r'52a21170a1267379621b67872fc9ff5d1b615790';
 
 /// See also [CameraValues].
 @ProviderFor(CameraValues)

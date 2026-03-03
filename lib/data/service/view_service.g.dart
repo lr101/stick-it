@@ -6,7 +6,7 @@ part of 'view_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$viewServiceHash() => r'7a900cc560e5fe74c52a9192ebde738fb14b5763';
+String _$viewServiceHash() => r'0ad37bd65d092310611066e5788a073a86361647';
 
 /// See also [ViewService].
 @ProviderFor(ViewService)

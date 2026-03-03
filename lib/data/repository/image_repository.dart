@@ -39,6 +39,7 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
     super.ttlDuration,
   });
 
+  final Map<String, Future<Uint8List?>> _activeRequests = {};
   final String urlFileName;
   final String urlSubFolder;
   final Future<String?> Function(String) getImageUrl;
@@ -55,13 +56,28 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
   Future<Uint8List?> fetchImage(String id, bool keepAlive) async {
     final isarId = fastHash('${type.name}_$id');
     final cachedImage = await box.get(isarId);
+    
     if (cachedImage?.isEmpty == true) {
       return null;
-    }
-    else if (cachedImage?.filePath != null && await File(cachedImage!.filePath).exists()) {
+    } else if (cachedImage?.filePath != null && await File(cachedImage!.filePath).exists()) {
       return await File(cachedImage.filePath).readAsBytes();
     }
-    return await _fetchAndCacheImage(id, keepAlive);
+
+    // ADD THIS: Check if a request for this ID is already running
+    if (_activeRequests.containsKey(id)) {
+      return _activeRequests[id]; // Return the ongoing Future
+    }
+
+    // ADD THIS: Create the Future, store it, await it, and then clean up
+    final requestFuture = _fetchAndCacheImage(id, keepAlive);
+    _activeRequests[id] = requestFuture;
+
+    try {
+      return await requestFuture;
+    } finally {
+      // Ensure the request is removed from the map whether it succeeds or fails
+      _activeRequests.remove(id);
+    }
   }
 
   @override
@@ -155,7 +171,8 @@ class ImageRepositoryWeb extends InMemoryCache<ImageEntity> implements IImageRep
   final Future<String?> Function(String) getImageUrl;
   @override
   final ImageType type;
-  final Map<int, Uint8List> _bytesCache = {};
+  final Map<String, Uint8List> _bytesCache = {};
+  final Map<String, Future<Uint8List?>> _activeRequests = {};
 
   ImageRepositoryWeb({
     required this.getImageUrl,
@@ -164,41 +181,45 @@ class ImageRepositoryWeb extends InMemoryCache<ImageEntity> implements IImageRep
     super.ttlDuration,
   });
 
-  @override
+@override
   Future<Uint8List?> fetchImage(String id, bool keepAlive) async {
-    final isarId = fastHash('${type.name}_$id');
     final cachedEntity = await get(id);
     
     if (cachedEntity?.isEmpty == true) {
       return null;
-    } else if (_bytesCache.containsKey(isarId)) {
+    } else if (_bytesCache.containsKey(id)) {
       // Pre-emptively load into Flutter's image cache for instant UI rendering
-      _precacheInFlutter(isarId);
-      return _bytesCache[isarId];
+      _precacheInFlutter(id);
+      return _bytesCache[id];
     }
     
-    return await _fetchAndCacheImage(id, keepAlive);
+    // ADD THIS: Check if a request for this ID is already running
+    if (_activeRequests.containsKey(id)) {
+      return _activeRequests[id]; // Return the ongoing Future
+    }
+
+    // ADD THIS: Create the Future, store it, await it, and then clean up
+    final requestFuture = _fetchAndCacheImage(id, keepAlive);
+    _activeRequests[id] = requestFuture;
+
+    try {
+      return await requestFuture;
+    } finally {
+      _activeRequests.remove(id);
+    }
   }
 
   @override
-  Stream<Uint8List?> watchImageBytes(String id) async* {
-    final isarId = fastHash('${type.name}_$id');
-    
-    yield _bytesCache[isarId];
-    
-    // Assumes InMemoryCache exposes `cacheChanges` Stream as discussed previously
-    yield* cacheChanges
-        .where((key) => key == isarId || key == null)
-        .map((_) => _bytesCache[isarId]);
+  Stream<Uint8List?> watchImageBytes(String id) {
+    return cacheChanges.map((_) => _bytesCache[id]);
   }
 
   @override
   Future<Uint8List> overrideUrl(String id, String url, bool keepAlive) async {
     final image = await http.get(Uri.parse(url));
-    final isarId = fastHash('${type.name}_$id');
     
-    _evictFromFlutterCache(isarId); // Evict old image if it exists
-    _bytesCache[isarId] = image.bodyBytes;
+    _evictFromFlutterCache(id); // Evict old image if it exists
+    _bytesCache[id] = image.bodyBytes;
     
     if (keepAlive) {
       await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
@@ -214,9 +235,8 @@ class ImageRepositoryWeb extends InMemoryCache<ImageEntity> implements IImageRep
     }
 
     final image = await http.get(Uri.parse(imageUrl));
-    final isarId = fastHash('${type.name}_$id');
     
-    _bytesCache[isarId] = image.bodyBytes;
+    _bytesCache[id] = image.bodyBytes;
     await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
     
     return image.bodyBytes;
@@ -224,18 +244,16 @@ class ImageRepositoryWeb extends InMemoryCache<ImageEntity> implements IImageRep
 
   @override
   Future<void> addImage(String id, Uint8List image, bool keepAlive) async {
-    final isarId = fastHash('${type.name}_$id');
-    _evictFromFlutterCache(isarId);
+    _evictFromFlutterCache(id);
     
-    _bytesCache[isarId] = image;
+    _bytesCache[id] = image;
     await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
   }
 
   @override
   Future<void> delete(String id) async {
-    final isarId = fastHash('${type.name}_$id');
-    _evictFromFlutterCache(isarId);
-    _bytesCache.remove(isarId);
+    _evictFromFlutterCache(id);
+    _bytesCache.remove(id);
     await super.delete(id);
   }
 
@@ -264,15 +282,15 @@ class ImageRepositoryWeb extends InMemoryCache<ImageEntity> implements IImageRep
     await super.deleteAll();
   }
 
-  void _evictFromFlutterCache(int isarId) {
-    if (_bytesCache.containsKey(isarId)) {
-      MemoryImage(_bytesCache[isarId]!).evict();
+  void _evictFromFlutterCache(String id) {
+    if (_bytesCache.containsKey(id)) {
+      MemoryImage(_bytesCache[id]!).evict();
     }
   }
 
-  void _precacheInFlutter(int isarId) {
-    if (_bytesCache.containsKey(isarId)) {
-      MemoryImage(_bytesCache[isarId]!).resolve(ImageConfiguration.empty);
+  void _precacheInFlutter(String id) {
+    if (_bytesCache.containsKey(id)) {
+      MemoryImage(_bytesCache[id]!).resolve(ImageConfiguration.empty);
     }
   }
 }

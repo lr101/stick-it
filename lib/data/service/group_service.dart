@@ -21,15 +21,14 @@ class GroupService extends _$GroupService {
   late final GroupsApi _groupsApi;
 
   @override
-  Stream<GroupEntity?> build(String groupId) async* {
+  Stream<GroupEntity?> build(String groupId) {
     _groupRepository = ref.watch(groupRepositoryProvider);
     _groupsApi = ref.watch(groupApiProvider);
     final userGroups = ref.watch(userGroupServiceProvider).value ?? [];
 
     _remoteFetchIfNotExist(userGroups);
 
-    final stream = _groupRepository.watchById(groupId);
-    yield* stream;
+    return _groupRepository.watchById(groupId);
   }
 
   Future<void> _remoteFetchIfNotExist(List<GroupEntity> userGroups) async {
@@ -59,7 +58,7 @@ class UserGroupService extends _$UserGroupService {
   late final String _userId;
 
   @override
-  Stream<List<GroupEntity>> build() async* {
+  Stream<List<GroupEntity>> build() {
     // watch providers
     _groupRepository = ref.watch(groupRepositoryProvider);
     _membersApi = ref.watch(memberApiProvider);
@@ -69,8 +68,7 @@ class UserGroupService extends _$UserGroupService {
     _userId = ref.watch(userIdProvider);
 
     // listen to repository so that updates propagate automatically
-    final stream = _groupRepository.watchUserGroups();
-    yield* stream;
+    return _groupRepository.watchUserGroups();
   }
 
   Future<void> sync(DateTime? lastSeen) async {

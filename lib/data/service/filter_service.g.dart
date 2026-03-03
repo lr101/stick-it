@@ -6,7 +6,7 @@ part of 'filter_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$hiddenUserServiceHash() => r'481c8937f9f6a4871da43e5590cc229ec92d006b';
+String _$hiddenUserServiceHash() => r'0863d6a3843124b05eb671702041ddf89c9935f6';
 
 /// See also [HiddenUserService].
 @ProviderFor(HiddenUserService)
@@ -23,7 +23,7 @@ final hiddenUserServiceProvider =
 
 typedef _$HiddenUserService = Notifier<List<String>>;
 String _$hiddenPostsServiceHash() =>
-    r'bae2a2a873b6ed44bab4a23a4d234c7a6e7bd974';
+    r'0866d069b615508fd00140b418cc92e68d8a27d6';
 
 /// See also [HiddenPostsService].
 @ProviderFor(HiddenPostsService)

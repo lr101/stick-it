@@ -5,6 +5,7 @@ import 'package:buff_lisa/widgets/clickable_names/presentation/clickable_user.da
 import 'package:buff_lisa/widgets/custom_feed/presentation/pop_up_menu_feed.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
@@ -95,7 +96,7 @@ class FeedCardImageHeader extends ConsumerWidget {
                     ],
                   ),
                   if (distance != null) getDistance(),
-                  if (distance == null) getPinLocation(),
+                  if (distance == null && !kIsWeb) getPinLocation(),
                 ],
               ),
             ),
@@ -130,8 +131,8 @@ class FeedCardImageHeader extends ConsumerWidget {
         pin.longitude,
       ),
       builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.requireData.isNotEmpty) {
-          final Placemark first = snapshot.requireData.first;
+        if (snapshot.hasData && snapshot.data != null && snapshot.data!.isNotEmpty) {
+          final Placemark first = snapshot.data!.first;
           String near = "";
           if (first.locality != null) {
             near += first.locality!;
@@ -139,7 +140,7 @@ class FeedCardImageHeader extends ConsumerWidget {
               near += " (${first.isoCountryCode})";
             }
           } else if (first.country != null) {
-            near += first.country!;
+            near += first.country ?? "";
           }
           return Text(
             near,

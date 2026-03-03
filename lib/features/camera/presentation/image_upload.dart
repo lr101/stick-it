@@ -10,6 +10,7 @@ import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/group_tile.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -112,6 +113,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
 
   Future<void> handleApprove() async {
     final group = await ref.watch(cameraSelectedGroupProvider.future);
+    if (group == null) return;
     final pin = PinEntity(
         pinId: const Uuid().v4(),
         latitude: widget.position.latitude,
@@ -124,7 +126,7 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
         keepAlive: true,
         ttl: DateTime.now()
         );
-    ref.read(pinServiceProvider).addPinToGroup(pin, widget.image).then(postUploadActions); // async adding pin
+    ref.read(pinServiceProvider).addPinToGroup(pin, widget.image, showPrompt: true).then(postUploadActions); // async adding pin
     ref.read(cameraGroupIndexProvider.notifier).updateIndex(_groupIndexWhenOpened);
     if (!mounted) return;
     Navigator.of(context).popUntil((route) => route.isFirst);
@@ -132,8 +134,8 @@ class _ImageUploadState extends ConsumerState<ImageUpload> {
 
   Future<void> postUploadActions(String? errorMessage) async {
     await Posthog().screen(screenName: "uploadPin", properties: {"result": errorMessage != null, "error": errorMessage?.toString() ?? ""});
-    if (ref.read(appReviewStateProvider)) {
-      ref.read(appReviewStateProvider.notifier).updateLastReviewDate();
+    if (!kIsWeb && mounted && ref.read(appReviewStateProvider)) {
+      if (mounted) ref.read(appReviewStateProvider.notifier).updateLastReviewDate();
       final InAppReview inAppReview = InAppReview.instance;
       if (await inAppReview.isAvailable()) {
         await inAppReview.requestReview();

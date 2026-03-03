@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +19,9 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final platform = Theme.of(context).platform;
     return dialog(
+      platform,
       Text(title),
       child == null
           ? null
@@ -45,8 +45,8 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  Widget dialog(Widget title, Widget? content, List<Widget> actions) {
-    if (Platform.isIOS) {
+  Widget dialog(TargetPlatform platform, Widget title, Widget? content, List<Widget> actions) {
+    if (platform == TargetPlatform.iOS) {
       return CupertinoAlertDialog(
         title: title,
         content: content,

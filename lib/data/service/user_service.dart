@@ -20,15 +20,14 @@ class UserService extends _$UserService {
   late final GlobalDataDto _global;
 
   @override
-  Stream<UserEntity?> build(String userId) async* {
+  Stream<UserEntity?> build(String userId) {
     _repo = ref.watch(userRepositoryProvider);
     _global = ref.watch(globalDataServiceProvider);
     final userApi = ref.watch(userApiProvider);
 
     _updateRemoteIfMissing(_repo, _global, userApi);
 
-    final stream = _repo.watchById(userId);
-    yield* stream;
+    return _repo.watchById(userId);
     
   }
 

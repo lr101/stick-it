@@ -6,7 +6,7 @@ part of 'pin_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pinByIdHash() => r'1a1e4f501efa48ab7da6797122bd08e222d42fd5';
+String _$pinByIdHash() => r'65aedbfdafccc3b2ff0b72897b6485c3c7b6c3e6';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -144,6 +144,127 @@ class _PinByIdProviderElement
   String get pinId => (origin as PinByIdProvider).pinId;
 }
 
+String _$pinGroupServiceHash() => r'37003f81c4300d8798348010009c40c471231218';
+
+/// See also [pinGroupService].
+@ProviderFor(pinGroupService)
+const pinGroupServiceProvider = PinGroupServiceFamily();
+
+/// See also [pinGroupService].
+class PinGroupServiceFamily extends Family<AsyncValue<List<PinEntity>>> {
+  /// See also [pinGroupService].
+  const PinGroupServiceFamily();
+
+  /// See also [pinGroupService].
+  PinGroupServiceProvider call(String groupId) {
+    return PinGroupServiceProvider(groupId);
+  }
+
+  @override
+  PinGroupServiceProvider getProviderOverride(
+    covariant PinGroupServiceProvider provider,
+  ) {
+    return call(provider.groupId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'pinGroupServiceProvider';
+}
+
+/// See also [pinGroupService].
+class PinGroupServiceProvider
+    extends AutoDisposeFutureProvider<List<PinEntity>> {
+  /// See also [pinGroupService].
+  PinGroupServiceProvider(String groupId)
+    : this._internal(
+        (ref) => pinGroupService(ref as PinGroupServiceRef, groupId),
+        from: pinGroupServiceProvider,
+        name: r'pinGroupServiceProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$pinGroupServiceHash,
+        dependencies: PinGroupServiceFamily._dependencies,
+        allTransitiveDependencies:
+            PinGroupServiceFamily._allTransitiveDependencies,
+        groupId: groupId,
+      );
+
+  PinGroupServiceProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.groupId,
+  }) : super.internal();
+
+  final String groupId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<PinEntity>> Function(PinGroupServiceRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: PinGroupServiceProvider._internal(
+        (ref) => create(ref as PinGroupServiceRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        groupId: groupId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<PinEntity>> createElement() {
+    return _PinGroupServiceProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PinGroupServiceProvider && other.groupId == groupId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, groupId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin PinGroupServiceRef on AutoDisposeFutureProviderRef<List<PinEntity>> {
+  /// The parameter `groupId` of this provider.
+  String get groupId;
+}
+
+class _PinGroupServiceProviderElement
+    extends AutoDisposeFutureProviderElement<List<PinEntity>>
+    with PinGroupServiceRef {
+  _PinGroupServiceProviderElement(super.provider);
+
+  @override
+  String get groupId => (origin as PinGroupServiceProvider).groupId;
+}
+
 String _$pinServiceHash() => r'125f27d3d84ea8c990785b11cf252759f4176706';
 
 /// See also [pinService].
@@ -161,24 +282,6 @@ final pinServiceProvider = Provider<PinService>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PinServiceRef = ProviderRef<PinService>;
-String _$activatedPinsHash() => r'08f0dc0b824ea3827ca6421dde19930763503783';
-
-/// See also [activatedPins].
-@ProviderFor(activatedPins)
-final activatedPinsProvider =
-    AutoDisposeFutureProvider<Set<PinEntity>>.internal(
-      activatedPins,
-      name: r'activatedPinsProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$activatedPinsHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ActivatedPinsRef = AutoDisposeFutureProviderRef<Set<PinEntity>>;
 String _$activatedPinsWithoutLoadingHash() =>
     r'6020447e25360c0eb88bfebca6404816dabdc570';
 
@@ -199,12 +302,12 @@ final activatedPinsWithoutLoadingProvider =
 // ignore: unused_element
 typedef ActivatedPinsWithoutLoadingRef = AutoDisposeProviderRef<Set<PinEntity>>;
 String _$sortedActivatedPinsHash() =>
-    r'27a2653d9890640454aff23540f37a48c7658814';
+    r'9571a043daff84cafee6d95c553d4312091baed7';
 
 /// See also [sortedActivatedPins].
 @ProviderFor(sortedActivatedPins)
 final sortedActivatedPinsProvider =
-    AutoDisposeFutureProvider<List<PinEntity>>.internal(
+    AutoDisposeProvider<AsyncValue<List<PinEntity>>>.internal(
       sortedActivatedPins,
       name: r'sortedActivatedPinsProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -216,7 +319,8 @@ final sortedActivatedPinsProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef SortedActivatedPinsRef = AutoDisposeFutureProviderRef<List<PinEntity>>;
+typedef SortedActivatedPinsRef =
+    AutoDisposeProviderRef<AsyncValue<List<PinEntity>>>;
 String _$sortedGroupPinsHash() => r'b50b036f312a2b0383c9e505a14257fd8cdecfbf';
 
 /// See also [sortedGroupPins].
@@ -338,7 +442,7 @@ class _SortedGroupPinsProviderElement
   String get groupId => (origin as SortedGroupPinsProvider).groupId;
 }
 
-String _$pinUserServiceHash() => r'fae6ae8bf42755812e7fb6157ad47e56454cd776';
+String _$pinUserServiceHash() => r'49a72ac62f22d221b93932fb0672352b9cea57c0';
 
 abstract class _$PinUserService
     extends BuildlessAutoDisposeStreamNotifier<List<PinEntity>> {
@@ -476,32 +580,34 @@ class _PinUserServiceProviderElement
   String get userId => (origin as PinUserServiceProvider).userId;
 }
 
-String _$pinGroupServiceHash() => r'cfea71e6e44811698a17c4c367edbc9cba4063b4';
+String _$pinGroupServiceUnfilteredHash() =>
+    r'5a6c5ebaa1a3c56756f43d65bec9afc0e0babbc5';
 
-abstract class _$PinGroupService
+abstract class _$PinGroupServiceUnfiltered
     extends BuildlessAutoDisposeStreamNotifier<List<PinEntity>> {
   late final String groupId;
 
   Stream<List<PinEntity>> build(String groupId);
 }
 
-/// See also [PinGroupService].
-@ProviderFor(PinGroupService)
-const pinGroupServiceProvider = PinGroupServiceFamily();
+/// See also [PinGroupServiceUnfiltered].
+@ProviderFor(PinGroupServiceUnfiltered)
+const pinGroupServiceUnfilteredProvider = PinGroupServiceUnfilteredFamily();
 
-/// See also [PinGroupService].
-class PinGroupServiceFamily extends Family<AsyncValue<List<PinEntity>>> {
-  /// See also [PinGroupService].
-  const PinGroupServiceFamily();
+/// See also [PinGroupServiceUnfiltered].
+class PinGroupServiceUnfilteredFamily
+    extends Family<AsyncValue<List<PinEntity>>> {
+  /// See also [PinGroupServiceUnfiltered].
+  const PinGroupServiceUnfilteredFamily();
 
-  /// See also [PinGroupService].
-  PinGroupServiceProvider call(String groupId) {
-    return PinGroupServiceProvider(groupId);
+  /// See also [PinGroupServiceUnfiltered].
+  PinGroupServiceUnfilteredProvider call(String groupId) {
+    return PinGroupServiceUnfilteredProvider(groupId);
   }
 
   @override
-  PinGroupServiceProvider getProviderOverride(
-    covariant PinGroupServiceProvider provider,
+  PinGroupServiceUnfilteredProvider getProviderOverride(
+    covariant PinGroupServiceUnfilteredProvider provider,
   ) {
     return call(provider.groupId);
   }
@@ -518,32 +624,32 @@ class PinGroupServiceFamily extends Family<AsyncValue<List<PinEntity>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'pinGroupServiceProvider';
+  String? get name => r'pinGroupServiceUnfilteredProvider';
 }
 
-/// See also [PinGroupService].
-class PinGroupServiceProvider
+/// See also [PinGroupServiceUnfiltered].
+class PinGroupServiceUnfilteredProvider
     extends
         AutoDisposeStreamNotifierProviderImpl<
-          PinGroupService,
+          PinGroupServiceUnfiltered,
           List<PinEntity>
         > {
-  /// See also [PinGroupService].
-  PinGroupServiceProvider(String groupId)
+  /// See also [PinGroupServiceUnfiltered].
+  PinGroupServiceUnfilteredProvider(String groupId)
     : this._internal(
-        () => PinGroupService()..groupId = groupId,
-        from: pinGroupServiceProvider,
-        name: r'pinGroupServiceProvider',
+        () => PinGroupServiceUnfiltered()..groupId = groupId,
+        from: pinGroupServiceUnfilteredProvider,
+        name: r'pinGroupServiceUnfilteredProvider',
         debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
             ? null
-            : _$pinGroupServiceHash,
-        dependencies: PinGroupServiceFamily._dependencies,
+            : _$pinGroupServiceUnfilteredHash,
+        dependencies: PinGroupServiceUnfilteredFamily._dependencies,
         allTransitiveDependencies:
-            PinGroupServiceFamily._allTransitiveDependencies,
+            PinGroupServiceUnfilteredFamily._allTransitiveDependencies,
         groupId: groupId,
       );
 
-  PinGroupServiceProvider._internal(
+  PinGroupServiceUnfilteredProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -556,15 +662,17 @@ class PinGroupServiceProvider
   final String groupId;
 
   @override
-  Stream<List<PinEntity>> runNotifierBuild(covariant PinGroupService notifier) {
+  Stream<List<PinEntity>> runNotifierBuild(
+    covariant PinGroupServiceUnfiltered notifier,
+  ) {
     return notifier.build(groupId);
   }
 
   @override
-  Override overrideWith(PinGroupService Function() create) {
+  Override overrideWith(PinGroupServiceUnfiltered Function() create) {
     return ProviderOverride(
       origin: this,
-      override: PinGroupServiceProvider._internal(
+      override: PinGroupServiceUnfilteredProvider._internal(
         () => create()..groupId = groupId,
         from: from,
         name: null,
@@ -577,14 +685,18 @@ class PinGroupServiceProvider
   }
 
   @override
-  AutoDisposeStreamNotifierProviderElement<PinGroupService, List<PinEntity>>
+  AutoDisposeStreamNotifierProviderElement<
+    PinGroupServiceUnfiltered,
+    List<PinEntity>
+  >
   createElement() {
-    return _PinGroupServiceProviderElement(this);
+    return _PinGroupServiceUnfilteredProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is PinGroupServiceProvider && other.groupId == groupId;
+    return other is PinGroupServiceUnfilteredProvider &&
+        other.groupId == groupId;
   }
 
   @override
@@ -598,23 +710,23 @@ class PinGroupServiceProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin PinGroupServiceRef
+mixin PinGroupServiceUnfilteredRef
     on AutoDisposeStreamNotifierProviderRef<List<PinEntity>> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
-class _PinGroupServiceProviderElement
+class _PinGroupServiceUnfilteredProviderElement
     extends
         AutoDisposeStreamNotifierProviderElement<
-          PinGroupService,
+          PinGroupServiceUnfiltered,
           List<PinEntity>
         >
-    with PinGroupServiceRef {
-  _PinGroupServiceProviderElement(super.provider);
+    with PinGroupServiceUnfilteredRef {
+  _PinGroupServiceUnfilteredProviderElement(super.provider);
 
   @override
-  String get groupId => (origin as PinGroupServiceProvider).groupId;
+  String get groupId => (origin as PinGroupServiceUnfilteredProvider).groupId;
 }
 
 // ignore_for_file: type=lint

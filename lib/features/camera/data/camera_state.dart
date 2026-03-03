@@ -4,6 +4,8 @@ import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -45,12 +47,20 @@ class CameraValues extends _$CameraValues {
     // Watch the controller provider. 
     // This waits for the camera to initialize before running the logic below.
     final controller = await ref.watch(cameraControllerProvider.future);
+    double minZoom = 1;
+    double maxZoom = 1;
 
+    try {
+      minZoom = await controller.getMinZoomLevel();
+      maxZoom = await controller.getMaxZoomLevel();
+    } on PlatformException catch(e) {
+      debugPrint("Zoom not supported on this camera: ${e.message}");
+    }
     // Return the calculated state
     return CameraState(
       ratio: controller.value.aspectRatio,
-      minZoom: await controller.getMinZoomLevel(),
-      maxZoom: await controller.getMaxZoomLevel(),
+      minZoom: minZoom,
+      maxZoom: maxZoom,
     );
   }
 }
@@ -90,11 +100,10 @@ class CameraGroupIndex extends _$CameraGroupIndex {
 }
 
 @riverpod
-Future<GroupEntity> cameraSelectedGroup(Ref ref) async {
+Future<GroupEntity?> cameraSelectedGroup(Ref ref) async {
   final groupIds = ref.watch(groupOrderServiceProvider);
   final groupCameraIndex = ref.watch(cameraGroupIndexProvider);
-  final group =  ref.watch(groupServiceProvider(groupIds[groupCameraIndex]));
-  return group.value!;
+  return await ref.watch(groupServiceProvider(groupIds[groupCameraIndex]).future);
 }
 
 @Riverpod(keepAlive: true)

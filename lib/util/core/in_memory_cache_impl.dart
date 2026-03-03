@@ -4,6 +4,7 @@ import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/util/core/cache_api.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
 import 'package:flutter/foundation.dart';
+import 'package:select_dialog/rxdart/behavior_subject.dart';
 
 abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
 
@@ -12,33 +13,39 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
   final int maxItems;
   final Duration? ttlDuration;
 
-  // Broadcast controller to notify listeners of changes.
-  // It emits the 'isarId' of the changed item, or 'null' for global changes (like clear).
-  final StreamController<int?> _changeNotifier = StreamController<int?>.broadcast();
-  Stream<int?> get cacheChanges => _changeNotifier.stream;
+  final _controller = BehaviorSubject<Map<int, T>>.seeded({});
+  Stream<Map<int, T>> get cacheChanges => _controller.stream;
 
   InMemoryCache({this.maxItems = 100, this.ttlDuration = const Duration(days: 1)});
 
   @override
-  Stream<T?> watchById(String id) async* {
-    final key = fastHash(id);
-    
-    // 1. Fire immediately with the current value
-    yield cache[key];
-    
-    // 2. Yield subsequent changes when this specific key (or a global clear) is broadcast
-    yield* _changeNotifier.stream
-        .where((changedKey) => changedKey == key || changedKey == null)
-        .map((_) => cache[key]);
+  Stream<T?> watchById(String id)  {
+    return cacheChanges.map(
+      (e) => e[fastHash(id)],
+    );
   }
 
   @override
   Future<void> put(T item) async {
-    if (maxItems > 0 && cache.length >= maxItems) {
+    debugPrint(item.isarId.toString() + item.runtimeType.toString());
+    cache[item.isarId] = item.copyWith() as T;
+    _controller.add(Map.of(cache));
+  }
+
+  @override
+  Future<void> putMultiple(Iterable<T> items) async {
+    if (items.isEmpty) return;
+
+    for (final entry in items) {
+      cache[entry.isarId] = entry.copyWith() as T;
+    }
+    
+    if (maxItems > 0 && cache.length > maxItems) {
       await deleteOldestItems();
     }
-    cache[item.isarId] = item;
-    _changeNotifier.add(item.isarId); // Notify listeners of this specific key
+    
+    // 2. Fire exactly ONE event signifying a bulk update (null = global change)
+    _controller.add(Map.of(cache));
   }
 
   @override
@@ -51,15 +58,25 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
     final key = fastHash(id);
     if (cache.containsKey(key)) {
       cache.remove(key);
-      _changeNotifier.add(key); // Notify listeners that this item was removed
+      _controller.add(Map.of(cache));
     }
   }
 
   @override
   Future<void> deleteMultiple(List<String> ids) async {
+    if (ids.isEmpty) return;
+    
+    bool changed = false;
     for (final id in ids) {
-      await delete(id);
+      final key = fastHash(id);
+      if (cache.containsKey(key)) {
+        cache.remove(key);
+        changed = true;
+      }
     }
+    
+    // Only notify once for the whole deletion batch
+    if (changed) _controller.add(Map.of(cache));
   }
 
   @override
@@ -70,56 +87,39 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
   @override
   Future<void> deleteAll() async {
     cache.clear();
-    _changeNotifier.add(null); // Passing null signifies a global wipe to all listeners
+    _controller.add(Map.of(cache));
   }
 
   @override
   Future<List<T?>> getList(List<String> ids) async {
-    final List<T?> result = [];
-    for (final id in ids) {
-      result.add(cache[fastHash(id)]);
-    }
-    return result;
+    return ids.map((id) => cache[fastHash(id)]).toList();
   }
 
-  @override
-  Future<void> putMultiple(Iterable<T> items) async {
-    for (final entry in items) {
-      // Calling put() directly ensures maxItems is respected and the stream is updated
-      await put(entry); 
-    }
-  }
-
-  /// Delete items with the lowest hit count.
-  /// Not included are items with keepAlive == true and items younger than 10% of ttlDuration
   @override
   Future<void> deleteOldestItems() async {
     final entries = cache.entries.toList();
 
-    entries.sort((a, b) {
-      final aHits = a.value.hits;
-      final bHits = b.value.hits;
-      return aHits.compareTo(bHits);
-    });
+    entries.sort((a, b) => a.value.hits.compareTo(b.value.hits));
 
     final itemsToDelete = cache.length - maxItems;
     int itemsDeleted = 0;
     final duration = ttlDuration != null ? (ttlDuration!.inSeconds * 0.1).toInt() : 3600;
     final ttlTime = DateTime.now().subtract(Duration(seconds: duration));
+    
+    bool changed = false;
 
     for (int i = 0; i < entries.length && itemsDeleted < itemsToDelete; i++) {
       final key = entries[i].key;
       final value = cache[key]!;
       if (value.keepAlive == false && value.ttl.isBefore(ttlTime)) {
         cache.remove(key);
-        _changeNotifier.add(key); // Notify listeners of the deleted key
         itemsDeleted++;
+        changed = true;
       }
     }
+    
+    // Notify once for the cleanup
+    if (changed) _controller.add(Map.of(cache));
   }
 
-  /// Closes the broadcast stream to prevent memory leaks when the cache is destroyed.
-  void dispose() {
-    _changeNotifier.close();
-  }
 }

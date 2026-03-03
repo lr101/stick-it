@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/repository/isar_repo.dart';
 import 'package:buff_lisa/util/core/cache_api.dart';
@@ -37,24 +39,14 @@ class GroupRepositoryWeb extends InMemoryCache<GroupEntity> implements IGroupRep
   
   GroupRepositoryWeb();
 
-  @override
-  Stream<List<GroupEntity>> watchUserGroups() async* {
-    // 1. Yield the initial state immediately
-    yield cache.values.where((g) => g.userIsMember == true).toList();
-
-    // 2. Yield updated state whenever the cache emits a change
-    yield* cacheChanges.map((_) {
-      return cache.values.where((g) => g.userIsMember == true).toList();
-    });
+ @override
+  Stream<List<GroupEntity>> watchUserGroups() {
+    return cacheChanges.map((g) => g.values.where((g) => g.userIsMember == true).toList());
   }
 
   @override
-  Stream<List<GroupEntity>> watchAllGroups() async* {
-    // 1. Yield the initial state immediately
-    yield cache.values.toList();
-
-    // 2. Yield updated state whenever the cache emits a change
-    yield* cacheChanges.map((_) => cache.values.toList());
+  Stream<List<GroupEntity>> watchAllGroups()  {
+    return cacheChanges.map((e) => e.values.toList());
   }
 }
 

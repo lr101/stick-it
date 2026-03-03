@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/entity/pin_like_entity.dart';
 import 'package:buff_lisa/data/repository/isar_repo.dart';
@@ -15,8 +17,8 @@ part 'pin_repository.g.dart';
 
 
 abstract class IPinRepository implements CacheApi<PinEntity> {
-  Future<Stream<List<PinEntity>>> getPinsByGroup(String groupId);
-  Future<Stream<List<PinEntity>>> getPinsByUser(String userId);
+  Stream<List<PinEntity>> getPinsByGroup(String groupId);
+  Stream<List<PinEntity>> getPinsByUser(String userId);
   Future<void> deleteByGroupId(String groupId);
   Future<void> replacePin(String oldPinId, PinEntity newPin);
   Future<void> updateKeepAlive(String groupId, bool keepAlive, bool onlySession);
@@ -29,12 +31,12 @@ class PinRepository extends CacheImpl<PinEntity> implements IPinRepository {
   PinRepository({required super.box, required super.isar, super.maxItems, super.ttlDuration});
 
   @override
-  Future<Stream<List<PinEntity>>> getPinsByGroup(String groupId) async {
+  Stream<List<PinEntity>> getPinsByGroup(String groupId) {
     return box.filter().groupFastIdEqualTo(fastHash(groupId)).build().watch(fireImmediately: true);
   }
 
   @override
-  Future<Stream<List<PinEntity>>> getPinsByUser(String userId) async {
+  Stream<List<PinEntity>> getPinsByUser(String userId) {
     return box.filter().creatorFastIdEqualTo(fastHash(userId)).build().watch(fireImmediately: true);
   }
   
@@ -64,37 +66,20 @@ class PinRepositoryWeb extends InMemoryCache<PinEntity> implements IPinRepositor
   PinRepositoryWeb({super.maxItems, super.ttlDuration});
 
   @override
-  Future<Stream<List<PinEntity>>> getPinsByGroup(String groupId) async {
-    final hashedId = fastHash(groupId);
-    
-    return Stream.multi((controller) {
-      // Yield initial values
-      controller.add(cache.values.where((pin) => fastHash(pin.groupId) == hashedId).toList());
-      
-      // Listen to ongoing changes
-      final sub = cacheChanges.listen((_) {
-        controller.add(cache.values.where((pin) => fastHash(pin.groupId) == hashedId).toList());
-      });
-      
-      controller.onCancel = () => sub.cancel();
-    });
+  Stream<List<PinEntity>> getPinsByGroup(String groupId) {
+    return cacheChanges.map(
+      (e) => e.values.where((p) => p.groupId == groupId).toList(),
+    );
   }
 
   @override
-  Future<Stream<List<PinEntity>>> getPinsByUser(String userId) async {
-    final hashedId = fastHash(userId);
-    
-    return Stream.multi((controller) {
-      controller.add(cache.values.where((pin) => fastHash(pin.creator) == hashedId).toList());
-      
-      final sub = cacheChanges.listen((_) {
-        controller.add(cache.values.where((pin) => fastHash(pin.creator) == hashedId).toList());
-      });
-      
-      controller.onCancel = () => sub.cancel();
-    });
+  Stream<List<PinEntity>> getPinsByUser(String userId) {
+    return cacheChanges.map(
+      (e) => e.values.where((p) => p.creator == userId).toList(),
+    );
   }
 
+  
   @override
   Future<void> deleteByGroupId(String groupId) async {
     final keysToRemove = cache.values

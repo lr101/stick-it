@@ -13,16 +13,14 @@ class MemberService extends _$MemberService {
   late final MembersApi _membersApi;
 
   @override
-  Stream<List<MemberEntity>> build(String groupId) async* {
+  Stream<List<MemberEntity>> build(String groupId) {
     _memberRepository = ref.watch(memberRepositoryProvider);
     _membersApi = ref.watch(memberApiProvider);
 
     fetchRemote();
 
     final stream = _memberRepository.watchById(groupId);
-    yield* stream.map(sortMembers);
-
-
+    return stream.map(sortMembers);
   }
 
   Future<void> fetchRemote() async {

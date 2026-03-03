@@ -7,6 +7,7 @@ import 'package:buff_lisa/data/dto/current_user_dto.dart';
 import 'package:buff_lisa/data/dto/global_data_dto.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:openapi/api.dart';
@@ -14,6 +15,62 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'global_data_repository.g.dart';
+
+abstract class ISecureStorage {
+  Future<void> write({required String key, required String value});
+  Future<String?> read({required String key});
+  Future<void> delete({required String key});
+}
+
+class WebSecureStorage implements ISecureStorage {
+  @override
+  Future<void> write({required String key, required String value}) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, value);
+  }
+
+  @override
+  Future<String?> read({required String key}) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key);
+  }
+
+  @override
+  Future<void> delete({required String key}) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(key);
+  }
+}
+
+
+@Riverpod(keepAlive: true)
+ISecureStorage secureStorage(Ref ref) {
+  if (kIsWeb) {
+    return WebSecureStorage();
+  }
+  return MobileSecureStorage();
+}
+
+class MobileSecureStorage implements ISecureStorage {
+  final _storage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+  );
+
+  @override
+  Future<void> write({required String key, required String value}) async {
+    await _storage.write(key: key, value: value);
+  }
+
+  @override
+  Future<String?> read({required String key}) async {
+    return await _storage.read(key: key);
+  }
+
+  @override
+  Future<void> delete({required String key}) async {
+    await _storage.delete(key: key);
+  }
+}
 
 class GlobalDataRepository {
 
@@ -60,7 +117,7 @@ class GlobalDataRepository {
     sharedPreferences = ref.watch(sharedPreferencesProvider);
   }
 
-  static Future<GlobalDataDto> get(SharedPreferences sharedPreferences, FlutterSecureStorage storage) async{
+  static Future<GlobalDataDto> get(SharedPreferences sharedPreferences, ISecureStorage storage) async{
     return GlobalDataDto(
         userId: await storage.read(key: userIdKey),
         refreshToken: await storage.read(key: tokenKey),
@@ -68,7 +125,7 @@ class GlobalDataRepository {
     );
   }
 
-  static Future<CurrentUserDto> getUser(SharedPreferences sharedPreferences, FlutterSecureStorage storage) async{
+  static Future<CurrentUserDto> getUser(SharedPreferences sharedPreferences, ISecureStorage storage) async{
     final prImage = sharedPreferences.getString(profileImageKey);
     final prImageSmall = sharedPreferences.getString(profileImageSmallKey);
     return CurrentUserDto(
@@ -88,7 +145,10 @@ class GlobalDataRepository {
 
   Future<void> logout() async {
     sharedPreferences.clear();
-    ref.watch(flutterSecureStorageProvider).deleteAll();
+    final storage = ref.watch(flutterSecureStorageProvider);
+    await storage.delete(key: usernameKey);
+    await storage.delete(key: userIdKey);
+    await storage.delete(key: tokenKey);
   }
 
   Future<void> login(String username, String userId, String token) async {
@@ -134,4 +194,4 @@ GlobalDataDto globalDataOnce(Ref ref) => throw UnimplementedError();
 CurrentUserDto currentUserOnce(Ref ref) => throw UnimplementedError();
 
 @Riverpod(keepAlive: true)
-FlutterSecureStorage flutterSecureStorage(Ref ref) => throw UnimplementedError();
+ISecureStorage flutterSecureStorage(Ref ref) => throw UnimplementedError();
