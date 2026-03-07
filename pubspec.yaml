@@ -70,7 +70,7 @@ dependencies:
   webview_flutter:
   shared_preferences:
   firebase_messaging:
-  firebase_core: 
+  firebase_core: ^4.4.0
   logger: 
   isar_community: 
   isar_community_flutter_libs: 
