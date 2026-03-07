@@ -175,7 +175,7 @@ final routerProvider = Provider<GoRouter>((ref) => GoRouter(
       name: 'report',
       builder: (context, state) {
         return ReportIssuePage(
-          issueTypes: state.uri.queryParameters['issueTypes'] as List<String>? ?? ["Bug", "Feature Request", "Other"],
+          issueTypes: state.extra as List<String>? ?? ["Bug", "Feature Request", "Other"],
           groupId: state.uri.queryParameters['groupId'],
           userId: state.uri.queryParameters['userId'],
           pinId: state.uri.queryParameters['pinId'],

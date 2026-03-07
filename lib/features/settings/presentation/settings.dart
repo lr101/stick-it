@@ -111,35 +111,27 @@ class _SettingsState extends ConsumerState<Settings> {
                 SettingsTile.navigation(
                   leading: const Icon(Icons.contact_support),
                   title: const Text('Contact developer'),
-                  onPressed: (context) => context.pushNamed("report", queryParameters: {"issueTypes": ["Bug", "Feature Request", "Other"]}),
+                  onPressed: (context) => context.pushNamed("report", extra: ["Bug", "Feature Request", "Other"]),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.document_scanner),
                   title: const Text('Privacy Policy'),
                   onPressed: (context) {
-                    context.pushNamed("web", queryParameters: {
-                          "route": "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",
-                          "title": "Privacy Policy"});
+                    context.pushNamed('web', queryParameters: {'url': "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy", 'title': "Privacy Policy"});
                   },
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.document_scanner),
                   title: const Text('Terms of Service'),
                   onPressed: (context) {
-                    context.pushNamed("web", queryParameters: {
-                          "route": "${ref.watch(globalDataServiceProvider).host}/public/agb",
-                          "title": "Terms of Service"}
-                        );
+                    context.pushNamed('web', queryParameters: {'url': "${ref.watch(globalDataServiceProvider).host}/public/agb", 'title': "Terms of Service"});
                   }
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.document_scanner),
                   title: const Text('OpenStreetMap Copyright'),
                   onPressed: (context) {
-                    context.pushNamed("web", queryParameters: {
-                          "route": "https://www.openstreetmap.org/copyright",
-                          "title": "OpenStreetMap Copyright" }
-                        );
+                    context.pushNamed('web', queryParameters: {'url': "https://www.openstreetmap.org/copyright", 'title': "Terms of Service"});
                   },
                 ),
                 SettingsTile(

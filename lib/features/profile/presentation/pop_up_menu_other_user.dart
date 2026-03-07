@@ -33,7 +33,7 @@ class PopUpMenuOtherUser extends ConsumerWidget {
         onSelected:(value){
           switch (value) {
             case 0: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(userId); context.pop();
-            case 1: context.pushNamed('report', queryParameters: {"issueTypes": const ["Report user"], "userId": userId});
+            case 1: context.pushNamed('report', queryParameters: {"userId": userId}, extra: ["Report user"]);
           }
         },
     );

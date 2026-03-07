@@ -1,4 +1,5 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
+import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,14 +50,18 @@ class ShowWebWidgetState extends ConsumerState<ShowWebWidget> {
 
   Future<void> _performWebRedirect() async {
     // We use ref.read here safely since it's inside an isolated function
-    final host = ref.read(globalDataServiceProvider).host;
     final url = Uri.parse(widget.route);
+    debugPrint(widget.route);
     
     if (await canLaunchUrl(url)) {
       // webOnlyWindowName: '_self' forces it to act as a redirect in the current tab
-      await launchUrl(url, webOnlyWindowName: '_self');
+      await launchUrl(url);
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+      
     } else {
-      Fluttertoast.showToast(msg: "Could not launch URL");
+      CustomErrorSnackBar.message(message: "Failed to open URL: ${widget.route}", type: CustomErrorSnackBarType.error);
     }
   }
 
@@ -64,8 +69,11 @@ class ShowWebWidgetState extends ConsumerState<ShowWebWidget> {
   Widget build(BuildContext context) {
     // On the web, show a simple loading state while the browser executes the redirect
     if (kIsWeb) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+      return Scaffold(
+        appBar: AppBar(
+        title: Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+      ),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -88,9 +96,6 @@ class ShowWebWidgetState extends ConsumerState<ShowWebWidget> {
   }
 
   void copyToClip() {
-    // Always use ref.read in callbacks/onPressed events!
-    final host = ref.read(globalDataServiceProvider).host;
-    
     Clipboard.setData(
       ClipboardData(text: widget.route),
     );

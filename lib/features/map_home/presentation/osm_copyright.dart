@@ -31,7 +31,7 @@ class OsmCopyright extends StatelessWidget {
 
   void _onTap(BuildContext context) {
     context.pushNamed("web", queryParameters: {
-      "route": "https://www.openstreetmap.org/copyright",
+      "url": "https://www.openstreetmap.org/copyright",
       "title": "OpenStreetMap Copyright",
     },);
   }

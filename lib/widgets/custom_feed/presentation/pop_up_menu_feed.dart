@@ -58,9 +58,9 @@ class PopUpMenuFeed extends ConsumerWidget {
         onSelected:(value){
           switch (value) {
             case 0: ref.read(hiddenPostsServiceProvider.notifier).addHiddenPost(pinDto.pinId);
-            case 1: context.pushNamed("report", queryParameters: {"issueTypes": ["Report post"], "pinId": pinDto.pinId});
+            case 1: context.pushNamed("report", queryParameters: {"pinId": pinDto.pinId}, extra: ["Report post"]);
             case 2: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(pinDto.creator);
-            case 3: context.pushNamed("report", queryParameters: {"issueTypes": ["Report user"], "userId": pinDto.creator});
+            case 3: context.pushNamed("report", queryParameters: {"userId": pinDto.creator}, extra: ["Report user"]);
             case 4: _deleteStick(ref, context, pinService);
           }
         },
