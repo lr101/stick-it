@@ -1,11 +1,8 @@
-import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
-import 'package:buff_lisa/features/group_overview/presentation/no_user_group_overview.dart';
-import 'package:buff_lisa/features/group_overview/presentation/user_group_overview.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:openapi/api.dart';
 
 class GroupRankingTile extends ConsumerWidget {
@@ -18,7 +15,6 @@ class GroupRankingTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fontSize = height / 10;
-    final isUserGroups = ref.watch(userGroupServiceProvider.select((e) => e.value?.where((i) => i.groupId == groupDto.groupInfoDto!.id).isNotEmpty));
     return Padding(
       padding:const EdgeInsets.symmetric(vertical: 2.0),
       child: Container(
@@ -28,9 +24,7 @@ class GroupRankingTile extends ConsumerWidget {
         ),
         child: ListTile(
           minTileHeight: height,
-          onTap: () =>  isUserGroups == true
-              ? Routing.to(context, UserGroupOverview(groupId: groupDto.groupInfoDto!.id))
-              : Routing.to(context, NoUserGroupOverview(groupId: groupDto.groupInfoDto!.id)),
+          onTap: () => context.pushNamed('groupOverview', pathParameters: {"id": groupDto.groupInfoDto!.id}),
           trailing: Text("${groupDto.points}p"),
           title: Text(groupDto.groupInfoDto!.name, style: TextStyle(fontSize: fontSize + 8),),
           subtitle:  Align(

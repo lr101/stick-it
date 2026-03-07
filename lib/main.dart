@@ -18,6 +18,7 @@ import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
 import 'package:buff_lisa/firebase_options.dart';
 import 'package:buff_lisa/util/core/cache_migrator.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
@@ -138,23 +139,14 @@ class MyApp extends ConsumerWidget {
     ]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     final theme = MaterialTheme(Theme.of(context).textTheme);
-    final loginUserId = ref.watch(globalDataServiceProvider).userId != null;
-    return MaterialApp(
+    final router = ref.watch(routerProvider);
+    return MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'Mona App',
         themeMode: ref.watch(themeStateProvider),
         darkTheme: theme.dark(),
         theme: theme.light(),
-        initialRoute: loginUserId ? '/home' : '/login',
-        routes: {
-      // 2. Define the root '/' route to handle the web's default launch URL
-      '/': (context) => loginUserId ? const Navigation() : const Auth(),
-      
-      // 3. Keep your named routes for internal navigation
-      '/login': (context) => const Auth(),
-      '/home': (context) => const Navigation(),
-    },
-      navigatorKey: navigatorKey,
+        routerConfig: router,
     );
   }
 }

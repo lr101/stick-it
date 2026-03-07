@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomDialog extends StatelessWidget {
   const CustomDialog({
@@ -31,12 +32,12 @@ class CustomDialog extends StatelessWidget {
             ),
       <Widget>[
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
           child: text1 != null ? Text(text1!) : const SizedBox.shrink(),
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
             onPressed();
           },
           child: Text(text2),

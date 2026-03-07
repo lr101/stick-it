@@ -16,8 +16,8 @@ part 'user_service.g.dart';
 
 @riverpod
 class UserService extends _$UserService {
-  late final IUserRepository _repo;
-  late final GlobalDataDto _global;
+  late IUserRepository _repo;
+  late GlobalDataDto _global;
 
   @override
   Stream<UserEntity?> build(String userId) {

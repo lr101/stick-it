@@ -9,8 +9,8 @@ part 'member_service.g.dart';
 @riverpod
 class MemberService extends _$MemberService {
 
-  late final IMemberRepository _memberRepository;
-  late final MembersApi _membersApi;
+  late IMemberRepository _memberRepository;
+  late MembersApi _membersApi;
 
   @override
   Stream<List<MemberEntity>> build(String groupId) {

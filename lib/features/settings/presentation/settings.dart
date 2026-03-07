@@ -28,6 +28,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:social_media_buttons/social_media_button.dart';
@@ -80,27 +81,27 @@ class _SettingsState extends ConsumerState<Settings> {
                 SettingsTile.navigation(
                   leading: const Icon(Icons.person),
                   title: const Text('Edit profile'),
-                  onPressed: (context) => Routing.to(context, const ChangeProfile()),
+                  onPressed: (context) => context.pushNamed("profileSettings"),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.password),
                   title: const Text('Edit password'),
-                  onPressed: (context) => Routing.to(context, const ChangePassword()),
+                  onPressed: (context) => context.pushNamed("pswSettings"),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.email),
                   title: const Text('Edit email'),
-                  onPressed: (context) => Routing.to(context, const ChangeEmailPage()),
+                  onPressed: (context) => context.pushNamed("emailSettings"),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.hide_image),
                   title: const Text('Edit hidden posts'),
-                  onPressed: (context) => Routing.to(context, const EditHiddenPosts()),
+                  onPressed: (context) => context.pushNamed("hiddenPostSettings"),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.hide_source),
                   title: const Text('Edit hidden users'),
-                  onPressed: (context) => Routing.to(context, const EditHiddenUsers()),
+                  onPressed: (context) => context.pushNamed("hiddenUserSettings"),
                 ),
               ],
             ),
@@ -110,44 +111,35 @@ class _SettingsState extends ConsumerState<Settings> {
                 SettingsTile.navigation(
                   leading: const Icon(Icons.contact_support),
                   title: const Text('Contact developer'),
-                  onPressed: (context) => Routing.to(context, const ReportIssuePage(issueTypes: ["Bug", "Feature Request", "Other"],)),
+                  onPressed: (context) => context.pushNamed("report", queryParameters: {"issueTypes": ["Bug", "Feature Request", "Other"]}),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.document_scanner),
                   title: const Text('Privacy Policy'),
                   onPressed: (context) {
-                    Routing.to(
-                        context,
-                        ShowWebWidget(
-                          route:
-                              "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",
-                          title: "Privacy Policy",
-                        ),);
+                    context.pushNamed("web", queryParameters: {
+                          "route": "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",
+                          "title": "Privacy Policy"});
                   },
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.document_scanner),
                   title: const Text('Terms of Service'),
                   onPressed: (context) {
-                    Routing.to(
-                        context,
-                        ShowWebWidget(
-                          route:
-                              "${ref.watch(globalDataServiceProvider).host}/public/agb",
-                          title: "Terms of Service",
-                        ),);
-                  },
+                    context.pushNamed("web", queryParameters: {
+                          "route": "${ref.watch(globalDataServiceProvider).host}/public/agb",
+                          "title": "Terms of Service"}
+                        );
+                  }
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.document_scanner),
                   title: const Text('OpenStreetMap Copyright'),
                   onPressed: (context) {
-                    Routing.to(
-                        context,
-                        const ShowWebWidget(
-                          route: "https://www.openstreetmap.org/copyright",
-                          title: "OpenStreetMap Copyright",
-                        ),);
+                    context.pushNamed("web", queryParameters: {
+                          "route": "https://www.openstreetmap.org/copyright",
+                          "title": "OpenStreetMap Copyright" }
+                        );
                   },
                 ),
                 SettingsTile(
@@ -155,9 +147,9 @@ class _SettingsState extends ConsumerState<Settings> {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      IconButton(onPressed: () => Routing.clickedOnLink(dotenv.env["DISCORD_INVITE"]), icon: const Icon(Icons.discord), iconSize: 30, color: Theme.of(context).iconTheme.color),
-                      SocialMediaButton.instagram(onTap: () => Routing.clickedOnLink(dotenv.env["INSTAGRAM_URL"]), size: 30, color: Theme.of(context).iconTheme.color,) ,
-                      SocialMediaButton.github(onTap: () => Routing.clickedOnLink(dotenv.env["GITHUB_URL"]), size: 30, color: Theme.of(context).iconTheme.color),
+                      IconButton(onPressed: () => clickedOnLink(dotenv.env["DISCORD_INVITE"]), icon: const Icon(Icons.discord), iconSize: 30, color: Theme.of(context).iconTheme.color),
+                      SocialMediaButton.instagram(onTap: () => clickedOnLink(dotenv.env["INSTAGRAM_URL"]), size: 30, color: Theme.of(context).iconTheme.color,) ,
+                      SocialMediaButton.github(onTap: () => clickedOnLink(dotenv.env["GITHUB_URL"]), size: 30, color: Theme.of(context).iconTheme.color),
                       IconButton(onPressed: () => InAppReview.instance.openStoreListing(appStoreId: dotenv.env["APPSTORE_ID"]), icon: const Icon(Icons.star_border), iconSize: 30, color: Theme.of(context).iconTheme.color),
                     ],
                   ),
@@ -171,7 +163,7 @@ class _SettingsState extends ConsumerState<Settings> {
                   'Delete Account',
                   style: TextStyle(color: Colors.red),
                 ),
-                onPressed: (context) => Routing.to(context, const DeleteAccount()),
+                onPressed: (context) => context.pushNamed("deleteSettings"),
               ),
               SettingsTile.navigation(
                   leading: const Icon(Icons.logout, color: Colors.red),
@@ -189,7 +181,7 @@ class _SettingsState extends ConsumerState<Settings> {
                               await ref.read(globalDataServiceProvider.notifier).logout();
                               await invalidateCache();
                               if (!context.mounted) return;
-                              Routing.toAndDelete(context, const Auth(), "/login");
+                              context.pushNamed("login");
                             },
                           ),),),
             ],),

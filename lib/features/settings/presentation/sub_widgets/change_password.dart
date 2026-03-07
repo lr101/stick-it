@@ -6,6 +6,7 @@ import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_s
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ChangePassword extends ConsumerStatefulWidget {
   const ChangePassword({super.key});
@@ -124,7 +125,7 @@ class _ChangePasswordState extends ConsumerState<ChangePassword> {
       final userId = ref.watch(userIdProvider);
       final result = await ref.read(userServiceProvider(userId).notifier).changeUser(password: _newPasswordController.text);
       if (result == null && mounted) {
-        Navigator.pop(context);
+        context.pop();
       } else if (result != null) {
         CustomErrorSnackBar.message(message: result, type: CustomErrorSnackBarType.error);
       }

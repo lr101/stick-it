@@ -45,7 +45,7 @@ class GroupActiveService extends _$GroupActiveService {
   
   @override
   List<String> build() {
-    final userGroups = ref.watch(userGroupServiceProvider).value ?? [];
+    final userGroups = ref.read(userGroupServiceProvider).value ?? [];
     final orderedIds = ref.watch(groupOrderServiceProvider);
 
     final backendActiveIds = <String>[];

@@ -4,17 +4,13 @@ import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/like_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
-import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
-import 'package:buff_lisa/features/profile/presentation/user_like_icon.dart';
-import 'package:buff_lisa/features/settings/presentation/settings.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
 import 'package:buff_lisa/widgets/slivers/season_tile.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class UserProfile extends ConsumerWidget {
   const UserProfile({super.key});
@@ -41,17 +37,17 @@ class UserProfile extends ConsumerWidget {
                 batchId: currentUser.value!.selectedBatch!,
                 fontSize: 10,
               ),
-              onTap: () => Routing.to(context, const AchievementsPage()),
+              onTap: () => context.pushNamed("achievements"),
             ),
         ],
       ),
       actions: [
         IconButton(
-          onPressed: () => Routing.to(context, const AchievementsPage()),
+          onPressed: () => context.pushNamed("achievements"),
           icon: const Icon(Icons.emoji_events),
         ),
         IconButton(
-          onPressed: () => Routing.to(context, const Settings()),
+          onPressed: () => context.pushNamed("settings"),
           icon: const Icon(Icons.settings),
         ),
       ],
@@ -88,24 +84,6 @@ class UserProfile extends ConsumerWidget {
               ],
             ),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.width * 0.15,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                UserLikeIcon(
-                    likeCount: likes.value?.likeCount, icon: Icons.favorite,),
-                UserLikeIcon(
-                    likeCount: likes.value?.likeLocationCount,
-                    icon: CupertinoIcons.location_solid,),
-                UserLikeIcon(
-                    likeCount: likes.value?.likePhotographyCount,
-                    icon: Icons.photo_camera,),
-                UserLikeIcon(
-                    likeCount: likes.value?.likeArtCount, icon: Icons.brush,),
-              ],
-            ),
-          ),
         ],
       ),
       boxes: [
@@ -124,6 +102,15 @@ class UserProfile extends ConsumerWidget {
         if (currentUser.value?.bestSeason != null)
           SliverToBoxAdapter(
             child: SeasonTile(bestSeason: currentUser.value!.bestSeason!),
+          ),
+        SliverToBoxAdapter(
+            child: ListTile(
+              title: const Text("Likes", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              subtitle: Text(
+                likes.value?.likeCount.toString() ?? "",
+                style: const TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
           ),
       ],
       body: ImageGrid(

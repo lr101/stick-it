@@ -4,6 +4,7 @@ import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dar
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class GroupFilterWidget extends ConsumerWidget {
   const GroupFilterWidget({super.key});
@@ -16,8 +17,9 @@ class GroupFilterWidget extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () => _showFilterSheet(context),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12), 
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 12),
+        color: Colors.transparent,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -184,7 +186,6 @@ class _FilterSheetContentState extends ConsumerState<_FilterSheetContent> {
                 }
 
                 final bool isActive = groupData.isActivated;
-                debugPrint(groupId);
 
                 return Container(
                   key: ValueKey("${groupId}_group_filter_reorder_list"), 

@@ -30,7 +30,6 @@ class SyncingService extends _$SyncingService {
   late IGroupRepository _groupRepository;
   late IPinRepository _pinRepository;
   late String userId;
-  final Mutex _mutex = Mutex();
   final Logger _logger = Logger();
 
 
@@ -41,8 +40,9 @@ class SyncingService extends _$SyncingService {
     _groupRepository = ref.watch(groupRepositoryProvider);
     _pinRepository = ref.watch(pinRepositoryProvider);
     userId = ref.watch(userIdProvider);
-    // ignore: unused_local_variable
-    final user = ref.watch(userServiceProvider(userId)); // keep provider alive
+    ref.listen(lastSeenProvider(GlobalDataRepository.lastSeenKey), (_,__) => ()); // keep provider alive
+    ref.listen(userServiceProvider(userId), (_,__) => ()); // keep provider alive 
+    syncToBackend();
     return SyncState.init;
   }
 
@@ -51,8 +51,6 @@ class SyncingService extends _$SyncingService {
   }
 
   Future<void> syncToBackend() async {
-    if (_mutex.isLocked || state != SyncState.init) return;
-    await _mutex.acquire();
     state = SyncState.syncing;
     const key = GlobalDataRepository.lastSeenKey;
     final lastSeen = ref.read(lastSeenProvider(key));
@@ -72,8 +70,6 @@ class SyncingService extends _$SyncingService {
       state = SyncState.failed;
       _logger.i("Failed syncing with error: $e");
       rethrow;
-    } finally {
-      _mutex.release();
     }
   }
 

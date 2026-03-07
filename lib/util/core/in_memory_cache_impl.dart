@@ -27,7 +27,6 @@ abstract class InMemoryCache<T extends CacheEntity> implements CacheApi<T> {
 
   @override
   Future<void> put(T item) async {
-    debugPrint(item.isarId.toString() + item.runtimeType.toString());
     cache[item.isarId] = item.copyWith() as T;
     _controller.add(Map.of(cache));
   }

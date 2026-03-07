@@ -1,6 +1,7 @@
 import 'package:buff_lisa/data/service/global_data_service.dart'; // Adjust path
 import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
+import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/widgets/group_selector/presentation/group_filter.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
@@ -24,7 +25,9 @@ class TopStatusBar extends ConsumerWidget {
     final user = ref.watch(currentUserProvider).value;
   
 
-    return Container(
+    return GestureDetector(
+      onTap: () => ref.read(navigationStateProvider.notifier).setIndex(4),
+      child: Container(
       height: height,
         decoration: BoxDecoration(
           color: theme.colorScheme.surfaceContainer,
@@ -84,6 +87,6 @@ class TopStatusBar extends ConsumerWidget {
           ],
         ),
       )
-    );
+    ));
   }
 }

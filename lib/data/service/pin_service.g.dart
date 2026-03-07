@@ -442,7 +442,7 @@ class _SortedGroupPinsProviderElement
   String get groupId => (origin as SortedGroupPinsProvider).groupId;
 }
 
-String _$pinUserServiceHash() => r'49a72ac62f22d221b93932fb0672352b9cea57c0';
+String _$pinUserServiceHash() => r'b1fee50e97b8a38a06da008ca1be1648ebbd7bae';
 
 abstract class _$PinUserService
     extends BuildlessAutoDisposeStreamNotifier<List<PinEntity>> {
@@ -581,7 +581,7 @@ class _PinUserServiceProviderElement
 }
 
 String _$pinGroupServiceUnfilteredHash() =>
-    r'5a6c5ebaa1a3c56756f43d65bec9afc0e0babbc5';
+    r'81beef33864bde188a4ce6853c24ca8c73abf8fc';
 
 abstract class _$PinGroupServiceUnfiltered
     extends BuildlessAutoDisposeStreamNotifier<List<PinEntity>> {

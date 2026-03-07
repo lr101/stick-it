@@ -36,17 +36,6 @@ class OtherUserProfile extends ConsumerWidget {
       actions: [
         PopUpMenuOtherUser(userId: userId),
       ],
-      profileQuickViewBoxes: SizedBox(height: MediaQuery.of(context).size.width * 0.15, child:Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-
-          UserLikeIcon(likeCount: likes.value?.likeCount, icon: Icons.favorite),
-          UserLikeIcon(likeCount: likes.value?.likeLocationCount, icon: CupertinoIcons.location_solid),
-          UserLikeIcon(likeCount: likes.value?.likePhotographyCount, icon: Icons.photo_camera),
-          UserLikeIcon(likeCount: likes.value?.likeArtCount, icon: Icons.brush),
-
-        ],
-      ),),
       boxes: [
         SliverToBoxAdapter(
             child: ListTile(
@@ -65,6 +54,15 @@ class OtherUserProfile extends ConsumerWidget {
         if (bestSeason.value != null)
           SliverToBoxAdapter(
             child: SeasonTile(bestSeason: bestSeason.value!),
+          ),
+        SliverToBoxAdapter(
+            child: ListTile(
+              title: const Text("Likes", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              subtitle: Text(
+                likes.value?.likeCount.toString() ?? "",
+                style: const TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
           ),
       ],
       body: ImageGrid(

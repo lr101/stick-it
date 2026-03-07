@@ -15,7 +15,7 @@ extension GetGroupEntityCollection on Isar {
 
 const GroupEntitySchema = CollectionSchema(
   name: r'GroupEntity',
-  id: -2259619910335975057,
+  id: -7820096650727307,
   properties: {
     r'bestSeason': PropertySchema(
       id: 0,

@@ -87,7 +87,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
           if (group?.link != null)
             SliverToBoxAdapter(
                     child: ListTile(
-                      onTap: () => Routing.clickedOnLink(group.link),
+                      onTap: () => clickedOnLink(group.link),
                     title: const Row( children: [Text("External Link", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),), Spacer(), Icon(Icons.open_in_new_rounded)]),
                     subtitle: Text(group!.link ?? "No link set", maxLines: 1, overflow: TextOverflow.ellipsis,),),),
           if (group != null && group.visibility != 0)

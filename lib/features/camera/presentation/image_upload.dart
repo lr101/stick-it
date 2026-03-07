@@ -32,7 +32,7 @@ class ImageUpload extends ConsumerStatefulWidget {
 class _ImageUploadState extends ConsumerState<ImageUpload> {
   final _controller = TextEditingController();
 
-  late final int _groupIndexWhenOpened;
+  late int _groupIndexWhenOpened;
 
   @override
   void initState() {

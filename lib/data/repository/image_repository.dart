@@ -148,15 +148,17 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
 
   @override
   Future<void> delete(String id) async {
-    final isarId = fastHash('${type.name}_$id');
-    final cachedImage = await box.get(isarId);
-    if (cachedImage?.filePath != null) {
-      final file = File(cachedImage!.filePath);
-      if (await file.exists()) {
-        await file.delete();
+    await isar.writeTxn(() async {
+      final isarId = fastHash('${type.name}_$id');
+      final cachedImage = await box.get(isarId);
+      if (cachedImage?.filePath != null) {
+        final file = File(cachedImage!.filePath);
+        if (await file.exists()) {
+          await file.delete();
+        }
       }
-    }
-    await box.delete(isarId);
+      await box.delete(isarId);
+    });
   }
 
   @override

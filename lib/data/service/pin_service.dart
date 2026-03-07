@@ -21,26 +21,29 @@ part 'pin_service.g.dart';
 @riverpod
 class PinUserService extends _$PinUserService {
 
-  late final IPinRepository _pinRepository;
-  late final PinsApi _pinsApi;
-  late final String _userId;
+  late IPinRepository _pinRepository;
+  late PinsApi _pinsApi;
+  late String _userId;
 
   @override
-  Stream<List<PinEntity>> build(String userId) {
+  Stream<List<PinEntity>> build(String userId) async* {
     final hiddenUsers = ref.watch(hiddenUserServiceProvider);
     final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
     _pinRepository = ref.watch(pinRepositoryProvider);
     _pinsApi = ref.watch(pinApiProvider);
     _userId = ref.watch(userIdProvider);
 
-    _remoteFetch();
-
-    final pinStream = _pinRepository.getPinsByUser(userId);
-    return pinStream.map((e) {
+    final pinStream = _pinRepository.getPinsByUser(userId).map((e) {
       e.removeWhere((e) => hiddenUsers.contains(e.creator) || hiddenPosts.contains(e.pinId));
       e.sort((a,b) => b.creationDate.compareTo(a.creationDate));
       return e;
-    }); 
+    });
+
+    yield await pinStream.first;
+
+    await _remoteFetch();
+
+    yield* pinStream;
   }
 
   // update non-user pins
@@ -62,29 +65,37 @@ class PinUserService extends _$PinUserService {
 @riverpod
 Stream<PinEntity?> pinById(Ref ref, String pinId) async* {
   final repo = ref.watch(pinRepositoryProvider);
-  final result = repo.watchById(pinId);
-  if (await result.last == null) {
-    final pin = await  ref.watch(pinApiProvider).getPin(pinId);
-    await repo.put(PinEntity.fromDto(pin!, true));
+  final api = ref.watch(pinApiProvider);
+  final stream = repo.watchById(pinId);
+
+  if (await stream.first == null) {
+    yield null; 
+    final pinDto = await api.getPin(pinId);
+    if (pinDto != null) {
+      await repo.put(PinEntity.fromDto(pinDto, true));
+    }
   }
-  yield* result;
+
+  yield* stream;
 }
 
 @riverpod
 class PinGroupServiceUnfiltered extends _$PinGroupServiceUnfiltered {
 
-  late final IPinRepository _pinRepository;
-  late final PinsApi _pinsApi;
+  late IPinRepository _pinRepository;
+  late PinsApi _pinsApi;
 
   @override
-  Stream<List<PinEntity>> build(String groupId) {
+  Stream<List<PinEntity>> build(String groupId) async* {
     _pinRepository = ref.watch(pinRepositoryProvider);
     _pinsApi = ref.watch(pinApiProvider);
     final userGroups = ref.watch(userGroupServiceProvider).value ?? [];
 
-    Future.microtask(() => _remoteFetch(userGroups));
+    yield await _pinRepository.getPinsByGroup(groupId).first;
 
-    return _pinRepository.getPinsByGroup(groupId);
+    await _remoteFetch(userGroups);
+
+    yield* _pinRepository.getPinsByGroup(groupId);
   }
 
 
@@ -125,9 +136,9 @@ PinService pinService(Ref ref) => PinService(ref: ref);
 class PinService {
 
   final Ref ref;
-  late final IPinRepository _pinRepository;
-  late final IImageRepository _pinImageRepository;
-  late final PinsApi _pinsApi;
+  late IPinRepository _pinRepository;
+  late IImageRepository _pinImageRepository;
+  late PinsApi _pinsApi;
 
   PinService({required this.ref}) {
     _pinRepository = ref.watch(pinRepositoryProvider);
@@ -139,38 +150,43 @@ class PinService {
   Future<String?> addPinToGroup(PinEntity pin, Uint8List image, {bool showPrompt = false}) async {
     try {
       if (showPrompt) CustomErrorSnackBar.loadingMessage(message: "Uploading image");
+      // await ref.read(userGroupServiceProvider.notifier).setIsActive(pin.groupId, true);
       await _addPinToRemote(pin, image);
-      await ref.read(userGroupServiceProvider.notifier).setIsActive(pin.groupId, true);
       if (showPrompt) CustomErrorSnackBar.message(message: "Succesfully uploaded", type: CustomErrorSnackBarType.success);
     } on ApiException catch (e) {
-      if (!kIsWeb) {
-        await _pinRepository.put(pin);
-        await _pinImageRepository.addImage(pin.pinId, image, true);
-        await ref.read(userGroupServiceProvider.notifier).setIsActive(pin.groupId, true);
+      if (showPrompt && kIsWeb) {
+        CustomErrorSnackBar.message(message: "Uploading failed. Not stored offline on web.", type: CustomErrorSnackBarType.error);
+      } else if (showPrompt) {
+        CustomErrorSnackBar.message(message: "Uploading failed. Stored offline.", type: CustomErrorSnackBarType.warning);
       }
-      if (showPrompt) CustomErrorSnackBar.message(message: "Uploading failed", type: CustomErrorSnackBarType.warning);
       return e.message;
     }
     return null;
   }
   
   Future<void> _addPinToRemote(PinEntity pin, Uint8List image) async {
+    await _pinRepository.put(pin);
+    await _pinImageRepository.addImage(pin.pinId, image, true);
     final result = await _pinsApi.createPin(pin.toRequestDto(image));
     final newPin = PinEntity.fromDto(result!, false);
-    await _pinRepository.put(newPin);
+    await _pinRepository.replacePin(pin.pinId, newPin);
+    await _pinImageRepository.delete(pin.pinId);
+    await _pinImageRepository.addImage(newPin.pinId, image, false);
   }
 
-  Future<String?> deletePinFromGroup(String pinId) async {
+  Future<String?> deletePinFromGroup(String pinId, {bool showPrompt = false}) async {
     try {
+      if (showPrompt) CustomErrorSnackBar.loadingMessage(message: "Deleting image");
       final pin = await _pinRepository.get(pinId);
-
-      // only delete from remote server if its not marked as offline
-      // keepAlive being  true means it is not synced to remote
       if (pin != null && pin.keepAlive == false) {
         await _pinsApi.deletePin(pinId);
       }
       await _pinRepository.delete(pinId);
+      if (showPrompt) CustomErrorSnackBar.message(message: "Succesfully deleted", type: CustomErrorSnackBarType.success);
     } on ApiException catch (e) {
+      if (showPrompt) {
+        CustomErrorSnackBar.message(message: "Deleting failed", type: CustomErrorSnackBarType.error);
+      }
       return e.message; 
     }
     return null;

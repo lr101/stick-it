@@ -7,6 +7,7 @@ import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:openapi/api.dart';
 
 class UserRankingTile extends ConsumerWidget {
@@ -34,7 +35,7 @@ class UserRankingTile extends ConsumerWidget {
             border: Border.all(color: isCurrentUser ? Theme.of(context).highlightColor : Colors.transparent),
           ),
           child: ListTile(
-            onTap: () => isCurrentUser ? null : Routing.to(context, OtherUserProfile(userId: user.userInfoDto!.userId),),
+            onTap: () => isCurrentUser ? null : context.pushNamed("userProfile", pathParameters: {"id": user.userInfoDto!.userId}),
             minTileHeight: height,
             title: Text(
               user.userInfoDto!.username,

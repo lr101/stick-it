@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
@@ -221,8 +222,8 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
         final croppedImage = await CustomImagePicker.crop(res: pickedFile, minHeight: 500, minWidth: 500, context: context, initAspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4));
         final exif = await Exif.fromPath(pickedFile.path);
         final coord = await exif.getLatLong();
-        if (!mounted) return;
-        Routing.to(context, SelectLocation(image: croppedImage!, center:  coord != null ? LatLng(coord.latitude, coord.longitude) : null,));
+        if (!mounted ) return;
+        context.pushNamed('selectLocation', queryParameters: {"lat": coord?.latitude, "long": coord?.longitude}, extra: croppedImage);
       } catch (e) {
         CustomErrorSnackBar.message(message: "Could not load or crop image");
         debugPrint(e.toString());
@@ -276,7 +277,7 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
           await controller.pausePreview().catchError((_) {});
         }
         if (!mounted) return;
-        Routing.to(context, ImageUpload(image: bytes, position: pos));
+        context.pushNamed('imageUpload', queryParameters: {"lat": pos.latitude.toString(), "long": pos.longitude.toString()}, extra: bytes);
       } catch (e) {
         if(kDebugMode) print(e);
       } finally {

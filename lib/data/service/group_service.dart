@@ -15,47 +15,43 @@ part 'group_service.g.dart';
 
 @riverpod
 class GroupService extends _$GroupService {
-
-
-  late final IGroupRepository _groupRepository;
-  late final GroupsApi _groupsApi;
-
+  
   @override
   Stream<GroupEntity?> build(String groupId) {
-    _groupRepository = ref.watch(groupRepositoryProvider);
-    _groupsApi = ref.watch(groupApiProvider);
     final userGroups = ref.watch(userGroupServiceProvider).value ?? [];
 
     _remoteFetchIfNotExist(userGroups);
-
-    return _groupRepository.watchById(groupId);
+    return ref.watch(groupRepositoryProvider).watchById(groupId);
   }
 
   Future<void> _remoteFetchIfNotExist(List<GroupEntity> userGroups) async {
-    final group = await _groupRepository.get(groupId);
+    final groupRepository = ref.read(groupRepositoryProvider);
+    final groupsApi = ref.read(groupApiProvider);
+
+    final group = await groupRepository.get(groupId);
     final isUserGroup = userGroups.any((e) => e.groupId == groupId);
+    
     if (group == null) {
-      final groupDto = await _groupsApi.getGroup(groupId);
+      final groupDto = await groupsApi.getGroup(groupId);
       if (groupDto != null) {
-        await _groupRepository.put(GroupEntity.fromGroupDto(groupDto, !isUserGroup, isUserGroup));
+        await groupRepository.put(
+          GroupEntity.fromGroupDto(groupDto, !isUserGroup, isUserGroup)
+        );
       }
     }
   }
-
-
-
 }
 
 
 @riverpod
 class UserGroupService extends _$UserGroupService {
 
-  late final IGroupRepository _groupRepository;
-  late final MembersApi _membersApi;
-  late final GroupsApi _groupsApi;
-  late final IPinRepository _pinRepository;
-  late final PinsApi _pinsApi;
-  late final String _userId;
+  late IGroupRepository _groupRepository;
+  late MembersApi _membersApi;
+  late GroupsApi _groupsApi;
+  late IPinRepository _pinRepository;
+  late PinsApi _pinsApi;
+  late String _userId;
 
   @override
   Stream<List<GroupEntity>> build() {

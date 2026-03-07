@@ -11,6 +11,7 @@ import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_s
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class PopUpMenuFeed extends ConsumerWidget {
 
@@ -57,9 +58,9 @@ class PopUpMenuFeed extends ConsumerWidget {
         onSelected:(value){
           switch (value) {
             case 0: ref.read(hiddenPostsServiceProvider.notifier).addHiddenPost(pinDto.pinId);
-            case 1: Routing.to(context, ReportIssuePage(issueTypes: const ["Report post"], pinId: pinDto.pinId,));
+            case 1: context.pushNamed("report", queryParameters: {"issueTypes": ["Report post"], "pinId": pinDto.pinId});
             case 2: ref.read(hiddenUserServiceProvider.notifier).addHiddenUser(pinDto.creator);
-            case 3: Routing.to(context, ReportIssuePage(issueTypes: const ["Report user"], userId: pinDto.creator,));
+            case 3: context.pushNamed("report", queryParameters: {"issueTypes": ["Report user"], "userId": pinDto.creator});
             case 4: _deleteStick(ref, context, pinService);
           }
         },
@@ -73,9 +74,9 @@ class PopUpMenuFeed extends ConsumerWidget {
         title: "Delete this sticker?",
         cancelText: "Cancel",
         onPressed: () async {
-          final result = await pinService.deletePinFromGroup(pinDto.pinId);
-          if (result != null) {
-            CustomErrorSnackBar.message(message: result);
+          final result = await pinService.deletePinFromGroup(pinDto.pinId, showPrompt: true);
+          if (result == null && Navigator.canPop(context)) {
+            Navigator.pop(context);
           }
     },);
 

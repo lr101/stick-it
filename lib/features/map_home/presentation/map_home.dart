@@ -17,6 +17,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapHome extends ConsumerStatefulWidget {
@@ -139,7 +140,7 @@ class _MapHomeState extends ConsumerState<MapHome>
 
   Future<void> onMarkerTab(Marker marker) async {
     final m = marker as CustomMarkerWidget;
-    Routing.to(context, ViewImage(pin: m.pinDto));
+    context.pushNamed("viewImage", pathParameters: {"id": m.pinDto.pinId});
   }
 
   Future<void> moveToCurrentPosition() async {
