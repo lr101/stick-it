@@ -1,13 +1,7 @@
-import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
-import 'package:buff_lisa/data/service/pin_service.dart';
-import 'package:buff_lisa/widgets/custom_feed/data/feed_item_service.dart';
-import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card.dart';
-import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class EditHiddenPosts extends ConsumerStatefulWidget {
   const EditHiddenPosts({super.key});

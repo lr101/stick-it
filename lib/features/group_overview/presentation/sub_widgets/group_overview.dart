@@ -1,8 +1,8 @@
 import 'package:buff_lisa/data/entity/group_entity.dart';
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_avatar_scaffold.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/image_grid.dart';
@@ -43,7 +43,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
   @override
   Widget build(BuildContext context) {
     final members = ref.watch(memberServiceProvider(widget.groupId));
-    final group = ref.watch(groupByIdProvider(widget.groupId)).value;
+    final group = ref.watch(groupServiceProvider(widget.groupId)).value;
     return CustomAvatarScaffold(
         floatingActionButton: widget.floatingActionButton,
         avatar: ref.watch(groupProfilePictureByIdProvider(widget.groupId)),
@@ -87,7 +87,7 @@ class _GroupOverviewState extends ConsumerState<GroupOverview>
           if (group?.link != null)
             SliverToBoxAdapter(
                     child: ListTile(
-                      onTap: () => Routing.clickedOnLink(group.link),
+                      onTap: () => clickedOnLink(group.link),
                     title: const Row( children: [Text("External Link", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),), Spacer(), Icon(Icons.open_in_new_rounded)]),
                     subtitle: Text(group!.link ?? "No link set", maxLines: 1, overflow: TextOverflow.ellipsis,),),),
           if (group != null && group.visibility != 0)

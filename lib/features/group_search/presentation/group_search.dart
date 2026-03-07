@@ -3,12 +3,11 @@ import 'dart:async';
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/features/group_overview/presentation/no_user_group_overview.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/group_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class GroupSearch extends ConsumerStatefulWidget {
@@ -65,7 +64,7 @@ class _GroupSearchState extends ConsumerState<GroupSearch> {
             ],
           ),
         ),
-        listBuilder: (context, item, index) => GroupTile(groupDto: item, onTap: () => Routing.to(context, NoUserGroupOverview(groupId: item.groupId)),),
+        listBuilder: (context, item, index) => GroupTile(groupDto: item, onTap: () => context.pushNamed('groupOverview', pathParameters: {"id": item.groupId})),
         pagingController: _pagingController,);
   }
 

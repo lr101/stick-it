@@ -21,7 +21,7 @@ class GlobalDataService  extends _$GlobalDataService {
   GlobalDataDto build() => ref.watch(globalDataOnceProvider);
 
   Future<void> logout() async {
-    await ref.watch(flutterSecureStorageProvider).deleteAll();
+    await ref.watch(globalDataRepositoryProvider).logout();
     state = GlobalDataDto(userId: null, refreshToken: null, cameras: state.cameras);
   }
 
@@ -157,7 +157,7 @@ class LastSeen extends _$LastSeen {
   @override
   DateTime? build(String key) {
     final lastSeen = ref.watch(sharedPreferencesProvider).getInt(key);
-    if (lastSeen == null) return null;
+    if (lastSeen == null || kIsWeb) return null;
     return DateTime.fromMicrosecondsSinceEpoch(lastSeen);
   }
 

@@ -2,13 +2,12 @@ import 'package:buff_lisa/data/entity/member_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
-import 'package:buff_lisa/features/profile/presentation/other_user_profile.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/util/types/achievement.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/batch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class MemberTile extends ConsumerWidget {
 
@@ -49,8 +48,7 @@ class MemberTile extends ConsumerWidget {
       return listTile;
     } else {
       return GestureDetector(
-        onTap: () =>
-            Routing.to(context, OtherUserProfile(userId: memberDto.userId)),
+        onTap: () => context.pushNamed("userProfile", pathParameters: {"id": userId}),
         child: listTile,
       );
     }

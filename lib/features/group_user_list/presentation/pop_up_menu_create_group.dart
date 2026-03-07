@@ -1,8 +1,6 @@
-import 'package:buff_lisa/features/group_create/presentation/group_create.dart';
-import 'package:buff_lisa/features/group_search/presentation/group_search.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_menu_item.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PopUpMenuCreateGroup extends StatelessWidget {
 
@@ -28,8 +26,8 @@ class PopUpMenuCreateGroup extends StatelessWidget {
         },
         onSelected:(value){
           switch (value) {
-            case 0: Routing.to(context, const GroupSearch());
-            case 1: Routing.to(context, const GroupCreate());
+            case 0: context.pushNamed("groupSearch");
+            case 1: context.pushNamed("groupCreate");
           }
         },
     );

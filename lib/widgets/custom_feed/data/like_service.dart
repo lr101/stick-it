@@ -15,7 +15,7 @@ class LikeService extends _$LikeService {
 
   final Mutex _mutex = Mutex();
 
-  late final LikesApi _likesApi;
+  late LikesApi _likesApi;
 
   @override
   Future<PinLikeDto> build(String pinId) async {

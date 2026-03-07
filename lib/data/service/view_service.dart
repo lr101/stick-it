@@ -15,7 +15,7 @@ class ViewService extends _$ViewService {
   @override
   ViewState build() {
     final viewState = ref.watch(sharedPreferencesProvider).getString("viewState");
-    return viewState == ViewState.group.name ? ViewState.group : ViewState.personal;
+    return viewState == ViewState.personal.name ? ViewState.personal : ViewState.group;
   }
 
   void toggleViewState() {

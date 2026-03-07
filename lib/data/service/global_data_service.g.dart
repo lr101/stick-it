@@ -40,7 +40,7 @@ final lastKnownLocationProvider = AutoDisposeProvider<LatLng>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LastKnownLocationRef = AutoDisposeProviderRef<LatLng>;
-String _$globalDataServiceHash() => r'068a0253f2a4ce071d3ee9fa866cb93f0bfd4695';
+String _$globalDataServiceHash() => r'aceb2701ab9f36ea7d36b30bf542abe1bd53daf3';
 
 /// See also [GlobalDataService].
 @ProviderFor(GlobalDataService)
@@ -88,7 +88,7 @@ final cameraTorchProvider =
     );
 
 typedef _$CameraTorch = AutoDisposeNotifier<bool>;
-String _$lastSeenHash() => r'49ffd0457aee237d02db60f8158a25a20a8b2e19';
+String _$lastSeenHash() => r'b4f24d4f840100f24821ac2ea1675825cae33292';
 
 /// Copied from Dart SDK
 class _SystemHash {

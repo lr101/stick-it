@@ -1,12 +1,11 @@
 import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/service/group_service.dart';
-import 'package:buff_lisa/features/group_overview/presentation/user_group_overview.dart';
 import 'package:buff_lisa/features/group_user_list/presentation/pop_up_menu_create_group.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_scaffold.dart';
 import 'package:buff_lisa/widgets/tiles/presentation/group_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class UserGroups extends ConsumerStatefulWidget {
@@ -55,7 +54,7 @@ class _UserGroupsState extends ConsumerState<UserGroups> {
   }
 
   void openGroupOverview(GroupEntity group) {
-    Routing.to(context, UserGroupOverview(groupId: group.groupId));
+    context.pushNamed('groupOverview', pathParameters: {"id": group.groupId});
   }
 
 }

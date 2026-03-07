@@ -528,7 +528,7 @@ final currentUserProvider = AutoDisposeFutureProvider<UserEntity?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CurrentUserRef = AutoDisposeFutureProviderRef<UserEntity?>;
-String _$userServiceHash() => r'50294ae60f830669e3aaaf3551202b27bd99ea31';
+String _$userServiceHash() => r'e9ff2e99560088b17c8a2d9ffa8b649d15d9c76e';
 
 abstract class _$UserService
     extends BuildlessAutoDisposeStreamNotifier<UserEntity?> {

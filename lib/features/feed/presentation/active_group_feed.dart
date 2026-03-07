@@ -28,7 +28,7 @@ class _ActiveGroupFeedState extends ConsumerState<ActiveGroupFeed> with Automati
     super.build(context);
     
     ref.listen(sortedActivatedPinsProvider, (previous, next) {
-        next.whenOrNull(data: (data) => _pagingController.refresh());
+         _pagingController.refresh();
     });
 
     return SafeArea(

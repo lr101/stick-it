@@ -34,9 +34,11 @@ class _SubmitButtonState extends State<SubmitButton> {
     try {
       await widget.onPressed();
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
       _m.release();
     }
   }

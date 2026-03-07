@@ -1,11 +1,10 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/features/auth/presentation/auth.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class DeleteAccount extends ConsumerStatefulWidget {
   const DeleteAccount({super.key});
@@ -74,7 +73,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
       if (result != null) {
         CustomErrorSnackBar.message(message: result);
       } else if (mounted) {
-        Routing.toAndDelete(context, const Auth(), "/login");
+        context.goNamed("login");
       }
     }
   }

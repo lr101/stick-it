@@ -5,8 +5,6 @@ import 'package:buff_lisa/features/map_home/data/marker_window_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/circle_with_indicator.dart';
 import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/features/map_home/presentation/ranking_panel.dart';
-import 'package:buff_lisa/features/pin/presentation/view_image.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:buff_lisa/widgets/custom_marker/presentation/custom_marker.dart';
 import 'package:buff_lisa/widgets/group_selector/presentation/mode_selector.dart';
@@ -17,6 +15,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapHome extends ConsumerStatefulWidget {
@@ -81,7 +80,7 @@ class _MapHomeState extends ConsumerState<MapHome>
             ),
             children: [
               CustomTileLayer(),
-              CurrentLocationLayer(),
+              const CurrentLocationLayer(),
               MarkerClusterLayerWidget(
                 options: MarkerClusterLayerOptions(
                   disableClusteringAtZoom: 16,
@@ -139,7 +138,7 @@ class _MapHomeState extends ConsumerState<MapHome>
 
   Future<void> onMarkerTab(Marker marker) async {
     final m = marker as CustomMarkerWidget;
-    Routing.to(context, ViewImage(pin: m.pinDto));
+    context.pushNamed("viewImage", pathParameters: {"id": m.pinDto.pinId});
   }
 
   Future<void> moveToCurrentPosition() async {
