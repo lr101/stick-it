@@ -266,7 +266,7 @@ class ImageRepositoryWeb extends InMemoryCache<ImageEntity> implements IImageRep
     
     if (sizeBefore != cache.length) {
       // Find which keys are no longer in the entity cache and clean them up
-      final keysToRemove = _bytesCache.keys.where((k) => !cache.containsKey(k)).toList();
+      final keysToRemove = _bytesCache.keys.where((k) => !cache.containsKey(fastHash(k))).toList();
       for (final key in keysToRemove) {
         _evictFromFlutterCache(key);
         _bytesCache.remove(key);

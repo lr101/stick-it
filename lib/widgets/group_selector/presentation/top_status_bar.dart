@@ -33,11 +33,11 @@ class TopStatusBar extends ConsumerWidget {
           color: theme.colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(borderRadius),
           border: Border.all(
-            color: theme.colorScheme.outlineVariant.withOpacity(0.3),
+            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),

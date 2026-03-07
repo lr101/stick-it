@@ -166,12 +166,13 @@ class _FilterSheetContentState extends ConsumerState<_FilterSheetContent> {
                 );
               },
               onReorder: (oldIndex, newIndex) {
+                int index = newIndex;
                 if (oldIndex < newIndex) {
-                  newIndex -= 1;
+                  index -= 1;
                 }
                 final List<String> newOrder = List.from(orderedIds);
                 final String item = newOrder.removeAt(oldIndex);
-                newOrder.insert(newIndex, item);
+                newOrder.insert(index, item);
 
                 ref.read(groupOrderServiceProvider.notifier).setList(newOrder);
               },
@@ -191,11 +192,11 @@ class _FilterSheetContentState extends ConsumerState<_FilterSheetContent> {
                   margin: const EdgeInsets.only(bottom: 8),
                   decoration: BoxDecoration(
                     color: isActive 
-                        ? theme.colorScheme.primaryContainer.withOpacity(0.1) 
+                        ? theme.colorScheme.primaryContainer.withValues(alpha: 0.1) 
                         : theme.colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: isActive ? theme.colorScheme.primary.withOpacity(0.5) : Colors.transparent,
+                      color: isActive ? theme.colorScheme.primary.withValues(alpha: 0.5) : Colors.transparent,
                     ),
                   ),
                   child: ListTile(

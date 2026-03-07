@@ -107,4 +107,3 @@ class FeedCardSubtitle extends ConsumerWidget {
     return "now";
   }
 }
-

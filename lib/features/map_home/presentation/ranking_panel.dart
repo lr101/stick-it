@@ -71,7 +71,7 @@ class _RankingSlidingPanelState extends ConsumerState<RankingSlidingPanel> {
               borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
               boxShadow: [
                 BoxShadow( // Fast flick down
-                  color: Colors.black.withOpacity(0.15),
+                  color: Colors.black.withValues(alpha: 0.15),
                   blurRadius: 10,
                   offset: const Offset(0, -4),
                 ),
@@ -190,7 +190,7 @@ class _RankingSlidingPanelState extends ConsumerState<RankingSlidingPanel> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: theme.colorScheme.outlineVariant.withOpacity(0.5),
+              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
