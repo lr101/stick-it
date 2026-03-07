@@ -130,7 +130,7 @@ class _SettingsState extends ConsumerState<Settings> {
                     children: [
                       IconButton(onPressed: () => clickedOnLink(dotenv.env["DISCORD_INVITE"]), icon: const Icon(Icons.discord), iconSize: 30, color: Theme.of(context).iconTheme.color),
                       SocialMediaButton.instagram(onTap: () => clickedOnLink(dotenv.env["INSTAGRAM_URL"]), size: 30, color: Theme.of(context).iconTheme.color,) ,
-                      SocialMediaButton.github(onTap: () => clickedOnLink(dotenv.env["GITHUB_URL"]), size: 30, color: Theme.of(context).iconTheme.color),
+                      SocialMediaButton.github(onTap: () => clickedOnLink(dotenv.env["URL_GITHUB_REPO"]), size: 30, color: Theme.of(context).iconTheme.color),
                       IconButton(onPressed: () => InAppReview.instance.openStoreListing(appStoreId: dotenv.env["APPSTORE_ID"]), icon: const Icon(Icons.star_border), iconSize: 30, color: Theme.of(context).iconTheme.color),
                     ],
                   ),
