@@ -6,7 +6,7 @@ part of 'pin_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pinByIdHash() => r'65aedbfdafccc3b2ff0b72897b6485c3c7b6c3e6';
+String _$pinByIdHash() => r'e9a8f482c6f7f1d5dc6885ad4cad5aecedd68c64';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -442,7 +442,7 @@ class _SortedGroupPinsProviderElement
   String get groupId => (origin as SortedGroupPinsProvider).groupId;
 }
 
-String _$pinUserServiceHash() => r'b1fee50e97b8a38a06da008ca1be1648ebbd7bae';
+String _$pinUserServiceHash() => r'3ceeccb0d3448a828b9fd43e59df617481807386';
 
 abstract class _$PinUserService
     extends BuildlessAutoDisposeStreamNotifier<List<PinEntity>> {
@@ -581,7 +581,7 @@ class _PinUserServiceProviderElement
 }
 
 String _$pinGroupServiceUnfilteredHash() =>
-    r'81beef33864bde188a4ce6853c24ca8c73abf8fc';
+    r'f0a1441e54da70e5463a8f25e1bb84cd733a85ca';
 
 abstract class _$PinGroupServiceUnfiltered
     extends BuildlessAutoDisposeStreamNotifier<List<PinEntity>> {

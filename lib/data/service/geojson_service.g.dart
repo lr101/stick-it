@@ -6,7 +6,7 @@ part of 'geojson_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$districtServiceHash() => r'f5f95be5e72c6c9e24c2b10c14c19187dfae89fe';
+String _$districtServiceHash() => r'825a21b4ad2ff5f4d54c378025bff4996ed12d00';
 
 /// See also [DistrictService].
 @ProviderFor(DistrictService)

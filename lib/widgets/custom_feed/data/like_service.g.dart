@@ -6,7 +6,7 @@ part of 'like_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$likeServiceHash() => r'f67b3cfae766e26979bd2510d6062428dac4d570';
+String _$likeServiceHash() => r'cb881a8da52296e3a465208c319ec9d1df46b57b';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -40,7 +40,7 @@ final groupOrderServiceProvider =
 
 typedef _$GroupOrderService = AutoDisposeNotifier<List<String>>;
 String _$groupActiveServiceHash() =>
-    r'31d474372c4894295c62908658824023187691f0';
+    r'c0d5841b812c687a6e41987bfce5b341ebdc3476';
 
 /// See also [GroupActiveService].
 @ProviderFor(GroupActiveService)
