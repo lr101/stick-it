@@ -11,7 +11,7 @@ part of 'season_entity.dart';
 
 const SeasonEntitySchema = Schema(
   name: r'SeasonEntity',
-  id: -5455682246118402594,
+  id: -6326697000103039,
   properties: {
     r'month': PropertySchema(id: 0, name: r'month', type: IsarType.long),
     r'points': PropertySchema(id: 1, name: r'points', type: IsarType.long),

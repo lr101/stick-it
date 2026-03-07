@@ -6,6 +6,23 @@ part of 'global_data_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$secureStorageHash() => r'b49a379497b072d483b904c0e7f38fa488dfb9a5';
+
+/// See also [secureStorage].
+@ProviderFor(secureStorage)
+final secureStorageProvider = Provider<ISecureStorage>.internal(
+  secureStorage,
+  name: r'secureStorageProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$secureStorageHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SecureStorageRef = ProviderRef<ISecureStorage>;
 String _$globalDataRepositoryHash() =>
     r'52018c90eb3d4d4a9b0367097eaa4aa0695da2f0';
 
@@ -59,11 +76,11 @@ final currentUserOnceProvider = Provider<CurrentUserDto>.internal(
 // ignore: unused_element
 typedef CurrentUserOnceRef = ProviderRef<CurrentUserDto>;
 String _$flutterSecureStorageHash() =>
-    r'4edd8f2d834ddb7fab25cf2e14cd3331d1d94d31';
+    r'3338f964f8b42912c6f2a72b8de29d098ab5feec';
 
 /// See also [flutterSecureStorage].
 @ProviderFor(flutterSecureStorage)
-final flutterSecureStorageProvider = Provider<FlutterSecureStorage>.internal(
+final flutterSecureStorageProvider = Provider<ISecureStorage>.internal(
   flutterSecureStorage,
   name: r'flutterSecureStorageProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -75,6 +92,6 @@ final flutterSecureStorageProvider = Provider<FlutterSecureStorage>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef FlutterSecureStorageRef = ProviderRef<FlutterSecureStorage>;
+typedef FlutterSecureStorageRef = ProviderRef<ISecureStorage>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

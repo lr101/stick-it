@@ -51,7 +51,7 @@ class _FeedCardImageState extends ConsumerState<FeedCardImage> {
 
     final feedImage = FeedSwitchableImage(
       item: widget.item,
-      image: data.value,
+      image: data.valueOrNull,
       likeImage: likeImage,
       onTab: widget.onTab,
     );

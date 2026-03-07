@@ -1,9 +1,7 @@
 import 'package:buff_lisa/data/service/image_service.dart';
 import 'package:buff_lisa/features/camera/data/camera_state.dart';
-import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/map_home/data/map_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_submit_button.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
@@ -13,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
 class SelectLocation extends ConsumerStatefulWidget {
@@ -75,7 +74,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                               flags: InteractiveFlag.pinchZoom |
                                   InteractiveFlag.drag,),
                         ),
-                        children: [CurrentLocationLayer(), CustomTileLayer(), const OsmCopyright()],
+                        children: [const CurrentLocationLayer(), CustomTileLayer(), const OsmCopyright()],
                       ),),
                       // Center Pin Icon
                       Center(
@@ -95,14 +94,17 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                     ],
                   ),),),
 
-                Padding(padding: const EdgeInsets.symmetric(vertical: 10), child: SubmitButton(
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10), 
+                  child: SubmitButton(
                     text: "Next",
-                    onPressed: () =>  Routing.to(
-                    context,
-                    ImageUpload(
-                        image: widget.image,
-                        position: _mapController.camera.center,),),),),
-              ],
-            ),),);
+                    onPressed: () => context.pushNamed('imageUpload', queryParameters: {"lat": _mapController.camera.center.latitude.toString(), "long": _mapController.camera.center.longitude.toString()}, extra: widget.image)
+                  )
+                ),
+              ]
+            )
+            
+        )
+      );
   }
 }

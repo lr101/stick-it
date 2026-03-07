@@ -1,11 +1,11 @@
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/features/auth/data/login_service.dart';
 import 'package:buff_lisa/features/web/presentation/show_web.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class Auth extends ConsumerStatefulWidget  {
 
@@ -77,9 +77,8 @@ class _AuthState extends ConsumerState<Auth> {
                 color: Theme.of(context).colorScheme.onSurface,
               ),
                   recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      Routing.to(context, ShowWebWidget(route: "${ref.watch(globalDataServiceProvider).host}/public/agb",title: "Terms of Service",));
-                    },
+                    ..onTap = ()
+                      => context.pushNamed('web', queryParameters: {'url': "${ref.watch(globalDataServiceProvider).host}/public/agb", 'title': "Terms of Service"})
               ),
               TextSpan(
                   text: ' and ', style: const TextStyle(
@@ -94,9 +93,11 @@ class _AuthState extends ConsumerState<Auth> {
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                         recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Routing.to(context, ShowWebWidget(route: "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy",title: "Privacy Policy",));
-                          },
+                          ..onTap = () 
+                            => context.pushNamed('web', 
+                              queryParameters: {'url': "${ref.watch(globalDataServiceProvider).host}/public/privacy-policy", 'title': "Privacy Policy"}
+                            )
+                        
                     ),
                   ],
               ),

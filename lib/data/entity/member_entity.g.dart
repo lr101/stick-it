@@ -15,7 +15,7 @@ extension GetMembersEntityCollection on Isar {
 
 const MembersEntitySchema = CollectionSchema(
   name: r'MembersEntity',
-  id: 1999767137677458465,
+  id: 168903124958463,
   properties: {
     r'groupId': PropertySchema(id: 0, name: r'groupId', type: IsarType.string),
     r'hits': PropertySchema(id: 1, name: r'hits', type: IsarType.long),
@@ -871,7 +871,7 @@ extension MembersEntityQueryProperty
 
 const MemberEntitySchema = Schema(
   name: r'MemberEntity',
-  id: -4664207191509673807,
+  id: -7485176808581460,
   properties: {
     r'points': PropertySchema(id: 0, name: r'points', type: IsarType.long),
     r'selectedBatch': PropertySchema(

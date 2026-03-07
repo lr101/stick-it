@@ -1,6 +1,4 @@
 
-import 'dart:ffi';
-
 import 'package:buff_lisa/data/config/openapi_config.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
@@ -12,7 +10,6 @@ import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
-import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -28,25 +25,23 @@ enum SyncState {
 @riverpod
 class SyncingService extends _$SyncingService {
 
-  late GroupsApi _groupsApi;
   late PinsApi _pinsApi;
-  late GroupRepository _groupRepository;
-  late PinRepository _pinRepository;
+  late IGroupRepository _groupRepository;
+  late IPinRepository _pinRepository;
   late String userId;
-  final Mutex _mutex = Mutex();
   final Logger _logger = Logger();
 
 
   @override
   SyncState build() {
-    ref.listen(userGroupServiceProvider, (_,__) => ());
-    _groupsApi = ref.watch(groupApiProvider);
+    ref.listen(userGroupServiceProvider, (_,_) => ());
     _pinsApi = ref.watch(pinApiProvider);
     _groupRepository = ref.watch(groupRepositoryProvider);
     _pinRepository = ref.watch(pinRepositoryProvider);
     userId = ref.watch(userIdProvider);
-    // ignore: unused_local_variable
-    final user = ref.watch(userServiceProvider(userId)); // keep provider alive
+    ref.listen(lastSeenProvider(GlobalDataRepository.lastSeenKey), (_,_) => ()); // keep provider alive
+    ref.listen(userServiceProvider(userId), (_,_) => ()); // keep provider alive 
+    syncToBackend();
     return SyncState.init;
   }
 
@@ -55,8 +50,6 @@ class SyncingService extends _$SyncingService {
   }
 
   Future<void> syncToBackend() async {
-    if (_mutex.isLocked || state != SyncState.init) return;
-    await _mutex.acquire();
     state = SyncState.syncing;
     const key = GlobalDataRepository.lastSeenKey;
     final lastSeen = ref.read(lastSeenProvider(key));
@@ -76,8 +69,6 @@ class SyncingService extends _$SyncingService {
       state = SyncState.failed;
       _logger.i("Failed syncing with error: $e");
       rethrow;
-    } finally {
-      _mutex.release();
     }
   }
 
@@ -86,7 +77,7 @@ class SyncingService extends _$SyncingService {
       final remotePins = await _pinsApi.getPinImagesByIds(groupId: groupId, withImage: false, updatedAfter: lastSeen);
       if (remotePins != null) {
         await _pinRepository.deleteMultiple(remotePins.deleted);
-        await _pinRepository.putMultiple(remotePins.items.map((e) => PinEntity.fromDto(e, false)));
+        await _pinRepository.putMultiple(remotePins.items.map((e) => PinEntity.fromDto(e, false)).toList());
       }
     } catch (e) {
       if(kDebugMode) print(e);

@@ -6,11 +6,11 @@ part of 'image_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupProfileRepoHash() => r'a705f33234c6167f4cf0fa01c3b641bb71ced8b5';
+String _$groupProfileRepoHash() => r'86ec3cb97f932a21efc02bc0d07b3e66691d87ab';
 
 /// See also [groupProfileRepo].
 @ProviderFor(groupProfileRepo)
-final groupProfileRepoProvider = Provider<ImageRepository>.internal(
+final groupProfileRepoProvider = Provider<IImageRepository>.internal(
   groupProfileRepo,
   name: r'groupProfileRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,13 +22,13 @@ final groupProfileRepoProvider = Provider<ImageRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef GroupProfileRepoRef = ProviderRef<ImageRepository>;
+typedef GroupProfileRepoRef = ProviderRef<IImageRepository>;
 String _$groupProfileSmallRepoHash() =>
-    r'a84cf6c341798c19e314e8da5bb6f14b6f742cc6';
+    r'17f23a781eb0c5e28aab94881a7fbf4491d87e03';
 
 /// See also [groupProfileSmallRepo].
 @ProviderFor(groupProfileSmallRepo)
-final groupProfileSmallRepoProvider = Provider<ImageRepository>.internal(
+final groupProfileSmallRepoProvider = Provider<IImageRepository>.internal(
   groupProfileSmallRepo,
   name: r'groupProfileSmallRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -40,12 +40,12 @@ final groupProfileSmallRepoProvider = Provider<ImageRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef GroupProfileSmallRepoRef = ProviderRef<ImageRepository>;
-String _$groupPinImageRepoHash() => r'49244c1e82f10f43171eed44cd71430684a27263';
+typedef GroupProfileSmallRepoRef = ProviderRef<IImageRepository>;
+String _$groupPinImageRepoHash() => r'4a29468bba860147ce9cb6765fa61079b82fbab4';
 
 /// See also [groupPinImageRepo].
 @ProviderFor(groupPinImageRepo)
-final groupPinImageRepoProvider = Provider<ImageRepository>.internal(
+final groupPinImageRepoProvider = Provider<IImageRepository>.internal(
   groupPinImageRepo,
   name: r'groupPinImageRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -57,13 +57,13 @@ final groupPinImageRepoProvider = Provider<ImageRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef GroupPinImageRepoRef = ProviderRef<ImageRepository>;
+typedef GroupPinImageRepoRef = ProviderRef<IImageRepository>;
 String _$userImageSmallRepoHash() =>
-    r'5a6322d3fb9b73f167b587e6e2cee16c24af48ca';
+    r'1e7f17c063f4149438ea3fc41d79e75ee8f3e130';
 
 /// See also [userImageSmallRepo].
 @ProviderFor(userImageSmallRepo)
-final userImageSmallRepoProvider = Provider<ImageRepository>.internal(
+final userImageSmallRepoProvider = Provider<IImageRepository>.internal(
   userImageSmallRepo,
   name: r'userImageSmallRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -75,12 +75,12 @@ final userImageSmallRepoProvider = Provider<ImageRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef UserImageSmallRepoRef = ProviderRef<ImageRepository>;
-String _$userImageRepoHash() => r'd3785cda6a9cdd9ca679e658d4c65be702f1c8c4';
+typedef UserImageSmallRepoRef = ProviderRef<IImageRepository>;
+String _$userImageRepoHash() => r'a90cd11fd8cc0c1fb27ad19df18b2ad4bac6d6d5';
 
 /// See also [userImageRepo].
 @ProviderFor(userImageRepo)
-final userImageRepoProvider = Provider<ImageRepository>.internal(
+final userImageRepoProvider = Provider<IImageRepository>.internal(
   userImageRepo,
   name: r'userImageRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -92,13 +92,13 @@ final userImageRepoProvider = Provider<ImageRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef UserImageRepoRef = ProviderRef<ImageRepository>;
+typedef UserImageRepoRef = ProviderRef<IImageRepository>;
 String _$pinImageRepositoryHash() =>
-    r'1fecadd5bb20e520e73e563d5279a40d57561b9c';
+    r'eec2d287bbe170fd025de83d55acaf2cd83600d8';
 
 /// See also [pinImageRepository].
 @ProviderFor(pinImageRepository)
-final pinImageRepositoryProvider = Provider<ImageRepository>.internal(
+final pinImageRepositoryProvider = Provider<IImageRepository>.internal(
   pinImageRepository,
   name: r'pinImageRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -110,6 +110,6 @@ final pinImageRepositoryProvider = Provider<ImageRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef PinImageRepositoryRef = ProviderRef<ImageRepository>;
+typedef PinImageRepositoryRef = ProviderRef<IImageRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

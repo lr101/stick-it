@@ -11,13 +11,10 @@ import 'package:buff_lisa/data/entity/user_like_entity.dart';
 import 'package:buff_lisa/data/entity/user_pins_entity.dart';
 import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:buff_lisa/data/repository/isar_repo.dart';
-import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
-import 'package:buff_lisa/features/auth/presentation/auth.dart';
-import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
-import 'package:buff_lisa/features/navigation/presentation/navigation.dart';
 import 'package:buff_lisa/firebase_options.dart';
 import 'package:buff_lisa/util/core/cache_migrator.dart';
+import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
@@ -29,11 +26,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:isar_community/isar.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
-import 'package:isar_community/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// THIS IS THE START OF THE PROGRAMM
@@ -53,27 +49,31 @@ Future<void> main() async {
   } else {
     await dotenv.load(fileName: ".env.dev");
   }
+  Isar? isar;
 
-
-  await Isar.initializeIsarCore(download: true);
-  final dir =( await getApplicationDocumentsDirectory()).path;
-  final isar = await Isar.open([
-      GroupEntitySchema,
-      ImageEntitySchema,
-      MembersEntitySchema,
-      PinEntitySchema,
-      PinLikeEntitySchema,
-      UserEntitySchema,
-      UserLikeEntitySchema,
-      UserPinsEntitySchema
-    ], directory: dir);
+  if (!kIsWeb) {
+    await Isar.initializeIsarCore(download: true);
+    final dir =( await getApplicationDocumentsDirectory()).path;
+    isar = await Isar.open([
+        GroupEntitySchema,
+        ImageEntitySchema,
+        MembersEntitySchema,
+        PinEntitySchema,
+        PinLikeEntitySchema,
+        UserEntitySchema,
+        UserLikeEntitySchema,
+        UserPinsEntitySchema
+      ], directory: dir);
+  }
   await cacheMigrator.migrate();
 
   try {
-    await FMTCObjectBoxBackend().initialise();
-    final mgmt = const FMTCStore('tileStore').manage;
-    final ready = await mgmt.ready; // Check whether the store exists
-    if (!ready) await mgmt.create(maxLength: 2000); // Create the store
+    if (!kIsWeb) {
+      await FMTCObjectBoxBackend().initialise();
+      final mgmt = const FMTCStore('tileStore').manage;
+      final ready = await mgmt.ready; // Check whether the store exists
+      if (!ready) await mgmt.create(maxLength: 2000); // Create the store
+    }
   } catch (e) {
     if (!kIsWeb) {
       final dir = Directory(
@@ -85,7 +85,13 @@ Future<void> main() async {
         await FMTCObjectBoxBackend().initialise();
       }
   }
-  const storage = FlutterSecureStorage();
+  ISecureStorage storage;
+  if (kIsWeb) {
+    storage = WebSecureStorage();
+  } else {
+    storage = MobileSecureStorage();
+  }
+
   final globalData = await GlobalDataRepository.get(sharedPreferences, storage);
   final globalUserData = await GlobalDataRepository.getUser(sharedPreferences, storage);
   final defaultGroupImage =  (await rootBundle.load('assets/image/pin_border.png')).buffer.asUint8List();
@@ -109,7 +115,7 @@ Future<void> main() async {
           currentUserOnceProvider.overrideWithValue(globalUserData),
           defaultGroupPinImageProvider.overrideWithValue(defaultGroupImage),
           defaultErrorImageProvider.overrideWithValue(defaultErrorImage),
-          isarRepoProvider.overrideWithValue(isar)
+          if(isar != null) isarRepoProvider.overrideWithValue(isar)
         ],
         child: const MyApp(),
     ),
@@ -129,20 +135,14 @@ class MyApp extends ConsumerWidget {
     ]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     final theme = MaterialTheme(Theme.of(context).textTheme);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Mona App',
-      themeMode: ref.watch(themeStateProvider),
-      darkTheme: theme.dark(),
-      theme: theme.light(),
-      initialRoute: ref.watch(globalDataServiceProvider).userId != null ? '/home' : '/login',
-      routes: {
-        '/login': (context) => const Auth(),
-        '/home': (context) {
-          return const Navigation();
-        },
-      },
-      navigatorKey: navigatorKey,
+    final router = ref.watch(routerProvider);
+    return MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'Mona App',
+        themeMode: ref.watch(themeStateProvider),
+        darkTheme: theme.dark(),
+        theme: theme.light(),
+        routerConfig: router,
     );
   }
 }

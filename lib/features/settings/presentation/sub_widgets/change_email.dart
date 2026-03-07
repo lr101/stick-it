@@ -6,6 +6,7 @@ import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_s
 import 'package:buff_lisa/widgets/custom_scaffold/presentation/custom_close_keyboard_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ChangeEmailPage extends ConsumerStatefulWidget {
   const ChangeEmailPage({super.key});
@@ -30,7 +31,7 @@ class _ChangeEmailPageState extends ConsumerState<ChangeEmailPage> {
             message: result, type: CustomErrorSnackBarType.error,);
       } else if (mounted) {
         {
-          Navigator.pop(context);
+          context.pop();
         }
       }
     }

@@ -14,19 +14,17 @@ class HiddenUserService extends _$HiddenUserService {
 
 
   void addHiddenUser(String userId) {
-    final sharedPrefs = ref.watch(sharedPreferencesProvider);
-    final hiddenUsers = sharedPrefs.getStringList('hiddenUsers') ?? [];
-    hiddenUsers.add(userId);
-    sharedPrefs.setStringList('hiddenUsers', hiddenUsers);
-    state = hiddenUsers;
+    final updatedUsers = [...state, userId];
+    final sharedPrefs = ref.read(sharedPreferencesProvider);
+    sharedPrefs.setStringList('hiddenUsers', updatedUsers);
+    state = updatedUsers;
   }
 
   void removeHiddenUser(String userId) {
     final sharedPrefs = ref.watch(sharedPreferencesProvider);
-    final hiddenUsers = sharedPrefs.getStringList('hiddenUsers') ?? [];
-    hiddenUsers.remove(userId);
-    sharedPrefs.setStringList('hiddenUsers', hiddenUsers);
-    state = hiddenUsers;
+    final updatedUsers = state.where((id) => id != userId).toList();
+    sharedPrefs.setStringList('hiddenUsers', updatedUsers);
+    state = updatedUsers;
   }
 
 }
@@ -43,19 +41,15 @@ class HiddenPostsService extends _$HiddenPostsService {
 
 
   void addHiddenPost(String pinId) {
-    final sharedPrefs = ref.watch(sharedPreferencesProvider);
-    final hiddenPosts = sharedPrefs.getStringList('hiddenPosts') ?? [];
-    hiddenPosts.add(pinId);
-    sharedPrefs.setStringList('hiddenPosts', hiddenPosts);
-    state = hiddenPosts;
+    final updatedPosts = [...state, pinId];
+    ref.read(sharedPreferencesProvider).setStringList('hiddenPosts', updatedPosts);
+    state = updatedPosts;
   }
 
-  void removeHiddenPost(String postId) {
-    final sharedPrefs = ref.watch(sharedPreferencesProvider);
-    final hiddenPosts = sharedPrefs.getStringList('hiddenPosts') ?? [];
-    hiddenPosts.remove(postId);
-    sharedPrefs.setStringList('hiddenPosts', hiddenPosts);
-    state = hiddenPosts;
+  void removeHiddenPost(String pinId) {
+    final updatedPosts = state.where((id) => id != pinId).toList();
+    ref.read(sharedPreferencesProvider).setStringList('hiddenPosts', updatedPosts);
+    state = updatedPosts;
   }
 
 }

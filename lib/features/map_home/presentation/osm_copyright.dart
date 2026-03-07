@@ -1,6 +1,5 @@
-import 'package:buff_lisa/features/web/presentation/show_web.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class OsmCopyright extends StatelessWidget {
   const OsmCopyright({super.key});
@@ -29,11 +28,9 @@ class OsmCopyright extends StatelessWidget {
     }
 
   void _onTap(BuildContext context) {
-    Routing.to(
-        context,
-        const ShowWebWidget(
-          route: "https://www.openstreetmap.org/copyright",
-          title: "OpenStreetMap Copyright",
-        ),);
+    context.pushNamed("web", queryParameters: {
+      "url": "https://www.openstreetmap.org/copyright",
+      "title": "OpenStreetMap Copyright",
+    },);
   }
 }

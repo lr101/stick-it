@@ -15,7 +15,7 @@ class DistrictService extends _$DistrictService {
   double _zoom = 0;
   double? _latitudeNew;
   double? _longitudeNew;
-  late final RankingApi rankingApi;
+  late RankingApi rankingApi;
   final Logger _logger = Logger();
   
   // --- Mutex State ---

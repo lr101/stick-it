@@ -1,9 +1,8 @@
 
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/features/profile/presentation/other_user_profile.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ClickableUser extends ConsumerWidget {
 
@@ -16,7 +15,7 @@ class ClickableUser extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isCurrentUser = ref.watch(globalDataServiceProvider.select((e) => e.userId == userId));
     return GestureDetector(
-      onTap: () => isCurrentUser ? null : Routing.to(context, OtherUserProfile(userId: userId)),
+      onTap: () => isCurrentUser ? null : context.pushNamed("userProfile", pathParameters: {"id": userId}),
       child: child,
     );
   }

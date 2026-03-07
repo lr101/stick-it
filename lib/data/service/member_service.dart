@@ -9,20 +9,18 @@ part 'member_service.g.dart';
 @riverpod
 class MemberService extends _$MemberService {
 
-  late final MemberRepository _memberRepository;
-  late final MembersApi _membersApi;
+  late IMemberRepository _memberRepository;
+  late MembersApi _membersApi;
 
   @override
-  Stream<List<MemberEntity>> build(String groupId) async* {
+  Stream<List<MemberEntity>> build(String groupId) {
     _memberRepository = ref.watch(memberRepositoryProvider);
     _membersApi = ref.watch(memberApiProvider);
 
     fetchRemote();
 
-    final stream = await _memberRepository.watchById(groupId);
-    yield* stream.map(sortMembers);
-
-
+    final stream = _memberRepository.watchById(groupId);
+    return stream.map(sortMembers);
   }
 
   Future<void> fetchRemote() async {

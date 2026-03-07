@@ -6,11 +6,11 @@ part of 'group_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupRepositoryHash() => r'f80c83e44ca93b892b90d52d7044c050fec16936';
+String _$groupRepositoryHash() => r'75f55762038875a4d3242bee36bcf7972d2bc854';
 
 /// See also [groupRepository].
 @ProviderFor(groupRepository)
-final groupRepositoryProvider = Provider<GroupRepository>.internal(
+final groupRepositoryProvider = Provider<IGroupRepository>.internal(
   groupRepository,
   name: r'groupRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final groupRepositoryProvider = Provider<GroupRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef GroupRepositoryRef = ProviderRef<GroupRepository>;
+typedef GroupRepositoryRef = ProviderRef<IGroupRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

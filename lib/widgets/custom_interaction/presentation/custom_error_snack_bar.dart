@@ -18,7 +18,6 @@ class CustomErrorSnackBar {
     final snack = SnackBar(
     behavior: SnackBarBehavior.floating, // Make the SnackBar floating
     margin: const EdgeInsets.all(20), // Set margin around the SnackBar
-    duration: const Duration(milliseconds: 4000), // Default duration if not provided
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10)), // Rounded corners for the SnackBar
     content: Row(

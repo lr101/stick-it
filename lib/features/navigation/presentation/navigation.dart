@@ -34,9 +34,6 @@ class _NavigationState extends ConsumerState<Navigation> {
       const ActiveGroupFeed(),
       const UserProfile(),
     ];
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(syncingServiceProvider.notifier).syncToBackend();
-    });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       _logger.d('Got a message whilst in the foreground!');
       _logger.d('Message data: ${message.data}');
@@ -49,7 +46,8 @@ class _NavigationState extends ConsumerState<Navigation> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(syncingServiceProvider); // keep to run sync
+    ref.listen(syncingServiceProvider, (_,_) => ());
+    ref.listen(navigationStateProvider, (prev, next) => _pageController.jumpToPage(next));
     final state = ref.watch(navigationStateProvider);
     return  Scaffold(
         backgroundColor: state == 2 ? Colors.transparent : null,
@@ -90,7 +88,6 @@ class _NavigationState extends ConsumerState<Navigation> {
   }
 
   void onItemTapped(int index) {
-    _pageController.jumpToPage(index);
     ref.read(navigationStateProvider.notifier).setIndex(index);
   }
 }

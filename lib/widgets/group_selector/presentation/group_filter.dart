@@ -1,5 +1,5 @@
+import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/image_service.dart';
-import 'package:buff_lisa/data/service/user_group_service.dart';
 import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dart';
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +16,9 @@ class GroupFilterWidget extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () => _showFilterSheet(context),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12), 
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 12),
+        color: Colors.transparent,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -177,14 +178,13 @@ class _FilterSheetContentState extends ConsumerState<_FilterSheetContent> {
               itemBuilder: (context, index) {
                 final groupId = orderedIds[index];
                 
-                final groupData = ref.watch(groupByIdProvider(groupId)).value;
+                final groupData = ref.watch(groupServiceProvider(groupId)).value;
 
                 if (groupData == null) {
                   return SizedBox.shrink(key: ValueKey('empty_$groupId')); 
                 }
 
                 final bool isActive = groupData.isActivated;
-                debugPrint(groupId);
 
                 return Container(
                   key: ValueKey("${groupId}_group_filter_reorder_list"), 

@@ -2,14 +2,12 @@ import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
-import 'package:buff_lisa/features/group_edit/presentation/group_edit.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/buttons/presentation/custom_menu_item.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
-import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class PopUpMenuLeave extends ConsumerWidget {
 
@@ -44,8 +42,8 @@ class PopUpMenuLeave extends ConsumerWidget {
         onSelected:(value){
           switch (value) {
             case 0: CustomDialog.show(context, acceptText: "Leave", title: isAdmin && numMembers == 1 ? "Delete this group?" : "Leave this group?", onPressed: () => leaveGroup(ref, context));
-            case 1: Routing.to(context, ReportIssuePage(issueTypes: const ["Report Group"], groupId: groupDto.groupId,));
-            case 2: Routing.to(context, GroupEdit(groupDto: groupDto));
+            case 1: context.pushNamed('report', queryParameters: {"issueTypes": const ["Report Group"], "groupId": groupDto.groupId});
+            case 2: context.pushNamed('groupEdit', pathParameters: {"id": groupDto.groupId});
           }
         },
     );

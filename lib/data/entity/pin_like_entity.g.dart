@@ -15,7 +15,7 @@ extension GetPinLikeEntityCollection on Isar {
 
 const PinLikeEntitySchema = CollectionSchema(
   name: r'PinLikeEntity',
-  id: 1679042970606838489,
+  id: 3703909225014163,
   properties: {
     r'hasLike': PropertySchema(id: 0, name: r'hasLike', type: IsarType.bool),
     r'hasLikeArt': PropertySchema(

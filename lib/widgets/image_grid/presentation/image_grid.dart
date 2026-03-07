@@ -1,11 +1,9 @@
 import 'package:buff_lisa/data/entity/pin_entity.dart';
-import 'package:buff_lisa/features/pin/presentation/view_image.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/image_grid/presentation/square_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 
 class ImageGrid extends ConsumerStatefulWidget {
@@ -59,7 +57,7 @@ class _ImageGridState extends ConsumerState<ImageGrid> {
           pinId: item.pinId,
           index: index,
           groupId: item.groupId,
-          onTap: (index) => Routing.to(context, ViewImage(pin: item)),
+          onTap: (index) => context.pushNamed("viewImage", pathParameters: {"id": item.pinId}),
         ),
         noItemsFoundIndicatorBuilder: (context) => Center(
           child: isInitial ? const CircularProgressIndicator() : const Text("No images found"),

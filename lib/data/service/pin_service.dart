@@ -19,9 +19,9 @@ part 'pin_service.g.dart';
 @riverpod
 class PinUserService extends _$PinUserService {
 
-  late final PinRepository _pinRepository;
-  late final PinsApi _pinsApi;
-  late final String _userId;
+  late IPinRepository _pinRepository;
+  late PinsApi _pinsApi;
+  late String _userId;
 
   @override
   Stream<List<PinEntity>> build(String userId) async* {
@@ -31,19 +31,22 @@ class PinUserService extends _$PinUserService {
     _pinsApi = ref.watch(pinApiProvider);
     _userId = ref.watch(userIdProvider);
 
-    _remoteFetch();
-
-    final pinStream = await _pinRepository.getPinsByUser(userId);
-    yield* pinStream.map((e) {
+    final pinStream = _pinRepository.getPinsByUser(userId).map((e) {
       e.removeWhere((e) => hiddenUsers.contains(e.creator) || hiddenPosts.contains(e.pinId));
       e.sort((a,b) => b.creationDate.compareTo(a.creationDate));
       return e;
-    }); 
+    });
+
+    yield await pinStream.first;
+
+    await _remoteFetch();
+
+    yield* pinStream;
   }
 
   // update non-user pins
   Future<void> _remoteFetch() async {
-    final stream = await _pinRepository.getPinsByUser(_userId);
+    final stream = _pinRepository.getPinsByUser(_userId);
     final pins = await stream.first;
     final isUser = this.userId == _userId;
     if (pins.isEmpty && !isUser) {
@@ -60,41 +63,43 @@ class PinUserService extends _$PinUserService {
 @riverpod
 Stream<PinEntity?> pinById(Ref ref, String pinId) async* {
   final repo = ref.watch(pinRepositoryProvider);
-  final result = await repo.watchById(pinId);
-  if (await result.last == null) {
-    final pin = await  ref.watch(pinApiProvider).getPin(pinId);
-    await repo.put(PinEntity.fromDto(pin!, true));
+  final api = ref.watch(pinApiProvider);
+  final stream = repo.watchById(pinId);
+
+  if (await stream.first == null) {
+    yield null; 
+    final pinDto = await api.getPin(pinId);
+    if (pinDto != null) {
+      await repo.put(PinEntity.fromDto(pinDto, true));
+    }
   }
-  yield* result;
+
+  yield* stream;
 }
 
 @riverpod
-class PinGroupService extends _$PinGroupService {
+class PinGroupServiceUnfiltered extends _$PinGroupServiceUnfiltered {
 
-  late final PinRepository _pinRepository;
-  late final PinsApi _pinsApi;
+  late IPinRepository _pinRepository;
+  late PinsApi _pinsApi;
 
   @override
   Stream<List<PinEntity>> build(String groupId) async* {
-    final hiddenUsers = ref.watch(hiddenUserServiceProvider);
-    final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
     _pinRepository = ref.watch(pinRepositoryProvider);
     _pinsApi = ref.watch(pinApiProvider);
     final userGroups = ref.watch(userGroupServiceProvider).value ?? [];
 
-    _remoteFetch(userGroups);
+    yield await _pinRepository.getPinsByGroup(groupId).first;
 
-    final pinStream = await _pinRepository.getPinsByGroup(groupId);
-    yield* pinStream.map((e) {
-      e.removeWhere((e) => hiddenUsers.contains(e.creator) || hiddenPosts.contains(e.pinId));
-      return e;
-    });
+    await _remoteFetch(userGroups);
+
+    yield* _pinRepository.getPinsByGroup(groupId);
   }
 
 
   // update non user groups
   Future<void> _remoteFetch(List<GroupEntity> userGroups) async {
-    final stream = await _pinRepository.getPinsByGroup(groupId);
+    final stream = _pinRepository.getPinsByGroup(groupId);
     final pins = await stream.first;
     final isUserGroup = userGroups.any((e) => e.groupId == groupId);
     if (pins.isEmpty && !isUserGroup) {
@@ -108,6 +113,20 @@ class PinGroupService extends _$PinGroupService {
 
 }
 
+@riverpod
+Future<List<PinEntity>> pinGroupService(Ref ref, String groupId) async {
+  final rawPinsAsync = ref.watch(pinGroupServiceUnfilteredProvider(groupId));
+  final hiddenUsers = ref.watch(hiddenUserServiceProvider);
+  final hiddenPosts = ref.watch(hiddenPostsServiceProvider);
+
+  final pins = rawPinsAsync.value ?? [];
+
+  return pins.where((pin) => 
+    !hiddenUsers.contains(pin.creator) && 
+    !hiddenPosts.contains(pin.pinId)
+  ).toList();
+}
+
 
 @Riverpod(keepAlive: true)
 PinService pinService(Ref ref) => PinService(ref: ref);
@@ -115,67 +134,63 @@ PinService pinService(Ref ref) => PinService(ref: ref);
 class PinService {
 
   final Ref ref;
-  late final PinRepository _pinRepository;
-  late final ImageRepository _pinImageRepository;
-  late final PinsApi _pinsApi;
+  late IPinRepository _pinRepository;
+  late IImageRepository _pinImageRepository;
+  late PinsApi _pinsApi;
 
   PinService({required this.ref}) {
     _pinRepository = ref.watch(pinRepositoryProvider);
     _pinImageRepository = ref.watch(pinImageRepositoryProvider);
     _pinsApi = ref.read(pinApiProvider);
-    ref.listen(userGroupServiceProvider, (_,__) => ());
+    ref.listen(userGroupServiceProvider, (_,_) => ());
   }
 
   Future<String?> addPinToGroup(PinEntity pin, Uint8List image, {bool showPrompt = false}) async {
     try {
       if (showPrompt) CustomErrorSnackBar.loadingMessage(message: "Uploading image");
-      await _pinRepository.put(pin);
-      await _pinImageRepository.addImage(pin.pinId, image, true);
-      await ref.read(userGroupServiceProvider.notifier).setIsActive(pin.groupId, true);
+      // await ref.read(userGroupServiceProvider.notifier).setIsActive(pin.groupId, true);
       await _addPinToRemote(pin, image);
       if (showPrompt) CustomErrorSnackBar.message(message: "Succesfully uploaded", type: CustomErrorSnackBarType.success);
     } on ApiException catch (e) {
-      if (showPrompt) CustomErrorSnackBar.message(message: "Uploading failed", type: CustomErrorSnackBarType.warning);
+      if (showPrompt && kIsWeb) {
+        CustomErrorSnackBar.message(message: "Uploading failed. Not stored offline on web.", type: CustomErrorSnackBarType.error);
+      } else if (showPrompt) {
+        CustomErrorSnackBar.message(message: "Uploading failed. Stored offline.", type: CustomErrorSnackBarType.warning);
+      }
       return e.message;
     }
     return null;
   }
   
   Future<void> _addPinToRemote(PinEntity pin, Uint8List image) async {
-    
+    await _pinRepository.put(pin);
+    await _pinImageRepository.addImage(pin.pinId, image, true);
     final result = await _pinsApi.createPin(pin.toRequestDto(image));
     final newPin = PinEntity.fromDto(result!, false);
     await _pinRepository.replacePin(pin.pinId, newPin);
+    await _pinImageRepository.delete(pin.pinId);
+    await _pinImageRepository.addImage(newPin.pinId, image, false);
   }
 
-  Future<String?> deletePinFromGroup(String pinId) async {
+  Future<String?> deletePinFromGroup(String pinId, {bool showPrompt = false}) async {
     try {
+      if (showPrompt) CustomErrorSnackBar.loadingMessage(message: "Deleting image");
       final pin = await _pinRepository.get(pinId);
-
-      // only delete from remote server if its not marked as offline
-      // keepAlive being true means it is not synced to remote
       if (pin != null && pin.keepAlive == false) {
         await _pinsApi.deletePin(pinId);
       }
       await _pinRepository.delete(pinId);
+      if (showPrompt) CustomErrorSnackBar.message(message: "Succesfully deleted", type: CustomErrorSnackBarType.success);
     } on ApiException catch (e) {
-      return e.message;
+      if (showPrompt) {
+        CustomErrorSnackBar.message(message: "Deleting failed", type: CustomErrorSnackBarType.error);
+      }
+      return e.message; 
     }
     return null;
 
   }
 
-}
-
-@riverpod
-Future<Set<PinEntity>> activatedPins(Ref ref) async {
-  final groups = await ref.watch(activeGroupsProvider.future);
-  final pins = <PinEntity>{};
-  for (final group in groups) {
-    final p = await ref.watch(pinGroupServiceProvider(group.groupId).future);
-    pins.addAll(p);
-  }
-  return pins;
 }
 
 @riverpod
@@ -199,10 +214,20 @@ Set<PinEntity> activatedPinsWithoutLoading(Ref ref) {
 }
 
 @riverpod
-Future<List<PinEntity>> sortedActivatedPins(Ref ref) async {
-  final value = ref.watch(activatedPinsProvider).value?.toList() ?? [];
-  value.sort((a, b) => b.creationDate.compareTo(a.creationDate));
-  return value;
+AsyncValue<List<PinEntity>> sortedActivatedPins(Ref ref) {
+  // Watch the groups. If they change, this whole function runs again.
+  final groups = ref.watch(activeGroupsProvider).valueOrNull ?? {};
+  final pins = <PinEntity>[];
+
+  for (final group in groups) {
+    final p = ref.watch(pinGroupServiceProvider(group.groupId)).valueOrNull ?? [];
+    pins.addAll(p);
+  }
+
+  // Sort the newly combined list
+  pins.sort((a, b) => b.creationDate.compareTo(a.creationDate));
+  
+  return AsyncData(pins);
 }
 
 @riverpod

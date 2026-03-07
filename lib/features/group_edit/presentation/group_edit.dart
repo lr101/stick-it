@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/member_service.dart';
@@ -13,9 +12,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart' as api;
 
 class GroupEdit extends ConsumerStatefulWidget {
-  const GroupEdit({super.key, required this.groupDto});
+  const GroupEdit({super.key, required this.groupid});
 
-  final GroupEntity groupDto;
+  final String groupid;
 
   @override
   ConsumerState<GroupEdit> createState() => _GroupEditState();
@@ -24,11 +23,13 @@ class GroupEdit extends ConsumerStatefulWidget {
 class _GroupEditState extends ConsumerState<GroupEdit> {
   @override
   Widget build(BuildContext context) {
+    final groupDto = ref.watch(groupServiceProvider(widget.groupid)).valueOrNull;
     final global = ref.watch(globalDataServiceProvider);
     final adminId = ref.watch(groupEditServiceProvider);
+    if (groupDto == null) return const Center(child: CircularProgressIndicator(),);
     return GroupEditTemplate(
-        groupDto: widget.groupDto,
-        title: "Edit group ${widget.groupDto.name}",
+        groupDto: groupDto,
+        title: "Edit group ${groupDto.name}",
         onSubmit:
             (name, description, link, profileImage, visibility) async {
           final result = await ref
@@ -41,7 +42,7 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
                       link: link,
                       visibility: visibility,
                       groupAdmin: adminId,),
-                  widget.groupDto.groupId,);
+                  groupDto.groupId,);
           if (result == null && context.mounted) {
             Navigator.of(context).pop();
           } else if (result != null){
@@ -66,7 +67,7 @@ class _GroupEditState extends ConsumerState<GroupEdit> {
                           isExpanded: true,
                           items: ref
                                   .watch(
-                                      memberServiceProvider(widget.groupDto.groupId),)
+                                      memberServiceProvider(groupDto.groupId),)
                                   .value?.map((e) =>
                                               DropdownMenuItem<String>(
                                                   value: e.userId,

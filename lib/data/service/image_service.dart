@@ -12,45 +12,45 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'image_service.g.dart';
 
 @riverpod
-Stream<Uint8List?> getUserProfile(Ref ref, String userId) async* {
+Stream<Uint8List?> getUserProfile(Ref ref, String userId) {
   final repo = ref.watch(userImageRepoProvider);
   final isUser = ref.watch(userIdProvider) == userId;
-  await repo.fetchImage(userId, isUser);
-  yield* repo.watchImageBytes(userId);
+  repo.fetchImage(userId, isUser); // async
+  return repo.watchImageBytes(userId);
 }
 
 @riverpod
-Stream<Uint8List?> getUserProfileSmall(Ref ref, String userId) async* {
+Stream<Uint8List?> getUserProfileSmall(Ref ref, String userId)  {
   final repo = ref.watch(userImageSmallRepoProvider);
   final isUser = ref.watch(userIdProvider) == userId;
-  await repo.fetchImage(userId, isUser);
-  yield* repo.watchImageBytes(userId);
+  repo.fetchImage(userId, isUser);
+  return repo.watchImageBytes(userId);
 }
 
 @riverpod
-Stream<Uint8List?> groupProfilePictureById(Ref ref, String groupId) async* {
-  final userGroup = await ref.watch(userGroupServiceProvider.selectAsync((e) => e.any((f) => f.groupId == groupId)));
+Stream<Uint8List?> groupProfilePictureById(Ref ref, String groupId)  {
+  final userGroup = ref.watch(userGroupServiceProvider.select((e) => e.value?.any((f) => f.groupId == groupId)));
   final repo = ref.watch(groupProfileRepoProvider);
-  await repo.fetchImage(groupId, userGroup);
-  yield* repo.watchImageBytes(groupId);
+  if (userGroup != null) repo.fetchImage(groupId, userGroup);
+  return repo.watchImageBytes(groupId);
 }
 
 
 @riverpod
-Stream<Uint8List?> groupProfilePictureSmallById(Ref ref, String groupId) async* {
-  final userGroup = await ref.watch(userGroupServiceProvider.selectAsync((e) => e.any((f) => f.groupId == groupId)));
+Stream<Uint8List?> groupProfilePictureSmallById(Ref ref, String groupId)  {
+  final userGroup = ref.watch(userGroupServiceProvider.select((e) => e.value?.any((f) => f.groupId == groupId)));
   final repo = ref.watch(groupProfileRepoProvider);
-  await repo.fetchImage(groupId, userGroup);
-  yield* repo.watchImageBytes(groupId);
+  if (userGroup != null) repo.fetchImage(groupId, userGroup);
+  return repo.watchImageBytes(groupId);
 }
 
 
 @riverpod
-Stream<Uint8List?> groupPinImageById(Ref ref, String groupId) async* {
-  final userGroup = await ref.watch(userGroupServiceProvider.selectAsync((e) => e.any((f) => f.groupId == groupId)));
+Stream<Uint8List?> groupPinImageById(Ref ref, String groupId)  {
+  final userGroup = ref.watch(userGroupServiceProvider.select((e) => e.value?.any((f) => f.groupId == groupId)));
   final repo = ref.watch(groupPinImageRepoProvider);
-  await repo.fetchImage(groupId, userGroup);
-  yield* repo.watchImageBytes(groupId);
+  if (userGroup != null) repo.fetchImage(groupId, userGroup);
+  return repo.watchImageBytes(groupId);
 }
 
 class PinImageInfo {
@@ -61,7 +61,7 @@ class PinImageInfo {
 }
 
 @riverpod
-Stream<PinImageInfo?> getPinImageInfo(Ref ref, String pinId) async* {
+Stream<PinImageInfo?> getPinImageInfo(Ref ref, String pinId) async*  {
   final repo = ref.watch(pinImageRepositoryProvider);
   await repo.fetchImage(pinId, false);
   yield* repo.watchImageBytes(pinId).asyncMap((e) async {
