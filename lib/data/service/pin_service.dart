@@ -3,13 +3,11 @@ import 'package:buff_lisa/data/entity/group_entity.dart';
 import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/repository/image_repository.dart';
 import 'package:buff_lisa/data/repository/pin_repository.dart';
-import 'package:buff_lisa/data/repository/user_pins_repository.dart';
 import 'package:buff_lisa/data/service/filter_service.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/view_service.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:openapi/api.dart';
@@ -144,7 +142,7 @@ class PinService {
     _pinRepository = ref.watch(pinRepositoryProvider);
     _pinImageRepository = ref.watch(pinImageRepositoryProvider);
     _pinsApi = ref.read(pinApiProvider);
-    ref.listen(userGroupServiceProvider, (_,__) => ());
+    ref.listen(userGroupServiceProvider, (_,_) => ());
   }
 
   Future<String?> addPinToGroup(PinEntity pin, Uint8List image, {bool showPrompt = false}) async {

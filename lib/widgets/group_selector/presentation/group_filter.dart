@@ -4,7 +4,6 @@ import 'package:buff_lisa/widgets/group_selector/service/group_order_service.dar
 import 'package:buff_lisa/widgets/round_image/presentation/round_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class GroupFilterWidget extends ConsumerWidget {
   const GroupFilterWidget({super.key});

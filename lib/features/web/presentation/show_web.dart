@@ -1,12 +1,11 @@
-import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:url_launcher/url_launcher.dart'; // Ensure you add this package
+import 'package:webview_flutter/webview_flutter.dart';
 
 class ShowWebWidget extends ConsumerStatefulWidget {
   const ShowWebWidget({super.key, required this.route, required this.title});

@@ -121,7 +121,7 @@ class _RateLimitedAuthClient extends http.BaseClient {
       }
 
       // 3. Send the request
-      debugPrint("---------------------->>>>>>> ${request.toString()}");
+      debugPrint("---------------------->>>>>>> $request");
       final response = await inner.send(request);
 
       // 4. Rate-limit delay (150ms) to bypass CrowdSec probing heuristics

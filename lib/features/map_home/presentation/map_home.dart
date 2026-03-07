@@ -5,8 +5,6 @@ import 'package:buff_lisa/features/map_home/data/marker_window_state.dart';
 import 'package:buff_lisa/features/map_home/presentation/circle_with_indicator.dart';
 import 'package:buff_lisa/features/map_home/presentation/osm_copyright.dart';
 import 'package:buff_lisa/features/map_home/presentation/ranking_panel.dart';
-import 'package:buff_lisa/features/pin/presentation/view_image.dart';
-import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/widgets/custom_map_setup/presentation/custom_tile_layer.dart';
 import 'package:buff_lisa/widgets/custom_marker/presentation/custom_marker.dart';
 import 'package:buff_lisa/widgets/group_selector/presentation/mode_selector.dart';
@@ -82,7 +80,7 @@ class _MapHomeState extends ConsumerState<MapHome>
             ),
             children: [
               CustomTileLayer(),
-              CurrentLocationLayer(),
+              const CurrentLocationLayer(),
               MarkerClusterLayerWidget(
                 options: MarkerClusterLayerOptions(
                   disableClusteringAtZoom: 16,

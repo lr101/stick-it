@@ -74,7 +74,7 @@ class _SelectLocationState extends ConsumerState<SelectLocation> {
                               flags: InteractiveFlag.pinchZoom |
                                   InteractiveFlag.drag,),
                         ),
-                        children: [CurrentLocationLayer(), CustomTileLayer(), const OsmCopyright()],
+                        children: [const CurrentLocationLayer(), CustomTileLayer(), const OsmCopyright()],
                       ),),
                       // Center Pin Icon
                       Center(

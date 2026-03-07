@@ -69,7 +69,7 @@ class FeedCardSubtitle extends ConsumerWidget {
                     ),
               )),
               loading: () => const SizedBox.shrink(),
-              error: (_, __) => const Text("Unknown Group"),
+              error: (_, _) => const Text("Unknown Group"),
             ),
             
             // Separator dot

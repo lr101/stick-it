@@ -15,6 +15,8 @@ RUN flutter pub get
 # Copy the rest of your app's source code
 COPY . .
 
+RUN dart run fix_isar_web.dart
+
 # Build the web app for production
 RUN flutter build web --release
 

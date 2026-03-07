@@ -1,5 +1,4 @@
 
-import 'package:buff_lisa/data/entity/pin_entity.dart';
 import 'package:buff_lisa/data/service/pin_service.dart';
 import 'package:buff_lisa/widgets/custom_feed/presentation/feed_card_image.dart';
 import 'package:flutter/material.dart';

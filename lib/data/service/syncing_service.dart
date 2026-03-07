@@ -10,7 +10,6 @@ import 'package:buff_lisa/data/service/group_service.dart';
 import 'package:buff_lisa/data/service/user_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
-import 'package:mutex/mutex.dart';
 import 'package:openapi/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -35,13 +34,13 @@ class SyncingService extends _$SyncingService {
 
   @override
   SyncState build() {
-    ref.listen(userGroupServiceProvider, (_,__) => ());
+    ref.listen(userGroupServiceProvider, (_,_) => ());
     _pinsApi = ref.watch(pinApiProvider);
     _groupRepository = ref.watch(groupRepositoryProvider);
     _pinRepository = ref.watch(pinRepositoryProvider);
     userId = ref.watch(userIdProvider);
-    ref.listen(lastSeenProvider(GlobalDataRepository.lastSeenKey), (_,__) => ()); // keep provider alive
-    ref.listen(userServiceProvider(userId), (_,__) => ()); // keep provider alive 
+    ref.listen(lastSeenProvider(GlobalDataRepository.lastSeenKey), (_,_) => ()); // keep provider alive
+    ref.listen(userServiceProvider(userId), (_,_) => ()); // keep provider alive 
     syncToBackend();
     return SyncState.init;
   }

@@ -46,7 +46,7 @@ class _NavigationState extends ConsumerState<Navigation> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(syncingServiceProvider, (_,__) => ());
+    ref.listen(syncingServiceProvider, (_,_) => ());
     ref.listen(navigationStateProvider, (prev, next) => _pageController.jumpToPage(next));
     final state = ref.watch(navigationStateProvider);
     return  Scaffold(
