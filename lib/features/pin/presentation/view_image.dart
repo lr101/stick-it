@@ -28,8 +28,8 @@ class ViewImage extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 9),
           child: pin.whenOrNull(
-            data: (p) => p != null ? FeedCardImage(item: p , maxHeight: maxHeight, maxWidth: maxWidth ) : const CircularProgressIndicator())
-            ?? const CircularProgressIndicator()
+            data: (p) => p != null ? FeedCardImage(item: p , maxHeight: maxHeight, maxWidth: maxWidth ) : const Center(child: CircularProgressIndicator()))
+            ?? const Center(child: CircularProgressIndicator())
         )
       )
     );

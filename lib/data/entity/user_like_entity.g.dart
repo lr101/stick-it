@@ -15,7 +15,7 @@ extension GetUserLikeEntityCollection on Isar {
 
 const UserLikeEntitySchema = CollectionSchema(
   name: r'UserLikeEntity',
-  id: -5831107588555146,
+  id: -5293057070121516863,
   properties: {
     r'hits': PropertySchema(id: 0, name: r'hits', type: IsarType.long),
     r'keepAlive': PropertySchema(

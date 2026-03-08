@@ -32,12 +32,12 @@ class PinRepository extends CacheImpl<PinEntity> implements IPinRepository {
 
   @override
   Stream<List<PinEntity>> getPinsByGroup(String groupId) {
-    return box.filter().groupFastIdEqualTo(fastHash(groupId)).build().watch(fireImmediately: true);
+    return box.filter().groupFastIdEqualTo(fastHash(groupId)).build().watch(fireImmediately: true).asBroadcastStream();
   }
 
   @override
   Stream<List<PinEntity>> getPinsByUser(String userId) {
-    return box.filter().creatorFastIdEqualTo(fastHash(userId)).build().watch(fireImmediately: true);
+    return box.filter().creatorFastIdEqualTo(fastHash(userId)).build().watch(fireImmediately: true).asBroadcastStream();
   }
   
   @override

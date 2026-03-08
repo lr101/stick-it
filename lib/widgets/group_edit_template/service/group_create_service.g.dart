@@ -26,7 +26,7 @@ final createGroupProfileImageProvider =
 // ignore: unused_element
 typedef CreateGroupProfileImageRef = AutoDisposeProviderRef<Uint8List?>;
 String _$groupCreateServiceHash() =>
-    r'1d6b6d08ea2880b3abcca0d5b9618c020363d07b';
+    r'df6cf154192216d2368f44ccbb6e535c6c4382f2';
 
 /// See also [GroupCreateService].
 @ProviderFor(GroupCreateService)
