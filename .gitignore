@@ -55,7 +55,6 @@ app.*.map.json
 /.env
 /RELEASES/ad
 /change_identifier.sh
-/web/
 /windows/
 /.env.dev
 /dotenv.env
