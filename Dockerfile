@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Copy pubspec files first to leverage Docker cache for dependencies
 COPY pubspec.* ./
-COPY api/* ./api
+COPY api/* ./api/
 RUN flutter pub get
 
 # Copy the rest of your app's source code

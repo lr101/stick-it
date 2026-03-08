@@ -15,7 +15,7 @@ extension GetUserPinsEntityCollection on Isar {
 
 const UserPinsEntitySchema = CollectionSchema(
   name: r'UserPinsEntity',
-  id: 8736116908018778,
+  id: 6268739598953007523,
   properties: {
     r'hits': PropertySchema(id: 0, name: r'hits', type: IsarType.long),
     r'keepAlive': PropertySchema(

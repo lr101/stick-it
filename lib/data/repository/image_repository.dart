@@ -82,7 +82,7 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
   @override
   Stream<Uint8List?> watchImageBytes(String id) {
     final isarId = fastHash('${type.name}_$id');
-    return box.watchObject(isarId, fireImmediately: true).asyncMap((entity) async {
+    return box.watchObject(isarId, fireImmediately: true).asBroadcastStream().asyncMap((entity) async {
       if (entity == null || entity.isEmpty) {
         return null;
       }

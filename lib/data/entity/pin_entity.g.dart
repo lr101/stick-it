@@ -15,7 +15,7 @@ extension GetPinEntityCollection on Isar {
 
 const PinEntitySchema = CollectionSchema(
   name: r'PinEntity',
-  id: 6981589059633015,
+  id: 3528796497663360496,
   properties: {
     r'creationDate': PropertySchema(
       id: 0,
@@ -77,7 +77,7 @@ const PinEntitySchema = CollectionSchema(
   idName: r'isarId',
   indexes: {
     r'creatorFastId': IndexSchema(
-      id: -2507261193328710,
+      id: -7073158676165006645,
       name: r'creatorFastId',
       unique: false,
       replace: false,
@@ -90,7 +90,7 @@ const PinEntitySchema = CollectionSchema(
       ],
     ),
     r'groupFastId': IndexSchema(
-      id: 2818157401252295,
+      id: 7992203896356511312,
       name: r'groupFastId',
       unique: false,
       replace: false,

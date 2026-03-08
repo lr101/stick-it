@@ -26,12 +26,12 @@ class GroupRepository extends CacheImpl<GroupEntity> implements IGroupRepository
 
   @override
   Stream<List<GroupEntity>> watchUserGroups() {
-    return box.filter().userIsMemberEqualTo(true).build().watch(fireImmediately: true);
+    return box.filter().userIsMemberEqualTo(true).build().watch(fireImmediately: true).asBroadcastStream();
   }
 
   @override
   Stream<List<GroupEntity>> watchAllGroups() {
-    return box.where().watch(fireImmediately: true);
+    return box.where().watch(fireImmediately: true).asBroadcastStream();
   }
 }
 

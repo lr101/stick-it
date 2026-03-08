@@ -162,7 +162,7 @@ class _SettingsState extends ConsumerState<Settings> {
                               await ref.read(globalDataServiceProvider.notifier).logout();
                               await invalidateCache();
                               if (!context.mounted) return;
-                              context.pushNamed("login");
+                              context.goNamed("login");
                             },
                           ),),),
             ],),
@@ -256,6 +256,5 @@ Future<void> invalidateCache() async {
     
     // 4. Invalidate the syncing service last
     ref.invalidate(lastSeenProvider);
-    ref.invalidate(globalDataServiceProvider);
   }
 }

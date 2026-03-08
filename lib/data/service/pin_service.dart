@@ -64,17 +64,19 @@ class PinUserService extends _$PinUserService {
 Stream<PinEntity?> pinById(Ref ref, String pinId) async* {
   final repo = ref.watch(pinRepositoryProvider);
   final api = ref.watch(pinApiProvider);
-  final stream = repo.watchById(pinId);
-
-  if (await stream.first == null) {
-    yield null; 
-    final pinDto = await api.getPin(pinId);
-    if (pinDto != null) {
-      await repo.put(PinEntity.fromDto(pinDto, true));
+  
+  bool hasFetched = false;
+  await for (final pin in repo.watchById(pinId)) {
+    if (pin == null && !hasFetched) {
+      hasFetched = true;
+      api.getPin(pinId).then((pinDto) async {
+        if (pinDto != null) {
+           await repo.put(PinEntity.fromDto(pinDto, true)); // This update will automatically trigger the stream again!
+        }
+      });
     }
+    yield pin;
   }
-
-  yield* stream;
 }
 
 @riverpod
