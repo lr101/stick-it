@@ -25,12 +25,12 @@ class ModeSelector extends ConsumerWidget {
           borderRadius: BorderRadius.circular(borderRadius),
           // 2. Match Border to Filter Widget
           border: Border.all(
-            color: theme.colorScheme.outlineVariant.withOpacity(0.3),
+            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
           ),
           // 3. Match Shadow to Filter Widget
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -53,7 +53,7 @@ class ModeSelector extends ConsumerWidget {
                     color: theme.colorScheme.primary,
                     boxShadow: [
                       BoxShadow(
-                        color: theme.colorScheme.primary.withOpacity(0.3),
+                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),

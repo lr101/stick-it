@@ -9,6 +9,6 @@ workflows:
           echo "API_HOST=$API_HOST" > .env
           echo "DISCORD_INVITE=$DISCORD_INVITE" >> .env
           echo "INSTAGRAM_URL=$INSTAGRAM_URL" >> .env
-          echo "GITHUB_URL=$GITHUB_URL" >> .env
+          echo "URL_GITHUB_REPO=$URL_GITHUB_REPO" >> .env
           echo "APPSTORE_ID=$DISCORD_INVITE" >> .env
 

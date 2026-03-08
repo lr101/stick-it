@@ -15,7 +15,7 @@ extension GetUserEntityCollection on Isar {
 
 const UserEntitySchema = CollectionSchema(
   name: r'UserEntity',
-  id: 1319756534096563,
+  id: 965090076791382600,
   properties: {
     r'bestSeason': PropertySchema(
       id: 0,

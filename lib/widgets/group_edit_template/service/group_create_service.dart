@@ -18,9 +18,9 @@ class GroupCreateState {
   Uint8List? profileImage;
 
 
-  factory GroupCreateState.fromGroupEntity(GroupEntity GroupEntity, Uint8List? profileImage) {
+  factory GroupCreateState.fromGroupEntity(GroupEntity groupEntity, Uint8List? profileImage) {
     return GroupCreateState(
-      visibility: GroupEntity.visibility,
+      visibility: groupEntity.visibility,
       profileImage: profileImage,
     );
   }
@@ -35,8 +35,8 @@ class GroupCreateService extends _$GroupCreateService {
   @override
   GroupCreateState build() =>  GroupCreateState();
 
-  void init(GroupEntity GroupEntity, Uint8List? profileImage) {
-    state = GroupCreateState.fromGroupEntity(GroupEntity, profileImage);
+  void init(GroupEntity groupEntity, Uint8List? profileImage) {
+    state = GroupCreateState.fromGroupEntity(groupEntity, profileImage);
   }
 
   void updateProfileImage(Uint8List profileImage) {

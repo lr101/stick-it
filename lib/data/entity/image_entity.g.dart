@@ -15,7 +15,7 @@ extension GetImageEntityCollection on Isar {
 
 const ImageEntitySchema = CollectionSchema(
   name: r'ImageEntity',
-  id: -3281789070349879,
+  id: -4984262976942117902,
   properties: {
     r'filePath': PropertySchema(
       id: 0,
@@ -51,7 +51,7 @@ const ImageEntitySchema = CollectionSchema(
   idName: r'isarId',
   indexes: {
     r'type': IndexSchema(
-      id: 1033531454197950,
+      id: 5117122708147080838,
       name: r'type',
       unique: false,
       replace: false,

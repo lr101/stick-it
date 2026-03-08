@@ -26,7 +26,6 @@ class OpenApiConfig extends _$OpenApiConfig {
     _authentication.accessToken = () => _accessToken;
     final ApiClient apiClient = ApiClient(basePath: data.host, authentication: _authentication);
 
-    // 1. Create our custom client that handles Rate Limiting & Pre-Request Auth
     final interceptorClient = _RateLimitedAuthClient(
       inner: http.Client(),
       ensureToken: _ensureTokenExists,
@@ -89,8 +88,17 @@ class OpenApiConfig extends _$OpenApiConfig {
   }
 }
 
-/// Custom HTTP Client that forces single-file execution (CrowdSec fix) 
-/// and verifies tokens BEFORE the request is sent.
+class _CacheEntry {
+  final Future<http.Response> responseFuture;
+  final DateTime timestamp;
+
+  _CacheEntry(this.responseFuture, this.timestamp);
+
+  bool get isExpired => DateTime.now().difference(timestamp) > const Duration(minutes: 1);
+}
+
+/// Custom HTTP Client that forces single-file execution (CrowdSec fix),
+/// verifies tokens BEFORE the request is sent, and deduplicates identical GET requests.
 class _RateLimitedAuthClient extends http.BaseClient {
   final http.Client inner;
   final Future<void> Function() ensureToken;
@@ -98,6 +106,9 @@ class _RateLimitedAuthClient extends http.BaseClient {
   
   // Mutex specifically for the request queue (Rate Limiting)
   final Mutex _requestMutex = Mutex();
+
+  // Deduplicator Cache
+  final Map<String, _CacheEntry> _cache = {};
 
   _RateLimitedAuthClient({
     required this.inner,
@@ -107,28 +118,83 @@ class _RateLimitedAuthClient extends http.BaseClient {
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    // 1. We ONLY want to deduplicate/cache GET requests. 
+    // Caching POST/PUT/DELETE can lead to severe data integrity issues.
+    if (request.method != 'GET') {
+      return await _executeNetworkCall(request);
+    }
+
+    // 2. The URL contains both path and query parameters, making it a perfect cache key.
+    final cacheKey = request.url.toString();
+
+    // 3. Clean up expired entries to free memory
+    _cache.removeWhere((key, entry) => entry.isExpired);
+
+    // 4. CACHE HIT: Return the result of the already running (or completed) request
+    if (_cache.containsKey(cacheKey)) {
+      debugPrint("DEDUPLICATOR: Cache hit for $cacheKey");
+      final cachedResponse = await _cache[cacheKey]!.responseFuture;
+      return _toStreamedResponse(cachedResponse);
+    }
+
+    debugPrint("DEDUPLICATOR: Cache miss for $cacheKey, executing...");
+
+    // 5. CACHE MISS: Create the Future that performs the request and reads it into memory.
+    final responseFuture = _executeAndReadResponse(request);
+
+    // 6. Instantly put the Future into the cache.
+    // If another duplicate request fires 10ms from now, it will grab THIS future 
+    // and wait for it to finish, rather than starting a new network call.
+    _cache[cacheKey] = _CacheEntry(responseFuture, DateTime.now());
+
+    try {
+      final response = await responseFuture;
+      return _toStreamedResponse(response);
+    } catch (e) {
+      // If the network call fails, wipe it from the cache so the next attempt can retry safely.
+      _cache.remove(cacheKey);
+      rethrow;
+    }
+  }
+
+  /// Extracts the original Mutex/Auth logic into its own method
+  Future<http.StreamedResponse> _executeNetworkCall(http.BaseRequest request) async {
     return await _requestMutex.protect(() async {
-      
-      // 1. Await token generation if it's missing.
       await ensureToken();
 
-      // 2. Overwrite the header natively. 
-      // If `ensureToken` just fetched a new token, we MUST inject it here 
-      // because OpenAPI already built this request object with the old header.
       final currentToken = getToken();
       if (currentToken.isNotEmpty) {
         request.headers['Authorization'] = 'Bearer $currentToken';
       }
 
-      // 3. Send the request
       debugPrint("---------------------->>>>>>> $request");
       final response = await inner.send(request);
 
-      // 4. Rate-limit delay (150ms) to bypass CrowdSec probing heuristics
+      // Rate-limit delay (50ms) to bypass CrowdSec probing heuristics
       await Future.delayed(const Duration(milliseconds: 50));
 
       return response;
     });
+  }
+
+  /// Executes the request and buffers the body stream into memory so it can be shared
+  Future<http.Response> _executeAndReadResponse(http.BaseRequest request) async {
+    final streamedResponse = await _executeNetworkCall(request);
+    return await http.Response.fromStream(streamedResponse);
+  }
+
+  /// Rebuilds a fresh StreamedResponse from the cached memory buffer
+  http.StreamedResponse _toStreamedResponse(http.Response response) {
+    return http.StreamedResponse(
+      Stream.value(response.bodyBytes),
+      response.statusCode,
+      contentLength: response.bodyBytes.length,
+      request: response.request,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      persistentConnection: response.persistentConnection,
+      reasonPhrase: response.reasonPhrase,
+    );
   }
 }
 

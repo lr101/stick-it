@@ -120,14 +120,14 @@ class _MapControlButton extends StatelessWidget {
           height: 45,
           decoration: BoxDecoration(
             // Semi-transparent surface color (frosted glass effect)
-            color: theme.colorScheme.surface.withOpacity(0.9),
+            color: theme.colorScheme.surface.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: theme.colorScheme.outlineVariant.withOpacity(0.2),
+              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),

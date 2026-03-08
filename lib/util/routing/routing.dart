@@ -24,6 +24,7 @@ import 'package:buff_lisa/features/settings/presentation/sub_widgets/edit_hidden
 import 'package:buff_lisa/features/web/presentation/show_web.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_error_snack_bar.dart';
 import 'package:buff_lisa/widgets/report_issue/presentation/report_issue_page.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
@@ -36,12 +37,13 @@ final routerProvider = Provider<GoRouter>((ref) => GoRouter(
   navigatorKey: navigatorKey,
   initialLocation: '/login',
   redirect: (context, state) {
-    final isLoggedIn = ref.watch(globalDataServiceProvider).userId != null;
+    final isLoggedIn = ref.read(globalDataServiceProvider).userId != null;
     final bool isGoingToLogin = state.matchedLocation == '/login';
-    if (!isLoggedIn && !isGoingToLogin) {
+    final bool isWeb = state.matchedLocation == "/web";
+    if (!isLoggedIn && !isGoingToLogin && !isWeb) {
       return '/login';
     }
-    if (isLoggedIn && isGoingToLogin) {
+    if (isLoggedIn && isGoingToLogin && !isWeb) {
       return '/home';
     }
     return null; 

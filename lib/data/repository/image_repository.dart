@@ -82,7 +82,7 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
   @override
   Stream<Uint8List?> watchImageBytes(String id) {
     final isarId = fastHash('${type.name}_$id');
-    return box.watchObject(isarId, fireImmediately: true).asyncMap((entity) async {
+    return box.watchObject(isarId, fireImmediately: true).asBroadcastStream().asyncMap((entity) async {
       if (entity == null || entity.isEmpty) {
         return null;
       }
@@ -266,7 +266,7 @@ class ImageRepositoryWeb extends InMemoryCache<ImageEntity> implements IImageRep
     
     if (sizeBefore != cache.length) {
       // Find which keys are no longer in the entity cache and clean them up
-      final keysToRemove = _bytesCache.keys.where((k) => !cache.containsKey(k)).toList();
+      final keysToRemove = _bytesCache.keys.where((k) => !cache.containsKey(fastHash(k))).toList();
       for (final key in keysToRemove) {
         _evictFromFlutterCache(key);
         _bytesCache.remove(key);
