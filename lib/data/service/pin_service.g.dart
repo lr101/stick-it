@@ -6,7 +6,7 @@ part of 'pin_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pinByIdHash() => r'e9a8f482c6f7f1d5dc6885ad4cad5aecedd68c64';
+String _$pinByIdHash() => r'b0696d4be4b207ba641594822b20e7500b1417dc';
 
 /// Copied from Dart SDK
 class _SystemHash {
