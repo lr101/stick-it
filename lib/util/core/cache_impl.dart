@@ -13,7 +13,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
   
 
   CacheImpl({required this.box, required this.isar, this.maxItems, this.ttlDuration}) {
-    _startup();
+    startup();
   }
 
   @protected
@@ -78,7 +78,8 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
     return await box.getAll(ids.map(fastHash).toList());
   }
 
-  void _startup() {
+  @protected
+  void startup() {
     DateTime? ttlTime;
     if (ttlDuration != null) {
       ttlTime = DateTime.now().subtract(ttlDuration!);

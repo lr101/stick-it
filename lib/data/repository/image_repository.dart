@@ -45,6 +45,36 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
   @override
   final ImageType type;
 
+  @override
+  Future<void> startup() async {
+    DateTime? ttlTime;
+    if (ttlDuration != null) {
+      ttlTime = DateTime.now().subtract(ttlDuration!);
+    }
+
+    await isar.writeTxn(() async {
+      // 1. Fetch only items matching this repository's Type
+      final all = await box.filter().typeEqualTo(type).findAll();
+      
+      // 2. Filter by session-only or expired TTL
+      final toDelete = all.where((entry) => 
+        (entry.onlySession && !entry.keepAlive) || 
+        (ttlTime != null && !entry.keepAlive && entry.ttl.isBefore(ttlTime))
+      ).toList();
+
+      // 3. Delete physical files first
+      for (final entry in toDelete) {
+        if (entry.filePath.isNotEmpty) {
+          final file = File(entry.filePath);
+          if (await file.exists()) {
+            await file.delete();
+          }
+        }
+        await box.delete(entry.isarId);
+      }
+    });
+  }
+
   Future<String?> _getImagePath(String id) async {
     final directory = await getApplicationDocumentsDirectory();
     // Add type.name to path to avoid file name collisions
@@ -103,10 +133,7 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
       final filePath = await _getImagePath(id);
       if (filePath != null) {
         await File(filePath).writeAsBytes(image.bodyBytes);
-        if (keepAlive) {
-          // 3. Include type in all entity creations
-          await put(ImageEntity(id: id, type: type, filePath: filePath, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
-        }
+        await put(ImageEntity(id: id, type: type, filePath: filePath, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
       }
       return image.bodyBytes;
     } catch (e) {
@@ -162,7 +189,18 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
 
   @override
   Future<void> deleteAll() async {
-    await isar.writeTxn(() async => await box.filter().typeEqualTo(type).deleteAll());
+    await isar.writeTxn(() async {
+      final items = await box.filter().typeEqualTo(type).findAll();
+      for (final item in items) {
+        if (item.filePath.isNotEmpty) {
+          final file = File(item.filePath);
+          if (await file.exists()) {
+            await file.delete();
+          }
+        }
+      }
+      await box.filter().typeEqualTo(type).deleteAll();
+    });
   }
 }
 
