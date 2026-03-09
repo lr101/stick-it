@@ -48,7 +48,7 @@ class MemberTile extends ConsumerWidget {
       return listTile;
     } else {
       return GestureDetector(
-        onTap: () => context.pushNamed("userProfile", pathParameters: {"id": userId}),
+        onTap: () => context.pushNamed("userProfile", pathParameters: {"id": memberDto.userId}),
         child: listTile,
       );
     }
