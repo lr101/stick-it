@@ -55,7 +55,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
 
   @override
   Future<List<T>> getAll() async {
-    return box.where().findAll();
+    return await box.where().findAll();
   }
 
   @override
@@ -94,8 +94,6 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
 
   }
 
-  /// Delete the items with the lowest hit count
-  /// Not included are items with keepAlive == true and items younger than 10% of ttlDuration
   @override
   Future<void> deleteOldestItems() async {
 

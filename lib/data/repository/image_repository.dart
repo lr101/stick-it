@@ -54,7 +54,7 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
 
     await isar.writeTxn(() async {
       // 1. Fetch only items matching this repository's Type
-      final all = await box.filter().typeEqualTo(type).findAll();
+      final all = await getAll();
       
       // 2. Filter by session-only or expired TTL
       final toDelete = all.where((entry) => 
@@ -77,7 +77,6 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
 
   Future<String?> _getImagePath(String id) async {
     final directory = await getApplicationDocumentsDirectory();
-    // Add type.name to path to avoid file name collisions
     return '${directory.path}/${urlSubFolder}_${type.name}_${id}_$urlFileName';
   }
 
@@ -201,6 +200,34 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
       }
       await box.filter().typeEqualTo(type).deleteAll();
     });
+  }
+
+    @override
+  Future<void> deleteOldestItems() async {
+
+      final size = await isar.getSize();
+      if (maxItems == null || maxItems! >= size) return;
+
+
+      final entries = await box.where().findAll();
+
+      entries.sort((a, b) {
+        final aHits = a.hits;
+        final bHits = b.hits;
+        return aHits.compareTo(bHits);
+      });
+
+      final itemsToDelete = size - maxItems!;
+      int itemsDeleted = 0;
+      final duration = ttlDuration != null ? (ttlDuration!.inSeconds * 0.1).toInt() : 3600;
+      final ttlTime = DateTime.now().subtract(Duration(seconds: duration));
+
+      for (int i = 0; i < entries.length && itemsDeleted < itemsToDelete; i++) {
+        if (entries[i].keepAlive == false && entries[i].ttl.isBefore(ttlTime)) {
+          await box.delete(entries[i].isarId);
+          itemsDeleted++;
+        }
+      }
   }
 }
 
