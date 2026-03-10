@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
@@ -76,24 +77,29 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
               children: [
                 Align(
                   alignment: Alignment.bottomCenter,
-                  // We handle the AsyncValue of the CONTROLLER here
                   child: controllerAsync.when(
                     loading: () => const Center(child: CircularProgressIndicator()),
                     error: (err, stack) => Center(child: Text("Camera Error: $err")),
                     data: (controller) {
-                      // Once controller is ready, we check the Values state
                       return cameraStateAsync.when(
                         loading: () => const Center(child: CircularProgressIndicator()),
                         error: (err, stack) => Text(err.toString()),
-                        data: (cameraState) => GestureDetector(
-                          onDoubleTap: ref.read(cameraIndexProvider.notifier).increment,
-                          onScaleStart: (_) => basScaleFactor = scaleFactor,
-                          onScaleUpdate: (details) => handleZoom(details, controller, cameraState),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: CameraPreview(controller),
-                          ),
-                        ),
+                        data: (cameraState) {
+                          return GestureDetector(
+                            onDoubleTap: ref.read(cameraIndexProvider.notifier).increment,
+                            onScaleStart: (_) => basScaleFactor = scaleFactor,
+                            onScaleUpdate: (details) => handleZoom(details, controller, cameraState),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: ClipRect(
+                                child: AspectRatio(
+                                  aspectRatio: 3/4,
+                                  child: CameraPreview(controller),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       );
                     },
                   ),
@@ -256,31 +262,89 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
 
   Future<void> takePicture(String groupId, int index) async {
     final indexProvider = ref.read(cameraGroupIndexProvider);
-    if(index != indexProvider) {
+    if (index != indexProvider) {
       pageController.animateToPage(index, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
       return;
     }
+    
     final controller = ref.read(cameraControllerProvider).value;
     if (_m.isLocked || controller == null) return;
+    
     await _m.acquire();
     ref.read(cameraCapturingProvider.notifier).setCapturing(true);
-      try {
-        final image = await controller.takePicture();
-        final Uint8List bytes = await image.readAsBytes();
-        final Position position = await Geolocator.getCurrentPosition();
-        final pos = LatLng(position.latitude, position.longitude);
-        // Pause preview while the ImageUpload screen is on top
-        if (controller.value.isInitialized) {
-          await controller.pausePreview().catchError((_) {});
-        }
-        if (!mounted) return;
-        context.pushNamed('imageUpload', queryParameters: {"lat": pos.latitude.toString(), "long": pos.longitude.toString()}, extra: bytes);
-      } catch (e) {
-        if(kDebugMode) print(e);
-      } finally {
-        _m.release();
-        ref.read(cameraCapturingProvider.notifier).setCapturing(false);
+    
+    try {
+      final image = await controller.takePicture();
+      Uint8List bytes = await image.readAsBytes();
+      
+      // Hardcode the target ratio to exactly 3:4
+      const double targetRatio = 3 / 4; 
+
+      // Crop the image in a background thread using the function from the previous step
+      bytes = await compute(_cropImageToRatio, (bytes: bytes, targetRatio: targetRatio));
+
+      final Position position = await Geolocator.getCurrentPosition();
+      final pos = LatLng(position.latitude, position.longitude);
+      
+      if (controller.value.isInitialized) {
+        await controller.pausePreview().catchError((_) {});
       }
+      
+      if (!mounted) return;
+      context.pushNamed(
+        'imageUpload', 
+        queryParameters: {"lat": pos.latitude.toString(), "long": pos.longitude.toString()}, 
+        extra: bytes,
+      );
+      
+    } catch (e) {
+      if (kDebugMode) print(e);
+    } finally {
+      _m.release();
+      ref.read(cameraCapturingProvider.notifier).setCapturing(false);
+    }
+  }
+  /// Crops the image center to match the target aspect ratio
+  Uint8List _cropImageToRatio(({Uint8List bytes, double targetRatio}) data) {
+    // Decode the image from bytes
+    final originalImage = img.decodeImage(data.bytes);
+    if (originalImage == null) return data.bytes; // Fallback if decode fails
+
+    final int w = originalImage.width;
+    final int h = originalImage.height;
+    final double currentRatio = w / h;
+
+    // If the aspect ratios already match, just return the original bytes
+    if ((currentRatio - data.targetRatio).abs() < 0.05) {
+      return data.bytes; 
+    }
+
+    int cropW = w;
+    int cropH = h;
+    int cropX = 0;
+    int cropY = 0;
+
+    if (currentRatio > data.targetRatio) {
+      // The image is wider than the UI. Crop the left and right sides.
+      cropW = (h * data.targetRatio).round();
+      cropX = ((w - cropW) / 2).round();
+    } else {
+      // The image is taller than the UI. Crop the top and bottom.
+      cropH = (w / data.targetRatio).round();
+      cropY = ((h - cropH) / 2).round();
+    }
+
+    // Perform the crop
+    final croppedImage = img.copyCrop(
+      originalImage, 
+      x: cropX, 
+      y: cropY, 
+      width: cropW, 
+      height: cropH,
+    );
+
+    // Encode back to JPG and return
+    return img.encodeJpg(croppedImage);
   }
 
 }

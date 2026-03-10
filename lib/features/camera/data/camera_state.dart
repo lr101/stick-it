@@ -72,7 +72,7 @@ Future<CameraController> cameraController(Ref ref) async {
   
   final controller = CameraController(
     cameras[cameraIndex],
-    ResolutionPreset.medium,
+    ResolutionPreset.high,
     enableAudio: false,
   );
 
