@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.18+64
+version: 3.0.19+64
 
 
 environment:
@@ -95,8 +95,8 @@ flutter:
     - assets/image/
     - assets/achievements/
     - assets/icon/
-    - .env
-    - .env.dev
+    - .config
+    - .config.dev
   uses-material-design: true
   fonts:
     - family: Signika

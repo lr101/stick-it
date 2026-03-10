@@ -35,7 +35,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// THIS IS THE START OF THE PROGRAMM
 /// binding Widgets before initialization is required by multiple packages
 /// initializes access to env variables
-/// checks if user is logged in on this device by checking device storage
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -45,9 +44,9 @@ Future<void> main() async {
 
   const bool isProduction = bool.fromEnvironment('dart.vm.product');
   if (isProduction) {
-    await dotenv.load();
+    await dotenv.load(fileName: ".config");
   } else {
-    await dotenv.load(fileName: ".env.dev");
+    await dotenv.load(fileName: ".config.dev");
   }
   Isar? isar;
 
