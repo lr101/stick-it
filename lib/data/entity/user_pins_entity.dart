@@ -1,15 +1,12 @@
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
-import 'package:isar_community/isar.dart';
 
-part 'user_pins_entity.g.dart';
 
-@Collection()
 class UserPinsEntity extends CacheEntity {
 
   @override
-  Id get isarId => fastHash(userId);
+  int get isarId => fastHash(userId);
   String userId;
   List<String> pins = [];
   UserPinsEntity({required this.pins, required this.userId, super.keepAlive = false, super.hits, required super.ttl, required super.onlySession});

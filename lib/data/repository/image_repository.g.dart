@@ -6,7 +6,7 @@ part of 'image_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupProfileRepoHash() => r'86ec3cb97f932a21efc02bc0d07b3e66691d87ab';
+String _$groupProfileRepoHash() => r'ef07ccba3485d0b6ca2bb7082fa643d097dd7663';
 
 /// See also [groupProfileRepo].
 @ProviderFor(groupProfileRepo)
@@ -24,7 +24,7 @@ final groupProfileRepoProvider = Provider<IImageRepository>.internal(
 // ignore: unused_element
 typedef GroupProfileRepoRef = ProviderRef<IImageRepository>;
 String _$groupProfileSmallRepoHash() =>
-    r'17f23a781eb0c5e28aab94881a7fbf4491d87e03';
+    r'301e97967ce00d7650b1aa0a72076294e956ed51';
 
 /// See also [groupProfileSmallRepo].
 @ProviderFor(groupProfileSmallRepo)
@@ -41,7 +41,7 @@ final groupProfileSmallRepoProvider = Provider<IImageRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GroupProfileSmallRepoRef = ProviderRef<IImageRepository>;
-String _$groupPinImageRepoHash() => r'4a29468bba860147ce9cb6765fa61079b82fbab4';
+String _$groupPinImageRepoHash() => r'2975d789398e68647d8ce465a6a89afaf39dd425';
 
 /// See also [groupPinImageRepo].
 @ProviderFor(groupPinImageRepo)
@@ -59,7 +59,7 @@ final groupPinImageRepoProvider = Provider<IImageRepository>.internal(
 // ignore: unused_element
 typedef GroupPinImageRepoRef = ProviderRef<IImageRepository>;
 String _$userImageSmallRepoHash() =>
-    r'1e7f17c063f4149438ea3fc41d79e75ee8f3e130';
+    r'18f438859496438725d3d2cff3d8992e6c34a0ed';
 
 /// See also [userImageSmallRepo].
 @ProviderFor(userImageSmallRepo)
@@ -76,7 +76,7 @@ final userImageSmallRepoProvider = Provider<IImageRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserImageSmallRepoRef = ProviderRef<IImageRepository>;
-String _$userImageRepoHash() => r'a90cd11fd8cc0c1fb27ad19df18b2ad4bac6d6d5';
+String _$userImageRepoHash() => r'a14bb90d3ce7c937228a39ecaf9468d5f3494875';
 
 /// See also [userImageRepo].
 @ProviderFor(userImageRepo)
@@ -94,7 +94,7 @@ final userImageRepoProvider = Provider<IImageRepository>.internal(
 // ignore: unused_element
 typedef UserImageRepoRef = ProviderRef<IImageRepository>;
 String _$pinImageRepositoryHash() =>
-    r'eec2d287bbe170fd025de83d55acaf2cd83600d8';
+    r'77ae4b04a8a1f4de84e0aacaea1716cc91cfbb77';
 
 /// See also [pinImageRepository].
 @ProviderFor(pinImageRepository)

@@ -7,7 +7,7 @@ part of 'user_pins_repository.dart';
 // **************************************************************************
 
 String _$userPinsRepositoryHash() =>
-    r'a9ad079812621c0ac6c2791a016cb01f3a234836';
+    r'7035270f6fbd748bd0d7baff6ad87d0bdb4239ab';
 
 /// See also [userPinsRepository].
 @ProviderFor(userPinsRepository)

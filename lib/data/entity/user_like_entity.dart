@@ -1,16 +1,13 @@
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
-import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
-part 'user_like_entity.g.dart';
 
-@Collection()
 class UserLikeEntity extends CacheEntity {
 
   @override
-  Id get isarId => fastHash(userId);
+  int get isarId => fastHash(userId);
   String userId;
   final int likeCount;
   final int likePhotographyCount;

@@ -1,16 +1,13 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/data/entity/season_entity.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
-import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
-part 'user_entity.g.dart'; // This will be generated
 
-@Collection()
 class UserEntity extends CacheEntity {
 
   @override
-  Id get isarId => fastHash(userId);
+  int get isarId => fastHash(userId);
   final String userId;
   final String username;
   final int? selectedBatch;

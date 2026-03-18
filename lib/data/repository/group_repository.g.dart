@@ -6,7 +6,7 @@ part of 'group_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupRepositoryHash() => r'75f55762038875a4d3242bee36bcf7972d2bc854';
+String _$groupRepositoryHash() => r'3c079b77e2a63859054c11e9e28fd277d6e8e7b0';
 
 /// See also [groupRepository].
 @ProviderFor(groupRepository)

@@ -433,14 +433,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
-  dartx:
-    dependency: transitive
-    description:
-      name: dartx
-      sha256: "8b25435617027257d43e6508b5fe061012880ddfdaa75a71d607c3de2a13d244"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.0"
   dbus:
     dependency: transitive
     description:
@@ -1181,30 +1173,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  isar_community:
-    dependency: "direct main"
-    description:
-      name: isar_community
-      sha256: "2d94a5a0f5aa50e201095f2c0152fcc0383e1b262f7500683bd6508040b4185b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.0-dev.1"
-  isar_community_flutter_libs:
-    dependency: "direct main"
-    description:
-      name: isar_community_flutter_libs
-      sha256: "4e9fe0ff08fbf297c9a34cf5a3914c67ea07ab33eeeaee1d0dda3a285c38608e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.0-dev.1"
-  isar_community_generator:
-    dependency: "direct dev"
-    description:
-      name: isar_community_generator
-      sha256: "80744bd740d34c54280b8094ae994b1e3026de0d76a6a4a91d6a0b70d1bb7611"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.0-dev.1"
   js:
     dependency: transitive
     description:
@@ -1938,13 +1906,13 @@ packages:
     source: hosted
     version: "2.9.4"
   sqlite3_flutter_libs:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: sqlite3_flutter_libs
-      sha256: "1e800ebe7f85a80a66adacaa6febe4d5f4d8b75f244e9838a27cb2ffc7aec08d"
+      sha256: eeb9e3a45207649076b808f8a5a74d68770d0b7f26ccef6d5f43106eee5375ad
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.41"
+    version: "0.5.42"
   sqlparser:
     dependency: transitive
     description:
@@ -2025,14 +1993,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.9"
-  time:
-    dependency: transitive
-    description:
-      name: time
-      sha256: "46187cf30bffdab28c56be9a63861b36e4ab7347bf403297595d6a97e10c789f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.6"
   timing:
     dependency: transitive
     description:
@@ -2265,14 +2225,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.6.1"
-  xxh3:
-    dependency: transitive
-    description:
-      name: xxh3
-      sha256: "399a0438f5d426785723c99da6b16e136f4953fb1e9db0bf270bd41dd4619916"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.0"
   yaml:
     dependency: transitive
     description:
