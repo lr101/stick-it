@@ -17,10 +17,10 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:social_media_buttons/social_media_button.dart';
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
@@ -128,9 +128,9 @@ class _SettingsState extends ConsumerState<Settings> {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      IconButton(onPressed: () => clickedOnLink(dotenv.env["DISCORD_INVITE"]), icon: const Icon(Icons.discord), iconSize: 30, color: Theme.of(context).iconTheme.color),
-                      SocialMediaButton.instagram(onTap: () => clickedOnLink(dotenv.env["INSTAGRAM_URL"]), size: 30, color: Theme.of(context).iconTheme.color,) ,
-                      SocialMediaButton.github(onTap: () => clickedOnLink(dotenv.env["URL_GITHUB_REPO"]), size: 30, color: Theme.of(context).iconTheme.color),
+                      IconButton(onPressed: () => clickedOnLink(dotenv.env["DISCORD_INVITE"]), icon: const Icon(FontAwesomeIcons.discord), iconSize: 30, color: Theme.of(context).iconTheme.color),
+                      IconButton(onPressed: () => clickedOnLink(dotenv.env["INSTAGRAM_URL"]), icon: const Icon(FontAwesomeIcons.instagram), iconSize: 30, color: Theme.of(context).iconTheme.color),
+                      IconButton(onPressed: () => clickedOnLink(dotenv.env["URL_GITHUB_REPO"]), icon: const Icon(FontAwesomeIcons.github), iconSize: 30, color: Theme.of(context).iconTheme.color),
                       IconButton(onPressed: () => InAppReview.instance.openStoreListing(appStoreId: dotenv.env["APPSTORE_ID"]), icon: const Icon(Icons.star_border), iconSize: 30, color: Theme.of(context).iconTheme.color),
                     ],
                   ),

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:buff_lisa/data/entity/image_entity.dart';
 import 'package:buff_lisa/data/entity/season_entity.dart';
 import 'package:drift/drift.dart';
+import 'package:drift_flutter/drift_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
@@ -11,7 +13,7 @@ class SeasonConverter extends TypeConverter<SeasonEntity, String> {
   const SeasonConverter();
   @override
   SeasonEntity fromSql(String fromDb) {
-    final map = jsonDecode(fromDb);
+    final map = jsonDecode(fromDb) as Map<String, dynamic>;
     return SeasonEntity(
       seasonId: map['seasonId'] as String? ?? "",
       month: map['month'] as int? ?? 0,
@@ -160,8 +162,24 @@ class UserPinsEntities extends Table with CacheTable {
   UserPinsEntities
 ])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase(super.e);
+
+  AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
   int get schemaVersion => 1;
+
+
+  static QueryExecutor _openConnection() {
+    return driftDatabase(
+      name: 'my_database',
+      web: DriftWebOptions(
+        sqlite3Wasm: Uri.parse('sqlite3.wasm'),
+        driftWorker: Uri.parse('drift_worker.dart.js'),
+      ),
+      native: const DriftNativeOptions(
+        databaseDirectory: getApplicationSupportDirectory,
+      ),
+    );
+  }
+
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:buff_lisa/data/database/database.dart';
 import 'package:buff_lisa/data/entity/group_entity.dart';
-import 'package:buff_lisa/data/entity/season_entity.dart';
 import 'package:buff_lisa/data/repository/drift_repo.dart'; // We will create this
 import 'package:buff_lisa/util/core/cache_api.dart';
 import 'package:buff_lisa/util/core/cache_impl.dart';

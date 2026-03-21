@@ -11,7 +11,6 @@ import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/util/theme/data/material_theme.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_marker/data/default_group_image.dart';
-import 'package:drift_flutter/drift_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -43,7 +42,7 @@ Future<void> main() async {
   }
 
   // Initialize Drift database (cross-platform)
-  final AppDatabase database = AppDatabase(driftDatabase(name: 'buff_lisa_db'));
+  final database = AppDatabase();
 
   await cacheMigrator.migrate();
 
@@ -92,7 +91,7 @@ Future<void> main() async {
     ProviderScope(
         overrides: [
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-          flutterSecureStorageProvider.overrideWithValue(storage),
+          secureStorageProvider.overrideWithValue(storage),
           globalDataOnceProvider.overrideWithValue(globalData),
           currentUserOnceProvider.overrideWithValue(globalUserData),
           defaultGroupPinImageProvider.overrideWithValue(defaultGroupImage),

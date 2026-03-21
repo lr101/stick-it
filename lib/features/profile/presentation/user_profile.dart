@@ -107,7 +107,7 @@ class UserProfile extends ConsumerWidget {
             child: ListTile(
               title: const Text("Likes", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
               subtitle: Text(
-                likes.value?.likeCount.toString() ?? "",
+                likes.valueOrNull?.likeCount.toString() ?? "-",
                 style: const TextStyle(fontStyle: FontStyle.italic),
               ),
             ),

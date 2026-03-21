@@ -9,6 +9,7 @@ import 'package:buff_lisa/util/core/cache_impl.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -33,7 +34,7 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
   final ImageType type;
 
   final Map<String, Future<Uint8List?>> _activeRequests = {};
-  final Map<String, Uint8List> _webBytesCache = {};
+  final Map<String, Uint8List> _bytesCache = {};
 
   ImageRepository({
     required this.db,
@@ -44,6 +45,18 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
     super.maxItems,
     super.ttlDuration,
   });
+
+  void _evictFromFlutterCache(String id) {
+    if (_bytesCache.containsKey(id)) {
+      MemoryImage(_bytesCache[id]!).evict();
+    }
+  }
+
+  void _precacheInFlutter(String id) {
+    if (_bytesCache.containsKey(id)) {
+      MemoryImage(_bytesCache[id]!).resolve(ImageConfiguration.empty);
+    }
+  }
 
   ImageEntitiesCompanion _toCompanion(ImageEntity entity) {
     return ImageEntitiesCompanion(
@@ -75,15 +88,17 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
   @override
   Future<void> doDelete(int isarId) async {
     final cachedImage = await doGet(isarId);
-    if (cachedImage?.filePath != null && cachedImage!.filePath.isNotEmpty) {
-      if (!kIsWeb) {
-        final file = File(cachedImage.filePath);
-        if (await file.exists()) {
-          await file.delete();
+    if (cachedImage != null) {
+      if (cachedImage.filePath.isNotEmpty) {
+        if (!kIsWeb) {
+          final file = File(cachedImage.filePath);
+          if (await file.exists()) {
+            await file.delete();
+          }
         }
-      } else {
-        _webBytesCache.remove(cachedImage.id);
       }
+      _evictFromFlutterCache(cachedImage.id);
+      _bytesCache.remove(cachedImage.id);
     }
     await (db.delete(db.imageEntities)..where((tbl) => tbl.isarId.equals(isarId))).go();
   }
@@ -100,8 +115,9 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
           }
         }
       }
+      _evictFromFlutterCache(item.id);
     }
-    _webBytesCache.clear();
+    _bytesCache.clear();
     await (db.delete(db.imageEntities)..where((tbl) => tbl.type.equalsValue(type))).go();
   }
 
@@ -174,14 +190,18 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
     
     if (cachedImage?.isEmpty == true) {
       return null;
+    } else if (_bytesCache.containsKey(id)) {
+      _precacheInFlutter(id);
+      return _bytesCache[id];
     } else if (cachedImage?.filePath != null && cachedImage!.filePath.isNotEmpty) {
       if (!kIsWeb) {
         final file = File(cachedImage.filePath);
         if (await file.exists()) {
-          return await file.readAsBytes();
+          final bytes = await file.readAsBytes();
+          _bytesCache[id] = bytes;
+          _precacheInFlutter(id);
+          return bytes;
         }
-      } else if (_webBytesCache.containsKey(id)) {
-        return _webBytesCache[id];
       }
     }
 
@@ -210,13 +230,16 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
       final image = await http.get(Uri.parse(imageUrl));
       final filePath = await _getImagePath(id);
 
+      _bytesCache[id] = image.bodyBytes;
+      _precacheInFlutter(id);
+
       if (filePath != null && filePath.isNotEmpty) {
         if (!kIsWeb) {
           await File(filePath).writeAsBytes(image.bodyBytes);
-        } else {
-          _webBytesCache[id] = image.bodyBytes;
         }
         await put(ImageEntity(id: id, type: type, filePath: filePath, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
+      } else {
+        await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
       }
 
       return image.bodyBytes;
@@ -231,14 +254,18 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
       if (entity == null || entity.isEmpty) {
         return null;
       }
+      if (_bytesCache.containsKey(id)) {
+         return _bytesCache[id];
+      }
       if (entity.filePath.isNotEmpty) {
         if (!kIsWeb) {
           final file = File(entity.filePath);
           if (await file.exists()) {
-            return await file.readAsBytes();
+             final bytes = await file.readAsBytes();
+             _bytesCache[id] = bytes;
+             _precacheInFlutter(id);
+             return bytes;
           }
-        } else {
-          return _webBytesCache[id];
         }
       }
       return null; 
@@ -250,13 +277,18 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
     try {
       final image = await http.get(Uri.parse(url));
       final filePath = await _getImagePath(id);
-      if (filePath != null) {
-        if (!kIsWeb && filePath.isNotEmpty) {
+      
+      _evictFromFlutterCache(id);
+      _bytesCache[id] = image.bodyBytes;
+      _precacheInFlutter(id);
+
+      if (filePath != null && filePath.isNotEmpty) {
+        if (!kIsWeb) {
           await File(filePath).writeAsBytes(image.bodyBytes);
-        } else if (kIsWeb) {
-          _webBytesCache[id] = image.bodyBytes;
         }
         await put(ImageEntity(id: id, type: type, filePath: filePath, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
+      } else {
+        await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
       }
       return image.bodyBytes;
     } catch (e) {
@@ -267,13 +299,18 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
   @override
   Future<void> addImage(String id, Uint8List image, bool keepAlive) async {
     final filePath = await _getImagePath(id);
-    if (filePath != null) {
-      if (!kIsWeb && filePath.isNotEmpty) {
+    
+    _evictFromFlutterCache(id);
+    _bytesCache[id] = image;
+    _precacheInFlutter(id);
+
+    if (filePath != null && filePath.isNotEmpty) {
+      if (!kIsWeb) {
         await File(filePath).writeAsBytes(image);
-      } else if (kIsWeb) {
-        _webBytesCache[id] = image;
       }
       await put(ImageEntity(id: id, type: type, filePath: filePath, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
+    } else {
+      await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
     }
   }
 }

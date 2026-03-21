@@ -51,9 +51,7 @@ ISecureStorage secureStorage(Ref ref) {
 }
 
 class MobileSecureStorage implements ISecureStorage {
-  final _storage = const FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
-  );
+  final _storage = const FlutterSecureStorage();
 
   @override
   Future<void> write({required String key, required String value}) async {

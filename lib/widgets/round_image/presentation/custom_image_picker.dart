@@ -67,6 +67,9 @@ class CustomImagePicker {
             ),
             WebUiSettings(
               context: context,
+              dragMode: WebDragMode.move,
+              scalable: false,
+              viewwMode: WebViewMode.mode_1
             ),
           ],
         );
