@@ -15,16 +15,17 @@ RUN flutter pub get
 # Copy the rest of your app's source code
 COPY . .
 
-RUN dart run fix_isar_web.dart
-
-# Build the web app for production
-RUN flutter build web --release
+# Build the web app for production with WASM
+RUN flutter build web --wasm --release
 
 # ==========================================
 # Stage 2: Serve the App with Nginx
 # ==========================================
 # Use a lightweight Nginx image
 FROM nginx:alpine
+
+# Copy the custom nginx.conf
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 # Copy the compiled web files from the 'build' stage to Nginx's public folder
 COPY --from=build /app/build/web /usr/share/nginx/html
