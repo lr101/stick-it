@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img;
 
 // ignore: avoid_classes_with_only_static_members
 class CustomImagePicker {
@@ -38,6 +39,39 @@ class CustomImagePicker {
     return null;
   }
 
+  /// crops the image programmatically to a 3:4 aspect ratio
+  static Future<Uint8List?> autoCrop({
+    required XFile? res,
+  }) async {
+    if (res == null) return null;
+    final Uint8List bytes = await res.readAsBytes();
+    img.Image? image = img.decodeImage(bytes);
+    if (image == null) return null;
+
+    // Target aspect ratio 3:4 (width/height = 0.75)
+    const double targetRatio = 3 / 4;
+    final double currentRatio = image.width / image.height;
+
+    int newWidth, newHeight, offsetX, offsetY;
+
+    if (currentRatio > targetRatio) {
+      // Image is too wide, crop the sides
+      newWidth = (image.height * targetRatio).toInt();
+      newHeight = image.height;
+      offsetX = (image.width - newWidth) ~/ 2;
+      offsetY = 0;
+    } else {
+      // Image is too tall, crop the top and bottom
+      newWidth = image.width;
+      newHeight = (image.width / targetRatio).toInt();
+      offsetX = 0;
+      offsetY = (image.height - newHeight) ~/ 2;
+    }
+
+    final img.Image cropped = img.copyCrop(image, x: offsetX, y: offsetY, width: newWidth, height: newHeight);
+    return Uint8List.fromList(img.encodeJpg(cropped, quality: 80));
+  }
+
   /// opens the input picker for selecting an image from the gallery
   /// after selecting an image it is opened in an image cropper
   /// check if 100 < width, height and image is square
@@ -67,6 +101,9 @@ class CustomImagePicker {
             ),
             WebUiSettings(
               context: context,
+              dragMode: WebDragMode.move,
+              scalable: false,
+              viewwMode: WebViewMode.mode_1
             ),
           ],
         );

@@ -6,7 +6,7 @@ part of 'pin_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pinRepositoryHash() => r'87dc2f634b3ca6f35dba54560e4244a46497bd67';
+String _$pinRepositoryHash() => r'e765c094d6068947bbce96612635629132317360';
 
 /// See also [pinRepository].
 @ProviderFor(pinRepository)
@@ -23,7 +23,7 @@ final pinRepositoryProvider = Provider<IPinRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PinRepositoryRef = ProviderRef<IPinRepository>;
-String _$pinLikeRepositoryHash() => r'23620f71fd15d038ec8eaae871184ef5dd4b7fb0';
+String _$pinLikeRepositoryHash() => r'6c22b5acc569cbe73a99a3e4ae5ec796fe5ceb83';
 
 /// See also [pinLikeRepository].
 @ProviderFor(pinLikeRepository)

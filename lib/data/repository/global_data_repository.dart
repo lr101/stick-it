@@ -22,22 +22,21 @@ abstract class ISecureStorage {
 }
 
 class WebSecureStorage implements ISecureStorage {
+  final _storage = const FlutterSecureStorage();
+
   @override
   Future<void> write({required String key, required String value}) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(key, value);
+    await _storage.write(key: key, value: value);
   }
 
   @override
   Future<String?> read({required String key}) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
+    return await _storage.read(key: key);
   }
 
   @override
   Future<void> delete({required String key}) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(key);
+    await _storage.delete(key: key);
   }
 }
 
@@ -51,9 +50,7 @@ ISecureStorage secureStorage(Ref ref) {
 }
 
 class MobileSecureStorage implements ISecureStorage {
-  final _storage = const FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
-  );
+  final _storage = const FlutterSecureStorage();
 
   @override
   Future<void> write({required String key, required String value}) async {
@@ -144,14 +141,14 @@ class GlobalDataRepository {
 
   Future<void> logout() async {
     sharedPreferences.clear();
-    final storage = ref.watch(flutterSecureStorageProvider);
+    final storage = ref.watch(secureStorageProvider);
     await storage.delete(key: usernameKey);
     await storage.delete(key: userIdKey);
     await storage.delete(key: tokenKey);
   }
 
   Future<void> login(String username, String userId, String token) async {
-    final storage = ref.watch(flutterSecureStorageProvider);
+    final storage = ref.watch(secureStorageProvider);
     await storage.write(key: usernameKey, value: username);
     await storage.write(key: userIdKey, value: userId);
     await storage.write(key: tokenKey, value: token);
@@ -165,7 +162,7 @@ class GlobalDataRepository {
     int? selectedBatch,
   }) async {
     final sharedPrefs = ref.watch(sharedPreferencesProvider);
-    final storage = ref.watch(flutterSecureStorageProvider);
+    final storage = ref.watch(secureStorageProvider);
     if (description != null) await sharedPrefs.setString(descriptionKey, description);
     if (username != null) await storage.write(key: usernameKey, value: username);
     if (profileImage != null) await sharedPrefs.setString(profileImageKey, base64Encode(profileImage));

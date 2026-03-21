@@ -1,9 +1,6 @@
-import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
-part 'season_entity.g.dart';
 
-@embedded
 class SeasonEntity {
 
   final String seasonId;

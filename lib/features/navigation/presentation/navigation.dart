@@ -46,45 +46,49 @@ class _NavigationState extends ConsumerState<Navigation> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(syncingServiceProvider, (_,_) => ());
+    ref.listen(syncingServiceProvider, (_, _) => ());
     ref.listen(navigationStateProvider, (prev, next) => _pageController.jumpToPage(next));
     final state = ref.watch(navigationStateProvider);
-    return  Scaffold(
-        backgroundColor: state == 2 ? Colors.transparent : null,
-        body: PageView(
-          controller: _pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: widgetOptions,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          showUnselectedLabels: true,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.group),
-              label: 'Groups',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add_location_alt_outlined),
-              label: 'Camera',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map_outlined),
-              label: 'Map',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.dynamic_feed),
-              label: 'Feed',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          currentIndex: state,
-          onTap: onItemTapped,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          unselectedItemColor: Theme.of(context).hintColor,
-        ),);
+
+    return Scaffold(
+      backgroundColor: state == 2 ? Colors.transparent : null,
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: widgetOptions,
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: state,
+        onDestinationSelected: onItemTapped,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.group_outlined),
+            selectedIcon: Icon(Icons.group),
+            label: 'Groups',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.add_location_alt_outlined),
+            selectedIcon: Icon(Icons.add_location_alt),
+            label: 'Camera',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.map_outlined),
+            selectedIcon: Icon(Icons.map),
+            label: 'Map',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.dynamic_feed_outlined),
+            selectedIcon: Icon(Icons.dynamic_feed),
+            label: 'Feed',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
   }
 
   void onItemTapped(int index) {

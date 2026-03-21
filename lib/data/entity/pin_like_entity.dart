@@ -1,15 +1,12 @@
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
-import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
-part 'pin_like_entity.g.dart';
 
-@Collection()
 class PinLikeEntity extends CacheEntity {
   @override
-  Id get isarId => fastHash(id);
+  int get isarId => fastHash(id);
   final String id;
   final int likeCount;
   final int likePhotographyCount;

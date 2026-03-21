@@ -1,15 +1,12 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
-import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
-part 'member_entity.g.dart'; // This will be generated
 
-@Collection()
 class MembersEntity extends CacheEntity{
 
   @override
-  Id get isarId => fastHash(groupId);
+  int get isarId => fastHash(groupId);
 
   final String groupId;
   final List<MemberEntity> members;
@@ -37,7 +34,6 @@ class MembersEntity extends CacheEntity{
 
 }
 
-@embedded
 class MemberEntity {
 
   final String userId;
