@@ -1,8 +1,6 @@
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
-import 'package:isar_community/isar.dart';
 
-part 'image_entity.g.dart';
 
 // 1. Define your entity types
 enum ImageType {
@@ -14,15 +12,12 @@ enum ImageType {
   groupPin
 }
 
-@collection
 class ImageEntity extends CacheEntity {
   @override
-  Id get isarId => fastHash('${type.name}_$id');
+  int get isarId => fastHash('${type.name}_$id');
 
   final String id;
   
-  @Index()
-  @enumerated
   final ImageType type;
   
   final String filePath;

@@ -1,12 +1,10 @@
-
-
+import 'package:buff_lisa/data/database/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:isar_community/isar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'isar_repo.g.dart';
+part 'drift_repo.g.dart';
 
 @riverpod
-Isar isarRepo(Ref ref) {
+AppDatabase driftRepo(Ref ref) {
   throw UnimplementedError();
 }

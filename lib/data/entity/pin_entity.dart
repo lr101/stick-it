@@ -3,26 +3,21 @@ import 'dart:typed_data';
 
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
-import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
-part 'pin_entity.g.dart'; // This will be generated
 
-@Collection()
 class PinEntity extends CacheEntity {
   @override
-  Id get isarId => fastHash(pinId);
+  int get isarId => fastHash(pinId);
   final String pinId;
   final double latitude;
   final double longitude;
   final DateTime creationDate;
   final String? description;
 
-  @Index()
   int get creatorFastId => fastHash(creator);
   final String creator; // Assuming this is a userId
 
-  @Index()
   int get groupFastId => fastHash(groupId);
 
 

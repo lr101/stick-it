@@ -178,6 +178,32 @@ class MaterialTheme {
         activeTrackColor: colorScheme.primary,
         thumbColor: colorScheme.primary,
       ),
+
+      // 7. Navigation: Material 3 NavigationBar and NavigationRail
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: colorScheme.surface,
+        indicatorColor: colorScheme.primary.withValues(alpha: 0.2),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return IconThemeData(color: colorScheme.primary);
+          }
+          return IconThemeData(color: colorScheme.onSurfaceVariant);
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return TextStyle(color: colorScheme.primary, fontWeight: FontWeight.bold, fontSize: 12);
+          }
+          return TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 12);
+        }),
+      ),
+      navigationRailTheme: NavigationRailThemeData(
+        backgroundColor: colorScheme.surface,
+        indicatorColor: colorScheme.primary.withValues(alpha: 0.2),
+        selectedIconTheme: IconThemeData(color: colorScheme.primary),
+        unselectedIconTheme: IconThemeData(color: colorScheme.onSurfaceVariant),
+        selectedLabelTextStyle: TextStyle(color: colorScheme.primary, fontWeight: FontWeight.bold, fontSize: 12),
+        unselectedLabelTextStyle: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 12),
+      ),
     );
   }
 }

@@ -1,18 +1,17 @@
 import 'dart:io';
 
 import 'package:buff_lisa/data/config/openapi_config.dart';
+import 'package:buff_lisa/data/database/database.dart';
 import 'package:buff_lisa/data/entity/image_entity.dart';
-import 'package:buff_lisa/data/repository/isar_repo.dart';
+import 'package:buff_lisa/data/repository/drift_repo.dart';
 import 'package:buff_lisa/util/core/cache_api.dart';
 import 'package:buff_lisa/util/core/cache_impl.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
-import 'package:buff_lisa/util/core/in_memory_cache_impl.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -27,9 +26,18 @@ abstract class IImageRepository implements CacheApi<ImageEntity> {
 }
 
 class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository {
+  final AppDatabase db;
+  final Future<String?> Function(String) getImageUrl;
+  final String urlFileName;
+  final String urlSubFolder;
+  @override
+  final ImageType type;
+
+  final Map<String, Future<Uint8List?>> _activeRequests = {};
+  final Map<String, Uint8List> _bytesCache = {};
+
   ImageRepository({
-    required super.box,
-    required super.isar,
+    required this.db,
     required this.getImageUrl,
     required this.urlFileName,
     required this.urlSubFolder,
@@ -38,44 +46,139 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
     super.ttlDuration,
   });
 
-  final Map<String, Future<Uint8List?>> _activeRequests = {};
-  final String urlFileName;
-  final String urlSubFolder;
-  final Future<String?> Function(String) getImageUrl;
-  @override
-  final ImageType type;
-
-  @override
-  Future<void> startup() async {
-    DateTime? ttlTime;
-    if (ttlDuration != null) {
-      ttlTime = DateTime.now().subtract(ttlDuration!);
+  void _evictFromFlutterCache(String id) {
+    if (_bytesCache.containsKey(id)) {
+      MemoryImage(_bytesCache[id]!).evict();
     }
+  }
 
-    await isar.writeTxn(() async {
-      // 1. Fetch only items matching this repository's Type
-      final all = await getAll();
-      
-      // 2. Filter by session-only or expired TTL
-      final toDelete = all.where((entry) => 
-        (entry.onlySession && !entry.keepAlive) || 
-        (ttlTime != null && !entry.keepAlive && entry.ttl.isBefore(ttlTime))
-      ).toList();
+  void _precacheInFlutter(String id) {
+    if (_bytesCache.containsKey(id)) {
+      MemoryImage(_bytesCache[id]!).resolve(ImageConfiguration.empty);
+    }
+  }
 
-      // 3. Delete physical files first
-      for (final entry in toDelete) {
-        if (entry.filePath.isNotEmpty) {
-          final file = File(entry.filePath);
+  ImageEntitiesCompanion _toCompanion(ImageEntity entity) {
+    return ImageEntitiesCompanion(
+      id: Value(entity.id),
+      type: Value(entity.type),
+      filePath: Value(entity.filePath),
+      isEmptyVal: Value(entity.isEmpty),
+      isarId: Value(entity.isarId),
+      ttl: Value(entity.ttl),
+      hits: Value(entity.hits),
+      keepAlive: Value(entity.keepAlive),
+      onlySession: Value(entity.onlySession),
+    );
+  }
+
+  ImageEntity _fromDb(ImageDb data) {
+    return ImageEntity(
+      id: data.id,
+      type: data.type,
+      filePath: data.filePath,
+      isEmpty: data.isEmptyVal,
+      keepAlive: data.keepAlive,
+      hits: data.hits,
+      ttl: data.ttl,
+      onlySession: data.onlySession,
+    );
+  }
+
+  @override
+  Future<void> doDelete(int isarId) async {
+    final cachedImage = await doGet(isarId);
+    if (cachedImage != null) {
+      if (cachedImage.filePath.isNotEmpty) {
+        if (!kIsWeb) {
+          final file = File(cachedImage.filePath);
           if (await file.exists()) {
             await file.delete();
           }
         }
-        await box.delete(entry.isarId);
       }
+      _evictFromFlutterCache(cachedImage.id);
+      _bytesCache.remove(cachedImage.id);
+    }
+    await (db.delete(db.imageEntities)..where((tbl) => tbl.isarId.equals(isarId))).go();
+  }
+
+  @override
+  Future<void> doDeleteAll() async {
+    final items = await doGetAll();
+    for (final item in items) {
+      if (item.filePath.isNotEmpty) {
+        if (!kIsWeb) {
+          final file = File(item.filePath);
+          if (await file.exists()) {
+            await file.delete();
+          }
+        }
+      }
+      _evictFromFlutterCache(item.id);
+    }
+    _bytesCache.clear();
+    await (db.delete(db.imageEntities)..where((tbl) => tbl.type.equalsValue(type))).go();
+  }
+
+  @override
+  Future<void> doDeleteMultiple(List<int> isarIds) async {
+    for (final id in isarIds) {
+      await doDelete(id);
+    }
+  }
+
+  @override
+  Future<ImageEntity?> doGet(int isarId) async {
+    final res = await (db.select(db.imageEntities)..where((tbl) => tbl.isarId.equals(isarId))).getSingleOrNull();
+    return res == null ? null : _fromDb(res);
+  }
+
+  @override
+  Future<List<ImageEntity>> doGetAll() async {
+    final res = await (db.select(db.imageEntities)..where((tbl) => tbl.type.equalsValue(type))).get();
+    return res.map(_fromDb).toList();
+  }
+
+  @override
+  Future<List<ImageEntity>> doGetList(List<int> isarIds) async {
+    final res = await (db.select(db.imageEntities)..where((tbl) => tbl.isarId.isIn(isarIds))).get();
+    return res.map(_fromDb).toList();
+  }
+
+  @override
+  Future<int> doGetSize() async {
+    final countExp = db.imageEntities.isarId.count();
+    final query = db.selectOnly(db.imageEntities)..where(db.imageEntities.type.equalsValue(type))..addColumns([countExp]);
+    final result = await query.getSingle();
+    return result.read(countExp) ?? 0;
+  }
+
+  @override
+  Future<List<ImageEntity>> doGetSortedByHits() async {
+    final res = await (db.select(db.imageEntities)..where((tbl) => tbl.type.equalsValue(type))..orderBy([(t) => OrderingTerm(expression: t.hits, mode: OrderingMode.asc)])).get();
+    return res.map(_fromDb).toList();
+  }
+
+  @override
+  Future<void> doPut(ImageEntity item) async {
+    await db.into(db.imageEntities).insertOnConflictUpdate(_toCompanion(item));
+  }
+
+  @override
+  Future<void> doPutMultiple(List<ImageEntity> items) async {
+    await db.batch((batch) {
+      batch.insertAllOnConflictUpdate(db.imageEntities, items.map(_toCompanion).toList());
     });
   }
 
+  @override
+  Stream<ImageEntity?> doWatchById(int isarId) {
+    return (db.select(db.imageEntities)..where((tbl) => tbl.isarId.equals(isarId))).watchSingleOrNull().map((res) => res == null ? null : _fromDb(res));
+  }
+
   Future<String?> _getImagePath(String id) async {
+    if (kIsWeb) return ""; // No local files on web
     final directory = await getApplicationDocumentsDirectory();
     return '${directory.path}/${urlSubFolder}_${type.name}_${id}_$urlFileName';
   }
@@ -83,60 +186,36 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
   @override
   Future<Uint8List?> fetchImage(String id, bool keepAlive) async {
     final isarId = fastHash('${type.name}_$id');
-    final cachedImage = await box.get(isarId);
+    final cachedImage = await doGet(isarId);
     
     if (cachedImage?.isEmpty == true) {
       return null;
-    } else if (cachedImage?.filePath != null && await File(cachedImage!.filePath).exists()) {
-      return await File(cachedImage.filePath).readAsBytes();
+    } else if (_bytesCache.containsKey(id)) {
+      _precacheInFlutter(id);
+      return _bytesCache[id];
+    } else if (cachedImage?.filePath != null && cachedImage!.filePath.isNotEmpty) {
+      if (!kIsWeb) {
+        final file = File(cachedImage.filePath);
+        if (await file.exists()) {
+          final bytes = await file.readAsBytes();
+          _bytesCache[id] = bytes;
+          _precacheInFlutter(id);
+          return bytes;
+        }
+      }
     }
 
-    // ADD THIS: Check if a request for this ID is already running
     if (_activeRequests.containsKey(id)) {
-      return _activeRequests[id]; // Return the ongoing Future
+      return _activeRequests[id];
     }
 
-    // ADD THIS: Create the Future, store it, await it, and then clean up
     final requestFuture = _fetchAndCacheImage(id, keepAlive);
     _activeRequests[id] = requestFuture;
 
     try {
       return await requestFuture;
     } finally {
-      // Ensure the request is removed from the map whether it succeeds or fails
       _activeRequests.remove(id);
-    }
-  }
-
-  @override
-  Stream<Uint8List?> watchImageBytes(String id) {
-    final isarId = fastHash('${type.name}_$id');
-    return box.watchObject(isarId, fireImmediately: true).asBroadcastStream().asyncMap((entity) async {
-      if (entity == null || entity.isEmpty) {
-        return null;
-      }
-      if (entity.filePath.isNotEmpty) {
-        final file = File(entity.filePath);
-        if (await file.exists()) {
-          return await file.readAsBytes();
-        }
-      }
-      return null; 
-    });
-  }
-
-  @override
-  Future<Uint8List> overrideUrl(String id, String url, bool keepAlive) async {
-    try {
-      final image = await http.get(Uri.parse(url));
-      final filePath = await _getImagePath(id);
-      if (filePath != null) {
-        await File(filePath).writeAsBytes(image.bodyBytes);
-        await put(ImageEntity(id: id, type: type, filePath: filePath, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
-      }
-      return image.bodyBytes;
-    } catch (e) {
-      rethrow;
     }
   }
 
@@ -151,9 +230,16 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
       final image = await http.get(Uri.parse(imageUrl));
       final filePath = await _getImagePath(id);
 
-      if (filePath != null) {
-        await File(filePath).writeAsBytes(image.bodyBytes);
+      _bytesCache[id] = image.bodyBytes;
+      _precacheInFlutter(id);
+
+      if (filePath != null && filePath.isNotEmpty) {
+        if (!kIsWeb) {
+          await File(filePath).writeAsBytes(image.bodyBytes);
+        }
         await put(ImageEntity(id: id, type: type, filePath: filePath, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
+      } else {
+        await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
       }
 
       return image.bodyBytes;
@@ -163,200 +249,68 @@ class ImageRepository extends CacheImpl<ImageEntity> implements IImageRepository
   }
 
   @override
-  Future<void> addImage(String id, Uint8List image, bool keepAlive) async {
-    final filePath = await _getImagePath(id);
-    if (filePath != null) {
-      await File(filePath).writeAsBytes(image);
-      await put(ImageEntity(id: id, type: type, filePath: filePath, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
-    }
-  }
-
-  @override
-  Future<void> delete(String id) async {
-    await isar.writeTxn(() async {
-      final isarId = fastHash('${type.name}_$id');
-      final cachedImage = await box.get(isarId);
-      if (cachedImage?.filePath != null) {
-        final file = File(cachedImage!.filePath);
-        if (await file.exists()) {
-          await file.delete();
-        }
+  Stream<Uint8List?> watchImageBytes(String id) {
+    return doWatchById(fastHash('${type.name}_$id')).asyncMap((entity) async {
+      if (entity == null || entity.isEmpty) {
+        return null;
       }
-      await box.delete(isarId);
-    });
-  }
-
-  @override
-  Future<void> deleteAll() async {
-    await isar.writeTxn(() async {
-      final items = await box.filter().typeEqualTo(type).findAll();
-      for (final item in items) {
-        if (item.filePath.isNotEmpty) {
-          final file = File(item.filePath);
+      if (_bytesCache.containsKey(id)) {
+         return _bytesCache[id];
+      }
+      if (entity.filePath.isNotEmpty) {
+        if (!kIsWeb) {
+          final file = File(entity.filePath);
           if (await file.exists()) {
-            await file.delete();
+             final bytes = await file.readAsBytes();
+             _bytesCache[id] = bytes;
+             _precacheInFlutter(id);
+             return bytes;
           }
         }
       }
-      await box.filter().typeEqualTo(type).deleteAll();
+      return null; 
     });
-  }
-
-    @override
-  Future<void> deleteOldestItems() async {
-
-      final size = await isar.getSize();
-      if (maxItems == null || maxItems! >= size) return;
-
-
-      final entries = await box.where().findAll();
-
-      entries.sort((a, b) {
-        final aHits = a.hits;
-        final bHits = b.hits;
-        return aHits.compareTo(bHits);
-      });
-
-      final itemsToDelete = size - maxItems!;
-      int itemsDeleted = 0;
-      final duration = ttlDuration != null ? (ttlDuration!.inSeconds * 0.1).toInt() : 3600;
-      final ttlTime = DateTime.now().subtract(Duration(seconds: duration));
-
-      for (int i = 0; i < entries.length && itemsDeleted < itemsToDelete; i++) {
-        if (entries[i].keepAlive == false && entries[i].ttl.isBefore(ttlTime)) {
-          await box.delete(entries[i].isarId);
-          itemsDeleted++;
-        }
-      }
-  }
-}
-
-
-
-class ImageRepositoryWeb extends InMemoryCache<ImageEntity> implements IImageRepository {
-  final Future<String?> Function(String) getImageUrl;
-  @override
-  final ImageType type;
-  final Map<String, Uint8List> _bytesCache = {};
-  final Map<String, Future<Uint8List?>> _activeRequests = {};
-
-  ImageRepositoryWeb({
-    required this.getImageUrl,
-    required this.type,
-    super.maxItems,
-    super.ttlDuration,
-  });
-
-@override
-  Future<Uint8List?> fetchImage(String id, bool keepAlive) async {
-    final cachedEntity = await get(id);
-    
-    if (cachedEntity?.isEmpty == true) {
-      return null;
-    } else if (_bytesCache.containsKey(id)) {
-      // Pre-emptively load into Flutter's image cache for instant UI rendering
-      _precacheInFlutter(id);
-      return _bytesCache[id];
-    }
-    
-    // ADD THIS: Check if a request for this ID is already running
-    if (_activeRequests.containsKey(id)) {
-      return _activeRequests[id]; // Return the ongoing Future
-    }
-
-    // ADD THIS: Create the Future, store it, await it, and then clean up
-    final requestFuture = _fetchAndCacheImage(id, keepAlive);
-    _activeRequests[id] = requestFuture;
-
-    try {
-      return await requestFuture;
-    } finally {
-      _activeRequests.remove(id);
-    }
-  }
-
-  @override
-  Stream<Uint8List?> watchImageBytes(String id) {
-    return cacheChanges.map((_) => _bytesCache[id]);
   }
 
   @override
   Future<Uint8List> overrideUrl(String id, String url, bool keepAlive) async {
-    final image = await http.get(Uri.parse(url));
-    
-    _evictFromFlutterCache(id); // Evict old image if it exists
-    _bytesCache[id] = image.bodyBytes;
-    
-    if (keepAlive) {
-      await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
-    }
-    return image.bodyBytes;
-  }
+    try {
+      final image = await http.get(Uri.parse(url));
+      final filePath = await _getImagePath(id);
+      
+      _evictFromFlutterCache(id);
+      _bytesCache[id] = image.bodyBytes;
+      _precacheInFlutter(id);
 
-  Future<Uint8List?> _fetchAndCacheImage(String id, bool keepAlive) async {
-    final imageUrl = await getImageUrl(id);
-    if (imageUrl == null) {
-      await put(ImageEntity(id: id, type: type, filePath: "", isEmpty: true, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
-      return null;
+      if (filePath != null && filePath.isNotEmpty) {
+        if (!kIsWeb) {
+          await File(filePath).writeAsBytes(image.bodyBytes);
+        }
+        await put(ImageEntity(id: id, type: type, filePath: filePath, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
+      } else {
+        await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
+      }
+      return image.bodyBytes;
+    } catch (e) {
+      rethrow;
     }
-
-    final image = await http.get(Uri.parse(imageUrl));
-    
-    _bytesCache[id] = image.bodyBytes;
-    await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
-    
-    return image.bodyBytes;
   }
 
   @override
   Future<void> addImage(String id, Uint8List image, bool keepAlive) async {
-    _evictFromFlutterCache(id);
+    final filePath = await _getImagePath(id);
     
+    _evictFromFlutterCache(id);
     _bytesCache[id] = image;
-    await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
-  }
+    _precacheInFlutter(id);
 
-  @override
-  Future<void> delete(String id) async {
-    _evictFromFlutterCache(id);
-    _bytesCache.remove(id);
-    await super.delete(id);
-  }
-
-  @override
-  Future<void> deleteOldestItems() async {
-    // Override to ensure when TTL drops an item, we also drop the bytes & evict
-    final sizeBefore = cache.length;
-    await super.deleteOldestItems();
-    
-    if (sizeBefore != cache.length) {
-      // Find which keys are no longer in the entity cache and clean them up
-      final keysToRemove = _bytesCache.keys.where((k) => !cache.containsKey(fastHash(k))).toList();
-      for (final key in keysToRemove) {
-        _evictFromFlutterCache(key);
-        _bytesCache.remove(key);
+    if (filePath != null && filePath.isNotEmpty) {
+      if (!kIsWeb) {
+        await File(filePath).writeAsBytes(image);
       }
-    }
-  }
-
-  @override
-  Future<void> deleteAll() async {
-    for (final key in _bytesCache.keys) {
-      _evictFromFlutterCache(key);
-    }
-    _bytesCache.clear();
-    await super.deleteAll();
-  }
-
-  void _evictFromFlutterCache(String id) {
-    if (_bytesCache.containsKey(id)) {
-      MemoryImage(_bytesCache[id]!).evict();
-    }
-  }
-
-  void _precacheInFlutter(String id) {
-    if (_bytesCache.containsKey(id)) {
-      MemoryImage(_bytesCache[id]!).resolve(ImageConfiguration.empty);
+      await put(ImageEntity(id: id, type: type, filePath: filePath, keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
+    } else {
+      await put(ImageEntity(id: id, type: type, filePath: "", keepAlive: keepAlive, ttl: DateTime.now(), onlySession: false));
     }
   }
 }
@@ -365,40 +319,20 @@ class ImageRepositoryWeb extends InMemoryCache<ImageEntity> implements IImageRep
 
 @Riverpod(keepAlive: true)
 IImageRepository groupProfileRepo(Ref ref) {
-  if (kIsWeb) {
-    return ImageRepositoryWeb(
-      type: ImageType.group,
-      getImageUrl: ref.watch(groupApiProvider).getGroupProfileImage, 
-      maxItems: 20
-    );
-  } else {
-    final isar = ref.watch(isarRepoProvider);
-    return ImageRepository(
-      isar: isar,
-      box: isar.imageEntitys,
-      type: ImageType.group,
-      getImageUrl: ref.watch(groupApiProvider).getGroupProfileImage, 
-      urlSubFolder: "groups", 
-      urlFileName: "group_profile.png", 
-      maxItems: 20
-    );
-  }
+  return ImageRepository(
+    db: ref.watch(driftRepoProvider),
+    type: ImageType.group,
+    getImageUrl: ref.watch(groupApiProvider).getGroupProfileImage, 
+    urlSubFolder: "groups", 
+    urlFileName: "group_profile.png", 
+    maxItems: 20
+  );
 }
 
 @Riverpod(keepAlive: true)
 IImageRepository groupProfileSmallRepo(Ref ref) {
-  if (kIsWeb) {
-    return ImageRepositoryWeb(
-      type: ImageType.groupSmall,
-      getImageUrl: ref.watch(groupApiProvider).getGroupProfileImageSmall,
-      maxItems: 500,
-    );
-  }
-  
-  final isar = ref.watch(isarRepoProvider);
   return ImageRepository(
-    isar: isar,
-    box: isar.imageEntitys,
+    db: ref.watch(driftRepoProvider),
     type: ImageType.groupSmall,
     getImageUrl: ref.watch(groupApiProvider).getGroupProfileImageSmall,
     urlSubFolder: "groups",
@@ -409,18 +343,8 @@ IImageRepository groupProfileSmallRepo(Ref ref) {
 
 @Riverpod(keepAlive: true)
 IImageRepository groupPinImageRepo(Ref ref) {
-  if (kIsWeb) {
-    return ImageRepositoryWeb(
-      type: ImageType.groupPin,
-      getImageUrl: ref.watch(groupApiProvider).getGroupPinImage,
-      maxItems: 50,
-    );
-  }
-  
-  final isar = ref.watch(isarRepoProvider);
   return ImageRepository(
-    isar: isar,
-    box: isar.imageEntitys,
+    db: ref.watch(driftRepoProvider),
     type: ImageType.groupPin,
     getImageUrl: ref.watch(groupApiProvider).getGroupPinImage,
     urlSubFolder: "groups",
@@ -431,18 +355,8 @@ IImageRepository groupPinImageRepo(Ref ref) {
 
 @Riverpod(keepAlive: true)
 IImageRepository userImageSmallRepo(Ref ref) {
-  if (kIsWeb) {
-    return ImageRepositoryWeb(
-      type: ImageType.userSmall,
-      getImageUrl: ref.watch(userApiProvider).getUserProfileImageSmall,
-      maxItems: 500,
-    );
-  }
-  
-  final isar = ref.watch(isarRepoProvider);
   return ImageRepository(
-    isar: isar,
-    box: isar.imageEntitys,
+    db: ref.watch(driftRepoProvider),
     type: ImageType.userSmall,
     getImageUrl: ref.watch(userApiProvider).getUserProfileImageSmall,
     urlSubFolder: "users",
@@ -453,18 +367,8 @@ IImageRepository userImageSmallRepo(Ref ref) {
 
 @Riverpod(keepAlive: true)
 IImageRepository userImageRepo(Ref ref) {
-  if (kIsWeb) {
-    return ImageRepositoryWeb(
-      type: ImageType.user,
-      getImageUrl: ref.watch(userApiProvider).getUserProfileImage,
-      maxItems: 50,
-    );
-  }
-  
-  final isar = ref.watch(isarRepoProvider);
   return ImageRepository(
-    isar: isar,
-    box: isar.imageEntitys,
+    db: ref.watch(driftRepoProvider),
     type: ImageType.user,
     getImageUrl: ref.watch(userApiProvider).getUserProfileImage,
     urlSubFolder: "users",
@@ -475,18 +379,8 @@ IImageRepository userImageRepo(Ref ref) {
 
 @Riverpod(keepAlive: true)
 IImageRepository pinImageRepository(Ref ref) {
-  if (kIsWeb) {
-    return ImageRepositoryWeb(
-      type: ImageType.pin,
-      getImageUrl: ref.watch(pinApiProvider).getPinImage,
-      maxItems: 200,
-    );
-  }
-  
-  final isar = ref.watch(isarRepoProvider);
   return ImageRepository(
-    isar: isar,
-    box: isar.imageEntitys,
+    db: ref.watch(driftRepoProvider),
     type: ImageType.pin,
     getImageUrl: ref.watch(pinApiProvider).getPinImage,
     urlSubFolder: "pins",

@@ -4,16 +4,13 @@ import 'dart:typed_data';
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/data/entity/season_entity.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
-import 'package:isar_community/isar.dart';
 import 'package:openapi/api.dart';
 
-part 'group_entity.g.dart'; // This will be generated
 
-@collection
 class GroupEntity extends CacheEntity {
 
   @override
-  Id get isarId => fastHash(groupId);
+  int get isarId => fastHash(groupId);
 
   final String groupId;
 

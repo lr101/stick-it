@@ -1,9 +1,6 @@
 
-import 'package:isar_community/isar.dart';
-
 abstract class CacheEntity {
-
-  late Id isarId;
+  int get isarId;
 
   CacheEntity({this.keepAlive = false, this.hits = 1, required this.ttl, required this.onlySession});
 

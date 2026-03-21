@@ -15,9 +15,9 @@ dependencies:
   choice:
   collection:
   connectivity_plus:
-  drift:
+  drift: ^2.28.2
   drift_dev:
-  drift_flutter:
+  drift_flutter: ^0.2.7
   dropdown_search:
   easy_localization:
   exif:
@@ -33,7 +33,7 @@ dependencies:
   flutter_map_tile_caching:
   flutter_native_splash:
   flutter_riverpod: 2.6.1
-  flutter_secure_storage: ^9.2.4
+  flutter_secure_storage: ^10.0.0
   fluttertoast:
   freezed_annotation:
   geocoding:
@@ -62,7 +62,6 @@ dependencies:
   shimmer:
   sliding_up_panel:
   snapping_page_scroll:
-  social_media_buttons:
   string_validator:
   transparent_image:
   url_launcher:
@@ -72,11 +71,11 @@ dependencies:
   firebase_messaging:
   firebase_core: ^4.4.0
   logger: 
-  isar_community: 
-  isar_community_flutter_libs: 
   rxdart: ^0.28.0
   go_router: ^17.1.0
   image: ^4.8.0
+  sqlite3_flutter_libs: ^0.5.42
+  font_awesome_flutter: ^10.12.0
 
 dev_dependencies:
   build_runner:
@@ -87,7 +86,6 @@ dev_dependencies:
   lint:
   custom_lint:
   meta:
-  isar_community_generator:
 
 
 flutter:
