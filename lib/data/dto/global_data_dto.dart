@@ -8,7 +8,7 @@ class GlobalDataDto {
 
   final String? userId;
   final String? refreshToken;
-  final String host = dotenv.env['API_HOST']!;
+  String get host => dotenv.env['API_HOST'] ?? "https://stick-it.lr-projects.de";
   final List<CameraDescription> cameras;
 
   GlobalDataDto({

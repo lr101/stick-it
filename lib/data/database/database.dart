@@ -174,7 +174,7 @@ class AppDatabase extends _$AppDatabase {
       name: 'my_database',
       web: DriftWebOptions(
         sqlite3Wasm: Uri.parse('sqlite3.wasm'),
-        driftWorker: Uri.parse('drift_worker.dart.js'),
+        driftWorker: Uri.parse('drift_worker.js'),
       ),
       native: const DriftNativeOptions(
         databaseDirectory: getApplicationSupportDirectory,

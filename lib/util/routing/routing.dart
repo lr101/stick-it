@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/features/achievement/presentation/achievement_page.dart';
 import 'package:buff_lisa/features/auth/presentation/auth.dart';
+import 'package:buff_lisa/features/auth/presentation/logout_screen.dart';
 import 'package:buff_lisa/features/camera/presentation/image_upload.dart';
 import 'package:buff_lisa/features/camera/presentation/select_location.dart';
 import 'package:buff_lisa/features/group_create/presentation/group_create.dart';
@@ -39,7 +40,8 @@ final routerProvider = Provider<GoRouter>((ref) => GoRouter(
     final isLoggedIn = ref.read(globalDataServiceProvider).userId != null;
     final bool isGoingToLogin = state.matchedLocation == '/login';
     final bool isWeb = state.matchedLocation == "/web";
-    if (!isLoggedIn && !isGoingToLogin && !isWeb) {
+    final bool isLogout = state.matchedLocation == "/logout";
+    if (!isLoggedIn && !isGoingToLogin && !isWeb && !isLogout) {
       return '/login';
     }
     if (isLoggedIn && isGoingToLogin && !isWeb) {
@@ -63,6 +65,12 @@ final routerProvider = Provider<GoRouter>((ref) => GoRouter(
       path: '/login',
       name: 'login',
       builder: (context, state) => const Auth()
+    ),
+
+    GoRoute(
+      path: '/logout',
+      name: 'logout',
+      builder: (context, state) => const LogoutScreen(),
     ),
 
     GoRoute(

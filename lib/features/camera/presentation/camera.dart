@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mutex/mutex.dart';
 import 'package:native_exif/native_exif.dart';
@@ -268,8 +267,7 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
         await controller.pausePreview().catchError((_) {});
       }
       if (!mounted) return;
-      final croppedImage = await CustomImagePicker.crop(
-          res: file, minHeight: 500, minWidth: 500, context: context, initAspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4));
+      final croppedImage = await CustomImagePicker.autoCrop(res: file);
       if (croppedImage == null) {
         if (controller != null && controller.value.isInitialized) {
           await controller.resumePreview().catchError((_) {});
