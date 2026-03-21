@@ -76,9 +76,8 @@ class _MapHomeState extends ConsumerState<MapHome>
                   ref.read(districtServiceProvider.notifier).updateLatLong(position.center.latitude, position.center.longitude, position.zoom);
               },
               interactionOptions: const InteractionOptions(
-                flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-              ),
-            ),
+                flags: InteractiveFlag.all,
+              ),            ),
             children: [
               CustomTileLayer(),
               const CurrentLocationLayer(),

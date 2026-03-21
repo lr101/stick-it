@@ -49,40 +49,47 @@ class _CustomAvatarScaffoldState extends ConsumerState<CustomAvatarScaffold>
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 0.8;
     final double leftPadding = widget.hasBackButton ? 66.0 : 16.0;
+
     return Scaffold(
       body: NestedScrollView(
         controller: controller,
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
-              floating: true,
-              actions: widget.actions,
-              expandedHeight: (width / 2) + kToolbarHeight + 20,
-              centerTitle: false,
-              shape: const ContinuousRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
+            floating: true,
+            actions: widget.actions,
+            expandedHeight: 180,
+            centerTitle: false,
+            title: widget.title,
+            backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+            surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
+            flexibleSpace: FlexibleSpaceBar(
+              background: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.only(left: leftPadding, top: 60, right: 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: RoundImage(
+                          imageCallback: widget.avatar,
+                          size: 40, // size is half of dimension
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: widget.profileQuickViewBoxes ?? const SizedBox.shrink(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              title: widget.title,
-              backgroundColor: Theme.of(context).focusColor,
-              flexibleSpace: FlexibleSpaceBar(
-                background: SafeArea(
-                    child: Padding(
-                        padding: EdgeInsets.only(left: leftPadding, top: 10, right: 10), child: Row(
-                        children: [
-                          RoundImage(
-                            imageCallback: widget.avatar,
-                            size: (width/4) - 20,
-                          ),
-                          const SizedBox(width: 10,),
-                          SizedBox(width: MediaQuery.of(context).size.width - width/2 - leftPadding - 10, height: (width/2) - leftPadding - 10, child: widget.profileQuickViewBoxes ?? const SizedBox.shrink()),
-                ],),),),
-              ),
-              bottom: widget.bottom,),
-          ...?widget.boxes,
+            ),
+            bottom: widget.bottom,
+          ),
+          if (widget.boxes != null) ...widget.boxes!,
         ],
         body: widget.body,
       ),

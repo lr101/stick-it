@@ -109,11 +109,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    /// App orientation can only be portrait mode (no landscape)
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     final theme = MaterialTheme(Theme.of(context).textTheme);
     final router = ref.watch(routerProvider);
@@ -124,6 +119,18 @@ class MyApp extends ConsumerWidget {
         darkTheme: theme.dark(),
         theme: theme.light(),
         routerConfig: router,
+        builder: (context, child) {
+          if (!kIsWeb) return child!;
+          return Container(
+            color: Colors.black, // Background color for web outside the app
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 450),
+                child: child,
+              ),
+            ),
+          );
+        },
     );
   }
 }

@@ -13,7 +13,7 @@ import 'package:openapi/api.dart';
 class RankingSlidingPanel extends ConsumerStatefulWidget {
   const RankingSlidingPanel({super.key, required this.headerPixelHeight});
 
-    final double headerPixelHeight;
+  final double headerPixelHeight;
 
   @override
   ConsumerState<RankingSlidingPanel> createState() => _RankingSlidingPanelState();
@@ -34,7 +34,6 @@ class _RankingSlidingPanelState extends ConsumerState<RankingSlidingPanel> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final double screenHeight = MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight;
     final gid = ref.watch(zoomGidProvider);
     final currentGid = gid.$1;
     final regionName = gid.$2 ?? "Unknown Region";
@@ -50,6 +49,7 @@ class _RankingSlidingPanelState extends ConsumerState<RankingSlidingPanel> {
       asyncRankings = ref.watch(userRankingProvider(currentGid));
     }
 
+    final double screenHeight = MediaQuery.of(context).size.height - kBottomNavigationBarHeight - kToolbarHeight;
     // Define sheet limits
     final double minSize = widget.headerPixelHeight / screenHeight;
     const double maxSize = 0.6;

@@ -43,7 +43,7 @@ class CustomScaffold<T> extends ConsumerWidget {
           PagedSliverList<int, T>(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<T>(
-                itemBuilder: listBuilder,
+              itemBuilder: listBuilder,
             ),
           ),
         ],
