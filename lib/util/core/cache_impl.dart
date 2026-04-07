@@ -76,7 +76,7 @@ abstract class CacheImpl<T extends CacheEntity> implements CacheApi<T> {
     return await doGetList(ids.map(fastHash).toList());
   }
 
-  void startup() async {
+  Future<void> startup() async {
     DateTime? ttlTime;
     if (ttlDuration != null) {
       ttlTime = DateTime.now().subtract(ttlDuration!);

@@ -121,7 +121,7 @@ class MyApp extends ConsumerWidget {
         routerConfig: router,
         builder: (context, child) {
           if (!kIsWeb) return child!;
-          return Container(
+          return ColoredBox(
             color: Colors.black, // Background color for web outside the app
             child: Center(
               child: ConstrainedBox(

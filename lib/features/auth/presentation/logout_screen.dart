@@ -6,6 +6,7 @@ import 'package:buff_lisa/data/repository/user_pins_repository.dart';
 import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
 import 'package:buff_lisa/data/service/shared_preferences_service.dart';
+import 'package:buff_lisa/data/service/syncing_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -14,7 +15,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class LogoutScreen extends ConsumerStatefulWidget {
-  const LogoutScreen({super.key});
+  final bool isCacheOnly;
+  const LogoutScreen({super.key, this.isCacheOnly = false});
 
   @override
   ConsumerState<LogoutScreen> createState() => _LogoutScreenState();
@@ -67,32 +69,39 @@ class _LogoutScreenState extends ConsumerState<LogoutScreen> {
       await mgmt.reset();
     }
 
-    await sharedPreferences.clear();
+    if (!widget.isCacheOnly) {
+      await sharedPreferences.clear();
+    }
     await DefaultCacheManager().emptyCache();
 
     // 4. Invalidate the syncing service last (it depends on userId)
     ref.invalidate(lastSeenProvider);
     
-    // 5. Finally, logout in GlobalDataService
-    await ref.read(globalDataServiceProvider.notifier).logout();
+    if (widget.isCacheOnly) {
+       ref.read(syncingServiceProvider.notifier).toInit();
+       await ref.read(syncingServiceProvider.notifier).syncToBackend();
+    } else {
+      // 5. Finally, logout in GlobalDataService
+      await ref.read(globalDataServiceProvider.notifier).logout();
+    }
 
     if (!mounted) return;
-    context.goNamed("login");
+    context.goNamed(widget.isCacheOnly ? "home" : "login");
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 15),
+            const CircularProgressIndicator(),
+            const SizedBox(height: 15),
             Text(
-              "Logging out... Please wait.",
+              widget.isCacheOnly ? "Deleting cache... Please wait." : "Logging out... Please wait.",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
         ),

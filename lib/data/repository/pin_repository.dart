@@ -108,7 +108,7 @@ class PinRepository extends CacheImpl<PinEntity> implements IPinRepository {
 
   @override
   Future<List<PinEntity>> doGetSortedByHits() async {
-    final res = await (db.select(db.pinEntities)..orderBy([(t) => OrderingTerm(expression: t.hits, mode: OrderingMode.asc)])).get();
+    final res = await (db.select(db.pinEntities)..orderBy([(t) => OrderingTerm(expression: t.hits)])).get();
     return res.map(_fromDb).toList();
   }
 
@@ -245,7 +245,7 @@ class PinLikeRepository extends CacheImpl<PinLikeEntity> implements IPinLikeRepo
 
   @override
   Future<List<PinLikeEntity>> doGetSortedByHits() async {
-    final res = await (db.select(db.pinLikeEntities)..orderBy([(t) => OrderingTerm(expression: t.hits, mode: OrderingMode.asc)])).get();
+    final res = await (db.select(db.pinLikeEntities)..orderBy([(t) => OrderingTerm(expression: t.hits)])).get();
     return res.map(_fromDb).toList();
   }
 

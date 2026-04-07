@@ -1,22 +1,10 @@
-import 'package:buff_lisa/data/repository/group_repository.dart';
-import 'package:buff_lisa/data/repository/image_repository.dart';
-import 'package:buff_lisa/data/repository/member_repository.dart';
-import 'package:buff_lisa/data/repository/pin_repository.dart';
-import 'package:buff_lisa/data/repository/user_pins_repository.dart';
-import 'package:buff_lisa/data/repository/user_repository.dart';
 import 'package:buff_lisa/data/service/global_data_service.dart';
-import 'package:buff_lisa/data/service/shared_preferences_service.dart';
-import 'package:buff_lisa/data/service/syncing_service.dart';
-import 'package:buff_lisa/features/navigation/data/navigation_provider.dart';
 import 'package:buff_lisa/features/settings/presentation/state/notification_state.dart';
 import 'package:buff_lisa/util/routing/routing.dart';
 import 'package:buff_lisa/util/theme/service/theme_state.dart';
 import 'package:buff_lisa/widgets/custom_interaction/presentation/custom_dialog.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -176,89 +164,8 @@ class _SettingsState extends ConsumerState<Settings> {
         child: const Text(
             "Deleting the cache can fix wrong states of the app caused by outdated data. This does not log you out and an automatic refresh of all deleted data is performed. IMPORTANT: Posts that are not synced to the server will be lost forever.",
             maxLines: 10,), onPressed: () async {
-          showLoading();
-          await invalidateCache();
-          ref.read(syncingServiceProvider.notifier).toInit();
-          ref.read(syncingServiceProvider.notifier).syncToBackend();
-          if (!context.mounted) return;
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
+          context.goNamed("logout", extra: true);
         },
     );
-  }
-
-  void showLoading() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Dialog(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width - 40,
-          child: const Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(height: 15),
-                Text(
-                  "Please don't close this screen, this can take a few seconds",
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> invalidateCache() async {
-    // 1. Safely read all repositories and dependencies BEFORE any async gap
-    final pinImageRepo = ref.read(pinImageRepositoryProvider);
-    final groupRepo = ref.read(groupRepositoryProvider);
-    final groupProfileRepo = ref.read(groupProfileRepoProvider);
-    final groupProfileSmallRepo = ref.read(groupProfileSmallRepoProvider);
-    final groupPinImageRepo = ref.read(groupPinImageRepoProvider);
-    final memberRepo = ref.read(memberRepositoryProvider);
-    final pinRepo = ref.read(pinRepositoryProvider);
-    final userImageRepo = ref.read(userImageRepoProvider);
-    final userImageSmallRepo = ref.read(userImageSmallRepoProvider);
-    final userLikeRepo = ref.read(userLikeRepositoryProvider);
-    final userRepo = ref.read(userRepositoryProvider);
-    final userPinsRepo = ref.read(userPinsRepositoryProvider);
-    
-    // Changed to read() to prevent Riverpod crashes
-    final sharedPreferences = ref.read(sharedPreferencesProvider); 
-
-    await Future.wait([
-      pinImageRepo.deleteAll(),
-      groupRepo.deleteAll(),
-      groupProfileRepo.deleteAll(),
-      groupProfileSmallRepo.deleteAll(),
-      groupPinImageRepo.deleteAll(),
-      memberRepo.deleteAll(),
-      pinRepo.deleteAll(),
-      userImageRepo.deleteAll(),
-      userImageSmallRepo.deleteAll(),
-      userLikeRepo.deleteAll(),
-      userRepo.deleteAll(),
-      userPinsRepo.deleteAll(),
-    ]);
-
-    // 3. Clear remaining external caches
-    if (!kIsWeb) {
-      final mgmt = const FMTCStore('tileStore').manage;
-      await mgmt.reset();
-    }
-    
-    // 4. Clear shared preferences and DefaultCacheManager
-    // sharedPreferences.clear(); // We don't want to clear EVERYTHING for just a cache delete, but the original code did it.
-    // Actually, deleteCache should probably NOT clear sharedPreferences if it's just a cache delete.
-    // But I'll keep the logic consistent with what was there if possible, or improve it.
-    await DefaultCacheManager().emptyCache();
-    
-    // 5. Invalidate the syncing service last
-    ref.invalidate(lastSeenProvider);
   }
 }

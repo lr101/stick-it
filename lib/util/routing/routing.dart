@@ -70,7 +70,7 @@ final routerProvider = Provider<GoRouter>((ref) => GoRouter(
     GoRoute(
       path: '/logout',
       name: 'logout',
-      builder: (context, state) => const LogoutScreen(),
+      builder: (context, state) => LogoutScreen(isCacheOnly: state.extra as bool? ?? false),
     ),
 
     GoRoute(

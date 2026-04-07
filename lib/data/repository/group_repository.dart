@@ -106,7 +106,7 @@ class GroupRepository extends CacheImpl<GroupEntity> implements IGroupRepository
 
   @override
   Future<List<GroupEntity>> doGetSortedByHits() async {
-    final res = await (db.select(db.groupEntities)..orderBy([(t) => OrderingTerm(expression: t.hits, mode: OrderingMode.asc)])).get();
+    final res = await (db.select(db.groupEntities)..orderBy([(t) => OrderingTerm(expression: t.hits)])).get();
     return res.map(_fromDb).toList();
   }
 
