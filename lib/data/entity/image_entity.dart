@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:buff_lisa/data/entity/cache_entity.dart';
 import 'package:buff_lisa/util/core/fast_hash.dart';
 
@@ -20,14 +22,12 @@ class ImageEntity extends CacheEntity {
   
   final ImageType type;
   
-  final String filePath;
-  final bool isEmpty;
+  final Uint8List? image;
 
   ImageEntity({
     required this.id,
     required this.type, // Require the type in the constructor
-    required this.filePath,
-    this.isEmpty = false,
+    required this.image,
     super.keepAlive = false,
     super.hits,
     required super.ttl,
@@ -39,7 +39,7 @@ class ImageEntity extends CacheEntity {
     return ImageEntity(
       id: id,
       type: type, // Ensure type is preserved on copy
-      filePath: filePath,
+      image: image,
       keepAlive: keepAlive ?? this.keepAlive,
       hits: hits ?? this.hits,
       ttl: ttl ?? this.ttl,

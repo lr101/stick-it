@@ -11,7 +11,7 @@ class GlobalDataDto {
   String get host => dotenv.env['API_HOST'] ?? "https://stick-it.lr-projects.de";
   final List<CameraDescription> cameras;
 
-  GlobalDataDto({
+  const GlobalDataDto({
     required this.userId,
     required this.refreshToken,
     required this.cameras,

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:buff_lisa/data/repository/global_data_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,14 +37,39 @@ class CacheMigrator {
   }
 
   Future<void> _version2() async {
-    // clearing existing database data
-    await prefs.remove(GlobalDataRepository.lastSeenKey);
+    // 1. Clear ALL standard SharedPreferences.
+    // Note: This does NOT affect flutter_secure_storage.
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
     if (!kIsWeb) {
-      final dir =( await getApplicationDocumentsDirectory()).path;
-      for (final file in Directory(dir).listSync()) {
-        await file.delete(recursive: true);
+      final docDir = await getApplicationDocumentsDirectory();
+      final docPath = docDir.path;
+
+      // 2. Delete specific custom directories
+      final directoriesToDelete = ['groups', 'pins', 'users'];
+      for (final dirName in directoriesToDelete) {
+        final dir = Directory('$docPath/$dirName');
+        if (dir.existsSync()) {
+          await dir.delete(recursive: true);
+        }
       }
 
+      // 3. Delete Hive and Isar database files explicitly
+      // Ideally, ensure your Isar and Hive instances are closed before doing this 
+      // to prevent memory leaks or crashes (e.g., await Hive.close();)
+      for (final entity in docDir.listSync()) {
+        if (entity is File) {
+          final fileName = entity.uri.pathSegments.last;
+          
+          // Target specifically the extensions used by Hive and Isar
+          if (fileName.endsWith('.hive') || 
+              fileName.endsWith('.lock') || 
+              fileName.endsWith('.isar')) {
+            await entity.delete();
+          }
+        }
+      }
     }
   }
 

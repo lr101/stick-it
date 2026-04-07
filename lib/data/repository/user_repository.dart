@@ -90,7 +90,7 @@ class UserRepository extends CacheImpl<UserEntity> implements IUserRepository {
 
   @override
   Future<List<UserEntity>> doGetSortedByHits() async {
-    final res = await (db.select(db.userEntities)..orderBy([(t) => OrderingTerm(expression: t.hits, mode: OrderingMode.asc)])).get();
+    final res = await (db.select(db.userEntities)..orderBy([(t) => OrderingTerm(expression: t.hits)])).get();
     return res.map(_fromDb).toList();
   }
 
@@ -187,7 +187,7 @@ class UserLikeRepository extends CacheImpl<UserLikeEntity> implements IUserLikeR
 
   @override
   Future<List<UserLikeEntity>> doGetSortedByHits() async {
-    final res = await (db.select(db.userLikeEntities)..orderBy([(t) => OrderingTerm(expression: t.hits, mode: OrderingMode.asc)])).get();
+    final res = await (db.select(db.userLikeEntities)..orderBy([(t) => OrderingTerm(expression: t.hits)])).get();
     return res.map(_fromDb).toList();
   }
 

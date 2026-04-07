@@ -93,7 +93,7 @@ class MemberRepository extends CacheImpl<MembersEntity> implements IMemberReposi
 
   @override
   Future<List<MembersEntity>> doGetSortedByHits() async {
-    final res = await (db.select(db.memberEntities)..orderBy([(t) => OrderingTerm(expression: t.hits, mode: OrderingMode.asc)])).get();
+    final res = await (db.select(db.memberEntities)..orderBy([(t) => OrderingTerm(expression: t.hits)])).get();
     return res.map(_fromDb).toList();
   }
 

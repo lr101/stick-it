@@ -1004,31 +1004,14 @@ class $ImageEntitiesTable extends ImageEntities
         type: DriftSqlType.int,
         requiredDuringInsert: true,
       ).withConverter<ImageType>($ImageEntitiesTable.$convertertype);
-  static const VerificationMeta _filePathMeta = const VerificationMeta(
-    'filePath',
-  );
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
   @override
-  late final GeneratedColumn<String> filePath = GeneratedColumn<String>(
-    'file_path',
+  late final GeneratedColumn<Uint8List> image = GeneratedColumn<Uint8List>(
+    'image',
     aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _isEmptyValMeta = const VerificationMeta(
-    'isEmptyVal',
-  );
-  @override
-  late final GeneratedColumn<bool> isEmptyVal = GeneratedColumn<bool>(
-    'is_empty_val',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
+    true,
+    type: DriftSqlType.blob,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_empty_val" IN (0, 1))',
-    ),
-    defaultValue: const Constant(false),
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -1039,8 +1022,7 @@ class $ImageEntitiesTable extends ImageEntities
     onlySession,
     id,
     type,
-    filePath,
-    isEmptyVal,
+    image,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1094,21 +1076,10 @@ class $ImageEntitiesTable extends ImageEntities
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (data.containsKey('file_path')) {
+    if (data.containsKey('image')) {
       context.handle(
-        _filePathMeta,
-        filePath.isAcceptableOrUnknown(data['file_path']!, _filePathMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_filePathMeta);
-    }
-    if (data.containsKey('is_empty_val')) {
-      context.handle(
-        _isEmptyValMeta,
-        isEmptyVal.isAcceptableOrUnknown(
-          data['is_empty_val']!,
-          _isEmptyValMeta,
-        ),
+        _imageMeta,
+        image.isAcceptableOrUnknown(data['image']!, _imageMeta),
       );
     }
     return context;
@@ -1150,14 +1121,10 @@ class $ImageEntitiesTable extends ImageEntities
           data['${effectivePrefix}type'],
         )!,
       ),
-      filePath: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}file_path'],
-      )!,
-      isEmptyVal: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}is_empty_val'],
-      )!,
+      image: attachedDatabase.typeMapping.read(
+        DriftSqlType.blob,
+        data['${effectivePrefix}image'],
+      ),
     );
   }
 
@@ -1178,8 +1145,7 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
   final bool onlySession;
   final String id;
   final ImageType type;
-  final String filePath;
-  final bool isEmptyVal;
+  final Uint8List? image;
   const ImageDb({
     required this.isarId,
     required this.ttl,
@@ -1188,8 +1154,7 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
     required this.onlySession,
     required this.id,
     required this.type,
-    required this.filePath,
-    required this.isEmptyVal,
+    this.image,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1205,8 +1170,9 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
         $ImageEntitiesTable.$convertertype.toSql(type),
       );
     }
-    map['file_path'] = Variable<String>(filePath);
-    map['is_empty_val'] = Variable<bool>(isEmptyVal);
+    if (!nullToAbsent || image != null) {
+      map['image'] = Variable<Uint8List>(image);
+    }
     return map;
   }
 
@@ -1219,8 +1185,9 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
       onlySession: Value(onlySession),
       id: Value(id),
       type: Value(type),
-      filePath: Value(filePath),
-      isEmptyVal: Value(isEmptyVal),
+      image: image == null && nullToAbsent
+          ? const Value.absent()
+          : Value(image),
     );
   }
 
@@ -1239,8 +1206,7 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
       type: $ImageEntitiesTable.$convertertype.fromJson(
         serializer.fromJson<int>(json['type']),
       ),
-      filePath: serializer.fromJson<String>(json['filePath']),
-      isEmptyVal: serializer.fromJson<bool>(json['isEmptyVal']),
+      image: serializer.fromJson<Uint8List?>(json['image']),
     );
   }
   @override
@@ -1256,8 +1222,7 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
       'type': serializer.toJson<int>(
         $ImageEntitiesTable.$convertertype.toJson(type),
       ),
-      'filePath': serializer.toJson<String>(filePath),
-      'isEmptyVal': serializer.toJson<bool>(isEmptyVal),
+      'image': serializer.toJson<Uint8List?>(image),
     };
   }
 
@@ -1269,8 +1234,7 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
     bool? onlySession,
     String? id,
     ImageType? type,
-    String? filePath,
-    bool? isEmptyVal,
+    Value<Uint8List?> image = const Value.absent(),
   }) => ImageDb(
     isarId: isarId ?? this.isarId,
     ttl: ttl ?? this.ttl,
@@ -1279,8 +1243,7 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
     onlySession: onlySession ?? this.onlySession,
     id: id ?? this.id,
     type: type ?? this.type,
-    filePath: filePath ?? this.filePath,
-    isEmptyVal: isEmptyVal ?? this.isEmptyVal,
+    image: image.present ? image.value : this.image,
   );
   ImageDb copyWithCompanion(ImageEntitiesCompanion data) {
     return ImageDb(
@@ -1293,10 +1256,7 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
           : this.onlySession,
       id: data.id.present ? data.id.value : this.id,
       type: data.type.present ? data.type.value : this.type,
-      filePath: data.filePath.present ? data.filePath.value : this.filePath,
-      isEmptyVal: data.isEmptyVal.present
-          ? data.isEmptyVal.value
-          : this.isEmptyVal,
+      image: data.image.present ? data.image.value : this.image,
     );
   }
 
@@ -1310,8 +1270,7 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
           ..write('onlySession: $onlySession, ')
           ..write('id: $id, ')
           ..write('type: $type, ')
-          ..write('filePath: $filePath, ')
-          ..write('isEmptyVal: $isEmptyVal')
+          ..write('image: $image')
           ..write(')'))
         .toString();
   }
@@ -1325,8 +1284,7 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
     onlySession,
     id,
     type,
-    filePath,
-    isEmptyVal,
+    $driftBlobEquality.hash(image),
   );
   @override
   bool operator ==(Object other) =>
@@ -1339,8 +1297,7 @@ class ImageDb extends DataClass implements Insertable<ImageDb> {
           other.onlySession == this.onlySession &&
           other.id == this.id &&
           other.type == this.type &&
-          other.filePath == this.filePath &&
-          other.isEmptyVal == this.isEmptyVal);
+          $driftBlobEquality.equals(other.image, this.image));
 }
 
 class ImageEntitiesCompanion extends UpdateCompanion<ImageDb> {
@@ -1351,8 +1308,7 @@ class ImageEntitiesCompanion extends UpdateCompanion<ImageDb> {
   final Value<bool> onlySession;
   final Value<String> id;
   final Value<ImageType> type;
-  final Value<String> filePath;
-  final Value<bool> isEmptyVal;
+  final Value<Uint8List?> image;
   const ImageEntitiesCompanion({
     this.isarId = const Value.absent(),
     this.ttl = const Value.absent(),
@@ -1361,8 +1317,7 @@ class ImageEntitiesCompanion extends UpdateCompanion<ImageDb> {
     this.onlySession = const Value.absent(),
     this.id = const Value.absent(),
     this.type = const Value.absent(),
-    this.filePath = const Value.absent(),
-    this.isEmptyVal = const Value.absent(),
+    this.image = const Value.absent(),
   });
   ImageEntitiesCompanion.insert({
     this.isarId = const Value.absent(),
@@ -1372,12 +1327,10 @@ class ImageEntitiesCompanion extends UpdateCompanion<ImageDb> {
     this.onlySession = const Value.absent(),
     required String id,
     required ImageType type,
-    required String filePath,
-    this.isEmptyVal = const Value.absent(),
+    this.image = const Value.absent(),
   }) : ttl = Value(ttl),
        id = Value(id),
-       type = Value(type),
-       filePath = Value(filePath);
+       type = Value(type);
   static Insertable<ImageDb> custom({
     Expression<int>? isarId,
     Expression<DateTime>? ttl,
@@ -1386,8 +1339,7 @@ class ImageEntitiesCompanion extends UpdateCompanion<ImageDb> {
     Expression<bool>? onlySession,
     Expression<String>? id,
     Expression<int>? type,
-    Expression<String>? filePath,
-    Expression<bool>? isEmptyVal,
+    Expression<Uint8List>? image,
   }) {
     return RawValuesInsertable({
       if (isarId != null) 'isar_id': isarId,
@@ -1397,8 +1349,7 @@ class ImageEntitiesCompanion extends UpdateCompanion<ImageDb> {
       if (onlySession != null) 'only_session': onlySession,
       if (id != null) 'id': id,
       if (type != null) 'type': type,
-      if (filePath != null) 'file_path': filePath,
-      if (isEmptyVal != null) 'is_empty_val': isEmptyVal,
+      if (image != null) 'image': image,
     });
   }
 
@@ -1410,8 +1361,7 @@ class ImageEntitiesCompanion extends UpdateCompanion<ImageDb> {
     Value<bool>? onlySession,
     Value<String>? id,
     Value<ImageType>? type,
-    Value<String>? filePath,
-    Value<bool>? isEmptyVal,
+    Value<Uint8List?>? image,
   }) {
     return ImageEntitiesCompanion(
       isarId: isarId ?? this.isarId,
@@ -1421,8 +1371,7 @@ class ImageEntitiesCompanion extends UpdateCompanion<ImageDb> {
       onlySession: onlySession ?? this.onlySession,
       id: id ?? this.id,
       type: type ?? this.type,
-      filePath: filePath ?? this.filePath,
-      isEmptyVal: isEmptyVal ?? this.isEmptyVal,
+      image: image ?? this.image,
     );
   }
 
@@ -1452,11 +1401,8 @@ class ImageEntitiesCompanion extends UpdateCompanion<ImageDb> {
         $ImageEntitiesTable.$convertertype.toSql(type.value),
       );
     }
-    if (filePath.present) {
-      map['file_path'] = Variable<String>(filePath.value);
-    }
-    if (isEmptyVal.present) {
-      map['is_empty_val'] = Variable<bool>(isEmptyVal.value);
+    if (image.present) {
+      map['image'] = Variable<Uint8List>(image.value);
     }
     return map;
   }
@@ -1471,8 +1417,7 @@ class ImageEntitiesCompanion extends UpdateCompanion<ImageDb> {
           ..write('onlySession: $onlySession, ')
           ..write('id: $id, ')
           ..write('type: $type, ')
-          ..write('filePath: $filePath, ')
-          ..write('isEmptyVal: $isEmptyVal')
+          ..write('image: $image')
           ..write(')'))
         .toString();
   }
@@ -5699,8 +5644,7 @@ typedef $$ImageEntitiesTableCreateCompanionBuilder =
       Value<bool> onlySession,
       required String id,
       required ImageType type,
-      required String filePath,
-      Value<bool> isEmptyVal,
+      Value<Uint8List?> image,
     });
 typedef $$ImageEntitiesTableUpdateCompanionBuilder =
     ImageEntitiesCompanion Function({
@@ -5711,8 +5655,7 @@ typedef $$ImageEntitiesTableUpdateCompanionBuilder =
       Value<bool> onlySession,
       Value<String> id,
       Value<ImageType> type,
-      Value<String> filePath,
-      Value<bool> isEmptyVal,
+      Value<Uint8List?> image,
     });
 
 class $$ImageEntitiesTableFilterComposer
@@ -5760,13 +5703,8 @@ class $$ImageEntitiesTableFilterComposer
         builder: (column) => ColumnWithTypeConverterFilters(column),
       );
 
-  ColumnFilters<String> get filePath => $composableBuilder(
-    column: $table.filePath,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get isEmptyVal => $composableBuilder(
-    column: $table.isEmptyVal,
+  ColumnFilters<Uint8List> get image => $composableBuilder(
+    column: $table.image,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -5815,13 +5753,8 @@ class $$ImageEntitiesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get filePath => $composableBuilder(
-    column: $table.filePath,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get isEmptyVal => $composableBuilder(
-    column: $table.isEmptyVal,
+  ColumnOrderings<Uint8List> get image => $composableBuilder(
+    column: $table.image,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -5858,13 +5791,8 @@ class $$ImageEntitiesTableAnnotationComposer
   GeneratedColumnWithTypeConverter<ImageType, int> get type =>
       $composableBuilder(column: $table.type, builder: (column) => column);
 
-  GeneratedColumn<String> get filePath =>
-      $composableBuilder(column: $table.filePath, builder: (column) => column);
-
-  GeneratedColumn<bool> get isEmptyVal => $composableBuilder(
-    column: $table.isEmptyVal,
-    builder: (column) => column,
-  );
+  GeneratedColumn<Uint8List> get image =>
+      $composableBuilder(column: $table.image, builder: (column) => column);
 }
 
 class $$ImageEntitiesTableTableManager
@@ -5905,8 +5833,7 @@ class $$ImageEntitiesTableTableManager
                 Value<bool> onlySession = const Value.absent(),
                 Value<String> id = const Value.absent(),
                 Value<ImageType> type = const Value.absent(),
-                Value<String> filePath = const Value.absent(),
-                Value<bool> isEmptyVal = const Value.absent(),
+                Value<Uint8List?> image = const Value.absent(),
               }) => ImageEntitiesCompanion(
                 isarId: isarId,
                 ttl: ttl,
@@ -5915,8 +5842,7 @@ class $$ImageEntitiesTableTableManager
                 onlySession: onlySession,
                 id: id,
                 type: type,
-                filePath: filePath,
-                isEmptyVal: isEmptyVal,
+                image: image,
               ),
           createCompanionCallback:
               ({
@@ -5927,8 +5853,7 @@ class $$ImageEntitiesTableTableManager
                 Value<bool> onlySession = const Value.absent(),
                 required String id,
                 required ImageType type,
-                required String filePath,
-                Value<bool> isEmptyVal = const Value.absent(),
+                Value<Uint8List?> image = const Value.absent(),
               }) => ImageEntitiesCompanion.insert(
                 isarId: isarId,
                 ttl: ttl,
@@ -5937,8 +5862,7 @@ class $$ImageEntitiesTableTableManager
                 onlySession: onlySession,
                 id: id,
                 type: type,
-                filePath: filePath,
-                isEmptyVal: isEmptyVal,
+                image: image,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

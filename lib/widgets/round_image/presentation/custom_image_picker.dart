@@ -45,14 +45,17 @@ class CustomImagePicker {
   }) async {
     if (res == null) return null;
     final Uint8List bytes = await res.readAsBytes();
-    img.Image? image = img.decodeImage(bytes);
+    final img.Image? image = img.decodeImage(bytes);
     if (image == null) return null;
 
     // Target aspect ratio 3:4 (width/height = 0.75)
     const double targetRatio = 3 / 4;
     final double currentRatio = image.width / image.height;
 
-    int newWidth, newHeight, offsetX, offsetY;
+    int newWidth;
+    int newHeight;
+    int offsetX;
+    int offsetY;
 
     if (currentRatio > targetRatio) {
       // Image is too wide, crop the sides
