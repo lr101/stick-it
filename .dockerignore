@@ -9,3 +9,7 @@ windows/
 android/
 ios/
 *.iml
+.pub-cache/
+.pub/
+coverage/
+.github

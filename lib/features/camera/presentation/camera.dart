@@ -68,35 +68,42 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
     final cameras = ref.watch(globalDataServiceProvider.select((t) => t.cameras));
     final cameraFlashMode = ref.watch(cameraTorchProvider);
     final groupIds = ref.watch(groupOrderServiceProvider);
-    return Scaffold(body: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  // We handle the AsyncValue of the CONTROLLER here
-                  child: controllerAsync.when(
-                    loading: () => const Center(child: CircularProgressIndicator()),
-                    error: (err, stack) => Center(child: Text("Camera Error: $err")),
-                    data: (controller) {
-                      // Once controller is ready, we check the Values state
-                      return cameraStateAsync.when(
-                        loading: () => const Center(child: CircularProgressIndicator()),
-                        error: (err, stack) => Text(err.toString()),
-                        data: (cameraState) => GestureDetector(
-                          onDoubleTap: ref.read(cameraIndexProvider.notifier).increment,
-                          onScaleStart: (_) => basScaleFactor = scaleFactor,
-                          onScaleUpdate: (details) => handleZoom(details, controller, cameraState),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: CameraPreview(controller),
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    // We handle the AsyncValue of the CONTROLLER here
+                    child: controllerAsync.when(
+                      loading: () => const Center(child: CircularProgressIndicator()),
+                      error: (err, stack) => Center(child: Text("Camera Error: $err")),
+                      data: (controller) {
+                        // Once controller is ready, we check the Values state
+                        return cameraStateAsync.when(
+                          loading: () => const Center(child: CircularProgressIndicator()),
+                          error: (err, stack) => Text(err.toString()),
+                          data: (cameraState) => GestureDetector(
+                            onDoubleTap: ref.read(cameraIndexProvider.notifier).increment,
+                            onScaleStart: (_) => basScaleFactor = scaleFactor,
+                            onScaleUpdate: (details) => handleZoom(details, controller, cameraState),
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                return Center(
+                                  child: AspectRatio(
+                                    aspectRatio: controller.value.aspectRatio,
+                                    child: CameraPreview(controller),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
                 Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: Padding(
@@ -194,6 +201,7 @@ class _CameraState extends ConsumerState<Camera>  with WidgetsBindingObserver {
           const SizedBox(height: 5,),
         ],
       ),
+    ),
     );
   }
 

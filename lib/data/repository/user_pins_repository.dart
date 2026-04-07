@@ -82,7 +82,7 @@ class UserPinsRepository extends CacheImpl<UserPinsEntity> implements IUserPinsR
 
   @override
   Future<List<UserPinsEntity>> doGetSortedByHits() async {
-    final res = await (db.select(db.userPinsEntities)..orderBy([(t) => OrderingTerm(expression: t.hits, mode: OrderingMode.asc)])).get();
+    final res = await (db.select(db.userPinsEntities)..orderBy([(t) => OrderingTerm(expression: t.hits)])).get();
     return res.map(_fromDb).toList();
   }
 

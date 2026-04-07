@@ -91,8 +91,7 @@ class GroupEntities extends Table with CacheTable {
 class ImageEntities extends Table with CacheTable {
   TextColumn get id => text()();
   IntColumn get type => intEnum<ImageType>()();
-  TextColumn get filePath => text()();
-  BoolColumn get isEmptyVal => boolean().withDefault(const Constant(false))();
+  BlobColumn get image => blob().nullable()();
 }
 
 @DataClassName('MemberDb')

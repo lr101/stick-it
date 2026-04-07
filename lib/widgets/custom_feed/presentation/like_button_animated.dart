@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// ignore: implementation_imports
+                      // ignore: implementation_imports
 import 'package:like_button/src/painter/bubbles_painter.dart';
 // ignore: implementation_imports
 import 'package:like_button/src/painter/circle_painter.dart';
